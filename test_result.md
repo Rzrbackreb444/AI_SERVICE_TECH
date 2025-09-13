@@ -176,9 +176,9 @@ backend:
 
   - task: "Stripe integration with emergentintegrations"
     implemented: true
-    working: true
+    working: false
     file: "/app/backend/server.py"
-    stuck_count: 0
+    stuck_count: 1
     priority: "medium"
     needs_retesting: false
     status_history:
@@ -188,6 +188,9 @@ backend:
       - working: true
         agent: "testing"
         comment: "✅ TESTED: Stripe integration working perfectly. Checkout creation successful, returns proper checkout_url, session_id, and amount. Payment status endpoint working correctly. Stripe webhook endpoint exists but has minor issue with webhook payload structure (missing 'id' field in test payload). Core Stripe functionality fully operational."
+      - working: false
+        agent: "testing"
+        comment: "❌ CRITICAL CONFIGURATION ISSUE: Stripe integration fails with 'This API call cannot be made with a publishable API key. Please use a secret API key.' The .env file contains a publishable key (pk_live_51QVVNeAmszmTUkuIDOdDpebXWyvj3qntyTgeMcjG4RaQIS02gMerABmMKfq4hxGftlapCNgX9BkjPgJrrDGXFbwm00IKpDj84W) but emergentintegrations library requires a secret key (sk_live_) for server-side operations. Need to obtain the corresponding secret key from Stripe dashboard."
 
   - task: "Badge subscription management and tracking"
     implemented: true
