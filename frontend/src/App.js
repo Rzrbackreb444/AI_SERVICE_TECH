@@ -211,6 +211,15 @@ function App() {
               </ProtectedRoute>
             } />
             
+            <Route path="/analytics" element={
+              <ProtectedRoute>
+                <>
+                  <Navbar />
+                  <AnalyticsDashboard />
+                </>
+              </ProtectedRoute>
+            } />
+            
             <Route path="/support" element={
               <ProtectedRoute>
                 <>
