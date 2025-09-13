@@ -21,6 +21,7 @@ from sklearn.ensemble import RandomForestRegressor
 import numpy as np
 import pandas as pd
 from emergentintegrations.payments.stripe.checkout import StripeCheckout, CheckoutSessionResponse, CheckoutStatusResponse, CheckoutSessionRequest
+import paypalrestsdk
 from email_service import email_service
 
 # Load environment variables
