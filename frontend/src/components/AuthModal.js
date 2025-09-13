@@ -43,6 +43,8 @@ const AuthModal = ({ mode, onClose, onSwitchMode }) => {
 
       if (result.success) {
         onClose();
+        // Redirect to dashboard after successful authentication
+        window.location.href = '/dashboard';
       } else {
         setError(result.error);
       }
