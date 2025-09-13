@@ -251,7 +251,7 @@ function App() {
               <ProtectedRoute>
                 <>
                   <Navbar />
-                  <ProfilePage />
+                  <UserProfileSettings />
                 </>
               </ProtectedRoute>
             } />
