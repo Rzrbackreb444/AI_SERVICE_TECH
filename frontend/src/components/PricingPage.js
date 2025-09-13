@@ -1,15 +1,28 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { CheckCircleIcon, ArrowRightIcon, StarIcon } from '@heroicons/react/24/outline';
+import { CheckCircleIcon, ArrowRightIcon, StarIcon, BoltIcon, CreditCardIcon } from '@heroicons/react/24/outline';
+import { PayPalScriptProvider, PayPalButtons } from '@paypal/react-paypal-js';
+import axios from 'axios';
+import { useAuth } from '../App';
+
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
+const API = `${BACKEND_URL}/api`;
 
 const PricingPage = ({ onOpenAuth }) => {
+  const { isAuthenticated } = useAuth();
+  const [selectedTier, setSelectedTier] = useState(null);
+  const [paymentMethod, setPaymentMethod] = useState('stripe');
+  const [processing, setProcessing] = useState(false);
+
   const pricingTiers = [
     {
+      id: "scout",
       name: "Location Scout",
-      price: "Free",
+      price: 0,
+      paypalPrice: 0,
       originalPrice: null,
       description: "Perfect for getting started",
-      badge: null,
+      badge: "FREE",
       features: [
         "Basic location grade (A-F)",
         "Population demographics (surface level)",
@@ -24,11 +37,14 @@ const PricingPage = ({ onOpenAuth }) => {
       ],
       cta: "Start Free",
       popular: false,
-      color: "from-slate-600 to-slate-700"
+      color: "from-slate-600 to-slate-700",
+      paypalDiscount: false
     },
     {
+      id: "analyzer",
       name: "Location Analyzer",
-      price: "$99",
+      price: 99,
+      paypalPrice: 94,
       originalPrice: null,
       description: "For serious location shoppers",
       badge: "MOST CHOSEN",
@@ -47,12 +63,15 @@ const PricingPage = ({ onOpenAuth }) => {
       ],
       cta: "Choose Analyzer",
       popular: false,
-      color: "from-blue-600 to-blue-700"
+      color: "from-blue-600 to-blue-700",
+      paypalDiscount: true
     },
     {
+      id: "intelligence",
       name: "Location Intelligence",
-      price: "$249",
-      originalPrice: "$349",
+      price: 249,
+      paypalPrice: 237,
+      originalPrice: 349,
       description: "Ready-to-invest decision makers",
       badge: "BEST VALUE",
       features: [
@@ -67,12 +86,15 @@ const PricingPage = ({ onOpenAuth }) => {
       limitations: [],
       cta: "Get Intelligence",
       popular: true,
-      color: "from-cyan-500 to-emerald-500"
+      color: "from-cyan-500 to-emerald-500",
+      paypalDiscount: true
     },
     {
-      name: "LaundroMax Optimization",
-      price: "$499",
-      originalPrice: "$699",
+      id: "optimization",
+      name: "SiteAtlas Optimization",
+      price: 499,
+      paypalPrice: 474,
+      originalPrice: 699,
       description: "Existing owners + serious investors",
       badge: "PREMIUM",
       features: [
@@ -93,16 +115,19 @@ const PricingPage = ({ onOpenAuth }) => {
       limitations: [],
       cta: "Optimize Business",
       popular: false,
-      color: "from-purple-600 to-pink-600"
+      color: "from-purple-600 to-pink-600",
+      paypalDiscount: true
     },
     {
-      name: "LaundroEmpire Portfolio",
-      price: "$999",
-      originalPrice: "$1,299",
+      id: "portfolio",
+      name: "SiteAtlas Portfolio",
+      price: 999,
+      paypalPrice: 949,
+      originalPrice: 1299,
       description: "Multi-location owners, franchisees",
       badge: "ENTERPRISE",
       features: [
-        "Everything in LaundroMax PLUS:",
+        "Everything in SiteAtlas Optimization PLUS:",
         "Multi-location portfolio analysis",
         "Franchise territory analysis and expansion planning",
         "Market expansion strategies with timing",
@@ -114,13 +139,16 @@ const PricingPage = ({ onOpenAuth }) => {
       limitations: [],
       cta: "Build Empire",
       popular: false,
-      color: "from-orange-500 to-red-500"
+      color: "from-orange-500 to-red-500",
+      paypalDiscount: true
     },
     {
-      name: "LaundroWatch Pro",
-      price: "$199",
+      id: "watch_pro",
+      name: "SiteAtlas Watch Pro",
+      price: 199,
+      paypalPrice: 189,
       billing: "per location/month",
-      originalPrice: "$299",
+      originalPrice: 299,
       description: "Ongoing intelligence monitoring",
       badge: "RECURRING",
       features: [
@@ -136,7 +164,8 @@ const PricingPage = ({ onOpenAuth }) => {
       limitations: [],
       cta: "Start Monitoring",
       popular: false,
-      color: "from-green-600 to-teal-600"
+      color: "from-green-600 to-teal-600",
+      paypalDiscount: true
     }
   ];
 
@@ -148,9 +177,113 @@ const PricingPage = ({ onOpenAuth }) => {
     "Referral program: $50 credit per qualified referral"
   ];
 
+  const handleStripeCheckout = async (tier) => {
+    if (!isAuthenticated) {
+      onOpenAuth('register');
+      return;
+    }
+
+    setProcessing(true);
+    try {
+      const response = await axios.post(`${API}/payments/checkout`, {
+        tier: tier.id,
+        payment_method: 'stripe'
+      });
+
+      if (response.data.checkout_url) {
+        window.location.href = response.data.checkout_url;
+      }
+    } catch (error) {
+      console.error('Stripe checkout error:', error);
+      alert('Payment failed. Please try again.');
+    } finally {
+      setProcessing(false);
+    }
+  };
+
+  const handlePayPalCheckout = async (tier) => {
+    if (!isAuthenticated) {
+      onOpenAuth('register');
+      return;
+    }
+
+    setProcessing(true);
+    try {
+      const response = await axios.post(`${API}/payments/checkout`, {
+        tier: tier.id,
+        payment_method: 'paypal'
+      });
+
+      // PayPal checkout would be handled here
+      console.log('PayPal checkout data:', response.data);
+      alert(`PayPal checkout for ${tier.name} - $${tier.paypalPrice} (5% discount applied!)`);
+    } catch (error) {
+      console.error('PayPal checkout error:', error);
+      alert('PayPal payment failed. Please try again.');
+    } finally {
+      setProcessing(false);
+    }
+  };
+
+  const PaymentButtons = ({ tier }) => {
+    if (tier.price === 0) {
+      return (
+        <motion.button
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          className="w-full py-3 px-4 rounded-xl font-semibold transition-all duration-200 bg-gradient-to-r from-slate-600 to-slate-700 text-white"
+          onClick={() => isAuthenticated ? alert('Free tier activated!') : onOpenAuth('register')}
+        >
+          {tier.cta}
+        </motion.button>
+      );
+    }
+
+    return (
+      <div className="space-y-3">
+        {/* PayPal Button with Discount */}
+        <motion.button
+          whileHover={{ scale: 1.02 }}
+          whileTap={{ scale: 0.98 }}
+          className="w-full py-3 px-4 rounded-xl font-semibold transition-all duration-200 bg-gradient-to-r from-yellow-500 to-orange-500 text-white relative overflow-hidden"
+          onClick={() => handlePayPalCheckout(tier)}
+          disabled={processing}
+        >
+          <div className="flex items-center justify-center space-x-2">
+            <BoltIcon className="w-5 h-5" />
+            <span>PayPal - ${tier.paypalPrice} (Save 5%!)</span>
+          </div>
+          {tier.paypalDiscount && (
+            <div className="absolute top-1 right-1 bg-red-500 text-white text-xs px-2 py-0.5 rounded-full">
+              SAVE $5
+            </div>
+          )}
+        </motion.button>
+
+        {/* Stripe Button */}
+        <motion.button
+          whileHover={{ scale: 1.02 }}
+          whileTap={{ scale: 0.98 }}
+          className={`w-full py-3 px-4 rounded-xl font-semibold transition-all duration-200 ${
+            tier.popular 
+              ? 'bg-gradient-to-r from-cyan-500 to-emerald-500 text-white' 
+              : `bg-gradient-to-r ${tier.color} text-white`
+          }`}
+          onClick={() => handleStripeCheckout(tier)}
+          disabled={processing}
+        >
+          <div className="flex items-center justify-center space-x-2">
+            <CreditCardIcon className="w-5 h-5" />
+            <span>Credit Card - ${tier.price}</span>
+          </div>
+        </motion.button>
+      </div>
+    );
+  };
+
   return (
     <div className="min-h-screen py-12">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -158,6 +291,15 @@ const PricingPage = ({ onOpenAuth }) => {
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
+          {/* SiteAtlas Logo */}
+          <div className="mb-8">
+            <img 
+              src="https://customer-assets.emergentagent.com/job_laundrosight/artifacts/68vqd4wq_Logo%2C%20Transparent.png" 
+              alt="SiteAtlas Logo"
+              className="h-32 mx-auto mb-4 drop-shadow-2xl"
+            />
+          </div>
+
           <h1 className="text-5xl font-bold text-white mb-4">
             Choose Your <span className="gradient-text">Intelligence Level</span>
           </h1>
@@ -165,8 +307,19 @@ const PricingPage = ({ onOpenAuth }) => {
             From free scouting to empire building - scale as you grow with AI-powered insights
           </p>
           
+          {/* PayPal Discount Banner */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="inline-flex items-center bg-gradient-to-r from-yellow-500/20 to-orange-500/20 border border-yellow-500/30 rounded-2xl px-6 py-3 mb-8"
+          >
+            <BoltIcon className="w-6 h-6 text-yellow-400 mr-3" />
+            <span className="text-yellow-300 font-semibold">Save 5% with PayPal payments on all premium tiers!</span>
+          </motion.div>
+          
           {/* Facebook Group Benefits */}
-          <div className="glass-card p-6 max-w-2xl mx-auto">
+          <div className="glass-card p-6 max-w-2xl mx-auto mb-8">
             <div className="flex items-center justify-center mb-4">
               <StarIcon className="w-6 h-6 text-yellow-400 mr-2" />
               <h3 className="text-lg font-semibold text-white">
@@ -203,22 +356,39 @@ const PricingPage = ({ onOpenAuth }) => {
                 </div>
               )}
 
+              {/* PayPal Discount Badge */}
+              {tier.paypalDiscount && (
+                <div className="absolute top-4 left-4 bg-gradient-to-r from-yellow-500 to-orange-500 text-white px-3 py-1 rounded-full text-xs font-bold">
+                  5% OFF WITH PAYPAL
+                </div>
+              )}
+
               {/* Header */}
               <div className="text-center mb-6">
                 <h3 className="text-xl font-bold text-white mb-2">{tier.name}</h3>
                 <div className="mb-2">
                   {tier.originalPrice && (
                     <span className="text-slate-500 line-through text-lg mr-2">
-                      {tier.originalPrice}
+                      ${tier.originalPrice}
                     </span>
                   )}
                   <span className={`text-3xl font-bold bg-gradient-to-r ${tier.color} bg-clip-text text-transparent`}>
-                    {tier.price}
+                    ${tier.price}
                   </span>
                   {tier.billing && (
                     <span className="text-slate-400 text-sm ml-1">/{tier.billing}</span>
                   )}
                 </div>
+                
+                {/* PayPal Price Display */}
+                {tier.paypalDiscount && (
+                  <div className="flex items-center justify-center space-x-2 mb-2">
+                    <span className="text-yellow-400 font-bold text-lg">
+                      ${tier.paypalPrice} with PayPal
+                    </span>
+                  </div>
+                )}
+                
                 <p className="text-slate-400">{tier.description}</p>
               </div>
 
@@ -264,20 +434,8 @@ const PricingPage = ({ onOpenAuth }) => {
                 )}
               </div>
 
-              {/* CTA Button */}
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className={`w-full py-3 px-4 rounded-xl font-semibold transition-all duration-200 ${
-                  tier.popular 
-                    ? 'btn-accent' 
-                    : 'bg-gradient-to-r ' + tier.color + ' text-white hover:shadow-lg'
-                }`}
-                onClick={() => onOpenAuth('register')}
-              >
-                {tier.cta}
-                <ArrowRightIcon className="w-4 h-4 ml-2 inline" />
-              </motion.button>
+              {/* Payment Buttons */}
+              <PaymentButtons tier={tier} />
             </motion.div>
           ))}
         </div>
@@ -301,8 +459,8 @@ const PricingPage = ({ onOpenAuth }) => {
                   <th className="text-center py-4 px-2 text-slate-300 font-semibold">Scout</th>
                   <th className="text-center py-4 px-2 text-slate-300 font-semibold">Analyzer</th>
                   <th className="text-center py-4 px-2 text-slate-300 font-semibold">Intelligence</th>
-                  <th className="text-center py-4 px-2 text-slate-300 font-semibold">LaundroMax</th>
-                  <th className="text-center py-4 px-2 text-slate-300 font-semibold">Empire</th>
+                  <th className="text-center py-4 px-2 text-slate-300 font-semibold">Optimization</th>
+                  <th className="text-center py-4 px-2 text-slate-300 font-semibold">Portfolio</th>
                   <th className="text-center py-4 px-2 text-slate-300 font-semibold">Watch Pro</th>
                 </tr>
               </thead>
@@ -350,7 +508,7 @@ const PricingPage = ({ onOpenAuth }) => {
             Join the <span className="gradient-text-gold">$8.4M Success Story</span>
           </h2>
           <p className="text-xl text-slate-300 mb-8">
-            Our 67,000 Facebook Group members are generating massive returns
+            Our 67,000 Facebook Group members are generating massive returns with SiteAtlas
           </p>
           
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
