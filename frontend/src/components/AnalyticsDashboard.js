@@ -277,7 +277,7 @@ const AnalyticsDashboard = () => {
                 <p className="text-slate-400 text-sm font-medium">Active Users</p>
                 <p className="text-3xl font-bold text-white">{analyticsData.totalUsers?.toLocaleString()}</p>
                 <div className="flex items-center text-sm mt-1">
-                  <TrendingUpIcon className="w-4 h-4 text-blue-400 mr-1" />
+                  <ArrowTrendingUpIcon className="w-4 h-4 text-blue-400 mr-1" />
                   <span className="text-blue-400">{formatPercentage(analyticsData.userGrowth)}</span>
                   <span className="text-slate-400 ml-1">growth</span>
                 </div>
