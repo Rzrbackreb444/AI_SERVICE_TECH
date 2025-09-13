@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 Comprehensive Backend API Testing for SiteTitan - LaundroTech Intelligence Platform
-Tests all authentication, analysis, and tier-based access control functionality
+Tests all authentication, analysis, tier-based access control, and Facebook Group badge monetization functionality
 """
 
 import requests
