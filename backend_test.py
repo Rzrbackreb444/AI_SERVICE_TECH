@@ -640,6 +640,10 @@ class SiteTitanAPITester:
         print(f"\n🔗 INTEGRATION TESTS")
         self.test_external_api_integrations()
         
+        # Facebook Group Monetization tests (HIGH PRIORITY)
+        print(f"\n💰 FACEBOOK GROUP MONETIZATION TESTS (HIGH PRIORITY)")
+        self.test_facebook_monetization_comprehensive()
+        
         # Final results
         self.print_final_results()
 
