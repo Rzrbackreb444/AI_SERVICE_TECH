@@ -84,7 +84,7 @@ class EmailService:
                     </div>
                     
                     <div class="cta">
-                        <a href="https://laundrosight.preview.emergentagent.com/analyze" class="button">
+                        <a href="https://site-analytics-6.preview.emergentagent.com/analyze" class="button">
                             Start Your First AI Analysis
                         </a>
                     </div>
@@ -176,7 +176,7 @@ class EmailService:
                     </div>
                     
                     <div class="cta">
-                        <a href="https://laundrosight.preview.emergentagent.com/history" class="button">
+                        <a href="https://site-analytics-6.preview.emergentagent.com/history" class="button">
                             View Full Analysis Report
                         </a>
                     </div>
