@@ -214,6 +214,15 @@ function App() {
               </ProtectedRoute>
             } />
             
+            <Route path="/security" element={
+              <ProtectedRoute>
+                <>
+                  <Navbar />
+                  <SecuritySettings />
+                </>
+              </ProtectedRoute>
+            } />
+            
             <Route path="/analytics" element={
               <ProtectedRoute>
                 <>
