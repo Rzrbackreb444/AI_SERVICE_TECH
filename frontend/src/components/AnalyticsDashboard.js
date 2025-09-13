@@ -67,7 +67,7 @@ const AnalyticsDashboard = () => {
     { id: 'users', name: 'User Insights', icon: UserGroupIcon },
     { id: 'conversion', name: 'Conversion Funnel', icon: FunnelIcon },
     { id: 'geography', name: 'Geographic Analysis', icon: MapIcon },
-    { id: 'predictions', name: 'Predictions & Forecasting', icon: TrendingUpIcon }
+    { id: 'predictions', name: 'Predictions & Forecasting', icon: ArrowTrendingUpIcon }
   ];
 
   useEffect(() => {
