@@ -16,6 +16,8 @@ import AnalysisHistory from './components/AnalysisHistory';
 import UserDashboard from './components/UserDashboard';
 import AdminDashboard from './components/AdminDashboard';
 import SupportCenter from './components/SupportCenter';
+import AnalyticsDashboard from './components/AnalyticsDashboard';
+import UserProfileSettings from './components/UserProfileSettings';
 import FacebookGroupMonetization from './components/FacebookGroupMonetization';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
