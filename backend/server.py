@@ -1049,6 +1049,51 @@ async def analyze_location(
     
     return analysis
 
+@api_router.get("/user/subscriptions")
+async def get_user_subscriptions(current_user: User = Depends(get_current_user)):
+    """Get user's Facebook Group subscriptions"""
+    subscriptions = await db.facebook_subscriptions.find({"user_id": current_user.id}).to_list(length=None)
+    return {"subscriptions": subscriptions}
+
+@api_router.get("/user/transactions") 
+async def get_user_transactions(current_user: User = Depends(get_current_user)):
+    """Get user's payment transaction history"""
+    transactions = await db.payment_transactions.find({"user_id": current_user.id}).sort("created_at", -1).to_list(length=None)
+    return {"transactions": transactions}
+
+@api_router.post("/user/subscriptions/{subscription_id}/cancel")
+async def cancel_user_subscription(subscription_id: str, current_user: User = Depends(get_current_user)):
+    """Cancel a user subscription"""
+    subscription = await db.facebook_subscriptions.find_one({
+        "id": subscription_id, 
+        "user_id": current_user.id
+    })
+    
+    if not subscription:
+        raise HTTPException(status_code=404, detail="Subscription not found")
+    
+    if subscription["subscription_status"] != "active":
+        raise HTTPException(status_code=400, detail="Subscription is not active")
+    
+    # Update subscription status
+    await db.facebook_subscriptions.update_one(
+        {"id": subscription_id},
+        {"$set": {
+            "subscription_status": "cancelled",
+            "badge_active": False,
+            "updated_at": datetime.utcnow()
+        }}
+    )
+    
+    # Send cancellation email
+    await email_service.send_cancellation_email(
+        current_user.email,
+        current_user.full_name,
+        subscription["offer_type"]
+    )
+    
+    return {"message": "Subscription cancelled successfully"}
+
 @api_router.get("/dashboard/stats")
 async def get_dashboard_stats(current_user: User = Depends(get_current_user)):
     """Get dashboard statistics"""
