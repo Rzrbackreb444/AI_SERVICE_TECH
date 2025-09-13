@@ -192,7 +192,7 @@ class EmailService:
                 <p>Your analysis includes competitive intelligence, demographic insights, and AI-powered recommendations to maximize your investment potential.</p>
                 
                 <div style="text-align: center; margin-top: 30px; padding-top: 20px; border-top: 1px solid #E2E8F0; color: #64748B;">
-                    <p>SiteTitan - Turning Location Data Into Million-Dollar Intelligence</p>
+                    <p>SiteAtlas - Turning Location Data Into Million-Dollar Intelligence</p>
                 </div>
             </div>
         </body>
