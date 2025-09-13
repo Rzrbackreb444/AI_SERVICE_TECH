@@ -15,7 +15,6 @@ import {
   CreditCardIcon,
   ExclamationTriangleIcon,
   ClockIcon,
-  TrendingUpIcon,
   EyeIcon
 } from '@heroicons/react/24/outline';
 import { 
