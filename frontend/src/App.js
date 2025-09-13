@@ -194,7 +194,16 @@ function App() {
               <ProtectedRoute>
                 <>
                   <Navbar />
-                  <Dashboard />
+                  <UserDashboard />
+                </>
+              </ProtectedRoute>
+            } />
+            
+            <Route path="/admin" element={
+              <ProtectedRoute>
+                <>
+                  <Navbar />
+                  <AdminDashboard />
                 </>
               </ProtectedRoute>
             } />
