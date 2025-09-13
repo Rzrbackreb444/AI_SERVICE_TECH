@@ -1220,6 +1220,18 @@ app.include_router(api_router)
 admin_router = create_admin_router(db, get_current_user)
 app.include_router(admin_router, prefix="/api")
 
+# Include analytics router
+analytics_router = create_analytics_router(db, get_current_user)
+app.include_router(analytics_router, prefix="/api")
+
+# Include security router
+security_router = create_security_router(db, get_current_user)
+app.include_router(security_router, prefix="/api")
+
+# Include notifications router
+notifications_router, notification_helpers = create_notifications_router(db, get_current_user)
+app.include_router(notifications_router, prefix="/api")
+
 @app.on_event("shutdown")
 async def shutdown_db_client():
     client.close()
