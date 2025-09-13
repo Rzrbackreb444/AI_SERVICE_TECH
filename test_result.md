@@ -258,10 +258,8 @@ test_plan:
     - "Updated pricing structure in FACEBOOK_GROUP_OFFERS"
     - "PayPal integration with SDK and webhook handling"
     - "Badge activation email service"
-    - "Updated Facebook Group offers display with new pricing"
-    - "PayPal checkout integration with authentication"
-  stuck_tasks:
     - "Stripe integration with emergentintegrations"
+  stuck_tasks: []
   test_all: false
   test_priority: "high_first"
 
