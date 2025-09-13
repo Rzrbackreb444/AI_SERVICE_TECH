@@ -9,6 +9,7 @@ import {
   CalendarIcon,
   ArrowPathIcon,
   DocumentArrowDownIcon,
+  ArrowTopRightOnSquareIcon,
   FunnelIcon,
   MapIcon,
   CreditCardIcon,
