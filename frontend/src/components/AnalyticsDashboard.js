@@ -324,7 +324,7 @@ const AnalyticsDashboard = () => {
                   <span className="text-slate-400 ml-1">churn rate</span>
                 </div>
               </div>
-              <TrendingUpIcon className="w-8 h-8 text-yellow-400" />
+              <ArrowTrendingUpIcon className="w-8 h-8 text-yellow-400" />
             </div>
           </motion.div>
         </div>
