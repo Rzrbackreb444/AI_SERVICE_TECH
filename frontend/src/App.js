@@ -13,6 +13,7 @@ import AuthModal from './components/AuthModal';
 import LandingPage from './components/LandingPage';
 import ProfilePage from './components/ProfilePage';
 import AnalysisHistory from './components/AnalysisHistory';
+import FacebookGroupMonetization from './components/FacebookGroupMonetization';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
@@ -181,6 +182,10 @@ function App() {
               path="/pricing" 
               element={<PricingPage onOpenAuth={openAuthModal} />} 
             />
+            <Route 
+              path="/facebook-group" 
+              element={<FacebookGroupMonetization />} 
+            />
 
             {/* Protected Routes */}
             <Route path="/dashboard" element={
@@ -217,6 +222,99 @@ function App() {
                   <ProfilePage />
                 </>
               </ProtectedRoute>
+            } />
+
+            {/* Legal/Compliance Routes */}
+            <Route path="/privacy" element={
+              <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900 py-20">
+                <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+                  <div className="glass-card p-8">
+                    <h1 className="text-3xl font-bold text-white mb-8">Privacy Policy</h1>
+                    <div className="prose prose-invert max-w-none">
+                      <p className="text-slate-300 mb-4">Last updated: {new Date().toLocaleDateString()}</p>
+                      <h2 className="text-xl font-semibold text-white mt-6 mb-4">Information We Collect</h2>
+                      <p className="text-slate-300 mb-4">
+                        LaundroTech collects information you provide directly to us, such as when you create an account, 
+                        request location analyses, or contact us for support.
+                      </p>
+                      <h2 className="text-xl font-semibold text-white mt-6 mb-4">How We Use Your Information</h2>
+                      <p className="text-slate-300 mb-4">
+                        We use the information we collect to provide, maintain, and improve our services, 
+                        process transactions, and communicate with you.
+                      </p>
+                      <h2 className="text-xl font-semibold text-white mt-6 mb-4">Data Security</h2>
+                      <p className="text-slate-300 mb-4">
+                        We implement appropriate technical and organizational measures to protect your personal information 
+                        against unauthorized access, alteration, disclosure, or destruction.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            } />
+
+            <Route path="/terms" element={
+              <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900 py-20">
+                <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+                  <div className="glass-card p-8">
+                    <h1 className="text-3xl font-bold text-white mb-8">Terms of Service</h1>
+                    <div className="prose prose-invert max-w-none">
+                      <p className="text-slate-300 mb-4">Last updated: {new Date().toLocaleDateString()}</p>
+                      <h2 className="text-xl font-semibold text-white mt-6 mb-4">Acceptance of Terms</h2>
+                      <p className="text-slate-300 mb-4">
+                        By accessing and using LaundroTech, you accept and agree to be bound by the terms 
+                        and provision of this agreement.
+                      </p>
+                      <h2 className="text-xl font-semibold text-white mt-6 mb-4">Service Description</h2>
+                      <p className="text-slate-300 mb-4">
+                        LaundroTech provides location intelligence and analysis services for the laundromat industry. 
+                        Our platform uses AI and data analytics to provide insights and recommendations.
+                      </p>
+                      <h2 className="text-xl font-semibold text-white mt-6 mb-4">Disclaimer</h2>
+                      <p className="text-red-300 mb-4 font-semibold">
+                        IMPORTANT: All analysis results, ROI projections, and business recommendations are for 
+                        informational purposes only and should not be considered as investment advice. 
+                        LaundroTech makes no guarantees about the accuracy or completeness of the information provided.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            } />
+
+            <Route path="/disclaimer" element={
+              <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900 py-20">
+                <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+                  <div className="glass-card p-8">
+                    <h1 className="text-3xl font-bold text-white mb-8">Investment Disclaimer</h1>
+                    <div className="prose prose-invert max-w-none">
+                      <div className="bg-red-900/20 border border-red-500/30 rounded-lg p-6 mb-8">
+                        <h2 className="text-xl font-semibold text-red-300 mb-4">⚠️ Important Investment Warning</h2>
+                        <ul className="text-red-200 space-y-2">
+                          <li>• All financial projections and ROI estimates are hypothetical and for informational purposes only</li>
+                          <li>• Past performance does not guarantee future results</li>
+                          <li>• Laundromat investments carry significant financial risk</li>
+                          <li>• You may lose some or all of your investment</li>
+                          <li>• Consult qualified financial advisors before making investment decisions</li>
+                        </ul>
+                      </div>
+                      
+                      <h2 className="text-xl font-semibold text-white mt-6 mb-4">No Investment Advice</h2>
+                      <p className="text-slate-300 mb-4">
+                        LaundroTech is a data analysis platform and does not provide investment advice. 
+                        Our analysis is based on publicly available data and should be considered as one of many factors 
+                        in your due diligence process.
+                      </p>
+                      
+                      <h2 className="text-xl font-semibold text-white mt-6 mb-4">Data Accuracy</h2>
+                      <p className="text-slate-300 mb-4">
+                        While we strive for accuracy, we cannot guarantee that all data and analysis results are 
+                        error-free or current. Market conditions change rapidly and may affect the validity of our analysis.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
             } />
 
             {/* Catch all route */}

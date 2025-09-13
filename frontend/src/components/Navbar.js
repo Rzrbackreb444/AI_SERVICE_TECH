@@ -52,22 +52,22 @@ const Navbar = () => {
     <nav className="glass border-b border-white/10 sticky top-0 z-50 backdrop-blur-xl">
       <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-20">
-          {/* Enhanced SiteAtlas Logo - Larger Size */}
+          {/* Enhanced LaundroTech Branding - Larger Logo */}
           <div className="flex items-center">
             <Link to="/dashboard" className="flex items-center space-x-4 group">
               <div className="relative">
                 <img 
                   src="https://customer-assets.emergentagent.com/job_laundrosight/artifacts/68vqd4wq_Logo%2C%20Transparent.png" 
-                  alt="SiteAtlas Logo"
+                  alt="LaundroTech Logo"
                   className="h-16 w-16 group-hover:scale-110 transition-transform duration-300"
                 />
                 <div className="absolute inset-0 bg-gradient-to-r from-cyan-400/20 to-emerald-400/20 blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
               </div>
               <div className="hidden sm:block">
-                <div className="text-xs text-slate-400 font-medium">LaundroTech Powered By</div>
-                <h1 className="text-2xl font-black bg-gradient-to-r from-cyan-400 to-emerald-400 bg-clip-text text-transparent -mt-1">
-                  SiteAtlas
+                <h1 className="text-3xl font-black bg-gradient-to-r from-cyan-400 via-blue-400 to-emerald-400 bg-clip-text text-transparent leading-tight">
+                  LaundroTech
                 </h1>
+                <div className="text-xs text-slate-400 font-medium -mt-1">Powered by SiteAtlas</div>
               </div>
             </Link>
           </div>
