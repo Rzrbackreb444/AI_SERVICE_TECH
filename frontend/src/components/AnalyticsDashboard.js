@@ -625,7 +625,7 @@ const AnalyticsDashboard = () => {
             whileTap={{ scale: 0.98 }}
             className="glass-card p-6 text-center hover:shadow-lg transition-all"
           >
-            <TrendingUpIcon className="w-8 h-8 text-purple-400 mx-auto mb-3" />
+            <ArrowTrendingUpIcon className="w-8 h-8 text-purple-400 mx-auto mb-3" />
             <h3 className="text-lg font-medium text-white mb-2">Forecast Model</h3>
             <p className="text-slate-400 text-sm">AI-powered revenue predictions</p>
           </motion.button>
