@@ -1,4 +1,4 @@
-from fastapi import FastAPI, APIRouter, HTTPException, Depends, status
+from fastapi import FastAPI, APIRouter, HTTPException, Depends, status, Request, BackgroundTasks
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from fastapi.middleware.cors import CORSMiddleware
 from motor.motor_asyncio import AsyncIOMotorClient
@@ -20,6 +20,8 @@ import asyncio
 from sklearn.ensemble import RandomForestRegressor
 import numpy as np
 import pandas as pd
+from emergentintegrations.payments.stripe.checkout import StripeCheckout, CheckoutSessionResponse, CheckoutStatusResponse, CheckoutSessionRequest
+from email_service import email_service
 
 # Load environment variables
 ROOT_DIR = Path(__file__).parent
@@ -36,11 +38,14 @@ redis_client = redis.from_url(os.environ.get('REDIS_URL', 'redis://localhost:637
 # Google Maps client
 gmaps = googlemaps.Client(key=os.environ['GOOGLE_MAPS_API_KEY'])
 
+# Stripe setup
+stripe_api_key = os.environ.get('STRIPE_API_KEY')
+
 # FastAPI app setup
 app = FastAPI(
-    title="SiteTitan - LaundroTech Intelligence Platform",
-    description="The Complete Laundromat Business Intelligence Platform",
-    version="1.0.0"
+    title="SiteAtlas - LaundroTech Intelligence Platform",
+    description="LaundroTech Powered By SiteAtlas - The Complete Location Intelligence Platform",
+    version="2.0.0"
 )
 
 # API Router
@@ -67,6 +72,16 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
+# Pricing Configuration
+PRICING_TIERS = {
+    "scout": {"name": "Location Scout", "price": 0.0, "type": "free"},
+    "analyzer": {"name": "Location Analyzer", "price": 99.0, "type": "one_time"},
+    "intelligence": {"name": "Location Intelligence", "price": 249.0, "type": "one_time"},
+    "optimization": {"name": "SiteAtlas Optimization", "price": 499.0, "type": "one_time"},
+    "portfolio": {"name": "SiteAtlas Portfolio", "price": 999.0, "type": "one_time"},
+    "watch_pro": {"name": "SiteAtlas Watch Pro", "price": 199.0, "type": "subscription", "billing": "monthly"}
+}
+
 # Pydantic Models
 class User(BaseModel):
     id: str = Field(default_factory=lambda: str(uuid.uuid4()))
@@ -88,7 +103,7 @@ class UserLogin(BaseModel):
 
 class LocationRequest(BaseModel):
     address: str
-    analysis_type: str  # scout, basic, intelligence, optimization, portfolio
+    analysis_type: str
     additional_data: Optional[Dict[str, Any]] = {}
 
 class LocationAnalysis(BaseModel):
@@ -104,13 +119,26 @@ class LocationAnalysis(BaseModel):
     recommendations: List[str]
     hybrid_opportunities: Optional[Dict[str, Any]] = None
     created_at: datetime = Field(default_factory=datetime.utcnow)
-    
-class PricingTier(BaseModel):
-    tier_name: str
-    price: float
-    features: List[str]
-    data_sources: List[str]
-    description: str
+
+class PaymentTransaction(BaseModel):
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    user_id: str
+    session_id: str
+    payment_provider: str  # "stripe" or "paypal"
+    tier: str
+    amount: float
+    currency: str = "usd"
+    paypal_discount: bool = False
+    payment_status: str = "pending"
+    metadata: Dict[str, Any]
+    created_at: datetime = Field(default_factory=datetime.utcnow)
+    updated_at: datetime = Field(default_factory=datetime.utcnow)
+
+class CheckoutRequest(BaseModel):
+    tier: str
+    payment_method: str = "stripe"  # "stripe" or "paypal"
+    success_url: Optional[str] = None
+    cancel_url: Optional[str] = None
 
 class MonitoringAlert(BaseModel):
     id: str = Field(default_factory=lambda: str(uuid.uuid4()))
@@ -152,7 +180,132 @@ async def get_current_user(credentials: HTTPAuthorizationCredentials = Depends(s
         raise HTTPException(status_code=401, detail="User not found")
     return User(**user)
 
-# API Integration Services
+# Payment Services
+class PaymentService:
+    def __init__(self):
+        self.stripe_checkout = None
+        if stripe_api_key:
+            self.stripe_checkout = StripeCheckout(
+                api_key=stripe_api_key,
+                webhook_url=""  # Will be set per request
+            )
+    
+    async def create_stripe_checkout(self, user: User, tier: str, host_url: str) -> Dict[str, Any]:
+        """Create Stripe checkout session"""
+        if not self.stripe_checkout:
+            raise HTTPException(status_code=500, detail="Stripe not configured")
+        
+        tier_config = PRICING_TIERS.get(tier)
+        if not tier_config:
+            raise HTTPException(status_code=400, detail="Invalid tier")
+        
+        if tier_config["price"] == 0:
+            raise HTTPException(status_code=400, detail="Cannot create payment for free tier")
+        
+        # Set webhook URL
+        webhook_url = f"{host_url}/api/webhook/stripe"
+        self.stripe_checkout.webhook_url = webhook_url
+        
+        # Create checkout session
+        success_url = f"{host_url}/payment/success?session_id={{CHECKOUT_SESSION_ID}}"
+        cancel_url = f"{host_url}/payment/cancel"
+        
+        metadata = {
+            "user_id": user.id,
+            "tier": tier,
+            "facebook_member": str(user.facebook_group_member)
+        }
+        
+        checkout_request = CheckoutSessionRequest(
+            amount=tier_config["price"],
+            currency="usd",
+            success_url=success_url,
+            cancel_url=cancel_url,
+            metadata=metadata
+        )
+        
+        session = await self.stripe_checkout.create_checkout_session(checkout_request)
+        
+        # Create payment transaction record
+        transaction = PaymentTransaction(
+            user_id=user.id,
+            session_id=session.session_id,
+            payment_provider="stripe",
+            tier=tier,
+            amount=tier_config["price"],
+            currency="usd",
+            paypal_discount=False,
+            payment_status="pending",
+            metadata=metadata
+        )
+        
+        await db.payment_transactions.insert_one(transaction.dict())
+        
+        return {
+            "checkout_url": session.url,
+            "session_id": session.session_id,
+            "amount": tier_config["price"]
+        }
+    
+    async def create_paypal_checkout(self, user: User, tier: str, host_url: str) -> Dict[str, Any]:
+        """Create PayPal checkout with 5% discount"""
+        tier_config = PRICING_TIERS.get(tier)
+        if not tier_config:
+            raise HTTPException(status_code=400, detail="Invalid tier")
+        
+        if tier_config["price"] == 0:
+            raise HTTPException(status_code=400, detail="Cannot create payment for free tier")
+        
+        # Apply 5% PayPal discount
+        original_price = tier_config["price"]
+        discounted_price = original_price * 0.95
+        
+        # For now, return PayPal configuration (actual PayPal SDK integration would go here)
+        transaction_id = str(uuid.uuid4())
+        
+        # Create payment transaction record
+        transaction = PaymentTransaction(
+            user_id=user.id,
+            session_id=transaction_id,
+            payment_provider="paypal",
+            tier=tier,
+            amount=discounted_price,
+            currency="usd",
+            paypal_discount=True,
+            payment_status="pending",
+            metadata={
+                "user_id": user.id,
+                "tier": tier,
+                "original_price": original_price,
+                "discount_applied": original_price - discounted_price,
+                "facebook_member": str(user.facebook_group_member)
+            }
+        )
+        
+        await db.payment_transactions.insert_one(transaction.dict())
+        
+        return {
+            "transaction_id": transaction_id,
+            "amount": discounted_price,
+            "original_price": original_price,
+            "discount": original_price - discounted_price,
+            "paypal_config": {
+                "currency": "USD",
+                "intent": "CAPTURE"
+            }
+        }
+    
+    async def upgrade_user_tier(self, user_id: str, tier: str):
+        """Upgrade user's subscription tier"""
+        await db.users.update_one(
+            {"id": user_id},
+            {"$set": {"subscription_tier": tier}}
+        )
+
+# Initialize payment service
+payment_service = PaymentService()
+
+# API Integration Services (existing code continues...)
 class DataIntegrationService:
     def __init__(self):
         self.google_maps_key = os.environ['GOOGLE_MAPS_API_KEY']
@@ -270,7 +423,7 @@ class DataIntegrationService:
             logger.error(f"ATTOM API error: {e}")
             return {}
 
-# ML Analysis Service
+# ML Analysis Service (existing code continues with SiteAtlas branding...)
 class LocationAnalysisEngine:
     def __init__(self):
         self.data_service = DataIntegrationService()
@@ -286,7 +439,7 @@ class LocationAnalysisEngine:
         self.model.fit(X_dummy, y_dummy)
     
     async def analyze_location(self, address: str, analysis_type: str) -> LocationAnalysis:
-        """Comprehensive location analysis"""
+        """Comprehensive location analysis powered by SiteAtlas"""
         try:
             # Geocode address
             geocode_result = gmaps.geocode(address)
@@ -375,11 +528,11 @@ class LocationAnalysisEngine:
         
         if analysis_type == "scout":
             recommendations = [
-                "Upgrade to Location Analyzer for detailed analysis",
+                "Upgrade to Location Analyzer for detailed SiteAtlas intelligence",
                 "Consider competitor density in final decision",
                 "Demographics suggest potential for success"
             ]
-        elif analysis_type == "basic":
+        elif analysis_type == "analyzer":
             if census_data.get('median_income', 0) > 75000:
                 recommendations.append("High-income area ideal for premium services")
             if len(competitors) < 3:
@@ -443,7 +596,7 @@ analysis_engine = LocationAnalysisEngine()
 
 # API Endpoints
 @api_router.post("/auth/register")
-async def register(user_data: UserCreate):
+async def register(user_data: UserCreate, background_tasks: BackgroundTasks):
     """Register new user"""
     # Check if user exists
     existing_user = await db.users.find_one({"email": user_data.email})
@@ -462,6 +615,14 @@ async def register(user_data: UserCreate):
     user_dict['password'] = hashed_password
     
     await db.users.insert_one(user_dict)
+    
+    # Send welcome email
+    background_tasks.add_task(
+        email_service.send_welcome_email,
+        user.email,
+        user.full_name,
+        user.facebook_group_member
+    )
     
     # Create access token
     access_token = create_access_token(data={"sub": user.id})
@@ -482,111 +643,108 @@ async def login(login_data: UserLogin):
 
 @api_router.get("/pricing")
 async def get_pricing_tiers():
-    """Get all pricing tiers"""
-    tiers = [
-        PricingTier(
-            tier_name="Location Scout",
-            price=0,
-            features=[
-                "Basic location grade (A-F)",
-                "Population demographics",
-                "Competitor count within 1 mile",
-                "Traffic estimate"
-            ],
-            data_sources=["US Census Bureau"],
-            description="Free tier for first-time visitors"
-        ),
-        PricingTier(
-            tier_name="Location Analyzer",
-            price=99,
-            features=[
-                "Complete grade breakdown with reasoning",
-                "Detailed demographics and income analysis",
-                "Competitor mapping with threat levels",
-                "ROI estimate with industry benchmarks",
-                "Basic equipment recommendations",
-                "Market timing insights"
-            ],
-            data_sources=["Census", "Google Places", "Basic ATTOM"],
-            description="Perfect for serious location shoppers"
-        ),
-        PricingTier(
-            tier_name="Location Intelligence",
-            price=249,
-            features=[
-                "Everything in Location Analyzer PLUS:",
-                "Competitive intelligence (SWOT analysis)",
-                "Equipment optimization",
-                "Marketing strategy development",
-                "Revenue optimization recommendations",
-                "Risk mitigation strategies",
-                "Financing recommendations"
-            ],
-            data_sources=["All APIs", "Premium demographic data"],
-            description="Complete intelligence for ready-to-invest decision makers"
-        ),
-        PricingTier(
-            tier_name="LaundroMax Optimization",
-            price=499,
-            features=[
-                "Everything in Location Intelligence PLUS:",
-                "Existing laundromat valuation",
-                "Machine-by-machine ROI analysis",
-                "Revenue optimization heat maps",
-                "Customer behavior flow analysis",
-                "Hybrid business opportunity assessment",
-                "90-day optimization implementation plan"
-            ],
-            data_sources=["All APIs", "Industry benchmarks", "Equipment databases"],
-            description="For existing owners and serious investors"
-        ),
-        PricingTier(
-            tier_name="LaundroEmpire Portfolio",
-            price=999,
-            features=[
-                "Everything in LaundroMax PLUS:",
-                "Multi-location portfolio analysis",
-                "Franchise territory analysis",
-                "Market expansion strategies",
-                "Advanced hybrid business development",
-                "Demographic trend analysis",
-                "Exit strategy planning"
-            ],
-            data_sources=["All premium APIs", "Franchise databases", "Industry insider data"],
-            description="For multi-location owners and franchisees"
-        ),
-        PricingTier(
-            tier_name="LaundroWatch Pro",
-            price=199,
-            features=[
-                "Real-time market monitoring",
-                "New competitor detection",
-                "Demographic shift tracking",
-                "Equipment performance alerts",
-                "Revenue opportunity notifications",
-                "Monthly optimization reports"
-            ],
-            data_sources=["Real-time APIs", "Market monitoring", "Competitor tracking"],
-            description="Monthly per location - Ongoing intelligence"
-        )
-    ]
-    return tiers
+    """Get SiteAtlas pricing tiers"""
+    return {
+        "tiers": PRICING_TIERS,
+        "paypal_discount": 0.05  # 5% discount for PayPal payments
+    }
+
+@api_router.post("/payments/checkout")
+async def create_checkout(
+    request: CheckoutRequest,
+    http_request: Request,
+    current_user: User = Depends(get_current_user)
+):
+    """Create payment checkout session"""
+    host_url = str(http_request.base_url).rstrip('/')
+    
+    if request.payment_method == "paypal":
+        return await payment_service.create_paypal_checkout(current_user, request.tier, host_url)
+    else:
+        return await payment_service.create_stripe_checkout(current_user, request.tier, host_url)
+
+@api_router.get("/payments/status/{session_id}")
+async def get_payment_status(session_id: str, current_user: User = Depends(get_current_user)):
+    """Get payment status"""
+    transaction = await db.payment_transactions.find_one({"session_id": session_id, "user_id": current_user.id})
+    if not transaction:
+        raise HTTPException(status_code=404, detail="Transaction not found")
+    
+    if transaction["payment_provider"] == "stripe" and payment_service.stripe_checkout:
+        try:
+            status = await payment_service.stripe_checkout.get_checkout_status(session_id)
+            
+            # Update transaction status
+            if status.payment_status == "paid" and transaction["payment_status"] != "completed":
+                await db.payment_transactions.update_one(
+                    {"session_id": session_id},
+                    {"$set": {"payment_status": "completed", "updated_at": datetime.utcnow()}}
+                )
+                
+                # Upgrade user tier
+                await payment_service.upgrade_user_tier(current_user.id, transaction["tier"])
+                
+                return {"status": "completed", "tier": transaction["tier"]}
+            
+            return {"status": status.payment_status, "tier": transaction["tier"]}
+        except Exception as e:
+            logger.error(f"Error checking payment status: {e}")
+            return {"status": "error", "message": "Failed to check payment status"}
+    
+    return {"status": transaction["payment_status"], "tier": transaction["tier"]}
+
+@api_router.post("/webhook/stripe")
+async def stripe_webhook(request: Request):
+    """Handle Stripe webhooks"""
+    if not payment_service.stripe_checkout:
+        raise HTTPException(status_code=500, detail="Stripe not configured")
+    
+    body = await request.body()
+    signature = request.headers.get("Stripe-Signature")
+    
+    try:
+        webhook_response = await payment_service.stripe_checkout.handle_webhook(body, signature)
+        
+        if webhook_response.event_type == "checkout.session.completed":
+            # Update transaction and upgrade user
+            transaction = await db.payment_transactions.find_one({"session_id": webhook_response.session_id})
+            if transaction and transaction["payment_status"] != "completed":
+                await db.payment_transactions.update_one(
+                    {"session_id": webhook_response.session_id},
+                    {"$set": {"payment_status": "completed", "updated_at": datetime.utcnow()}}
+                )
+                
+                # Upgrade user tier
+                await payment_service.upgrade_user_tier(transaction["user_id"], transaction["tier"])
+                
+                # Send confirmation email
+                user = await db.users.find_one({"id": transaction["user_id"]})
+                if user:
+                    await email_service.send_tier_upgrade_email(
+                        user["email"], user["full_name"], transaction["tier"]
+                    )
+        
+        return {"status": "success"}
+    except Exception as e:
+        logger.error(f"Webhook error: {e}")
+        raise HTTPException(status_code=400, detail="Webhook processing failed")
 
 @api_router.post("/analyze")
 async def analyze_location(
     request: LocationRequest,
+    background_tasks: BackgroundTasks,
     current_user: User = Depends(get_current_user)
 ):
-    """Analyze a location based on user's subscription tier"""
+    """Analyze a location with SiteAtlas intelligence"""
     
     # Verify user has access to requested analysis type
     tier_access = {
         'free': ['scout'],
-        'basic': ['scout', 'basic'],
-        'intelligence': ['scout', 'basic', 'intelligence'],
-        'optimization': ['scout', 'basic', 'intelligence', 'optimization'],
-        'portfolio': ['scout', 'basic', 'intelligence', 'optimization', 'portfolio'],
-        'pro': ['scout', 'basic', 'intelligence', 'optimization', 'portfolio']
+        'analyzer': ['scout', 'analyzer'],
+        'intelligence': ['scout', 'analyzer', 'intelligence'],
+        'optimization': ['scout', 'analyzer', 'intelligence', 'optimization'],
+        'portfolio': ['scout', 'analyzer', 'intelligence', 'optimization', 'portfolio'],
+        'watch_pro': ['scout', 'analyzer', 'intelligence', 'optimization', 'portfolio']
     }
     
     if request.analysis_type not in tier_access.get(current_user.subscription_tier, ['scout']):
@@ -599,6 +757,14 @@ async def analyze_location(
     # Save analysis to database
     analysis_dict = analysis.dict()
     await db.analyses.insert_one(analysis_dict)
+    
+    # Send analysis complete email
+    background_tasks.add_task(
+        email_service.send_analysis_complete_email,
+        current_user.email,
+        current_user.full_name,
+        analysis_dict
+    )
     
     return analysis
 
@@ -630,70 +796,20 @@ async def get_dashboard_stats(current_user: User = Depends(get_current_user)):
         "recent_analyses": [LocationAnalysis(**a) for a in recent_analyses]
     }
 
-@api_router.post("/hybrid-analysis/{analysis_type}")
-async def hybrid_business_analysis(
-    analysis_type: str,
-    request: LocationRequest,
-    current_user: User = Depends(get_current_user)
-):
-    """Specialized hybrid business analysis"""
-    if current_user.subscription_tier not in ['optimization', 'portfolio', 'pro']:
-        raise HTTPException(status_code=403, detail="Hybrid analysis requires premium subscription")
-    
-    valid_types = ['coffee', 'carwash', 'barber', 'tattoo']
-    if analysis_type not in valid_types:
-        raise HTTPException(status_code=400, detail="Invalid hybrid analysis type")
-    
-    # Perform location analysis first
-    location_analysis = await analysis_engine.analyze_location(request.address, 'optimization')
-    
-    # Enhanced hybrid analysis based on type
-    hybrid_data = location_analysis.hybrid_opportunities.get(f"{analysis_type}_shop" if analysis_type != 'carwash' else 'car_wash', {})
-    
-    enhanced_analysis = {
-        "location_grade": location_analysis.grade,
-        "base_revenue_estimate": location_analysis.roi_estimate['estimated_monthly_revenue'],
-        "hybrid_opportunity": hybrid_data,
-        "implementation_timeline": f"3-6 months for {analysis_type} integration",
-        "regulatory_requirements": [
-            "Business license modification",
-            "Zoning compliance verification",
-            "Insurance coverage adjustment"
-        ],
-        "success_factors": [
-            "Strategic space allocation",
-            "Cross-service customer flow",
-            "Complementary operating hours",
-            "Shared customer demographics"
-        ]
-    }
-    
-    return enhanced_analysis
-
-@api_router.get("/monitoring/alerts")
-async def get_monitoring_alerts(current_user: User = Depends(get_current_user)):
-    """Get LaundroWatch Pro monitoring alerts"""
-    if current_user.subscription_tier != 'pro':
-        raise HTTPException(status_code=403, detail="Monitoring alerts require LaundroWatch Pro subscription")
-    
-    alerts = await db.monitoring_alerts.find(
-        {"user_id": current_user.id}
-    ).sort("created_at", -1).limit(20).to_list(20)
-    
-    return [MonitoringAlert(**alert) for alert in alerts]
-
 @api_router.get("/")
 async def root():
     """API root endpoint"""
     return {
-        "message": "SiteTitan - LaundroTech Intelligence Platform API",
-        "version": "1.0.0",
+        "message": "SiteAtlas - LaundroTech Intelligence Platform API",
+        "tagline": "LaundroTech Powered By SiteAtlas",
+        "version": "2.0.0",
         "features": [
             "Location Intelligence Analysis",
             "6-Tier Subscription Model", 
             "Hybrid Business Analysis",
             "Real-time Market Monitoring",
-            "ML-Powered Recommendations"
+            "AI-Powered Recommendations",
+            "PayPal & Stripe Payments"
         ]
     }
 
