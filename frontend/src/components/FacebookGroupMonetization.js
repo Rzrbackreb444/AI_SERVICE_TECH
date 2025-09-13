@@ -335,12 +335,19 @@ const FacebookGroupMonetization = () => {
   };
 
   const handleStripePayment = async (offer) => {
+    if (!isAuthenticated) {
+      alert('Please login to purchase memberships');
+      return;
+    }
+
     setProcessing(true);
     try {
       const response = await axios.post(`${API}/payments/checkout`, {
         offer_type: offer.id,
         platform: 'facebook_group',
         payment_method: 'stripe'
+      }, {
+        headers: getAuthHeaders()
       });
 
       if (response.data.checkout_url) {
@@ -348,32 +355,58 @@ const FacebookGroupMonetization = () => {
       }
     } catch (error) {
       console.error('Stripe checkout error:', error);
-      alert('Payment failed. Please try again.');
+      if (error.response?.status === 401) {
+        alert('Session expired. Please login again.');
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+        setIsAuthenticated(false);
+      } else {
+        alert('Payment failed. Please try again.');
+      }
     } finally {
       setProcessing(false);
     }
   };
 
   const handlePayPalPayment = async (offer) => {
+    if (!isAuthenticated) {
+      alert('Please login to purchase memberships');
+      return;
+    }
+
     setProcessing(true);
     try {
       const response = await axios.post(`${API}/payments/checkout`, {
         offer_type: offer.id,
         platform: 'facebook_group',
         payment_method: 'paypal'
+      }, {
+        headers: getAuthHeaders()
       });
 
       console.log('PayPal checkout data:', response.data);
       
-      // Show PayPal payment confirmation
-      if (response.data.discount_applied) {
-        alert(`PayPal checkout for ${offer.name} - $${offer.paypalPrice} (10% discount applied!)`);
+      // Redirect to PayPal approval URL
+      if (response.data.approval_url) {
+        window.location.href = response.data.approval_url;
       } else {
-        alert(`PayPal checkout for ${offer.name} - $${offer.price}`);
+        // Show PayPal payment confirmation for testing
+        if (response.data.discount_applied) {
+          alert(`PayPal checkout for ${offer.name} - $${offer.paypalPrice} (10% discount applied!)`);
+        } else {
+          alert(`PayPal checkout for ${offer.name} - $${offer.price}`);
+        }
       }
     } catch (error) {
       console.error('PayPal checkout error:', error);
-      alert('PayPal payment failed. Please try again.');
+      if (error.response?.status === 401) {
+        alert('Session expired. Please login again.');
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+        setIsAuthenticated(false);
+      } else {
+        alert('PayPal payment failed. Please try again.');
+      }
     } finally {
       setProcessing(false);
     }
