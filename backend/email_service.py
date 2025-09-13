@@ -602,6 +602,83 @@ class EmailService:
         except Exception as e:
             logger.error(f"Failed to send support notification: {str(e)}")
             return False
+    
+    async def send_security_notification(self, user_email: str, user_name: str, subject: str, message: str):
+        """Send security notification email"""
+        if not self.sg:
+            logger.warning("SendGrid not configured, skipping email")
+            return False
+        
+        html_content = f"""
+        <html>
+        <head>
+            <style>
+                body {{ font-family: Arial, sans-serif; line-height: 1.6; color: #333; }}
+                .container {{ max-width: 600px; margin: 0 auto; padding: 20px; }}
+                .header {{ text-align: center; padding: 30px 0; background: linear-gradient(135deg, #0F172A, #1E3A8A); border-radius: 12px; }}
+                .content {{ background: #F8FAFC; padding: 20px; border-radius: 8px; margin: 20px 0; }}
+                .security-alert {{ background: #FEF2F2; border-left: 4px solid #EF4444; padding: 15px; margin: 20px 0; }}
+            </style>
+        </head>
+        <body>
+            <div class="container">
+                <div class="header">
+                    <img src="https://customer-assets.emergentagent.com/job_laundrosight/artifacts/68vqd4wq_Logo%2C%20Transparent.png" alt="LaundroTech Logo" style="max-width: 100px;">
+                    <h1 style="color: white; margin: 15px 0 5px 0;">🔒 Security Alert</h1>
+                    <p style="color: #94A3B8; margin: 0;">LaundroTech Security Team</p>
+                </div>
+                
+                <div class="content">
+                    <h2>Hi {user_name},</h2>
+                    <div class="security-alert">
+                        <h3 style="color: #DC2626; margin-top: 0;">{subject}</h3>
+                        <p style="color: #374151;">{message}</p>
+                    </div>
+                    <p>If this was you, no further action is needed. If you didn't initiate this action, please contact our support team immediately.</p>
+                    <p>Best regards,<br>LaundroTech Security Team</p>
+                </div>
+            </div>
+        </body>
+        </html>
+        """
+        
+        try:
+            message = Mail(
+                from_email=From(self.sender_email, "LaundroTech Security"),
+                to_emails=To(user_email),
+                subject=Subject(f"🔒 Security Alert: {subject}"),
+                html_content=HtmlContent(html_content)
+            )
+            
+            response = self.sg.send(message)
+            logger.info(f"Security notification sent to {user_email}, status: {response.status_code}")
+            return response.status_code == 202
+            
+        except Exception as e:
+            logger.error(f"Failed to send security notification to {user_email}: {str(e)}")
+            return False
+    
+    async def send_custom_email(self, user_email: str, user_name: str, subject: str, html_content: str):
+        """Send custom HTML email"""
+        if not self.sg:
+            logger.warning("SendGrid not configured, skipping email")
+            return False
+        
+        try:
+            message = Mail(
+                from_email=From(self.sender_email, "LaundroTech"),
+                to_emails=To(user_email),
+                subject=Subject(subject),
+                html_content=HtmlContent(html_content)
+            )
+            
+            response = self.sg.send(message)
+            logger.info(f"Custom email sent to {user_email}, status: {response.status_code}")
+            return response.status_code == 202
+            
+        except Exception as e:
+            logger.error(f"Failed to send custom email to {user_email}: {str(e)}")
+            return False
 
 # Global email service instance
 email_service = EmailService()
