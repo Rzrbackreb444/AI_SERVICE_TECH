@@ -5,7 +5,7 @@ import {
   AdjustmentsHorizontalIcon,
   CalendarIcon,
   FireIcon,
-  TrendingUpIcon,
+  ArrowTrendingUpIcon,
   ArrowPathIcon
 } from '@heroicons/react/24/outline';
 import axios from 'axios';
