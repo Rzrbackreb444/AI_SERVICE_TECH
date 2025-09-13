@@ -1060,6 +1060,10 @@ async def get_user_subscriptions(current_user: User = Depends(get_current_user))
 async def get_user_transactions(current_user: User = Depends(get_current_user)):
     """Get user's payment transaction history"""
     transactions = await db.payment_transactions.find({"user_id": current_user.id}).sort("created_at", -1).to_list(length=None)
+    # Convert ObjectId to string for JSON serialization
+    for transaction in transactions:
+        if "_id" in transaction:
+            transaction["_id"] = str(transaction["_id"])
     return {"transactions": transactions}
 
 @api_router.post("/user/subscriptions/{subscription_id}/cancel")
