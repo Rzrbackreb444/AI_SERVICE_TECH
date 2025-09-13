@@ -119,9 +119,11 @@ def create_admin_router(db, get_current_user):
         """Get user list for admin management"""
         try:
             users = await db.users.find({}).sort("created_at", -1).limit(limit).to_list(length=limit)
-            # Remove password field for security
+            # Remove password field for security and convert ObjectId to string
             for user in users:
                 user.pop("password", None)
+                if "_id" in user:
+                    user["_id"] = str(user["_id"])
             return {"users": users}
         except Exception as e:
             logger.error(f"Error fetching users: {e}")
