@@ -353,6 +353,103 @@ class EmailService:
         except Exception as e:
             logger.error(f"Failed to send badge activation email to {notification_email}: {str(e)}")
             return False
+    
+    async def send_cancellation_email(self, user_email: str, user_name: str, offer_type: str):
+        """Send subscription cancellation confirmation email"""
+        if not self.sg:
+            logger.warning("SendGrid not configured, skipping email")
+            return False
+        
+        # Badge-specific content
+        badge_details = {
+            "verified_seller": {"name": "Verified Seller Badge", "icon": "✅"},
+            "vendor_partner": {"name": "Vendor Partner Badge", "icon": "🤝"},
+            "verified_funder": {"name": "Verified Funder Badge", "icon": "💰"},
+            "featured_post": {"name": "Featured Post", "icon": "📌"},
+            "logo_placement": {"name": "Logo Placement", "icon": "🏢"},
+            "sponsored_ama": {"name": "Sponsored AMA", "icon": "🎤"}
+        }
+        
+        badge_info = badge_details.get(offer_type, {"name": "Badge", "icon": "🎯"})
+        
+        html_content = f"""
+        <html>
+        <head>
+            <style>
+                body {{ font-family: 'Arial', sans-serif; line-height: 1.6; color: #333; }}
+                .container {{ max-width: 600px; margin: 0 auto; padding: 20px; }}
+                .header {{ text-align: center; padding: 30px 0; background: linear-gradient(135deg, #0F172A, #1E3A8A); border-radius: 12px; }}
+                .cancellation-notice {{ background: #FEF2F2; padding: 25px; border-radius: 12px; margin: 20px 0; text-align: center; border-left: 4px solid #EF4444; }}
+                .next-steps {{ background: #F0FDF4; padding: 20px; border-radius: 8px; margin: 20px 0; }}
+                .footer {{ text-align: center; padding-top: 30px; border-top: 1px solid #E2E8F0; color: #64748B; }}
+            </style>
+        </head>
+        <body>
+            <div class="container">
+                <div class="header">
+                    <img src="https://customer-assets.emergentagent.com/job_laundrosight/artifacts/68vqd4wq_Logo%2C%20Transparent.png" alt="LaundroTech Logo" style="max-width: 100px;">
+                    <h1 style="color: white; margin: 15px 0 5px 0;">Subscription Cancelled</h1>
+                    <p style="color: #94A3B8; margin: 0;">LaundroTech Badge Management</p>
+                </div>
+                
+                <div class="cancellation-notice">
+                    <div style="font-size: 48px; margin: 10px 0;">{badge_info["icon"]}</div>
+                    <h2 style="color: #DC2626; margin: 10px 0;">Subscription Cancelled</h2>
+                    <p style="color: #374151; font-size: 18px; margin: 0;">Your {badge_info["name"]} subscription has been successfully cancelled</p>
+                </div>
+                
+                <div style="background: #F8FAFC; padding: 20px; border-radius: 8px; margin: 20px 0;">
+                    <h3>Cancellation Details:</h3>
+                    <ul>
+                        <li><strong>Member:</strong> {user_name}</li>
+                        <li><strong>Email:</strong> {user_email}</li>
+                        <li><strong>Badge:</strong> {badge_info["name"]}</li>
+                        <li><strong>Cancelled:</strong> {datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S')} UTC</li>
+                    </ul>
+                </div>
+                
+                <div class="next-steps">
+                    <h3>✅ What Happens Next:</h3>
+                    <ul>
+                        <li>Your badge access will remain active until your current billing period ends</li>
+                        <li>You will not be charged for future billing cycles</li>
+                        <li>You can reactivate your subscription anytime through your dashboard</li>
+                        <li>Your account and community access remain active</li>
+                    </ul>
+                </div>
+                
+                <div style="text-align: center; margin: 30px 0;">
+                    <h3 style="color: #1F2937;">Want to Come Back?</h3>
+                    <p style="color: #6B7280; margin-bottom: 20px;">You can reactivate your badge subscription anytime with just one click</p>
+                    <a href="https://site-analytics-6.preview.emergentagent.com/facebook-group" style="display: inline-block; background: linear-gradient(135deg, #3B82F6, #06B6D4); color: white; padding: 12px 24px; text-decoration: none; border-radius: 8px; font-weight: bold;">
+                        Reactivate Subscription
+                    </a>
+                </div>
+                
+                <div class="footer">
+                    <p>Questions about your cancellation? Contact us at <a href="mailto:nick@laundrotech.xyz" style="color: #3B82F6;">nick@laundrotech.xyz</a></p>
+                    <p>LaundroTech Badge Management System</p>
+                </div>
+            </div>
+        </body>
+        </html>
+        """
+        
+        try:
+            message = Mail(
+                from_email=From(self.sender_email, "LaundroTech Support"),
+                to_emails=To(user_email),
+                subject=Subject(f"Subscription Cancelled: {badge_info['name']} - We're Sorry to See You Go"),
+                html_content=HtmlContent(html_content)
+            )
+            
+            response = self.sg.send(message)
+            logger.info(f"Cancellation email sent to {user_email}, status: {response.status_code}")
+            return response.status_code == 202
+            
+        except Exception as e:
+            logger.error(f"Failed to send cancellation email to {user_email}: {str(e)}")
+            return False
 
 # Global email service instance
 email_service = EmailService()
