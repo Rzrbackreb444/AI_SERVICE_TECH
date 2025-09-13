@@ -59,8 +59,8 @@ class EmailService:
         <body>
             <div class="container">
                 <div class="header">
-                    <img src="https://customer-assets.emergentagent.com/job_laundrosight/artifacts/68vqd4wq_Logo%2C%20Transparent.png" alt="SiteTitan Logo" class="logo">
-                    <h1 class="title">Welcome to SiteTitan</h1>
+                    <img src="https://customer-assets.emergentagent.com/job_laundrosight/artifacts/68vqd4wq_Logo%2C%20Transparent.png" alt="SiteAtlas Logo" class="logo">
+                    <h1 class="title">Welcome to SiteAtlas</h1>
                     <p class="subtitle">LaundroTech Powered By Service Titan</p>
                 </div>
                 
