@@ -48,8 +48,8 @@ const FacebookGroupMonetization = () => {
     {
       id: 'verified_seller',
       name: 'Verified Seller Badge',
-      price: 99,
-      paypalPrice: 89.10,
+      price: 29,
+      paypalPrice: 26.10,
       billing: 'monthly',
       icon: ShieldCheckIcon,
       color: 'from-emerald-500 to-green-500',
@@ -74,8 +74,8 @@ const FacebookGroupMonetization = () => {
     {
       id: 'vendor_partner',
       name: 'Vendor Partner Badge',
-      price: 499,
-      paypalPrice: 449.10,
+      price: 149,
+      paypalPrice: 134.10,
       billing: 'monthly',
       icon: BoltIcon,
       color: 'from-blue-500 to-cyan-500',
@@ -100,8 +100,8 @@ const FacebookGroupMonetization = () => {
     {
       id: 'verified_funder',
       name: 'Verified Funder Badge',
-      price: 999,
-      paypalPrice: 899.10,
+      price: 299,
+      paypalPrice: 269.10,
       billing: 'monthly',
       icon: TrophyIcon,
       color: 'from-purple-500 to-pink-500',
@@ -126,8 +126,8 @@ const FacebookGroupMonetization = () => {
     {
       id: 'featured_post',
       name: 'Featured Post',
-      price: 500,
-      paypalPrice: 500,
+      price: 250,
+      paypalPrice: 250,
       billing: 'per post',
       icon: SparklesIcon,
       color: 'from-yellow-500 to-orange-500',
@@ -145,6 +145,58 @@ const FacebookGroupMonetization = () => {
         'Significantly higher engagement rates',
         'Professional post formatting and design',
         'Detailed analytics and performance tracking'
+      ],
+      popular: false,
+      paypalDiscount: false
+    },
+    {
+      id: 'logo_placement',
+      name: 'Logo Placement',
+      price: 299,
+      paypalPrice: 299,
+      billing: 'monthly',
+      icon: PresentationChartBarIcon,
+      color: 'from-rose-500 to-red-500',
+      badge: 'BRANDING',
+      description: 'Premium logo placement for maximum brand visibility',
+      features: [
+        'Logo placement on group cover photo',
+        'Featured logo in pinned shoutout posts',
+        'Brand recognition across all group communications',
+        'Monthly brand performance analytics',
+        'Priority placement in group directory'
+      ],
+      benefits: [
+        'Continuous brand exposure to 67K members',
+        'Professional brand association and recognition',
+        'Increased brand recall and customer acquisition',
+        'Enhanced credibility through group endorsement'
+      ],
+      popular: false,
+      paypalDiscount: false
+    },
+    {
+      id: 'sponsored_ama',
+      name: 'Sponsored AMA',
+      price: 499,
+      paypalPrice: 499,
+      billing: 'per event',
+      icon: PhoneIcon,
+      color: 'from-pink-500 to-rose-500',
+      badge: 'ENGAGEMENT',
+      description: 'Host sponsored AMA session with maximum community engagement',
+      features: [
+        'Dedicated AMA session scheduled at prime time',
+        'Professional event promotion across all channels',
+        'Custom event graphics and promotional materials',
+        'Live moderation and technical support',
+        'Post-event analytics and engagement reports'
+      ],
+      benefits: [
+        'Direct access to 67K+ engaged audience',
+        'Thought leadership positioning in the community',
+        'Generate leads and showcase expertise',
+        'Build lasting relationships with industry professionals'
       ],
       popular: false,
       paypalDiscount: false
@@ -197,32 +249,6 @@ const FacebookGroupMonetization = () => {
         'Expert guidance from industry professionals',
         'Detailed action plan with clear timelines',
         'Follow-up support and additional resources'
-      ],
-      popular: false,
-      paypalDiscount: false
-    },
-    {
-      id: 'logo_placement',
-      name: 'Logo Placement',
-      price: 499,
-      paypalPrice: 499,
-      billing: 'monthly',
-      icon: PresentationChartBarIcon,
-      color: 'from-rose-500 to-red-500',
-      badge: 'BRANDING',
-      description: 'Premium logo placement for maximum brand visibility',
-      features: [
-        'Logo placement on group cover photo',
-        'Featured logo in pinned shoutout posts',
-        'Brand recognition across all group communications',
-        'Monthly brand performance analytics',
-        'Priority placement in group directory'
-      ],
-      benefits: [
-        'Continuous brand exposure to 67K members',
-        'Professional brand association and recognition',
-        'Increased brand recall and customer acquisition',
-        'Enhanced credibility through group endorsement'
       ],
       popular: false,
       paypalDiscount: false
