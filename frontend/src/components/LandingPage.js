@@ -94,7 +94,7 @@ const LandingPage = ({ onOpenAuth }) => {
                   <img 
                     src="https://customer-assets.emergentagent.com/job_laundrosight/artifacts/68vqd4wq_Logo%2C%20Transparent.png" 
                     alt="LaundroTech Logo"
-                    className="h-16 w-16 group-hover:scale-110 transition-transform duration-300"
+                    className="h-48 w-48 group-hover:scale-110 transition-transform duration-300"
                   />
                   <div className="absolute inset-0 bg-gradient-to-r from-cyan-400/20 to-emerald-400/20 blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                 </div>
