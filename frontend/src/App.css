@@ -274,7 +274,8 @@ body {
 }
 
 .tooltip.visible {
-  @apply visible opacity-100;
+  visibility: visible;
+  opacity: 1;
 }
 
 /* Modal Styles */
