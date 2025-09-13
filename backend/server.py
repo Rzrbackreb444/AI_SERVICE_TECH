@@ -76,35 +76,51 @@ logger = logging.getLogger(__name__)
 FACEBOOK_GROUP_OFFERS = {
     "verified_seller": {
         "name": "Verified Seller Badge",
-        "price": 99.0,
-        "paypal_price": 89.10,  # 10% discount
+        "price": 29.0,
+        "paypal_price": 26.10,  # 10% discount
         "type": "subscription",
         "billing": "monthly",
         "description": "Stand out as a trusted seller in the community"
     },
     "vendor_partner": {
         "name": "Vendor Partner Badge", 
-        "price": 499.0,
-        "paypal_price": 449.10,  # 10% discount
+        "price": 149.0,
+        "paypal_price": 134.10,  # 10% discount
         "type": "subscription",
         "billing": "monthly",
         "description": "Premium tier for service providers and vendors"
     },
     "verified_funder": {
         "name": "Verified Funder Badge",
-        "price": 999.0,
-        "paypal_price": 899.10,  # 10% discount
+        "price": 299.0,
+        "paypal_price": 269.10,  # 10% discount
         "type": "subscription", 
         "billing": "monthly",
         "description": "Exclusive tier for active investors and funders"
     },
     "featured_post": {
         "name": "Featured Post",
-        "price": 500.0,
-        "paypal_price": 500.0,  # NO discount for add-ons
+        "price": 250.0,
+        "paypal_price": 250.0,  # NO discount for add-ons
         "type": "one_time",
         "billing": "per post",
         "description": "Maximum visibility for your listings and announcements"
+    },
+    "logo_placement": {
+        "name": "Logo Placement",
+        "price": 299.0,
+        "paypal_price": 299.0,  # NO discount for add-ons
+        "type": "subscription",
+        "billing": "monthly",
+        "description": "Logo placement on group cover and pinned posts"
+    },
+    "sponsored_ama": {
+        "name": "Sponsored AMA",
+        "price": 499.0,
+        "paypal_price": 499.0,  # NO discount for add-ons
+        "type": "one_time",
+        "billing": "per event",
+        "description": "Host sponsored AMA session with maximum community engagement"
     },
     "location_report": {
         "name": "Custom Location Report",
@@ -121,14 +137,6 @@ FACEBOOK_GROUP_OFFERS = {
         "type": "one_time",
         "billing": "per session",
         "description": "One-on-one consultation for multi-location strategy"
-    },
-    "logo_placement": {
-        "name": "Logo Placement",
-        "price": 499.0,
-        "paypal_price": 499.0,  # NO discount for add-ons
-        "type": "subscription",
-        "billing": "monthly",
-        "description": "Logo placement on group cover and pinned posts"
     },
     "dashboard_access": {
         "name": "Full Dashboard Access",
