@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
-import Map, { Marker, Popup, Source, Layer, NavigationControl, ScaleControl } from 'react-map-gl/mapbox';
+import Map, { Marker, Popup, Source, Layer, NavigationControl, ScaleControl } from 'react-map-gl';
 import { 
   MapPinIcon,
   UserGroupIcon,
