@@ -101,7 +101,7 @@ class EmailService:
                 
                 <div class="footer">
                     <p>Questions? Reply to this email or contact our support team.</p>
-                    <p>SiteTitan - Turning Location Data Into Million-Dollar Intelligence</p>
+                    <p>SiteAtlas - Turning Location Data Into Million-Dollar Intelligence</p>
                 </div>
             </div>
         </body>
