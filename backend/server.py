@@ -353,6 +353,9 @@ class PaymentService:
     
     async def create_paypal_checkout(self, user: User, offer_type: str, platform: str, host_url: str) -> Dict[str, Any]:
         """Create PayPal checkout with discount logic"""
+        if not paypal_client_id or not paypal_client_secret:
+            raise HTTPException(status_code=500, detail="PayPal not configured")
+            
         # Get offer configuration
         if platform == "facebook_group":
             offer_config = FACEBOOK_GROUP_OFFERS.get(offer_type)
@@ -371,40 +374,126 @@ class PaymentService:
         
         transaction_id = str(uuid.uuid4())
         
-        # Create payment transaction record
-        transaction = PaymentTransaction(
-            user_id=user.id,
-            session_id=transaction_id,
-            payment_provider="paypal",
-            offer_type=offer_type,
-            platform=platform,
-            amount=final_price,
-            currency="usd",
-            paypal_discount=discount_applied,
-            payment_status="pending",
-            metadata={
-                "user_id": user.id,
-                "offer_type": offer_type,
-                "platform": platform,
-                "original_price": offer_config["price"],
-                "discount_applied": offer_config["price"] - final_price if discount_applied else 0,
-                "facebook_member": str(user.facebook_group_member)
-            }
-        )
-        
-        await db.payment_transactions.insert_one(transaction.dict())
-        
-        return {
-            "transaction_id": transaction_id,
-            "amount": final_price,
-            "original_price": offer_config["price"],
-            "discount": offer_config["price"] - final_price if discount_applied else 0,
-            "discount_applied": discount_applied,
-            "paypal_config": {
-                "currency": "USD",
-                "intent": "CAPTURE"
-            }
-        }
+        # Create PayPal payment
+        try:
+            if offer_config["type"] == "subscription":
+                # Create subscription payment
+                payment = paypalrestsdk.Payment({
+                    "intent": "sale",
+                    "payer": {"payment_method": "paypal"},
+                    "redirect_urls": {
+                        "return_url": f"{host_url}/payment/success?transaction_id={transaction_id}",
+                        "cancel_url": f"{host_url}/payment/cancel"
+                    },
+                    "transactions": [{
+                        "item_list": {
+                            "items": [{
+                                "name": offer_config["name"],
+                                "sku": offer_type,
+                                "price": str(final_price),
+                                "currency": "USD",
+                                "quantity": 1,
+                                "description": offer_config["description"]
+                            }]
+                        },
+                        "amount": {
+                            "total": str(final_price),
+                            "currency": "USD"
+                        },
+                        "description": offer_config["description"],
+                        "custom": json.dumps({
+                            "user_id": user.id,
+                            "offer_type": offer_type,
+                            "platform": platform,
+                            "transaction_id": transaction_id
+                        })
+                    }]
+                })
+            else:
+                # Create one-time payment
+                payment = paypalrestsdk.Payment({
+                    "intent": "sale",
+                    "payer": {"payment_method": "paypal"},
+                    "redirect_urls": {
+                        "return_url": f"{host_url}/payment/success?transaction_id={transaction_id}",
+                        "cancel_url": f"{host_url}/payment/cancel"
+                    },
+                    "transactions": [{
+                        "item_list": {
+                            "items": [{
+                                "name": offer_config["name"],
+                                "sku": offer_type,
+                                "price": str(final_price),
+                                "currency": "USD",
+                                "quantity": 1,
+                                "description": offer_config["description"]
+                            }]
+                        },
+                        "amount": {
+                            "total": str(final_price),
+                            "currency": "USD"
+                        },
+                        "description": offer_config["description"],
+                        "custom": json.dumps({
+                            "user_id": user.id,
+                            "offer_type": offer_type,
+                            "platform": platform,
+                            "transaction_id": transaction_id
+                        })
+                    }]
+                })
+            
+            if payment.create():
+                # Get approval URL
+                approval_url = None
+                for link in payment.links:
+                    if link.rel == "approval_url":
+                        approval_url = link.href
+                        break
+                
+                if not approval_url:
+                    raise HTTPException(status_code=500, detail="PayPal approval URL not found")
+                
+                # Create payment transaction record
+                transaction = PaymentTransaction(
+                    user_id=user.id,
+                    session_id=transaction_id,
+                    payment_provider="paypal",
+                    offer_type=offer_type,
+                    platform=platform,
+                    amount=final_price,
+                    currency="usd",
+                    paypal_discount=discount_applied,
+                    payment_status="pending",
+                    metadata={
+                        "user_id": user.id,
+                        "offer_type": offer_type,
+                        "platform": platform,
+                        "paypal_payment_id": payment.id,
+                        "original_price": offer_config["price"],
+                        "discount_applied": offer_config["price"] - final_price if discount_applied else 0,
+                        "facebook_member": str(user.facebook_group_member)
+                    }
+                )
+                
+                await db.payment_transactions.insert_one(transaction.dict())
+                
+                return {
+                    "payment_id": payment.id,
+                    "transaction_id": transaction_id,
+                    "approval_url": approval_url,
+                    "amount": final_price,
+                    "original_price": offer_config["price"],
+                    "discount": offer_config["price"] - final_price if discount_applied else 0,
+                    "discount_applied": discount_applied
+                }
+            else:
+                logger.error(f"PayPal payment creation failed: {payment.error}")
+                raise HTTPException(status_code=500, detail="PayPal payment creation failed")
+                
+        except Exception as e:
+            logger.error(f"PayPal payment error: {e}")
+            raise HTTPException(status_code=500, detail="PayPal payment processing failed")
     
     async def activate_badge(self, user_id: str, offer_type: str, payment_provider: str, amount: float, discount_applied: bool = False):
         """Activate badge and set up subscription tracking"""
