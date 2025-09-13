@@ -1140,7 +1140,56 @@ async def cancel_user_subscription(subscription_id: str, current_user: User = De
     
     return {"message": "Subscription cancelled successfully"}
 
-@api_router.get("/dashboard/stats")
+@api_router.get("/user/profile")
+async def get_user_profile(current_user: User = Depends(get_current_user)):
+    """Get user's complete profile information"""
+    try:
+        user_data = await db.users.find_one({"id": current_user.id})
+        if not user_data:
+            raise HTTPException(status_code=404, detail="User not found")
+        
+        # Remove sensitive information
+        user_data.pop("password", None)
+        if "_id" in user_data:
+            user_data["_id"] = str(user_data["_id"])
+        
+        return {"user": user_data}
+    except Exception as e:
+        logger.error(f"Get user profile error: {e}")
+        raise HTTPException(status_code=500, detail="Failed to fetch user profile")
+
+@api_router.put("/user/profile")
+async def update_user_profile(
+    profile_data: Dict[str, Any],
+    current_user: User = Depends(get_current_user)
+):
+    """Update user's profile information"""
+    try:
+        # Allowed fields for update
+        allowed_fields = [
+            "full_name", "phone", "location", "timezone", "language",
+            "company", "role", "bio"
+        ]
+        
+        # Filter only allowed fields
+        update_data = {k: v for k, v in profile_data.items() if k in allowed_fields}
+        update_data["updated_at"] = datetime.utcnow()
+        
+        result = await db.users.update_one(
+            {"id": current_user.id},
+            {"$set": update_data}
+        )
+        
+        if result.modified_count == 0:
+            raise HTTPException(status_code=404, detail="User not found or no changes made")
+        
+        return {"success": True, "message": "Profile updated successfully"}
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Update user profile error: {e}")
+        raise HTTPException(status_code=500, detail="Failed to update profile")
 async def get_dashboard_stats(current_user: User = Depends(get_current_user)):
     """Get dashboard statistics"""
     total_analyses = await db.analyses.count_documents({"user_id": current_user.id})
