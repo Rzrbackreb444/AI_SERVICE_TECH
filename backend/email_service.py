@@ -110,9 +110,9 @@ class EmailService:
         
         try:
             message = Mail(
-                from_email=From(self.sender_email, "SiteTitan Intelligence"),
+                from_email=From(self.sender_email, "SiteAtlas Intelligence"),
                 to_emails=To(user_email),
-                subject=Subject(f"Welcome to SiteTitan, {user_name}! Your AI Journey Begins 🚀"),
+                subject=Subject(f"Welcome to SiteAtlas, {user_name}! Your AI Journey Begins 🚀"),
                 html_content=HtmlContent(html_content)
             )
             
