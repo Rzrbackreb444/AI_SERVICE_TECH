@@ -153,7 +153,7 @@ class EmailService:
         <body>
             <div class="container">
                 <div class="header">
-                    <img src="https://customer-assets.emergentagent.com/job_laundrosight/artifacts/68vqd4wq_Logo%2C%20Transparent.png" alt="SiteTitan Logo" style="max-width: 80px;">
+                    <img src="https://customer-assets.emergentagent.com/job_laundrosight/artifacts/68vqd4wq_Logo%2C%20Transparent.png" alt="SiteAtlas Logo" style="max-width: 80px;">
                     <h1 style="color: white; margin: 15px 0 5px 0;">Analysis Complete!</h1>
                     <p style="color: #94A3B8; margin: 0;">Your AI intelligence report is ready</p>
                 </div>
