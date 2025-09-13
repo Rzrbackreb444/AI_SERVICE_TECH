@@ -201,7 +201,7 @@ class EmailService:
         
         try:
             message = Mail(
-                from_email=From(self.sender_email, "SiteTitan Intelligence"),
+                from_email=From(self.sender_email, "SiteAtlas Intelligence"),
                 to_emails=To(user_email),
                 subject=Subject(f"🎯 Your {analysis_data.get('address', 'Location')} Analysis is Ready - Grade: {analysis_data.get('grade', 'C')}"),
                 html_content=HtmlContent(html_content)
