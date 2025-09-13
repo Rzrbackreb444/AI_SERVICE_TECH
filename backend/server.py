@@ -861,6 +861,109 @@ async def get_payment_status(session_id: str, current_user: User = Depends(get_c
     
     return {"status": transaction["payment_status"], "offer_type": transaction["offer_type"]}
 
+@api_router.post("/webhook/paypal")
+async def paypal_webhook(request: Request):
+    """Handle PayPal webhooks for payment events"""
+    try:
+        body = await request.body()
+        webhook_data = json.loads(body)
+        
+        event_type = webhook_data.get("event_type")
+        resource = webhook_data.get("resource", {})
+        
+        if event_type == "PAYMENT.SALE.COMPLETED":
+            # Payment completed - activate badge
+            custom_data = json.loads(resource.get("custom", "{}"))
+            user_id = custom_data.get("user_id")
+            offer_type = custom_data.get("offer_type")
+            transaction_id = custom_data.get("transaction_id")
+            
+            if user_id and offer_type and transaction_id:
+                transaction = await db.payment_transactions.find_one({"session_id": transaction_id})
+                if transaction and transaction["payment_status"] != "completed":
+                    await db.payment_transactions.update_one(
+                        {"session_id": transaction_id},
+                        {"$set": {
+                            "payment_status": "completed", 
+                            "updated_at": datetime.utcnow(),
+                            "paypal_sale_id": resource.get("id")
+                        }}
+                    )
+                    
+                    if transaction["platform"] == "facebook_group":
+                        await payment_service.activate_badge(
+                            user_id,
+                            offer_type,
+                            "paypal",
+                            float(resource.get("amount", {}).get("total", 0)),
+                            transaction.get("paypal_discount", False)
+                        )
+        
+        elif event_type == "BILLING.SUBSCRIPTION.CANCELLED":
+            # Subscription cancelled - deactivate badge
+            logger.warning(f"PayPal subscription cancelled: {resource.get('id')}")
+            
+        return {"status": "success"}
+    except Exception as e:
+        logger.error(f"PayPal webhook error: {e}")
+        raise HTTPException(status_code=400, detail="Webhook processing failed")
+
+@api_router.post("/payments/paypal/execute")
+async def execute_paypal_payment(
+    payment_id: str,
+    payer_id: str,
+    transaction_id: str,
+    current_user: User = Depends(get_current_user)
+):
+    """Execute PayPal payment after user approval"""
+    try:
+        # Find the transaction
+        transaction = await db.payment_transactions.find_one({
+            "session_id": transaction_id,
+            "user_id": current_user.id
+        })
+        
+        if not transaction:
+            raise HTTPException(status_code=404, detail="Transaction not found")
+        
+        # Execute the payment
+        payment = paypalrestsdk.Payment.find(payment_id)
+        
+        if payment.execute({"payer_id": payer_id}):
+            # Payment successful - update transaction
+            await db.payment_transactions.update_one(
+                {"session_id": transaction_id},
+                {"$set": {
+                    "payment_status": "completed",
+                    "updated_at": datetime.utcnow(),
+                    "paypal_payer_id": payer_id
+                }}
+            )
+            
+            # Activate badge for Facebook Group offers
+            if transaction["platform"] == "facebook_group":
+                await payment_service.activate_badge(
+                    current_user.id,
+                    transaction["offer_type"],
+                    "paypal",
+                    transaction["amount"],
+                    transaction.get("paypal_discount", False)
+                )
+            
+            return {
+                "status": "completed",
+                "offer_type": transaction["offer_type"],
+                "amount": transaction["amount"],
+                "payment_id": payment_id
+            }
+        else:
+            logger.error(f"PayPal payment execution failed: {payment.error}")
+            raise HTTPException(status_code=400, detail="Payment execution failed")
+            
+    except Exception as e:
+        logger.error(f"PayPal execution error: {e}")
+        raise HTTPException(status_code=500, detail="Payment processing failed")
+
 @api_router.post("/webhook/stripe")
 async def stripe_webhook(request: Request):
     """Handle Stripe webhooks for payment events"""
