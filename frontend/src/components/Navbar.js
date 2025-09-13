@@ -37,11 +37,11 @@ const Navbar = () => {
   const getSubscriptionBadge = (tier) => {
     const badges = {
       'free': { color: 'from-slate-500 to-slate-600', label: 'Scout', textColor: 'text-slate-200' },
-      'basic': { color: 'from-blue-500 to-blue-600', label: 'Analyzer', textColor: 'text-white' },
+      'analyzer': { color: 'from-blue-500 to-blue-600', label: 'Analyzer', textColor: 'text-white' },
       'intelligence': { color: 'from-cyan-500 to-emerald-500', label: 'Intelligence', textColor: 'text-white' },
-      'optimization': { color: 'from-purple-500 to-pink-500', label: 'LaundroMax', textColor: 'text-white' },
-      'portfolio': { color: 'from-orange-500 to-red-500', label: 'Empire', textColor: 'text-white' },
-      'pro': { color: 'from-green-500 to-teal-500', label: 'Watch Pro', textColor: 'text-white' }
+      'optimization': { color: 'from-purple-500 to-pink-500', label: 'Optimization', textColor: 'text-white' },
+      'portfolio': { color: 'from-orange-500 to-red-500', label: 'Portfolio', textColor: 'text-white' },
+      'watch_pro': { color: 'from-green-500 to-teal-500', label: 'Watch Pro', textColor: 'text-white' }
     };
     return badges[tier] || badges.free;
   };
@@ -52,22 +52,22 @@ const Navbar = () => {
     <nav className="glass border-b border-white/10 sticky top-0 z-50 backdrop-blur-xl">
       <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-20">
-          {/* Enhanced Logo */}
+          {/* Enhanced SiteAtlas Logo - Larger Size */}
           <div className="flex items-center">
             <Link to="/dashboard" className="flex items-center space-x-4 group">
               <div className="relative">
                 <img 
                   src="https://customer-assets.emergentagent.com/job_laundrosight/artifacts/68vqd4wq_Logo%2C%20Transparent.png" 
-                  alt="SiteTitan Logo"
-                  className="h-12 w-12 group-hover:scale-110 transition-transform duration-300"
+                  alt="SiteAtlas Logo"
+                  className="h-16 w-16 group-hover:scale-110 transition-transform duration-300"
                 />
                 <div className="absolute inset-0 bg-gradient-to-r from-cyan-400/20 to-emerald-400/20 blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
               </div>
               <div className="hidden sm:block">
-                <h1 className="text-2xl font-black bg-gradient-to-r from-cyan-400 to-emerald-400 bg-clip-text text-transparent">
-                  SiteTitan
+                <div className="text-xs text-slate-400 font-medium">LaundroTech Powered By</div>
+                <h1 className="text-2xl font-black bg-gradient-to-r from-cyan-400 to-emerald-400 bg-clip-text text-transparent -mt-1">
+                  SiteAtlas
                 </h1>
-                <p className="text-xs text-slate-400 -mt-1 font-medium">LaundroTech Intelligence</p>
               </div>
             </Link>
           </div>
