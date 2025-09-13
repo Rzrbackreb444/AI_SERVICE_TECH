@@ -208,6 +208,145 @@ class EmailService:
         except Exception as e:
             logger.error(f"Failed to send analysis email to {user_email}: {str(e)}")
             return False
+    
+    async def send_badge_activation_email(self, user_email: str, user_name: str, badge_name: str, offer_type: str):
+        """Send badge activation confirmation email to nick@laundryguys.net"""
+        if not self.sg:
+            logger.warning("SendGrid not configured, skipping email")
+            return False
+        
+        # Always send to nick@laundryguys.net for badge activations
+        notification_email = "nick@laundryguys.net"
+        
+        # Badge-specific content
+        badge_details = {
+            "verified_seller": {
+                "icon": "✅",
+                "color": "#10B981",
+                "benefits": ["Verified seller badge display", "Enhanced credibility", "Priority listing visibility"]
+            },
+            "vendor_partner": {
+                "icon": "🤝",
+                "color": "#3B82F6", 
+                "benefits": ["Vendor partner badge display", "Premium listing features", "Direct messaging priority"]
+            },
+            "verified_funder": {
+                "icon": "💰",
+                "color": "#8B5CF6",
+                "benefits": ["Verified funder badge display", "Investment opportunity access", "Exclusive funding alerts"]
+            },
+            "featured_post": {
+                "icon": "📌",
+                "color": "#F59E0B",
+                "benefits": ["Post pinned to top", "Maximum visibility", "Enhanced engagement"]
+            },
+            "logo_placement": {
+                "icon": "🏢",
+                "color": "#EF4444",
+                "benefits": ["Logo on group cover", "Pinned promotional shoutout", "Brand visibility"]
+            },
+            "sponsored_ama": {
+                "icon": "🎤",
+                "color": "#EC4899",
+                "benefits": ["Hosted AMA session", "Community engagement", "Thought leadership positioning"]
+            }
+        }
+        
+        badge_info = badge_details.get(offer_type, {
+            "icon": "🎯",
+            "color": "#06B6D4",
+            "benefits": ["Premium feature access"]
+        })
+        
+        benefits_html = "".join([f"<li>{benefit}</li>" for benefit in badge_info["benefits"]])
+        
+        html_content = f"""
+        <html>
+        <head>
+            <style>
+                body {{ font-family: 'Arial', sans-serif; line-height: 1.6; color: #333; }}
+                .container {{ max-width: 600px; margin: 0 auto; padding: 20px; }}
+                .header {{ text-align: center; padding: 30px 0; background: linear-gradient(135deg, #0F172A, #1E3A8A); border-radius: 12px; }}
+                .badge-alert {{ background: linear-gradient(135deg, {badge_info["color"]}, #06B6D4); padding: 25px; border-radius: 12px; margin: 20px 0; text-align: center; }}
+                .user-info {{ background: #F8FAFC; padding: 20px; border-radius: 8px; margin: 20px 0; }}
+                .activation-steps {{ background: #FEF9E7; padding: 20px; border-radius: 8px; border-left: 4px solid #F59E0B; margin: 20px 0; }}
+                .benefits {{ background: #F0FDF4; padding: 20px; border-radius: 8px; margin: 20px 0; }}
+                .footer {{ text-align: center; padding-top: 30px; border-top: 1px solid #E2E8F0; color: #64748B; }}
+                .badge-icon {{ font-size: 48px; margin: 10px 0; }}
+                ul {{ padding-left: 20px; }}
+            </style>
+        </head>
+        <body>
+            <div class="container">
+                <div class="header">
+                    <img src="https://customer-assets.emergentagent.com/job_laundrosight/artifacts/68vqd4wq_Logo%2C%20Transparent.png" alt="LaundroTech Logo" style="max-width: 100px;">
+                    <h1 style="color: white; margin: 15px 0 5px 0;">Badge Activation Alert</h1>
+                    <p style="color: #94A3B8; margin: 0;">Facebook Group Monetization System</p>
+                </div>
+                
+                <div class="badge-alert">
+                    <div class="badge-icon">{badge_info["icon"]}</div>
+                    <h2 style="color: white; margin: 10px 0;">{badge_name} Activated!</h2>
+                    <p style="color: white; font-size: 18px; margin: 0;">A new badge subscription has been activated</p>
+                </div>
+                
+                <div class="user-info">
+                    <h3>User Details:</h3>
+                    <ul>
+                        <li><strong>Name:</strong> {user_name}</li>
+                        <li><strong>Email:</strong> {user_email}</li>
+                        <li><strong>Badge Type:</strong> {badge_name}</li>
+                        <li><strong>Offer Type:</strong> {offer_type}</li>
+                        <li><strong>Activation Time:</strong> {datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S')} UTC</li>
+                    </ul>
+                </div>
+                
+                <div class="benefits">
+                    <h3>🎯 Badge Benefits Activated:</h3>
+                    <ul>
+                        {benefits_html}
+                    </ul>
+                </div>
+                
+                <div class="activation-steps">
+                    <h3>⚡ Required Actions:</h3>
+                    <ol>
+                        <li><strong>Add Badge to User Profile:</strong> Update {user_name}'s Facebook profile with {badge_info["icon"]} {badge_name}</li>
+                        <li><strong>Update Group Settings:</strong> Grant appropriate permissions and visibility features</li>
+                        <li><strong>Send Welcome Message:</strong> Contact user with activation confirmation and next steps</li>
+                        <li><strong>Monitor Subscription:</strong> Set up tracking for monthly renewal on this subscription</li>
+                    </ol>
+                </div>
+                
+                <div style="background: #FEF2F2; padding: 20px; border-radius: 8px; border-left: 4px solid #EF4444; margin: 20px 0;">
+                    <h3 style="color: #DC2626;">🚨 Immediate Action Required</h3>
+                    <p>This badge activation requires manual setup in the Facebook group. Please complete the activation steps within 24 hours to ensure user satisfaction.</p>
+                </div>
+                
+                <div class="footer">
+                    <p>LaundroTech Badge Management System</p>
+                    <p>Automated notification sent at {datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S')} UTC</p>
+                </div>
+            </div>
+        </body>
+        </html>
+        """
+        
+        try:
+            message = Mail(
+                from_email=From(self.sender_email, "LaundroTech Badge System"),
+                to_emails=To(notification_email),
+                subject=Subject(f"🚨 Badge Activated: {badge_name} for {user_name} ({offer_type})"),
+                html_content=HtmlContent(html_content)
+            )
+            
+            response = self.sg.send(message)
+            logger.info(f"Badge activation email sent to {notification_email} for user {user_email}, status: {response.status_code}")
+            return response.status_code == 202
+            
+        except Exception as e:
+            logger.error(f"Failed to send badge activation email to {notification_email}: {str(e)}")
+            return False
 
 # Global email service instance
 email_service = EmailService()
