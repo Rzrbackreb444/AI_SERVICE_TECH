@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { Link } from 'react-router-dom';
 import { 
   ChartBarIcon, 
   MapPinIcon, 
@@ -13,7 +14,9 @@ import {
   CpuChipIcon,
   GlobeAltIcon,
   SparklesIcon,
-  BoltIcon
+  BoltIcon,
+  UserGroupIcon,
+  Bars3Icon
 } from '@heroicons/react/24/outline';
 import { useAuth } from '../App';
 
@@ -21,6 +24,7 @@ const LandingPage = ({ onOpenAuth }) => {
   const { isAuthenticated } = useAuth();
   const [activeFeature, setActiveFeature] = useState(0);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [showNavMenu, setShowNavMenu] = useState(false);
 
   useEffect(() => {
     const handleMouseMove = (e) => {
@@ -29,6 +33,15 @@ const LandingPage = ({ onOpenAuth }) => {
     window.addEventListener('mousemove', handleMouseMove);
     return () => window.removeEventListener('mousemove', handleMouseMove);
   }, []);
+
+  const navigationLinks = [
+    { name: 'Platform', href: '/', current: true },
+    { name: 'Pricing', href: '/pricing' },
+    { name: 'Facebook Group', href: '/facebook-group' },
+    { name: 'Privacy', href: '/privacy' },
+    { name: 'Terms', href: '/terms' },
+    { name: 'Contact', href: 'mailto:nick@laundryguys.net' }
+  ];
 
   const features = [
     {
@@ -61,82 +74,6 @@ const LandingPage = ({ onOpenAuth }) => {
     }
   ];
 
-  const pricingTiers = [
-    {
-      name: "Location Scout",
-      price: "Free",
-      subtitle: "AI Reconnaissance",
-      description: "Perfect for initial market exploration",
-      features: ["AI location grading", "Population analytics", "Competitor density mapping", "Traffic flow analysis"],
-      popular: false,
-      gradient: "from-slate-600 to-slate-700",
-      paypalDiscount: false
-    },
-    {
-      name: "Location Analyzer", 
-      price: "$99",
-      paypalPrice: "$94",
-      subtitle: "Deep Intelligence",
-      description: "For serious location investors",
-      features: ["Complete grade analysis", "Demographic profiling", "Competitive threat mapping", "ROI projections", "Equipment optimization"],
-      popular: false,
-      gradient: "from-blue-600 to-blue-700",
-      paypalDiscount: true
-    },
-    {
-      name: "Location Intelligence",
-      price: "$249",
-      paypalPrice: "$237", 
-      subtitle: "Strategic Command",
-      description: "Ready-to-invest decision makers",
-      features: ["Competitive intelligence suite", "Marketing strategy blueprints", "Revenue optimization algorithms", "Risk mitigation protocols", "Financing pathway analysis"],
-      popular: true,
-      gradient: "from-cyan-500 to-emerald-500",
-      paypalDiscount: true
-    },
-    {
-      name: "Business Optimization",
-      price: "$499",
-      paypalPrice: "$474",
-      subtitle: "Advanced Analytics",
-      description: "Existing owners + serious investors", 
-      features: ["Business valuation engine", "Machine-by-machine ROI analysis", "Hybrid business matrix", "90-day transformation roadmap"],
-      popular: false,
-      gradient: "from-purple-600 to-pink-600",
-      paypalDiscount: true
-    }
-  ];
-
-  const testimonials = [
-    {
-      name: "Michael Chen",
-      role: "Multi-Location Empire Builder",
-      company: "Pacific Laundry Ventures",
-      content: "LaundroTech predicted market shifts 6 months before they happened. My portfolio went from 3 to 12 locations, generating $180K monthly. The hybrid analysis identified coffee shop opportunities that doubled my revenue per location.",
-      rating: 5,
-      revenue: "$180K/month",
-      avatar: "MC"
-    },
-    {
-      name: "Sarah Rodriguez", 
-      role: "First-Time Investor → Portfolio Owner",
-      company: "Southwest Wash Solutions",
-      content: "Started as a complete beginner. LaundroTech intelligence tier guided me through my first acquisition, then second, then third. Now I'm managing 8 locations across Arizona. The ROI predictions were 98% accurate.",
-      rating: 5,
-      revenue: "$95K/month",
-      avatar: "SR"
-    },
-    {
-      name: "David Park",
-      role: "Franchise Territory Manager",
-      company: "LaundroMax Franchising",  
-      content: "Managing 47 locations across 4 states. The Portfolio tier keeps me ahead of every market shift. The demographic trending predicted the Austin expansion opportunity 8 months early. Complete game changer.",
-      rating: 5,
-      revenue: "$340K/month",
-      avatar: "DP"
-    }
-  ];
-
   const stats = [
     { label: "Revenue Generated", value: "$8.4M+", icon: CurrencyDollarIcon, color: "text-green-400" },
     { label: "Locations Analyzed", value: "35,847", icon: MapPinIcon, color: "text-blue-400" },
@@ -146,8 +83,113 @@ const LandingPage = ({ onOpenAuth }) => {
 
   return (
     <div className="min-h-screen relative overflow-hidden">
+      {/* Navigation Bar */}
+      <nav className="glass border-b border-white/10 sticky top-0 z-50 backdrop-blur-xl">
+        <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center h-20">
+            {/* Logo and Branding */}
+            <div className="flex items-center">
+              <Link to="/" className="flex items-center space-x-4 group">
+                <div className="relative">
+                  <img 
+                    src="https://customer-assets.emergentagent.com/job_laundrosight/artifacts/68vqd4wq_Logo%2C%20Transparent.png" 
+                    alt="LaundroTech Logo"
+                    className="h-16 w-16 group-hover:scale-110 transition-transform duration-300"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-r from-cyan-400/20 to-emerald-400/20 blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                </div>
+                <div className="hidden sm:block">
+                  <h1 className="text-3xl font-black bg-gradient-to-r from-cyan-400 via-blue-400 to-emerald-400 bg-clip-text text-transparent leading-tight">
+                    LaundroTech
+                  </h1>
+                  <div className="text-sm text-slate-400 font-medium -mt-1">Powered by SiteAtlas</div>
+                </div>
+              </Link>
+            </div>
+
+            {/* Desktop Navigation */}
+            <div className="hidden md:flex items-center space-x-8">
+              {navigationLinks.map((link) => (
+                <Link
+                  key={link.name}
+                  to={link.href}
+                  className={`text-slate-300 hover:text-white transition-colors duration-200 font-medium ${
+                    link.current ? 'text-cyan-400' : ''
+                  }`}
+                >
+                  {link.name}
+                </Link>
+              ))}
+              
+              {isAuthenticated ? (
+                <Link
+                  to="/dashboard"
+                  className="btn-primary"
+                >
+                  Dashboard
+                </Link>
+              ) : (
+                <button
+                  onClick={() => onOpenAuth('register')}
+                  className="btn-accent"
+                >
+                  Get Started
+                </button>
+              )}
+            </div>
+
+            {/* Mobile Menu Button */}
+            <div className="md:hidden">
+              <button
+                onClick={() => setShowNavMenu(!showNavMenu)}
+                className="text-slate-300 hover:text-white p-2 rounded-xl hover:bg-white/5 transition-all duration-200"
+              >
+                <Bars3Icon className="w-6 h-6" />
+              </button>
+            </div>
+          </div>
+
+          {/* Mobile Navigation */}
+          <AnimatePresence>
+            {showNavMenu && (
+              <motion.div
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: 'auto' }}
+                exit={{ opacity: 0, height: 0 }}
+                transition={{ duration: 0.3 }}
+                className="md:hidden border-t border-white/10 bg-slate-900/50 backdrop-blur-xl"
+              >
+                <div className="px-2 pt-2 pb-3 space-y-1">
+                  {navigationLinks.map((link) => (
+                    <Link
+                      key={link.name}
+                      to={link.href}
+                      className="block px-4 py-3 text-slate-300 hover:text-white hover:bg-white/5 rounded-xl transition-all duration-300"
+                      onClick={() => setShowNavMenu(false)}
+                    >
+                      {link.name}
+                    </Link>
+                  ))}
+                  {!isAuthenticated && (
+                    <button
+                      onClick={() => {
+                        onOpenAuth('register');
+                        setShowNavMenu(false);
+                      }}
+                      className="w-full text-left px-4 py-3 text-cyan-400 hover:text-white hover:bg-white/5 rounded-xl transition-all duration-300"
+                    >
+                      Get Started
+                    </button>
+                  )}
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+      </nav>
+
       {/* Dynamic Background */}
-      <div className="fixed inset-0 bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900">
+      <div className="fixed inset-0 bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900 -z-10">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(59,130,246,0.1),transparent_50%)]"></div>
         <div 
           className="absolute inset-0 bg-[radial-gradient(circle_at_var(--mouse-x,0px)_var(--mouse-y,0px),rgba(6,182,212,0.15),transparent_25%)]"
@@ -159,7 +201,7 @@ const LandingPage = ({ onOpenAuth }) => {
       </div>
 
       {/* Hero Section */}
-      <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+      <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
         <div className="relative z-10 max-w-8xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -188,8 +230,8 @@ const LandingPage = ({ onOpenAuth }) => {
                 transition={{ duration: 1, delay: 0.3 }}
                 className="space-y-4"
               >
-                <h1 className="text-8xl md:text-9xl lg:text-[10rem] font-black mb-4 tracking-tight">
-                  <span className="bg-gradient-to-r from-cyan-400 via-blue-400 to-emerald-400 bg-clip-text text-transparent">
+                <h1 className="text-8xl md:text-9xl lg:text-[10rem] font-black mb-4 tracking-tight leading-none">
+                  <span className="bg-gradient-to-r from-cyan-400 via-blue-400 to-emerald-400 bg-clip-text text-transparent block">
                     LaundroTech
                   </span>
                 </h1>
@@ -200,7 +242,7 @@ const LandingPage = ({ onOpenAuth }) => {
                   transition={{ duration: 1, delay: 0.5 }}
                   className="space-y-2"
                 >
-                  <p className="text-3xl md:text-4xl text-slate-300 font-medium">Powered by SiteAtlas</p>
+                  <p className="text-2xl md:text-3xl text-slate-300 font-medium">Powered by SiteAtlas</p>
                   <p className="text-lg text-slate-400">The World's Most Advanced Location Intelligence Platform</p>
                 </motion.div>
               </motion.div>
@@ -251,7 +293,7 @@ const LandingPage = ({ onOpenAuth }) => {
               
               <motion.button
                 whileHover={{ scale: 1.05 }}
-                whileTap={ { scale: 0.95 }}
+                whileTap={{ scale: 0.95 }}
                 className="bg-white/10 backdrop-blur-sm border border-white/20 text-white font-semibold text-xl px-12 py-6 rounded-2xl hover:bg-white/20 transition-all duration-300"
                 onClick={() => document.getElementById('features').scrollIntoView({ behavior: 'smooth' })}
               >
@@ -308,6 +350,116 @@ const LandingPage = ({ onOpenAuth }) => {
         </div>
       </section>
 
+      {/* Advanced Features Section */}
+      <section id="features" className="relative py-32 bg-slate-900/50 backdrop-blur-sm">
+        <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+            className="text-center mb-20"
+          >
+            <h2 className="text-5xl md:text-6xl font-bold text-white mb-6">
+              Why <span className="bg-gradient-to-r from-cyan-400 to-emerald-400 bg-clip-text text-transparent">LaundroTech</span> Dominates
+            </h2>
+            <p className="text-2xl text-slate-300 max-w-4xl mx-auto">
+              Revolutionary intelligence platform powered by advanced AI that transforms complex market data into actionable business intelligence
+            </p>
+          </motion.div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {features.map((feature, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 40 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.8, delay: index * 0.1 }}
+                className="relative group"
+                onMouseEnter={() => setActiveFeature(index)}
+              >
+                <div className="glass-card p-8 h-full hover:scale-105 transition-all duration-500 relative overflow-hidden">
+                  <div className={`absolute inset-0 bg-gradient-to-br ${feature.color} opacity-0 group-hover:opacity-10 transition-opacity duration-500`}></div>
+                  
+                  <feature.icon className="w-16 h-16 text-cyan-400 mb-6 group-hover:scale-110 transition-transform duration-500" />
+                  <h3 className="text-2xl font-bold text-white mb-4">{feature.title}</h3>
+                  <p className="text-slate-300 mb-6 leading-relaxed">{feature.description}</p>
+                  <div className={`text-3xl font-bold bg-gradient-to-r ${feature.color} bg-clip-text text-transparent`}>
+                    {feature.stat}
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Quick Access Section */}
+      <section className="relative py-20">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+            className="text-center mb-12"
+          >
+            <h2 className="text-4xl font-bold text-white mb-4">
+              Explore Our <span className="bg-gradient-to-r from-cyan-400 to-emerald-400 bg-clip-text text-transparent">Ecosystem</span>
+            </h2>
+            <p className="text-xl text-slate-300">Multiple platforms, one comprehensive solution</p>
+          </motion.div>
+
+          <div className="grid md:grid-cols-3 gap-8">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              className="glass-card p-8 text-center hover:scale-105 transition-all duration-300"
+            >
+              <CpuChipIcon className="w-16 h-16 text-cyan-400 mx-auto mb-4" />
+              <h3 className="text-xl font-bold text-white mb-4">Intelligence Platform</h3>
+              <p className="text-slate-300 mb-6">Advanced AI-powered location analysis and market intelligence</p>
+              <Link to="/pricing" className="btn-primary w-full">
+                View Pricing
+              </Link>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.1 }}
+              className="glass-card p-8 text-center hover:scale-105 transition-all duration-300"
+            >
+              <UserGroupIcon className="w-16 h-16 text-blue-400 mx-auto mb-4" />
+              <h3 className="text-xl font-bold text-white mb-4">Facebook Group</h3>
+              <p className="text-slate-300 mb-6">Exclusive 67K member community with premium features and networking</p>
+              <Link to="/facebook-group" className="btn-secondary w-full">
+                Join Community
+              </Link>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              className="glass-card p-8 text-center hover:scale-105 transition-all duration-300"
+            >
+              <ShieldCheckIcon className="w-16 h-16 text-green-400 mx-auto mb-4" />
+              <h3 className="text-xl font-bold text-white mb-4">Trust & Security</h3>
+              <p className="text-slate-300 mb-6">Complete legal compliance and data protection for your business</p>
+              <Link to="/privacy" className="btn-secondary w-full">
+                Learn More
+              </Link>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
       {/* Legal Compliance Footer */}
       <section className="relative py-16 bg-slate-900/80 backdrop-blur-sm border-t border-white/10">
         <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -315,30 +467,30 @@ const LandingPage = ({ onOpenAuth }) => {
             <div>
               <h3 className="text-lg font-semibold text-white mb-4">Legal</h3>
               <ul className="space-y-2 text-slate-400 text-sm">
-                <li><a href="/privacy" className="hover:text-white transition-colors">Privacy Policy</a></li>
-                <li><a href="/terms" className="hover:text-white transition-colors">Terms of Service</a></li>
-                <li><a href="/disclaimer" className="hover:text-white transition-colors">Investment Disclaimer</a></li>
-                <li><a href="/compliance" className="hover:text-white transition-colors">Compliance</a></li>
+                <li><Link to="/privacy" className="hover:text-white transition-colors">Privacy Policy</Link></li>
+                <li><Link to="/terms" className="hover:text-white transition-colors">Terms of Service</Link></li>
+                <li><Link to="/disclaimer" className="hover:text-white transition-colors">Investment Disclaimer</Link></li>
+                <li><a href="mailto:nick@laundryguys.net" className="hover:text-white transition-colors">Contact</a></li>
               </ul>
             </div>
             
             <div>
-              <h3 className="text-lg font-semibold text-white mb-4">Support</h3>
+              <h3 className="text-lg font-semibold text-white mb-4">Platform</h3>
               <ul className="space-y-2 text-slate-400 text-sm">
-                <li><a href="/help" className="hover:text-white transition-colors">Help Center</a></li>
-                <li><a href="/contact" className="hover:text-white transition-colors">Contact Us</a></li>
-                <li><a href="/refunds" className="hover:text-white transition-colors">Refund Policy</a></li>
-                <li><a href="/data-security" className="hover:text-white transition-colors">Data Security</a></li>
+                <li><Link to="/pricing" className="hover:text-white transition-colors">Pricing</Link></li>
+                <li><Link to="/facebook-group" className="hover:text-white transition-colors">Facebook Group</Link></li>
+                <li><a href="mailto:nick@laundryguys.net" className="hover:text-white transition-colors">Support</a></li>
+                <li><a href="mailto:nick@laundryguys.net" className="hover:text-white transition-colors">Partnership</a></li>
               </ul>
             </div>
             
             <div>
               <h3 className="text-lg font-semibold text-white mb-4">Company</h3>
               <ul className="space-y-2 text-slate-400 text-sm">
-                <li><a href="/about" className="hover:text-white transition-colors">About Us</a></li>
-                <li><a href="/careers" className="hover:text-white transition-colors">Careers</a></li>
-                <li><a href="/press" className="hover:text-white transition-colors">Press</a></li>
-                <li><a href="/investors" className="hover:text-white transition-colors">Investors</a></li>
+                <li><a href="mailto:nick@laundryguys.net" className="hover:text-white transition-colors">About Us</a></li>
+                <li><a href="mailto:nick@laundryguys.net" className="hover:text-white transition-colors">Careers</a></li>
+                <li><a href="mailto:nick@laundryguys.net" className="hover:text-white transition-colors">Press</a></li>
+                <li><a href="mailto:nick@laundryguys.net" className="hover:text-white transition-colors">Investors</a></li>
               </ul>
             </div>
             
@@ -366,13 +518,14 @@ const LandingPage = ({ onOpenAuth }) => {
               © 2024 LaundroTech. All rights reserved. Powered by SiteAtlas.
             </p>
             <p className="text-slate-500 text-xs max-w-4xl mx-auto">
-              <strong>Investment Disclaimer:</strong> All financial projections, ROI estimates, and revenue calculations provided by LaundroTech are for informational purposes only and should not be considered as investment advice. Past performance does not guarantee future results. Laundromat investments carry inherent risks, and you should conduct your own due diligence and consult with qualified financial advisors before making any investment decisions. LaundroTech does not guarantee any specific financial outcomes.
+              <strong>Investment Disclaimer:</strong> All financial projections, ROI estimates, and revenue calculations provided by LaundroTech are for 
+              informational purposes only and should not be considered as investment advice. Past performance does not guarantee future results. 
+              Laundromat investments carry inherent risks, and you should conduct your own due diligence and consult with qualified financial advisors 
+              before making any investment decisions. LaundroTech does not guarantee any specific financial outcomes.
             </p>
           </div>
         </div>
       </section>
-
-      {/* Rest of the sections remain the same but with LaundroTech branding... */}
     </div>
   );
 };

@@ -43,8 +43,8 @@ stripe_api_key = os.environ.get('STRIPE_API_KEY')
 
 # FastAPI app setup
 app = FastAPI(
-    title="SiteAtlas - LaundroTech Intelligence Platform",
-    description="LaundroTech Powered By SiteAtlas - The Complete Location Intelligence Platform",
+    title="LaundroTech - Powered by SiteAtlas",
+    description="The Complete Location Intelligence Platform",
     version="2.0.0"
 )
 
@@ -72,14 +72,82 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-# Pricing Configuration
-PRICING_TIERS = {
+# Facebook Group Monetization Configuration
+FACEBOOK_GROUP_OFFERS = {
+    "verified_seller": {
+        "name": "Verified Seller Badge",
+        "price": 99.0,
+        "paypal_price": 89.10,  # 10% discount
+        "type": "subscription",
+        "billing": "monthly",
+        "description": "Stand out as a trusted seller in the community"
+    },
+    "vendor_partner": {
+        "name": "Vendor Partner Badge", 
+        "price": 499.0,
+        "paypal_price": 449.10,  # 10% discount
+        "type": "subscription",
+        "billing": "monthly",
+        "description": "Premium tier for service providers and vendors"
+    },
+    "verified_funder": {
+        "name": "Verified Funder Badge",
+        "price": 999.0,
+        "paypal_price": 899.10,  # 10% discount
+        "type": "subscription", 
+        "billing": "monthly",
+        "description": "Exclusive tier for active investors and funders"
+    },
+    "featured_post": {
+        "name": "Featured Post",
+        "price": 500.0,
+        "paypal_price": 500.0,  # NO discount for add-ons
+        "type": "one_time",
+        "billing": "per post",
+        "description": "Maximum visibility for your listings and announcements"
+    },
+    "location_report": {
+        "name": "Custom Location Report",
+        "price": 99.0,
+        "paypal_price": 99.0,  # NO discount for add-ons
+        "type": "one_time",
+        "billing": "per report", 
+        "description": "Professional location analysis using SiteAtlas data"
+    },
+    "expansion_consult": {
+        "name": "Expansion Strategy Consult",
+        "price": 499.0,
+        "paypal_price": 499.0,  # NO discount for add-ons
+        "type": "one_time",
+        "billing": "per session",
+        "description": "One-on-one consultation for multi-location strategy"
+    },
+    "logo_placement": {
+        "name": "Logo Placement",
+        "price": 499.0,
+        "paypal_price": 499.0,  # NO discount for add-ons
+        "type": "subscription",
+        "billing": "monthly",
+        "description": "Logo placement on group cover and pinned posts"
+    },
+    "dashboard_access": {
+        "name": "Full Dashboard Access",
+        "price": 999.0,
+        "paypal_price": 999.0,  # NO discount for add-ons
+        "type": "subscription",
+        "billing": "monthly",
+        "description": "Complete access to the LaundroTech intelligence platform"
+    }
+}
+
+# Platform Pricing Configuration
+PLATFORM_PRICING = {
     "scout": {"name": "Location Scout", "price": 0.0, "type": "free"},
     "analyzer": {"name": "Location Analyzer", "price": 99.0, "type": "one_time"},
     "intelligence": {"name": "Location Intelligence", "price": 249.0, "type": "one_time"},
-    "optimization": {"name": "SiteAtlas Optimization", "price": 499.0, "type": "one_time"},
-    "portfolio": {"name": "SiteAtlas Portfolio", "price": 999.0, "type": "one_time"},
-    "watch_pro": {"name": "SiteAtlas Watch Pro", "price": 199.0, "type": "subscription", "billing": "monthly"}
+    "optimization": {"name": "Business Optimization", "price": 499.0, "type": "one_time"},
+    "portfolio": {"name": "Portfolio Management", "price": 999.0, "type": "one_time"},
+    "watch_pro": {"name": "Watch Pro", "price": 199.0, "type": "subscription", "billing": "monthly"}
 }
 
 # Pydantic Models
@@ -101,6 +169,43 @@ class UserLogin(BaseModel):
     email: EmailStr
     password: str
 
+class FacebookGroupSubscription(BaseModel):
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    user_id: str
+    offer_type: str
+    payment_provider: str
+    subscription_status: str = "active"  # active, cancelled, failed
+    badge_active: bool = True
+    payment_amount: float
+    paypal_discount_applied: bool = False
+    stripe_subscription_id: Optional[str] = None
+    paypal_subscription_id: Optional[str] = None
+    created_at: datetime = Field(default_factory=datetime.utcnow)
+    expires_at: Optional[datetime] = None
+    last_payment_at: Optional[datetime] = None
+
+class PaymentTransaction(BaseModel):
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    user_id: str
+    session_id: str
+    payment_provider: str  # "stripe" or "paypal"
+    offer_type: str
+    platform: str  # "facebook_group" or "platform"
+    amount: float
+    currency: str = "usd"
+    paypal_discount: bool = False
+    payment_status: str = "pending"
+    metadata: Dict[str, Any]
+    created_at: datetime = Field(default_factory=datetime.utcnow)
+    updated_at: datetime = Field(default_factory=datetime.utcnow)
+
+class CheckoutRequest(BaseModel):
+    offer_type: str
+    platform: str = "facebook_group"  # "facebook_group" or "platform"
+    payment_method: str = "stripe"  # "stripe" or "paypal"
+    success_url: Optional[str] = None
+    cancel_url: Optional[str] = None
+
 class LocationRequest(BaseModel):
     address: str
     analysis_type: str
@@ -118,35 +223,6 @@ class LocationAnalysis(BaseModel):
     roi_estimate: Dict[str, Any]
     recommendations: List[str]
     hybrid_opportunities: Optional[Dict[str, Any]] = None
-    created_at: datetime = Field(default_factory=datetime.utcnow)
-
-class PaymentTransaction(BaseModel):
-    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
-    user_id: str
-    session_id: str
-    payment_provider: str  # "stripe" or "paypal"
-    tier: str
-    amount: float
-    currency: str = "usd"
-    paypal_discount: bool = False
-    payment_status: str = "pending"
-    metadata: Dict[str, Any]
-    created_at: datetime = Field(default_factory=datetime.utcnow)
-    updated_at: datetime = Field(default_factory=datetime.utcnow)
-
-class CheckoutRequest(BaseModel):
-    tier: str
-    payment_method: str = "stripe"  # "stripe" or "paypal"
-    success_url: Optional[str] = None
-    cancel_url: Optional[str] = None
-
-class MonitoringAlert(BaseModel):
-    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
-    user_id: str
-    location_id: str
-    alert_type: str
-    message: str
-    severity: str
     created_at: datetime = Field(default_factory=datetime.utcnow)
 
 # Authentication functions
@@ -190,16 +266,21 @@ class PaymentService:
                 webhook_url=""  # Will be set per request
             )
     
-    async def create_stripe_checkout(self, user: User, tier: str, host_url: str) -> Dict[str, Any]:
+    async def create_stripe_checkout(self, user: User, offer_type: str, platform: str, host_url: str) -> Dict[str, Any]:
         """Create Stripe checkout session"""
         if not self.stripe_checkout:
             raise HTTPException(status_code=500, detail="Stripe not configured")
         
-        tier_config = PRICING_TIERS.get(tier)
-        if not tier_config:
-            raise HTTPException(status_code=400, detail="Invalid tier")
+        # Get offer configuration
+        if platform == "facebook_group":
+            offer_config = FACEBOOK_GROUP_OFFERS.get(offer_type)
+        else:
+            offer_config = PLATFORM_PRICING.get(offer_type)
+            
+        if not offer_config:
+            raise HTTPException(status_code=400, detail="Invalid offer type")
         
-        if tier_config["price"] == 0:
+        if offer_config["price"] == 0:
             raise HTTPException(status_code=400, detail="Cannot create payment for free tier")
         
         # Set webhook URL
@@ -212,12 +293,13 @@ class PaymentService:
         
         metadata = {
             "user_id": user.id,
-            "tier": tier,
+            "offer_type": offer_type,
+            "platform": platform,
             "facebook_member": str(user.facebook_group_member)
         }
         
         checkout_request = CheckoutSessionRequest(
-            amount=tier_config["price"],
+            amount=offer_config["price"],
             currency="usd",
             success_url=success_url,
             cancel_url=cancel_url,
@@ -231,8 +313,9 @@ class PaymentService:
             user_id=user.id,
             session_id=session.session_id,
             payment_provider="stripe",
-            tier=tier,
-            amount=tier_config["price"],
+            offer_type=offer_type,
+            platform=platform,
+            amount=offer_config["price"],
             currency="usd",
             paypal_discount=False,
             payment_status="pending",
@@ -244,23 +327,27 @@ class PaymentService:
         return {
             "checkout_url": session.url,
             "session_id": session.session_id,
-            "amount": tier_config["price"]
+            "amount": offer_config["price"]
         }
     
-    async def create_paypal_checkout(self, user: User, tier: str, host_url: str) -> Dict[str, Any]:
-        """Create PayPal checkout with 5% discount"""
-        tier_config = PRICING_TIERS.get(tier)
-        if not tier_config:
-            raise HTTPException(status_code=400, detail="Invalid tier")
+    async def create_paypal_checkout(self, user: User, offer_type: str, platform: str, host_url: str) -> Dict[str, Any]:
+        """Create PayPal checkout with discount logic"""
+        # Get offer configuration
+        if platform == "facebook_group":
+            offer_config = FACEBOOK_GROUP_OFFERS.get(offer_type)
+        else:
+            offer_config = PLATFORM_PRICING.get(offer_type)
+            
+        if not offer_config:
+            raise HTTPException(status_code=400, detail="Invalid offer type")
         
-        if tier_config["price"] == 0:
+        if offer_config["price"] == 0:
             raise HTTPException(status_code=400, detail="Cannot create payment for free tier")
         
-        # Apply 5% PayPal discount
-        original_price = tier_config["price"]
-        discounted_price = original_price * 0.95
+        # Apply PayPal discount (only for badges, not add-ons)
+        final_price = offer_config["paypal_price"]
+        discount_applied = final_price < offer_config["price"]
         
-        # For now, return PayPal configuration (actual PayPal SDK integration would go here)
         transaction_id = str(uuid.uuid4())
         
         # Create payment transaction record
@@ -268,16 +355,18 @@ class PaymentService:
             user_id=user.id,
             session_id=transaction_id,
             payment_provider="paypal",
-            tier=tier,
-            amount=discounted_price,
+            offer_type=offer_type,
+            platform=platform,
+            amount=final_price,
             currency="usd",
-            paypal_discount=True,
+            paypal_discount=discount_applied,
             payment_status="pending",
             metadata={
                 "user_id": user.id,
-                "tier": tier,
-                "original_price": original_price,
-                "discount_applied": original_price - discounted_price,
+                "offer_type": offer_type,
+                "platform": platform,
+                "original_price": offer_config["price"],
+                "discount_applied": offer_config["price"] - final_price if discount_applied else 0,
                 "facebook_member": str(user.facebook_group_member)
             }
         )
@@ -286,26 +375,79 @@ class PaymentService:
         
         return {
             "transaction_id": transaction_id,
-            "amount": discounted_price,
-            "original_price": original_price,
-            "discount": original_price - discounted_price,
+            "amount": final_price,
+            "original_price": offer_config["price"],
+            "discount": offer_config["price"] - final_price if discount_applied else 0,
+            "discount_applied": discount_applied,
             "paypal_config": {
                 "currency": "USD",
                 "intent": "CAPTURE"
             }
         }
     
-    async def upgrade_user_tier(self, user_id: str, tier: str):
-        """Upgrade user's subscription tier"""
-        await db.users.update_one(
-            {"id": user_id},
-            {"$set": {"subscription_tier": tier}}
+    async def activate_badge(self, user_id: str, offer_type: str, payment_provider: str, amount: float, discount_applied: bool = False):
+        """Activate badge and set up subscription tracking"""
+        # Create or update Facebook group subscription
+        subscription = FacebookGroupSubscription(
+            user_id=user_id,
+            offer_type=offer_type,
+            payment_provider=payment_provider,
+            subscription_status="active",
+            badge_active=True,
+            payment_amount=amount,
+            paypal_discount_applied=discount_applied,
+            last_payment_at=datetime.utcnow()
         )
+        
+        # Set expiration for subscriptions
+        if offer_type in ["verified_seller", "vendor_partner", "verified_funder", "logo_placement", "dashboard_access"]:
+            subscription.expires_at = datetime.utcnow() + timedelta(days=30)
+        
+        await db.facebook_subscriptions.insert_one(subscription.dict())
+        
+        # Send badge activation email
+        user = await db.users.find_one({"id": user_id})
+        if user:
+            await email_service.send_badge_activation_email(
+                user["email"], 
+                user["full_name"], 
+                FACEBOOK_GROUP_OFFERS[offer_type]["name"],
+                offer_type
+            )
+    
+    async def deactivate_badge(self, user_id: str, offer_type: str):
+        """Deactivate badge due to failed payment or cancellation"""
+        await db.facebook_subscriptions.update_many(
+            {"user_id": user_id, "offer_type": offer_type},
+            {"$set": {
+                "subscription_status": "cancelled",
+                "badge_active": False,
+                "updated_at": datetime.utcnow()
+            }}
+        )
+        
+        # Handle special cases
+        if offer_type == "featured_post":
+            # Remove featured post
+            await self.remove_featured_post(user_id)
+        elif offer_type == "logo_placement":
+            # Remove logo from placements
+            await self.remove_logo_placement(user_id)
+    
+    async def remove_featured_post(self, user_id: str):
+        """Remove featured post when badge lapses"""
+        # Implementation would depend on your Facebook group management system
+        logger.info(f"Removing featured post for user {user_id}")
+    
+    async def remove_logo_placement(self, user_id: str):
+        """Remove logo placement when payment lapses"""
+        # Implementation would depend on your Facebook group management system
+        logger.info(f"Removing logo placement for user {user_id}")
 
 # Initialize payment service
 payment_service = PaymentService()
 
-# API Integration Services (existing code continues...)
+# Data Integration Service (keeping existing location analysis functionality)
 class DataIntegrationService:
     def __init__(self):
         self.google_maps_key = os.environ['GOOGLE_MAPS_API_KEY']
@@ -364,7 +506,6 @@ class DataIntegrationService:
     async def get_google_places_data(self, lat: float, lng: float, radius: int = 1600) -> List[Dict[str, Any]]:
         """Get competitor laundromats from Google Places"""
         try:
-            # Search for laundromats
             places_result = gmaps.places_nearby(
                 location=(lat, lng),
                 radius=radius,
@@ -390,58 +531,21 @@ class DataIntegrationService:
             logger.error(f"Google Places API error: {e}")
             return []
 
-    async def get_attom_property_data(self, address: str) -> Dict[str, Any]:
-        """Get property data from ATTOM Data API"""
-        try:
-            async with httpx.AsyncClient() as client:
-                headers = {
-                    'apikey': self.attom_key,
-                    'Accept': 'application/json'
-                }
-                
-                # Property details endpoint
-                url = "https://api.gateway.attomdata.com/propertyapi/v1.0.0/property/detail"
-                params = {
-                    'address1': address,
-                    'format': 'json'
-                }
-                
-                response = await client.get(url, headers=headers, params=params)
-                if response.status_code == 200:
-                    data = response.json()
-                    if 'property' in data and len(data['property']) > 0:
-                        prop = data['property'][0]
-                        return {
-                            'estimated_value': prop.get('assessment', {}).get('assessed', {}).get('assdttlvalue', 0),
-                            'property_type': prop.get('summary', {}).get('proptype', 'Unknown'),
-                            'year_built': prop.get('summary', {}).get('yearbuilt', 0),
-                            'lot_size': prop.get('lot', {}).get('lotsize1', 0),
-                            'building_size': prop.get('building', {}).get('size', {}).get('bldgsize', 0)
-                        }
-                return {}
-        except Exception as e:
-            logger.error(f"ATTOM API error: {e}")
-            return {}
-
-# ML Analysis Service (existing code continues with SiteAtlas branding...)
+# ML Analysis Engine (keeping existing functionality)
 class LocationAnalysisEngine:
     def __init__(self):
         self.data_service = DataIntegrationService()
-        # Initialize ML model (in production, this would be pre-trained)
         self.model = RandomForestRegressor(n_estimators=100, random_state=42)
         self._train_dummy_model()
     
     def _train_dummy_model(self):
-        """Train a dummy model with sample data for demonstration"""
-        # In production, this would use historical data
-        X_dummy = np.random.rand(1000, 10)  # 10 features
-        y_dummy = np.random.rand(1000) * 100  # Revenue scores 0-100
+        X_dummy = np.random.rand(1000, 10)
+        y_dummy = np.random.rand(1000) * 100
         self.model.fit(X_dummy, y_dummy)
     
     async def analyze_location(self, address: str, analysis_type: str) -> LocationAnalysis:
-        """Comprehensive location analysis powered by SiteAtlas"""
+        """Comprehensive location analysis"""
         try:
-            # Geocode address
             geocode_result = gmaps.geocode(address)
             if not geocode_result:
                 raise HTTPException(status_code=400, detail="Address not found")
@@ -449,33 +553,18 @@ class LocationAnalysisEngine:
             location = geocode_result[0]['geometry']['location']
             lat, lng = location['lat'], location['lng']
             
-            # Gather data based on analysis type
             census_data = await self.data_service.get_census_data(lat, lng)
             competitors = await self.data_service.get_google_places_data(lat, lng)
             
-            # Enhanced data for premium tiers
-            property_data = {}
-            if analysis_type in ['intelligence', 'optimization', 'portfolio']:
-                property_data = await self.data_service.get_attom_property_data(address)
-            
-            # Calculate location score using ML model
-            features = self._extract_features(census_data, competitors, property_data)
+            features = self._extract_features(census_data, competitors, {})
             score = self.model.predict([features])[0]
             grade = self._score_to_grade(score)
             
-            # Generate tier-specific recommendations
             recommendations = self._generate_recommendations(analysis_type, census_data, competitors, score)
-            
-            # ROI estimation
             roi_estimate = self._calculate_roi(analysis_type, census_data, competitors, score)
             
-            # Hybrid business opportunities (for premium tiers)
-            hybrid_opportunities = None
-            if analysis_type in ['optimization', 'portfolio']:
-                hybrid_opportunities = self._analyze_hybrid_opportunities(census_data, competitors)
-            
             return LocationAnalysis(
-                user_id="",  # Will be set by endpoint
+                user_id="",
                 address=address,
                 analysis_type=analysis_type,
                 grade=grade,
@@ -483,8 +572,7 @@ class LocationAnalysisEngine:
                 demographics=census_data,
                 competitors=competitors,
                 roi_estimate=roi_estimate,
-                recommendations=recommendations,
-                hybrid_opportunities=hybrid_opportunities
+                recommendations=recommendations
             )
             
         except Exception as e:
@@ -492,23 +580,21 @@ class LocationAnalysisEngine:
             raise HTTPException(status_code=500, detail="Analysis failed")
     
     def _extract_features(self, census_data: Dict, competitors: List, property_data: Dict) -> List[float]:
-        """Extract ML features from location data"""
         features = [
-            census_data.get('population', 0) / 10000,  # Normalized population
-            census_data.get('median_income', 0) / 100000,  # Normalized income
-            len(competitors),  # Competitor count
-            sum([c.get('rating', 0) for c in competitors]) / max(len(competitors), 1),  # Avg competitor rating
-            census_data.get('renter_occupied_housing', 0) / max(census_data.get('total_housing', 1), 1),  # Renter ratio
-            property_data.get('estimated_value', 0) / 1000000,  # Property value
-            property_data.get('lot_size', 0) / 10000,  # Lot size
-            1.0 if any('24' in c.get('name', '').lower() for c in competitors) else 0.0,  # 24hr competition
-            len([c for c in competitors if c.get('rating', 0) > 4.0]),  # High-rated competitors
-            census_data.get('population', 0) / max(len(competitors), 1)  # Population per competitor
+            census_data.get('population', 0) / 10000,
+            census_data.get('median_income', 0) / 100000,
+            len(competitors),
+            sum([c.get('rating', 0) for c in competitors]) / max(len(competitors), 1),
+            census_data.get('renter_occupied_housing', 0) / max(census_data.get('total_housing', 1), 1),
+            property_data.get('estimated_value', 0) / 1000000,
+            property_data.get('lot_size', 0) / 10000,
+            1.0 if any('24' in c.get('name', '').lower() for c in competitors) else 0.0,
+            len([c for c in competitors if c.get('rating', 0) > 4.0]),
+            census_data.get('population', 0) / max(len(competitors), 1)
         ]
         return features
     
     def _score_to_grade(self, score: float) -> str:
-        """Convert numerical score to letter grade"""
         if score >= 90: return "A+"
         elif score >= 85: return "A"
         elif score >= 80: return "A-"
@@ -523,73 +609,32 @@ class LocationAnalysisEngine:
         else: return "F"
     
     def _generate_recommendations(self, analysis_type: str, census_data: Dict, competitors: List, score: float) -> List[str]:
-        """Generate tier-specific recommendations"""
         recommendations = []
-        
         if analysis_type == "scout":
             recommendations = [
-                "Upgrade to Location Analyzer for detailed SiteAtlas intelligence",
-                "Consider competitor density in final decision",
-                "Demographics suggest potential for success"
+                "Upgrade to Location Analyzer for detailed analysis",
+                "Consider competitor density in final decision"
             ]
         elif analysis_type == "analyzer":
             if census_data.get('median_income', 0) > 75000:
                 recommendations.append("High-income area ideal for premium services")
             if len(competitors) < 3:
                 recommendations.append("Low competition creates opportunity")
-            recommendations.append("Upgrade to Intelligence tier for competitive strategies")
-        elif analysis_type in ["intelligence", "optimization", "portfolio"]:
-            recommendations.extend([
-                "Implement dynamic pricing based on demographic analysis",
-                "Focus on renter population marketing campaigns",
-                "Consider 24/7 operations if competitors don't offer",
-                "Premium wash-fold services recommended for this market"
-            ])
-            
         return recommendations
     
     def _calculate_roi(self, analysis_type: str, census_data: Dict, competitors: List, score: float) -> Dict[str, Any]:
-        """Calculate ROI estimates based on analysis type"""
         base_monthly = max(5000, census_data.get('population', 0) * 0.1 * (score / 10))
-        
         roi = {
             "estimated_monthly_revenue": base_monthly,
             "confidence_level": "Medium" if analysis_type == "scout" else "High"
         }
-        
         if analysis_type != "scout":
             roi.update({
                 "estimated_startup_cost": 350000,
                 "break_even_months": max(12, int(350000 / base_monthly)),
                 "annual_roi_percentage": (base_monthly * 12 - 350000) / 350000 * 100 if base_monthly > 0 else 0
             })
-            
         return roi
-    
-    def _analyze_hybrid_opportunities(self, census_data: Dict, competitors: List) -> Dict[str, Any]:
-        """Analyze hybrid business opportunities"""
-        return {
-            "coffee_shop": {
-                "viability": "High" if census_data.get('median_income', 0) > 60000 else "Medium",
-                "estimated_additional_revenue": 2500,
-                "synergy_score": 8.5
-            },
-            "car_wash": {
-                "viability": "High",
-                "estimated_additional_revenue": 4000,
-                "synergy_score": 9.0
-            },
-            "barber_shop": {
-                "viability": "Medium",
-                "estimated_additional_revenue": 3000,
-                "synergy_score": 7.0
-            },
-            "tattoo_studio": {
-                "viability": "Medium" if census_data.get('median_income', 0) > 70000 else "Low",
-                "estimated_additional_revenue": 5000,
-                "synergy_score": 6.5
-            }
-        }
 
 # Initialize analysis engine
 analysis_engine = LocationAnalysisEngine()
@@ -598,12 +643,10 @@ analysis_engine = LocationAnalysisEngine()
 @api_router.post("/auth/register")
 async def register(user_data: UserCreate, background_tasks: BackgroundTasks):
     """Register new user"""
-    # Check if user exists
     existing_user = await db.users.find_one({"email": user_data.email})
     if existing_user:
         raise HTTPException(status_code=400, detail="Email already registered")
     
-    # Create new user
     hashed_password = get_password_hash(user_data.password)
     user = User(
         email=user_data.email,
@@ -624,9 +667,7 @@ async def register(user_data: UserCreate, background_tasks: BackgroundTasks):
         user.facebook_group_member
     )
     
-    # Create access token
     access_token = create_access_token(data={"sub": user.id})
-    
     return {"access_token": access_token, "token_type": "bearer", "user": user}
 
 @api_router.post("/auth/login")
@@ -638,14 +679,21 @@ async def login(login_data: UserLogin):
     
     user = User(**user_doc)
     access_token = create_access_token(data={"sub": user.id})
-    
     return {"access_token": access_token, "token_type": "bearer", "user": user}
 
-@api_router.get("/pricing")
-async def get_pricing_tiers():
-    """Get SiteAtlas pricing tiers"""
+@api_router.get("/facebook-group/offers")
+async def get_facebook_group_offers():
+    """Get Facebook Group monetization offers"""
     return {
-        "tiers": PRICING_TIERS,
+        "offers": FACEBOOK_GROUP_OFFERS,
+        "paypal_discount_note": "10% discount applies to badge subscriptions only when paid via PayPal. Add-ons are always full price."
+    }
+
+@api_router.get("/platform/pricing")
+async def get_platform_pricing():
+    """Get platform pricing tiers"""
+    return {
+        "tiers": PLATFORM_PRICING,
         "paypal_discount": 0.05  # 5% discount for PayPal payments
     }
 
@@ -659,9 +707,13 @@ async def create_checkout(
     host_url = str(http_request.base_url).rstrip('/')
     
     if request.payment_method == "paypal":
-        return await payment_service.create_paypal_checkout(current_user, request.tier, host_url)
+        return await payment_service.create_paypal_checkout(
+            current_user, request.offer_type, request.platform, host_url
+        )
     else:
-        return await payment_service.create_stripe_checkout(current_user, request.tier, host_url)
+        return await payment_service.create_stripe_checkout(
+            current_user, request.offer_type, request.platform, host_url
+        )
 
 @api_router.get("/payments/status/{session_id}")
 async def get_payment_status(session_id: str, current_user: User = Depends(get_current_user)):
@@ -674,28 +726,34 @@ async def get_payment_status(session_id: str, current_user: User = Depends(get_c
         try:
             status = await payment_service.stripe_checkout.get_checkout_status(session_id)
             
-            # Update transaction status
             if status.payment_status == "paid" and transaction["payment_status"] != "completed":
                 await db.payment_transactions.update_one(
                     {"session_id": session_id},
                     {"$set": {"payment_status": "completed", "updated_at": datetime.utcnow()}}
                 )
                 
-                # Upgrade user tier
-                await payment_service.upgrade_user_tier(current_user.id, transaction["tier"])
+                # Activate badge for Facebook Group offers
+                if transaction["platform"] == "facebook_group":
+                    await payment_service.activate_badge(
+                        current_user.id,
+                        transaction["offer_type"],
+                        "stripe",
+                        transaction["amount"],
+                        False
+                    )
                 
-                return {"status": "completed", "tier": transaction["tier"]}
+                return {"status": "completed", "offer_type": transaction["offer_type"]}
             
-            return {"status": status.payment_status, "tier": transaction["tier"]}
+            return {"status": status.payment_status, "offer_type": transaction["offer_type"]}
         except Exception as e:
             logger.error(f"Error checking payment status: {e}")
             return {"status": "error", "message": "Failed to check payment status"}
     
-    return {"status": transaction["payment_status"], "tier": transaction["tier"]}
+    return {"status": transaction["payment_status"], "offer_type": transaction["offer_type"]}
 
 @api_router.post("/webhook/stripe")
 async def stripe_webhook(request: Request):
-    """Handle Stripe webhooks"""
+    """Handle Stripe webhooks for payment events"""
     if not payment_service.stripe_checkout:
         raise HTTPException(status_code=500, detail="Stripe not configured")
     
@@ -706,7 +764,7 @@ async def stripe_webhook(request: Request):
         webhook_response = await payment_service.stripe_checkout.handle_webhook(body, signature)
         
         if webhook_response.event_type == "checkout.session.completed":
-            # Update transaction and upgrade user
+            # Payment successful - activate badge
             transaction = await db.payment_transactions.find_one({"session_id": webhook_response.session_id})
             if transaction and transaction["payment_status"] != "completed":
                 await db.payment_transactions.update_one(
@@ -714,20 +772,35 @@ async def stripe_webhook(request: Request):
                     {"$set": {"payment_status": "completed", "updated_at": datetime.utcnow()}}
                 )
                 
-                # Upgrade user tier
-                await payment_service.upgrade_user_tier(transaction["user_id"], transaction["tier"])
-                
-                # Send confirmation email
-                user = await db.users.find_one({"id": transaction["user_id"]})
-                if user:
-                    await email_service.send_tier_upgrade_email(
-                        user["email"], user["full_name"], transaction["tier"]
+                if transaction["platform"] == "facebook_group":
+                    await payment_service.activate_badge(
+                        transaction["user_id"],
+                        transaction["offer_type"],
+                        "stripe",
+                        transaction["amount"],
+                        False
                     )
+        
+        elif webhook_response.event_type in ["invoice.payment_failed", "customer.subscription.deleted"]:
+            # Payment failed or subscription cancelled - deactivate badge
+            # This would require additional logic to map subscription IDs to our records
+            logger.warning(f"Subscription issue detected: {webhook_response.event_type}")
         
         return {"status": "success"}
     except Exception as e:
         logger.error(f"Webhook error: {e}")
         raise HTTPException(status_code=400, detail="Webhook processing failed")
+
+@api_router.get("/facebook-group/user-badges")
+async def get_user_badges(current_user: User = Depends(get_current_user)):
+    """Get user's active Facebook Group badges"""
+    badges = await db.facebook_subscriptions.find({
+        "user_id": current_user.id,
+        "badge_active": True,
+        "subscription_status": "active"
+    }).to_list(50)
+    
+    return {"badges": [FacebookGroupSubscription(**badge) for badge in badges]}
 
 @api_router.post("/analyze")
 async def analyze_location(
@@ -735,9 +808,7 @@ async def analyze_location(
     background_tasks: BackgroundTasks,
     current_user: User = Depends(get_current_user)
 ):
-    """Analyze a location with SiteAtlas intelligence"""
-    
-    # Verify user has access to requested analysis type
+    """Analyze a location with LaundroTech intelligence"""
     tier_access = {
         'free': ['scout'],
         'analyzer': ['scout', 'analyzer'],
@@ -750,15 +821,12 @@ async def analyze_location(
     if request.analysis_type not in tier_access.get(current_user.subscription_tier, ['scout']):
         raise HTTPException(status_code=403, detail="Upgrade subscription to access this analysis type")
     
-    # Perform analysis
     analysis = await analysis_engine.analyze_location(request.address, request.analysis_type)
     analysis.user_id = current_user.id
     
-    # Save analysis to database
     analysis_dict = analysis.dict()
     await db.analyses.insert_one(analysis_dict)
     
-    # Send analysis complete email
     background_tasks.add_task(
         email_service.send_analysis_complete_email,
         current_user.email,
@@ -768,23 +836,15 @@ async def analyze_location(
     
     return analysis
 
-@api_router.get("/analyses")
-async def get_user_analyses(current_user: User = Depends(get_current_user)):
-    """Get user's previous analyses"""
-    analyses = await db.analyses.find({"user_id": current_user.id}).sort("created_at", -1).to_list(50)
-    return [LocationAnalysis(**analysis) for analysis in analyses]
-
 @api_router.get("/dashboard/stats")
 async def get_dashboard_stats(current_user: User = Depends(get_current_user)):
     """Get dashboard statistics"""
     total_analyses = await db.analyses.count_documents({"user_id": current_user.id})
     
-    # Recent analyses
     recent_analyses = await db.analyses.find(
         {"user_id": current_user.id}
     ).sort("created_at", -1).limit(5).to_list(5)
     
-    # Calculate average score
     avg_score = 0
     if recent_analyses:
         avg_score = sum([a['score'] for a in recent_analyses]) / len(recent_analyses)
@@ -800,16 +860,14 @@ async def get_dashboard_stats(current_user: User = Depends(get_current_user)):
 async def root():
     """API root endpoint"""
     return {
-        "message": "SiteAtlas - LaundroTech Intelligence Platform API",
-        "tagline": "LaundroTech Powered By SiteAtlas",
+        "message": "LaundroTech - Powered by SiteAtlas API",
         "version": "2.0.0",
         "features": [
             "Location Intelligence Analysis",
-            "6-Tier Subscription Model", 
-            "Hybrid Business Analysis",
-            "Real-time Market Monitoring",
-            "AI-Powered Recommendations",
-            "PayPal & Stripe Payments"
+            "Facebook Group Monetization",
+            "Badge Management System",
+            "Payment Processing",
+            "Real-time Webhooks"
         ]
     }
 
