@@ -3,8 +3,8 @@ import { motion } from 'framer-motion';
 import { 
   ChartBarIcon,
   CurrencyDollarIcon,
-  TrendingUpIcon,
-  TrendingDownIcon,
+  ArrowTrendingUpIcon,
+  ArrowTrendingDownIcon,
   UserGroupIcon,
   CalendarIcon,
   ArrowPathIcon,
