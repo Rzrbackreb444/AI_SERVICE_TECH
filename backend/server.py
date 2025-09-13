@@ -42,6 +42,18 @@ gmaps = googlemaps.Client(key=os.environ['GOOGLE_MAPS_API_KEY'])
 # Stripe setup
 stripe_api_key = os.environ.get('STRIPE_API_KEY')
 
+# PayPal setup
+paypal_client_id = os.environ.get('PAYPAL_CLIENT_ID')
+paypal_client_secret = os.environ.get('PAYPAL_CLIENT_SECRET')
+paypal_mode = os.environ.get('PAYPAL_MODE', 'sandbox')
+
+if paypal_client_id and paypal_client_secret:
+    paypalrestsdk.configure({
+        "mode": paypal_mode,
+        "client_id": paypal_client_id,
+        "client_secret": paypal_client_secret
+    })
+
 # FastAPI app setup
 app = FastAPI(
     title="LaundroTech - Powered by SiteAtlas",
