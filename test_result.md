@@ -196,41 +196,41 @@ backend:
         comment: "✅ TESTED: Badge subscription management working correctly. FacebookGroupSubscription model properly defined with all required fields. /api/facebook-group/user-badges endpoint working, returns empty array for new users (expected). Badge activation/deactivation logic implemented in PaymentService class with proper expiration tracking and email notifications."
 
 frontend:
-  - task: "PayPal checkout integration"
-    implemented: false
-    working: false
-    file: "frontend/src/components/"
+  - task: "Updated Facebook Group offers display with new pricing"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/src/components/FacebookGroupMonetization.js"
     stuck_count: 0
     priority: "high"
-    needs_retesting: false
+    needs_retesting: true
     status_history:
-      - working: false
+      - working: "NA"
         agent: "main"
-        comment: "Frontend PayPal integration not yet implemented. Need to add PayPal buttons and checkout flow."
+        comment: "Updated FacebookGroupMonetization.js with correct pricing structure ($29/$149/$299), added Sponsored AMA feature at $499/event, integrated authentication checks, and proper PayPal/Stripe payment handling."
+
+  - task: "PayPal checkout integration with authentication"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/src/components/FacebookGroupMonetization.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Added proper authentication checks, PayPal approval URL redirection, and error handling for payment flows. Includes 10% discount display for badge subscriptions."
 
   - task: "Badge management UI"
     implemented: false
     working: false
     file: "frontend/src/components/"
     stuck_count: 0
-    priority: "high"
+    priority: "medium"
     needs_retesting: false
     status_history:
       - working: false
         agent: "main"
-        comment: "User interface for badge management, subscription status, and payment history not yet implemented."
-
-  - task: "Facebook Group offers display"
-    implemented: false
-    working: false
-    file: "frontend/src/components/FacebookGroupMonetizationPage.js"
-    stuck_count: 0
-    priority: "high"
-    needs_retesting: false
-    status_history:
-      - working: false
-        agent: "main"
-        comment: "Need to update FacebookGroupMonetizationPage with new pricing and PayPal integration."
+        comment: "Separate badge management UI for viewing active subscriptions and payment history not yet implemented. Current implementation focuses on purchase flow."
 
 metadata:
   created_by: "main_agent"
