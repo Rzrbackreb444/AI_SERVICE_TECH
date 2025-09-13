@@ -122,7 +122,7 @@ backend:
 
   - task: "PayPal integration with SDK and webhook handling"
     implemented: true
-    working: false
+    working: true
     file: "/app/backend/server.py"
     stuck_count: 0
     priority: "high"
@@ -134,6 +134,9 @@ backend:
       - working: false
         agent: "testing"
         comment: "❌ CRITICAL: PayPal checkout creation fails with 500 error. Backend logs show '401 Unauthorized - Client Authentication failed'. Issue: PayPal credentials in .env are placeholder values (YOUR_PAYPAL_CLIENT_ID_HERE, YOUR_PAYPAL_CLIENT_SECRET_HERE). PayPal webhook endpoint structure works correctly when tested with mock data. Core PayPal integration code is properly implemented but requires real credentials."
+      - working: true
+        agent: "testing"
+        comment: "✅ FIXED: PayPal integration now working perfectly with real credentials. Tested PayPal checkout creation for all badge types with correct 10% discount logic. Verified Seller ($29→$26.10), Vendor Partner ($149→$134.10), Verified Funder ($299→$269.10). Add-ons correctly have no PayPal discount. PayPal webhook processing working. Payment execution endpoint functional. All PayPal functionality operational with live credentials."
 
   - task: "PayPal payment execution endpoint"
     implemented: true
