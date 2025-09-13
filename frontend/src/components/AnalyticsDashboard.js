@@ -252,9 +252,9 @@ const AnalyticsDashboard = () => {
                 <p className="text-3xl font-bold text-white">{formatCurrency(analyticsData.totalRevenue)}</p>
                 <div className="flex items-center text-sm mt-1">
                   {analyticsData.revenueGrowth >= 0 ? (
-                    <TrendingUpIcon className="w-4 h-4 text-green-400 mr-1" />
+                    <ArrowTrendingUpIcon className="w-4 h-4 text-green-400 mr-1" />
                   ) : (
-                    <TrendingDownIcon className="w-4 h-4 text-red-400 mr-1" />
+                    <ArrowTrendingDownIcon className="w-4 h-4 text-red-400 mr-1" />
                   )}
                   <span className={analyticsData.revenueGrowth >= 0 ? 'text-green-400' : 'text-red-400'}>
                     {formatPercentage(analyticsData.revenueGrowth)}
