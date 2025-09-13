@@ -1115,6 +1115,42 @@ async def get_dashboard_stats(current_user: User = Depends(get_current_user)):
         "recent_analyses": [LocationAnalysis(**a) for a in recent_analyses]
     }
 
+@api_router.post("/support/contact")
+async def submit_support_request(request_data: Dict[str, Any]):
+    """Submit a support request"""
+    try:
+        # Create support ticket record
+        ticket = {
+            "id": str(uuid.uuid4()),
+            "name": request_data.get("name"),
+            "email": request_data.get("email"),
+            "subject": request_data.get("subject"),
+            "category": request_data.get("category"),
+            "message": request_data.get("message"),
+            "priority": request_data.get("priority", "medium"),
+            "status": "open",
+            "created_at": datetime.utcnow(),
+            "updated_at": datetime.utcnow()
+        }
+        
+        await db.support_tickets.insert_one(ticket)
+        
+        # Send support notification email
+        await email_service.send_support_notification(
+            request_data.get("email"),
+            request_data.get("name"),
+            request_data.get("subject"),
+            request_data.get("message"),
+            request_data.get("category"),
+            request_data.get("priority")
+        )
+        
+        return {"message": "Support request submitted successfully", "ticket_id": ticket["id"]}
+        
+    except Exception as e:
+        logger.error(f"Failed to submit support request: {e}")
+        raise HTTPException(status_code=500, detail="Failed to submit support request")
+
 @api_router.get("/")
 async def root():
     """API root endpoint"""
@@ -1126,7 +1162,9 @@ async def root():
             "Facebook Group Monetization",
             "Badge Management System",
             "Payment Processing",
-            "Real-time Webhooks"
+            "Real-time Webhooks",
+            "Customer Support System",
+            "Admin Dashboard"
         ]
     }
 
