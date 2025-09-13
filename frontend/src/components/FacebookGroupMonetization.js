@@ -615,52 +615,66 @@ const FacebookGroupMonetization = () => {
 
                 {/* Payment Buttons */}
                 <div className="space-y-3">
-                  {/* PayPal Button (with discount for badges) */}
-                  {offer.paypalDiscount ? (
-                    <motion.button
-                      whileHover={{ scale: 1.02 }}
-                      whileTap={{ scale: 0.98 }}
-                      className="w-full py-3 px-4 rounded-xl font-semibold transition-all duration-200 bg-gradient-to-r from-yellow-500 to-orange-500 text-white relative overflow-hidden"
-                      onClick={() => handlePayPalPayment(offer)}
-                      disabled={processing}
-                    >
-                      <div className="flex items-center justify-center space-x-2">
-                        <BoltIcon className="w-5 h-5" />
-                        <span>PayPal - ${offer.paypalPrice} (Save 10%!)</span>
-                      </div>
-                    </motion.button>
-                  ) : (
-                    <motion.button
-                      whileHover={{ scale: 1.02 }}
-                      whileTap={{ scale: 0.98 }}
-                      className="w-full py-3 px-4 rounded-xl font-semibold transition-all duration-200 bg-gradient-to-r from-blue-500 to-blue-600 text-white"
-                      onClick={() => handlePayPalPayment(offer)}
-                      disabled={processing}
-                    >
-                      <div className="flex items-center justify-center space-x-2">
-                        <BoltIcon className="w-5 h-5" />
-                        <span>PayPal - ${offer.price}</span>
-                      </div>
-                    </motion.button>
-                  )}
-
-                  {/* Stripe Button */}
-                  <motion.button
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                    className={`w-full py-3 px-4 rounded-xl font-semibold transition-all duration-200 ${
-                      offer.popular 
-                        ? 'bg-gradient-to-r from-cyan-500 to-emerald-500 text-white' 
-                        : `bg-gradient-to-r ${offer.color} text-white`
-                    }`}
-                    onClick={() => handleStripePayment(offer)}
-                    disabled={processing}
-                  >
-                    <div className="flex items-center justify-center space-x-2">
-                      <CreditCardIcon className="w-5 h-5" />
-                      <span>Credit Card - ${offer.price}</span>
+                  {!isAuthenticated ? (
+                    <div className="text-center">
+                      <p className="text-slate-400 text-sm mb-3">Login required to purchase memberships</p>
+                      <Link 
+                        to="/"
+                        className="w-full py-3 px-4 rounded-xl font-semibold transition-all duration-200 bg-gradient-to-r from-slate-600 to-slate-700 text-white inline-block text-center"
+                      >
+                        Login to Purchase
+                      </Link>
                     </div>
-                  </motion.button>
+                  ) : (
+                    <>
+                      {/* PayPal Button (with discount for badges) */}
+                      {offer.paypalDiscount ? (
+                        <motion.button
+                          whileHover={{ scale: 1.02 }}
+                          whileTap={{ scale: 0.98 }}
+                          className="w-full py-3 px-4 rounded-xl font-semibold transition-all duration-200 bg-gradient-to-r from-yellow-500 to-orange-500 text-white relative overflow-hidden"
+                          onClick={() => handlePayPalPayment(offer)}
+                          disabled={processing}
+                        >
+                          <div className="flex items-center justify-center space-x-2">
+                            <BoltIcon className="w-5 h-5" />
+                            <span>PayPal - ${offer.paypalPrice} (Save 10%!)</span>
+                          </div>
+                        </motion.button>
+                      ) : (
+                        <motion.button
+                          whileHover={{ scale: 1.02 }}
+                          whileTap={{ scale: 0.98 }}
+                          className="w-full py-3 px-4 rounded-xl font-semibold transition-all duration-200 bg-gradient-to-r from-blue-500 to-blue-600 text-white"
+                          onClick={() => handlePayPalPayment(offer)}
+                          disabled={processing}
+                        >
+                          <div className="flex items-center justify-center space-x-2">
+                            <BoltIcon className="w-5 h-5" />
+                            <span>PayPal - ${offer.price}</span>
+                          </div>
+                        </motion.button>
+                      )}
+
+                      {/* Stripe Button */}
+                      <motion.button
+                        whileHover={{ scale: 1.02 }}
+                        whileTap={{ scale: 0.98 }}
+                        className={`w-full py-3 px-4 rounded-xl font-semibold transition-all duration-200 ${
+                          offer.popular 
+                            ? 'bg-gradient-to-r from-cyan-500 to-emerald-500 text-white' 
+                            : `bg-gradient-to-r ${offer.color} text-white`
+                        }`}
+                        onClick={() => handleStripePayment(offer)}
+                        disabled={processing}
+                      >
+                        <div className="flex items-center justify-center space-x-2">
+                          <CreditCardIcon className="w-5 h-5" />
+                          <span>Credit Card - ${offer.price}</span>
+                        </div>
+                      </motion.button>
+                    </>
+                  )}
                 </div>
               </motion.div>
             ))}
