@@ -219,7 +219,7 @@ const LandingPage = ({ onOpenAuth }) => {
                 <img 
                   src="https://customer-assets.emergentagent.com/job_laundrosight/artifacts/68vqd4wq_Logo%2C%20Transparent.png" 
                   alt="LaundroTech Logo"
-                  className="h-48 md:h-56 lg:h-64 mx-auto drop-shadow-2xl filter brightness-110"
+                  className="h-144 md:h-168 lg:h-192 mx-auto drop-shadow-2xl filter brightness-110"
                 />
                 <div className="absolute inset-0 bg-gradient-to-r from-cyan-400/20 to-emerald-400/20 blur-3xl -z-10"></div>
               </motion.div>
