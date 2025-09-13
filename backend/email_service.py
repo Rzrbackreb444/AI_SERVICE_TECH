@@ -450,6 +450,158 @@ class EmailService:
         except Exception as e:
             logger.error(f"Failed to send cancellation email to {user_email}: {str(e)}")
             return False
+    
+    async def send_support_notification(self, user_email: str, user_name: str, subject: str, message: str, category: str, priority: str):
+        """Send support request notification"""
+        if not self.sg:
+            logger.warning("SendGrid not configured, skipping email")
+            return False
+        
+        priority_colors = {
+            "low": "#10B981",
+            "medium": "#F59E0B", 
+            "high": "#EF4444",
+            "urgent": "#DC2626"
+        }
+        
+        priority_color = priority_colors.get(priority, "#F59E0B")
+        notification_email = "nick@laundrotech.xyz"
+        
+        html_content = f"""
+        <html>
+        <head>
+            <style>
+                body {{ font-family: 'Arial', sans-serif; line-height: 1.6; color: #333; }}
+                .container {{ max-width: 600px; margin: 0 auto; padding: 20px; }}
+                .header {{ text-align: center; padding: 30px 0; background: linear-gradient(135deg, #0F172A, #1E3A8A); border-radius: 12px; }}
+                .priority-badge {{ display: inline-block; background: {priority_color}; color: white; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: bold; text-transform: uppercase; }}
+                .ticket-info {{ background: #F8FAFC; padding: 20px; border-radius: 8px; margin: 20px 0; }}
+                .message-content {{ background: #FFF; padding: 20px; border-radius: 8px; border-left: 4px solid #3B82F6; margin: 20px 0; }}
+                .footer {{ text-align: center; padding-top: 30px; border-top: 1px solid #E2E8F0; color: #64748B; }}
+            </style>
+        </head>
+        <body>
+            <div class="container">
+                <div class="header">
+                    <img src="https://customer-assets.emergentagent.com/job_laundrosight/artifacts/68vqd4wq_Logo%2C%20Transparent.png" alt="LaundroTech Logo" style="max-width: 100px;">
+                    <h1 style="color: white; margin: 15px 0 5px 0;">🎫 New Support Request</h1>
+                    <p style="color: #94A3B8; margin: 0;">Priority: <span class="priority-badge">{priority}</span></p>
+                </div>
+                
+                <div class="ticket-info">
+                    <h2 style="color: #1F2937; margin-top: 0;">Request Details</h2>
+                    <table style="width: 100%; border-collapse: collapse;">
+                        <tr>
+                            <td style="padding: 8px 0; color: #6B7280; font-weight: bold;">Name:</td>
+                            <td style="padding: 8px 0; color: #1F2937;">{user_name}</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 8px 0; color: #6B7280; font-weight: bold;">Email:</td>
+                            <td style="padding: 8px 0; color: #1F2937;">{user_email}</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 8px 0; color: #6B7280; font-weight: bold;">Category:</td>
+                            <td style="padding: 8px 0; color: #1F2937; text-transform: capitalize;">{category}</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 8px 0; color: #6B7280; font-weight: bold;">Subject:</td>
+                            <td style="padding: 8px 0; color: #1F2937; font-weight: bold;">{subject}</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 8px 0; color: #6B7280; font-weight: bold;">Submitted:</td>
+                            <td style="padding: 8px 0; color: #1F2937;">{datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S')} UTC</td>
+                        </tr>
+                    </table>
+                </div>
+                
+                <div class="message-content">
+                    <h3 style="color: #1F2937; margin-top: 0;">📝 Message:</h3>
+                    <p style="color: #374151; white-space: pre-line; line-height: 1.6;">{message}</p>
+                </div>
+                
+                <div style="background: #FEF9E7; padding: 20px; border-radius: 8px; border-left: 4px solid #F59E0B; margin: 20px 0;">
+                    <h3 style="color: #92400E; margin-top: 0;">⚡ Action Required</h3>
+                    <p style="color: #92400E;">Please respond to this support request within 24 hours.</p>
+                    <p style="color: #92400E; margin-bottom: 0;">
+                        <strong>Reply directly to:</strong> {user_email}
+                    </p>
+                </div>
+                
+                <div class="footer">
+                    <p>LaundroTech Support System</p>
+                    <p>This is an automated notification from the customer support system</p>
+                </div>
+            </div>
+        </body>
+        </html>
+        """
+        
+        # Send to support team
+        try:
+            message = Mail(
+                from_email=From(self.sender_email, "LaundroTech Support System"),
+                to_emails=To(notification_email),
+                subject=Subject(f"🎫 Support Request: {subject} ({priority.upper()} priority)"),
+                html_content=HtmlContent(html_content)
+            )
+            
+            response = self.sg.send(message)
+            
+            # Send confirmation to user
+            user_confirmation = f"""
+            <html>
+            <head>
+                <style>
+                    body {{ font-family: Arial, sans-serif; line-height: 1.6; color: #333; }}
+                    .container {{ max-width: 600px; margin: 0 auto; padding: 20px; }}
+                    .header {{ text-align: center; padding: 30px 0; background: linear-gradient(135deg, #0F172A, #1E3A8A); border-radius: 12px; }}
+                    .content {{ background: #F8FAFC; padding: 20px; border-radius: 8px; margin: 20px 0; }}
+                </style>
+            </head>
+            <body>
+                <div class="container">
+                    <div class="header">
+                        <img src="https://customer-assets.emergentagent.com/job_laundrosight/artifacts/68vqd4wq_Logo%2C%20Transparent.png" alt="LaundroTech Logo" style="max-width: 100px;">
+                        <h1 style="color: white; margin: 15px 0 5px 0;">✅ Support Request Received</h1>
+                        <p style="color: #94A3B8; margin: 0;">We'll get back to you soon</p>
+                    </div>
+                    
+                    <div class="content">
+                        <h2>Hi {user_name},</h2>
+                        <p>Thank you for contacting LaundroTech support. We've received your request about "<strong>{subject}</strong>" and will respond within 24 hours.</p>
+                        
+                        <div style="background: white; padding: 15px; border-radius: 8px; border-left: 4px solid #3B82F6;">
+                            <h4 style="margin-top: 0;">Your Request Summary:</h4>
+                            <p><strong>Category:</strong> {category.title()}</p>
+                            <p><strong>Priority:</strong> {priority.title()}</p>
+                            <p><strong>Message:</strong></p>
+                            <p style="color: #6B7280; font-style: italic;">{message[:200]}{'...' if len(message) > 200 else ''}</p>
+                        </div>
+                        
+                        <p>In the meantime, you might find answers in our <a href="https://site-analytics-6.preview.emergentagent.com/support" style="color: #3B82F6;">FAQ section</a>.</p>
+                        
+                        <p>Best regards,<br>LaundroTech Support Team</p>
+                    </div>
+                </div>
+            </body>
+            </html>
+            """
+            
+            user_message = Mail(
+                from_email=From(self.sender_email, "LaundroTech Support"),
+                to_emails=To(user_email),
+                subject=Subject(f"Support Request Received: {subject}"),
+                html_content=HtmlContent(user_confirmation)
+            )
+            
+            self.sg.send(user_message)
+            
+            logger.info(f"Support notification sent for {user_email}, status: {response.status_code}")
+            return response.status_code == 202
+            
+        except Exception as e:
+            logger.error(f"Failed to send support notification: {str(e)}")
+            return False
 
 # Global email service instance
 email_service = EmailService()
