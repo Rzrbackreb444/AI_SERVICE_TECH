@@ -148,6 +148,10 @@ def create_admin_router(db, get_current_user):
         """Get transaction list for admin management"""
         try:
             transactions = await db.payment_transactions.find({}).sort("created_at", -1).limit(limit).to_list(length=limit)
+            # Convert ObjectId to string for JSON serialization
+            for transaction in transactions:
+                if "_id" in transaction:
+                    transaction["_id"] = str(transaction["_id"])
             return {"transactions": transactions}
         except Exception as e:
             logger.error(f"Error fetching transactions: {e}")
