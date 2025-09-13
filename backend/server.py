@@ -1133,6 +1133,10 @@ async def root():
 # Include router in main app
 app.include_router(api_router)
 
+# Include admin router
+admin_router = create_admin_router(db, get_current_user)
+app.include_router(admin_router, prefix="/api")
+
 @app.on_event("shutdown")
 async def shutdown_db_client():
     client.close()
