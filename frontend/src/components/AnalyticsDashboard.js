@@ -13,9 +13,7 @@ import {
   MapIcon,
   CreditCardIcon,
   ExclamationTriangleIcon,
-  ClockIcon,
-  EyeIcon,
-  ArrowTopRightOnSquareIcon
+  ClockIcon
 } from '@heroicons/react/24/outline';
 import { 
   LineChart, 
