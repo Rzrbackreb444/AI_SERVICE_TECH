@@ -3,6 +3,7 @@ from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import Mail, From, To, Subject, HtmlContent, PlainTextContent
 from typing import Optional
 import logging
+from datetime import datetime
 
 logger = logging.getLogger(__name__)
 
