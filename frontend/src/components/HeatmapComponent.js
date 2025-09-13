@@ -288,7 +288,7 @@ const HeatmapComponent = ({ data, title = "Data Heatmap", className = "" }) => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div className="glass-card p-4">
             <div className="flex items-center space-x-2 mb-2">
-              <TrendingUpIcon className="w-4 h-4 text-green-400" />
+              <ArrowTrendingUpIcon className="w-4 h-4 text-green-400" />
               <span className="text-slate-300 text-sm">Peak Activity</span>
             </div>
             <div className="text-white font-bold">Weekdays 10-15h</div>
