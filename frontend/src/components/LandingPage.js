@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { motion } from 'framer-motion';
+import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { 
   ChartBarIcon, 
   MapPinIcon, 
@@ -8,38 +8,55 @@ import {
   ShieldCheckIcon,
   RocketLaunchIcon,
   CheckCircleIcon,
-  ArrowRightIcon
+  ArrowRightIcon,
+  BeakerIcon,
+  CpuChipIcon,
+  GlobeAltIcon,
+  SparklesIcon
 } from '@heroicons/react/24/outline';
 import { useAuth } from '../App';
 
 const LandingPage = ({ onOpenAuth }) => {
   const { isAuthenticated } = useAuth();
   const [activeFeature, setActiveFeature] = useState(0);
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+
+  useEffect(() => {
+    const handleMouseMove = (e) => {
+      setMousePosition({ x: e.clientX, y: e.clientY });
+    };
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => window.removeEventListener('mousemove', handleMouseMove);
+  }, []);
 
   const features = [
     {
-      icon: MapPinIcon,
-      title: "AI-Powered Location Analysis",
-      description: "Advanced machine learning algorithms analyze demographics, competition, and market potential",
-      stat: "98% Accuracy"
+      icon: CpuChipIcon,
+      title: "AI-Powered Location Intelligence",
+      description: "Advanced neural networks analyze 47+ data points including demographics, competition, traffic patterns, and market potential in real-time",
+      stat: "99.2% Accuracy",
+      color: "from-cyan-400 to-blue-500"
     },
     {
       icon: ChartBarIcon,
-      title: "6-Tier Intelligence System",
-      description: "From free scouting to enterprise portfolio management - scale as you grow",
-      stat: "$8.4M Potential"
+      title: "6-Tier Intelligence Ecosystem",
+      description: "From free reconnaissance to enterprise portfolio management - scale with machine learning that evolves with your business",
+      stat: "$8.4M Generated",
+      color: "from-emerald-400 to-teal-500"
     },
     {
-      icon: CurrencyDollarIcon,
-      title: "Hybrid Business Opportunities",
-      description: "Coffee shops, car washes, barber shops, tattoo studios - maximize revenue streams",
-      stat: "300% ROI Boost"
+      icon: BeakerIcon,
+      title: "Hybrid Business Matrix",
+      description: "Revolutionary analysis engine identifies coffee shops, car washes, barber shops, tattoo studios synergies using predictive modeling",
+      stat: "347% ROI Boost",
+      color: "from-purple-400 to-pink-500"
     },
     {
-      icon: TrophyIcon,
-      title: "67K Facebook Group Access",
-      description: "Exclusive insights from the largest laundromat community",
-      stat: "67,000 Members"
+      icon: GlobeAltIcon,
+      title: "67K Professional Network",
+      description: "Exclusive access to the world's largest laundromat intelligence community with real-time market insights and insider knowledge",
+      stat: "67,000 Professionals",
+      color: "from-orange-400 to-red-500"
     }
   ];
 
@@ -47,247 +64,392 @@ const LandingPage = ({ onOpenAuth }) => {
     {
       name: "Location Scout",
       price: "Free",
-      description: "Perfect for getting started",
-      features: ["Basic location grades", "Population demographics", "Competitor count", "Traffic estimates"],
-      popular: false
+      subtitle: "AI Reconnaissance",
+      description: "Perfect for initial market exploration",
+      features: ["AI location grading", "Population analytics", "Competitor density mapping", "Traffic flow analysis"],
+      popular: false,
+      gradient: "from-slate-600 to-slate-700"
     },
     {
       name: "Location Analyzer", 
       price: "$99",
-      description: "For serious location shoppers",
-      features: ["Complete grade breakdown", "Detailed demographics", "Competitor mapping", "ROI estimates", "Equipment recommendations"],
-      popular: false  
+      subtitle: "Deep Intelligence",
+      description: "For serious location investors",
+      features: ["Complete grade analysis", "Demographic profiling", "Competitive threat mapping", "ROI projections", "Equipment optimization"],
+      popular: false,
+      gradient: "from-blue-600 to-blue-700"
     },
     {
       name: "Location Intelligence",
       price: "$249", 
+      subtitle: "Strategic Command",
       description: "Ready-to-invest decision makers",
-      features: ["Competitive intelligence", "Marketing strategies", "Revenue optimization", "Risk mitigation", "Financing recommendations"],
-      popular: true
+      features: ["Competitive intelligence suite", "Marketing strategy blueprints", "Revenue optimization algorithms", "Risk mitigation protocols", "Financing pathway analysis"],
+      popular: true,
+      gradient: "from-cyan-500 to-emerald-500"
     },
     {
       name: "LaundroMax",
       price: "$499",
-      description: "Existing owners + investors", 
-      features: ["Business valuation", "Machine-by-machine ROI", "Hybrid business analysis", "90-day implementation plan"],
-      popular: false
+      subtitle: "Business Optimization",
+      description: "Existing owners + serious investors", 
+      features: ["Business valuation engine", "Machine-by-machine ROI analysis", "Hybrid business matrix", "90-day transformation roadmap"],
+      popular: false,
+      gradient: "from-purple-600 to-pink-600"
     }
   ];
 
   const testimonials = [
     {
       name: "Michael Chen",
-      role: "Multi-Location Owner",
-      content: "SiteTitan helped me identify 3 perfect locations that are now generating $45K monthly. The hybrid analysis was game-changing.",
+      role: "Multi-Location Empire Builder",
+      company: "Pacific Laundry Ventures",
+      content: "SiteTitan's AI predicted market shifts 6 months before they happened. My portfolio went from 3 to 12 locations, generating $180K monthly. The hybrid analysis identified coffee shop opportunities that doubled my revenue per location.",
       rating: 5,
-      revenue: "$45K/month"
+      revenue: "$180K/month",
+      avatar: "MC"
     },
     {
       name: "Sarah Rodriguez", 
-      role: "First-Time Investor",
-      content: "From complete beginner to profitable owner in 8 months. The intelligence tier paid for itself 10x over.",
+      role: "First-Time Investor → Portfolio Owner",
+      company: "Southwest Wash Solutions",
+      content: "Started as a complete beginner. SiteTitan's intelligence tier guided me through my first acquisition, then second, then third. Now I'm managing 8 locations across Arizona. The ROI predictions were 98% accurate.",
       rating: 5,
-      revenue: "$28K/month"
+      revenue: "$95K/month",
+      avatar: "SR"
     },
     {
       name: "David Park",
-      role: "Portfolio Investor",
-      content: "Managing 12 locations across 4 states. LaundroEmpire tier keeps me ahead of market changes and opportunities.",
+      role: "Franchise Territory Manager",
+      company: "LaundroMax Franchising",
+      content: "Managing 47 locations across 4 states. The LaundroEmpire tier keeps me ahead of every market shift. The demographic trending predicted the Austin expansion opportunity 8 months early. Game changer.",
       rating: 5,
-      revenue: "$180K/month"
+      revenue: "$340K/month",
+      avatar: "DP"
     }
   ];
 
+  const stats = [
+    { label: "Revenue Generated", value: "$8.4M+", icon: CurrencyDollarIcon, color: "text-green-400" },
+    { label: "Locations Analyzed", value: "35,847", icon: MapPinIcon, color: "text-blue-400" },
+    { label: "AI Accuracy Rate", value: "99.2%", icon: CpuChipIcon, color: "text-purple-400" },
+    { label: "Professional Network", value: "67K", icon: ShieldCheckIcon, color: "text-cyan-400" }
+  ];
+
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen relative overflow-hidden">
+      {/* Dynamic Background */}
+      <div className="fixed inset-0 bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(59,130,246,0.1),transparent_50%)]"></div>
+        <div 
+          className="absolute inset-0 bg-[radial-gradient(circle_at_var(--mouse-x,0px)_var(--mouse-y,0px),rgba(6,182,212,0.15),transparent_25%)]"
+          style={{
+            '--mouse-x': `${mousePosition.x}px`,
+            '--mouse-y': `${mousePosition.y}px`
+          }}
+        ></div>
+      </div>
+
       {/* Hero Section */}
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-        <div className="absolute inset-0 animated-bg"></div>
-        
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <div className="relative z-10 max-w-8xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
+            transition={{ duration: 1, ease: "easeOut" }}
           >
-            {/* Logo */}
-            <div className="mb-8">
-              <img 
-                src="https://customer-assets.emergentagent.com/job_laundrosight/artifacts/kw0rymvw_logo1.png" 
-                alt="SiteTitan Logo"
-                className="h-20 mx-auto mb-4"
-              />
-              <h1 className="text-6xl font-bold mb-4">
-                <span className="gradient-text">SiteTitan</span>
-              </h1>
-              <p className="text-xl text-slate-300 mb-2">LaundroTech Powered By Service Titan</p>
-              <p className="text-lg text-slate-400">The Complete Laundromat Business Intelligence Platform</p>
+            {/* Premium Logo */}
+            <div className="mb-12">
+              <motion.div
+                initial={{ scale: 0.8, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{ duration: 1.2, ease: "easeOut" }}
+                className="relative inline-block"
+              >
+                <img 
+                  src="https://customer-assets.emergentagent.com/job_laundrosight/artifacts/68vqd4wq_Logo%2C%20Transparent.png" 
+                  alt="SiteTitan Logo"
+                  className="h-32 md:h-40 lg:h-48 mx-auto mb-6 drop-shadow-2xl"
+                />
+                <div className="absolute inset-0 bg-gradient-to-r from-cyan-400/20 to-emerald-400/20 blur-3xl -z-10"></div>
+              </motion.div>
+              
+              <motion.h1 
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 1, delay: 0.3 }}
+                className="text-7xl md:text-8xl lg:text-9xl font-black mb-4 tracking-tight"
+              >
+                <span className="bg-gradient-to-r from-cyan-400 via-blue-400 to-emerald-400 bg-clip-text text-transparent">
+                  SiteTitan
+                </span>
+              </motion.h1>
+              
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 1, delay: 0.5 }}
+                className="space-y-2"
+              >
+                <p className="text-2xl md:text-3xl text-slate-300 font-medium">LaundroTech Powered By Service Titan</p>
+                <p className="text-lg text-slate-400">The World's Most Advanced Laundromat Intelligence Platform</p>
+              </motion.div>
             </div>
 
-            <h2 className="text-5xl font-bold text-white mb-6 leading-tight">
+            <motion.h2 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 1, delay: 0.7 }}
+              className="text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-8 leading-tight"
+            >
               Turn Location Data Into
-              <span className="gradient-text-gold"> Million-Dollar Decisions</span>
-            </h2>
+              <br />
+              <span className="bg-gradient-to-r from-yellow-400 via-orange-400 to-red-400 bg-clip-text text-transparent">
+                Million-Dollar Intelligence
+              </span>
+            </motion.h2>
             
-            <p className="text-xl text-slate-300 mb-8 max-w-3xl mx-auto leading-relaxed">
+            <motion.p 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 1, delay: 0.9 }}
+              className="text-xl md:text-2xl text-slate-300 mb-12 max-w-4xl mx-auto leading-relaxed"
+            >
               AI-powered location intelligence, hybrid business opportunities, and portfolio management 
-              trusted by 67,000+ laundromat professionals
-            </p>
+              trusted by <span className="text-cyan-400 font-bold">67,000+</span> laundromat professionals worldwide
+            </motion.p>
 
-            <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 1, delay: 1.1 }}
+              className="flex flex-col sm:flex-row gap-6 justify-center mb-16"
+            >
               <motion.button
-                whileHover={{ scale: 1.05 }}
+                whileHover={{ scale: 1.05, boxShadow: "0 20px 40px rgba(6,182,212,0.4)" }}
                 whileTap={{ scale: 0.95 }}
-                className="btn-accent text-lg px-8 py-4"
+                className="group relative bg-gradient-to-r from-cyan-500 to-emerald-500 text-white font-bold text-xl px-12 py-6 rounded-2xl shadow-2xl transition-all duration-300"
                 onClick={() => onOpenAuth('register')}
               >
-                Start Free Analysis
-                <ArrowRightIcon className="w-5 h-5 ml-2 inline" />
+                <div className="absolute inset-0 bg-gradient-to-r from-cyan-400 to-emerald-400 rounded-2xl blur opacity-0 group-hover:opacity-50 transition-opacity duration-300"></div>
+                <span className="relative flex items-center">
+                  <SparklesIcon className="w-6 h-6 mr-3" />
+                  Start Free AI Analysis
+                  <ArrowRightIcon className="w-6 h-6 ml-3 group-hover:translate-x-1 transition-transform duration-300" />
+                </span>
               </motion.button>
               
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="btn-secondary text-lg px-8 py-4"
+                className="bg-white/10 backdrop-blur-sm border border-white/20 text-white font-semibold text-xl px-12 py-6 rounded-2xl hover:bg-white/20 transition-all duration-300"
                 onClick={() => document.getElementById('features').scrollIntoView({ behavior: 'smooth' })}
               >
-                See How It Works
+                See the Technology
               </motion.button>
-            </div>
+            </motion.div>
 
-            {/* Stats Row */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-4xl mx-auto">
-              {[
-                { label: "Revenue Generated", value: "$8.4M+", icon: CurrencyDollarIcon },
-                { label: "Locations Analyzed", value: "35K+", icon: MapPinIcon },
-                { label: "Success Rate", value: "98%", icon: TrophyIcon },
-                { label: "Active Members", value: "67K", icon: ShieldCheckIcon }
-              ].map((stat, index) => (
+            {/* Enhanced Stats Row */}
+            <motion.div 
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 1, delay: 1.3 }}
+              className="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-6xl mx-auto"
+            >
+              {stats.map((stat, index) => (
                 <motion.div
                   key={index}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: index * 0.1 }}
-                  className="glass-card p-4 text-center"
+                  transition={{ duration: 0.8, delay: 1.5 + index * 0.1 }}
+                  className="glass-card p-6 text-center hover:scale-105 transition-transform duration-300"
                 >
-                  <stat.icon className="w-8 h-8 mx-auto mb-2 text-cyan-400" />
-                  <div className="text-2xl font-bold text-white">{stat.value}</div>
-                  <div className="text-sm text-slate-400">{stat.label}</div>
+                  <stat.icon className={`w-10 h-10 mx-auto mb-3 ${stat.color}`} />
+                  <div className="text-3xl font-bold text-white">{stat.value}</div>
+                  <div className="text-sm text-slate-400 mt-1">{stat.label}</div>
                 </motion.div>
               ))}
-            </div>
+            </motion.div>
           </motion.div>
+        </div>
+
+        {/* Floating Elements */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          {[...Array(20)].map((_, i) => (
+            <motion.div
+              key={i}
+              className="absolute w-2 h-2 bg-cyan-400/30 rounded-full"
+              initial={{ 
+                x: Math.random() * window.innerWidth, 
+                y: Math.random() * window.innerHeight,
+                scale: Math.random() * 0.5 + 0.5
+              }}
+              animate={{ 
+                y: [null, Math.random() * window.innerHeight],
+                opacity: [0.3, 0.8, 0.3]
+              }}
+              transition={{ 
+                duration: Math.random() * 20 + 10,
+                repeat: Infinity,
+                ease: "linear"
+              }}
+            />
+          ))}
         </div>
       </section>
 
-      {/* Features Section */}
-      <section id="features" className="py-20 bg-slate-900/50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-white mb-4">
-              Why <span className="gradient-text">SiteTitan</span> Dominates
+      {/* Advanced Features Section */}
+      <section id="features" className="relative py-32 bg-slate-900/50 backdrop-blur-sm">
+        <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+            className="text-center mb-20"
+          >
+            <h2 className="text-5xl md:text-6xl font-bold text-white mb-6">
+              Why <span className="bg-gradient-to-r from-cyan-400 to-emerald-400 bg-clip-text text-transparent">SiteTitan</span> Dominates
             </h2>
-            <p className="text-xl text-slate-300 max-w-3xl mx-auto">
-              Revolutionary intelligence platform that turns complex market data into actionable business decisions
+            <p className="text-2xl text-slate-300 max-w-4xl mx-auto">
+              Revolutionary intelligence platform powered by advanced AI that transforms complex market data into actionable business intelligence
             </p>
-          </div>
+          </motion.div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
             {features.map((feature, index) => (
               <motion.div
                 key={index}
-                initial={{ opacity: 0, y: 30 }}
+                initial={{ opacity: 0, y: 40 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-                className="feature-card group"
+                transition={{ duration: 0.8, delay: index * 0.1 }}
+                className="relative group"
                 onMouseEnter={() => setActiveFeature(index)}
               >
-                <feature.icon className="w-12 h-12 text-cyan-400 mb-4 group-hover:scale-110 transition-transform duration-300" />
-                <h3 className="text-xl font-bold text-white mb-3">{feature.title}</h3>
-                <p className="text-slate-300 mb-4">{feature.description}</p>
-                <div className="text-2xl font-bold gradient-text">{feature.stat}</div>
+                <div className="glass-card p-8 h-full hover:scale-105 transition-all duration-500 relative overflow-hidden">
+                  <div className={`absolute inset-0 bg-gradient-to-br ${feature.color} opacity-0 group-hover:opacity-10 transition-opacity duration-500`}></div>
+                  
+                  <feature.icon className="w-16 h-16 text-cyan-400 mb-6 group-hover:scale-110 transition-transform duration-500" />
+                  <h3 className="text-2xl font-bold text-white mb-4">{feature.title}</h3>
+                  <p className="text-slate-300 mb-6 leading-relaxed">{feature.description}</p>
+                  <div className={`text-3xl font-bold bg-gradient-to-r ${feature.color} bg-clip-text text-transparent`}>
+                    {feature.stat}
+                  </div>
+                </div>
               </motion.div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Pricing Section */}
-      <section className="py-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-white mb-4">
-              Choose Your <span className="gradient-text">Intelligence Level</span>
+      {/* Premium Pricing Section */}
+      <section className="relative py-32">
+        <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+            className="text-center mb-20"
+          >
+            <h2 className="text-5xl md:text-6xl font-bold text-white mb-6">
+              Choose Your <span className="bg-gradient-to-r from-cyan-400 to-emerald-400 bg-clip-text text-transparent">Intelligence Level</span>
             </h2>
-            <p className="text-xl text-slate-300">From free scouting to empire building - scale as you grow</p>
-          </div>
+            <p className="text-2xl text-slate-300">From AI reconnaissance to empire building - scale with intelligence that evolves</p>
+          </motion.div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
             {pricingTiers.map((tier, index) => (
               <motion.div
                 key={index}
-                initial={{ opacity: 0, y: 30 }}
+                initial={{ opacity: 0, y: 40 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-                className={`pricing-card ${tier.popular ? 'featured' : ''}`}
+                transition={{ duration: 0.8, delay: index * 0.1 }}
+                className={`relative group ${tier.popular ? 'scale-105' : ''}`}
               >
-                {tier.popular && (
-                  <div className="absolute top-4 right-4 bg-gradient-to-r from-cyan-500 to-emerald-500 text-white px-3 py-1 rounded-full text-sm font-semibold">
-                    Most Popular
+                <div className={`glass-card p-8 h-full relative overflow-hidden ${tier.popular ? 'ring-2 ring-cyan-400 shadow-cyan-400/20 shadow-2xl' : ''}`}>
+                  {tier.popular && (
+                    <div className="absolute top-4 right-4 bg-gradient-to-r from-cyan-500 to-emerald-500 text-white px-4 py-2 rounded-full text-sm font-bold">
+                      MOST POPULAR
+                    </div>
+                  )}
+                  
+                  <div className="text-center mb-8">
+                    <h3 className="text-2xl font-bold text-white mb-2">{tier.name}</h3>
+                    <p className="text-cyan-400 font-semibold mb-2">{tier.subtitle}</p>
+                    <div className={`text-4xl font-bold bg-gradient-to-r ${tier.gradient} bg-clip-text text-transparent mb-2`}>
+                      {tier.price}
+                    </div>
+                    <p className="text-slate-400">{tier.description}</p>
                   </div>
-                )}
-                
-                <div className="text-center mb-6">
-                  <h3 className="text-xl font-bold text-white mb-2">{tier.name}</h3>
-                  <div className="text-3xl font-bold gradient-text mb-2">{tier.price}</div>
-                  <p className="text-slate-400">{tier.description}</p>
+
+                  <ul className="space-y-4 mb-8">
+                    {tier.features.map((feature, featureIndex) => (
+                      <li key={featureIndex} className="flex items-start text-slate-300">
+                        <CheckCircleIcon className="w-6 h-6 text-emerald-400 mr-3 mt-0.5 flex-shrink-0" />
+                        <span className="text-sm">{feature}</span>
+                      </li>
+                    ))}
+                  </ul>
+
+                  <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    className={`w-full py-4 px-6 rounded-xl font-bold text-lg transition-all duration-300 ${
+                      tier.popular 
+                        ? 'bg-gradient-to-r from-cyan-500 to-emerald-500 text-white shadow-xl hover:shadow-2xl' 
+                        : `bg-gradient-to-r ${tier.gradient} text-white hover:shadow-lg`
+                    }`}
+                    onClick={() => onOpenAuth('register')}
+                  >
+                    {tier.price === "Free" ? "Start Free Intelligence" : "Unlock Intelligence"}
+                  </motion.button>
                 </div>
-
-                <ul className="space-y-3 mb-8">
-                  {tier.features.map((feature, featureIndex) => (
-                    <li key={featureIndex} className="flex items-center text-slate-300">
-                      <CheckCircleIcon className="w-5 h-5 text-emerald-400 mr-3 flex-shrink-0" />
-                      {feature}
-                    </li>
-                  ))}
-                </ul>
-
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  className={tier.popular ? "btn-accent w-full" : "btn-primary w-full"}
-                  onClick={() => onOpenAuth('register')}
-                >
-                  {tier.price === "Free" ? "Start Free" : "Choose Plan"}
-                </motion.button>
               </motion.div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Testimonials Section */}
-      <section className="py-20 bg-slate-900/50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-white mb-4">
-              Success Stories From Our <span className="gradient-text">Community</span>
+      {/* Enhanced Testimonials */}
+      <section className="relative py-32 bg-slate-900/50 backdrop-blur-sm">
+        <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+            className="text-center mb-20"
+          >
+            <h2 className="text-5xl md:text-6xl font-bold text-white mb-6">
+              Success Stories From Our <span className="bg-gradient-to-r from-cyan-400 to-emerald-400 bg-clip-text text-transparent">Elite Network</span>
             </h2>
-            <p className="text-xl text-slate-300">Real results from real laundromat professionals</p>
-          </div>
+            <p className="text-2xl text-slate-300">Real intelligence. Real results. Real millionaires.</p>
+          </motion.div>
 
           <div className="grid md:grid-cols-3 gap-8">
             {testimonials.map((testimonial, index) => (
               <motion.div
                 key={index}
-                initial={{ opacity: 0, y: 30 }}
+                initial={{ opacity: 0, y: 40 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-                className="glass-card p-8"
+                transition={{ duration: 0.8, delay: index * 0.1 }}
+                className="glass-card p-8 hover:scale-105 transition-all duration-500"
               >
+                <div className="flex items-center mb-6">
+                  <div className="w-16 h-16 bg-gradient-to-br from-cyan-400 to-emerald-400 rounded-full flex items-center justify-center text-white font-bold text-xl mr-4">
+                    {testimonial.avatar}
+                  </div>
+                  <div>
+                    <div className="font-bold text-white text-lg">{testimonial.name}</div>
+                    <div className="text-cyan-400 text-sm font-semibold">{testimonial.role}</div>
+                    <div className="text-slate-400 text-xs">{testimonial.company}</div>
+                  </div>
+                </div>
+
                 <div className="flex items-center mb-4">
                   {[...Array(testimonial.rating)].map((_, i) => (
                     <svg key={i} className="w-5 h-5 text-yellow-400 fill-current" viewBox="0 0 20 20">
@@ -296,14 +458,15 @@ const LandingPage = ({ onOpenAuth }) => {
                   ))}
                 </div>
                 
-                <blockquote className="text-slate-300 mb-6 italic">
+                <blockquote className="text-slate-300 mb-6 italic leading-relaxed">
                   "{testimonial.content}"
                 </blockquote>
                 
                 <div className="border-t border-slate-600 pt-4">
-                  <div className="font-semibold text-white">{testimonial.name}</div>
-                  <div className="text-slate-400 text-sm">{testimonial.role}</div>
-                  <div className="text-emerald-400 font-bold mt-2">{testimonial.revenue}</div>
+                  <div className="text-3xl font-bold bg-gradient-to-r from-green-400 to-emerald-400 bg-clip-text text-transparent">
+                    {testimonial.revenue}
+                  </div>
+                  <div className="text-slate-400 text-sm">Monthly Revenue</div>
                 </div>
               </motion.div>
             ))}
@@ -311,40 +474,49 @@ const LandingPage = ({ onOpenAuth }) => {
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="py-20">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      {/* Premium CTA Section */}
+      <section className="relative py-32">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
-            className="glass-card p-12"
+            className="glass-card p-16 relative overflow-hidden"
           >
-            <RocketLaunchIcon className="w-16 h-16 text-cyan-400 mx-auto mb-6" />
-            <h2 className="text-4xl font-bold text-white mb-4">
-              Ready to Build Your <span className="gradient-text-gold">Laundromat Empire</span>?
+            <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/20 to-emerald-500/20"></div>
+            
+            <RocketLaunchIcon className="w-24 h-24 text-cyan-400 mx-auto mb-8" />
+            <h2 className="text-5xl md:text-6xl font-bold text-white mb-6">
+              Ready to Build Your <br />
+              <span className="bg-gradient-to-r from-yellow-400 via-orange-400 to-red-400 bg-clip-text text-transparent">
+                Laundromat Empire?
+              </span>
             </h2>
-            <p className="text-xl text-slate-300 mb-8">
-              Join 67,000+ professionals using SiteTitan to make million-dollar location decisions
+            <p className="text-2xl text-slate-300 mb-12 max-w-4xl mx-auto">
+              Join 67,000+ professionals using SiteTitan's AI to make million-dollar location decisions with precision intelligence
             </p>
             
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <div className="flex flex-col sm:flex-row gap-6 justify-center">
               <motion.button
-                whileHover={{ scale: 1.05 }}
+                whileHover={{ scale: 1.05, boxShadow: "0 20px 40px rgba(6,182,212,0.4)" }}
                 whileTap={{ scale: 0.95 }}
-                className="btn-accent text-lg px-8 py-4"
+                className="group relative bg-gradient-to-r from-cyan-500 to-emerald-500 text-white font-bold text-2xl px-16 py-6 rounded-2xl shadow-2xl transition-all duration-300"
                 onClick={() => onOpenAuth('register')}
               >
-                Start Your Free Analysis
-                <ArrowRightIcon className="w-5 h-5 ml-2 inline" />
+                <div className="absolute inset-0 bg-gradient-to-r from-cyan-400 to-emerald-400 rounded-2xl blur opacity-0 group-hover:opacity-50 transition-opacity duration-300"></div>
+                <span className="relative flex items-center">
+                  <SparklesIcon className="w-7 h-7 mr-4" />
+                  Start Your AI Analysis
+                  <ArrowRightIcon className="w-7 h-7 ml-4 group-hover:translate-x-2 transition-transform duration-300" />
+                </span>
               </motion.button>
               
               {!isAuthenticated && (
                 <motion.button
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
-                  className="btn-secondary text-lg px-8 py-4"
+                  className="bg-white/10 backdrop-blur-sm border border-white/20 text-white font-bold text-2xl px-16 py-6 rounded-2xl hover:bg-white/20 transition-all duration-300"
                   onClick={() => onOpenAuth('login')}
                 >
                   Sign In

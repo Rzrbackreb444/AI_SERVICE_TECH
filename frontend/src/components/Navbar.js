@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Bars3Icon, 
   XMarkIcon,
@@ -8,7 +8,9 @@ import {
   MapPinIcon,
   ClockIcon,
   UserCircleIcon,
-  ArrowRightOnRectangleIcon
+  ArrowRightOnRectangleIcon,
+  CpuChipIcon,
+  BellIcon
 } from '@heroicons/react/24/outline';
 import { useAuth } from '../App';
 
@@ -20,9 +22,9 @@ const Navbar = () => {
   const [showUserMenu, setShowUserMenu] = useState(false);
 
   const navigation = [
-    { name: 'Dashboard', href: '/dashboard', icon: ChartBarIcon },
-    { name: 'Analyze Location', href: '/analyze', icon: MapPinIcon },
-    { name: 'History', href: '/history', icon: ClockIcon },
+    { name: 'AI Dashboard', href: '/dashboard', icon: CpuChipIcon },
+    { name: 'Location Intelligence', href: '/analyze', icon: MapPinIcon },
+    { name: 'Analysis Archive', href: '/history', icon: ClockIcon },
   ];
 
   const handleLogout = () => {
@@ -32,133 +34,206 @@ const Navbar = () => {
 
   const isActive = (path) => location.pathname === path;
 
+  const getSubscriptionBadge = (tier) => {
+    const badges = {
+      'free': { color: 'from-slate-500 to-slate-600', label: 'Scout', textColor: 'text-slate-200' },
+      'basic': { color: 'from-blue-500 to-blue-600', label: 'Analyzer', textColor: 'text-white' },
+      'intelligence': { color: 'from-cyan-500 to-emerald-500', label: 'Intelligence', textColor: 'text-white' },
+      'optimization': { color: 'from-purple-500 to-pink-500', label: 'LaundroMax', textColor: 'text-white' },
+      'portfolio': { color: 'from-orange-500 to-red-500', label: 'Empire', textColor: 'text-white' },
+      'pro': { color: 'from-green-500 to-teal-500', label: 'Watch Pro', textColor: 'text-white' }
+    };
+    return badges[tier] || badges.free;
+  };
+
+  const subscriptionBadge = getSubscriptionBadge(user?.subscription_tier);
+
   return (
-    <nav className="glass border-b border-white/10 sticky top-0 z-40">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16">
-          {/* Logo */}
+    <nav className="glass border-b border-white/10 sticky top-0 z-50 backdrop-blur-xl">
+      <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between items-center h-20">
+          {/* Enhanced Logo */}
           <div className="flex items-center">
-            <Link to="/dashboard" className="flex items-center space-x-3">
-              <img 
-                src="https://customer-assets.emergentagent.com/job_laundrosight/artifacts/kw0rymvw_logo1.png" 
-                alt="SiteTitan Logo"
-                className="h-8 w-8"
-              />
+            <Link to="/dashboard" className="flex items-center space-x-4 group">
+              <div className="relative">
+                <img 
+                  src="https://customer-assets.emergentagent.com/job_laundrosight/artifacts/68vqd4wq_Logo%2C%20Transparent.png" 
+                  alt="SiteTitan Logo"
+                  className="h-12 w-12 group-hover:scale-110 transition-transform duration-300"
+                />
+                <div className="absolute inset-0 bg-gradient-to-r from-cyan-400/20 to-emerald-400/20 blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+              </div>
               <div className="hidden sm:block">
-                <h1 className="text-xl font-bold gradient-text">SiteTitan</h1>
-                <p className="text-xs text-slate-400 -mt-1">LaundroTech Intelligence</p>
+                <h1 className="text-2xl font-black bg-gradient-to-r from-cyan-400 to-emerald-400 bg-clip-text text-transparent">
+                  SiteTitan
+                </h1>
+                <p className="text-xs text-slate-400 -mt-1 font-medium">LaundroTech Intelligence</p>
               </div>
             </Link>
           </div>
 
-          {/* Desktop Navigation */}
+          {/* Enhanced Desktop Navigation */}
           <div className="hidden md:block">
-            <div className="ml-10 flex items-baseline space-x-8">
+            <div className="ml-10 flex items-baseline space-x-2">
               {navigation.map((item) => {
                 const Icon = item.icon;
+                const active = isActive(item.href);
                 return (
                   <Link
                     key={item.name}
                     to={item.href}
-                    className={`nav-link flex items-center space-x-2 px-3 py-2 rounded-lg ${
-                      isActive(item.href) ? 'active' : ''
+                    className={`relative flex items-center space-x-3 px-4 py-3 rounded-xl font-medium transition-all duration-300 ${
+                      active 
+                        ? 'text-cyan-400 bg-cyan-400/10 shadow-lg shadow-cyan-400/20' 
+                        : 'text-slate-300 hover:text-white hover:bg-white/5'
                     }`}
                   >
-                    <Icon className="w-4 h-4" />
+                    <Icon className={`w-5 h-5 ${active ? 'text-cyan-400' : ''}`} />
                     <span>{item.name}</span>
+                    {active && (
+                      <motion.div
+                        layoutId="activeTab"
+                        className="absolute inset-0 bg-gradient-to-r from-cyan-400/20 to-emerald-400/20 rounded-xl"
+                        initial={false}
+                        transition={{ type: "spring", stiffness: 500, damping: 30 }}
+                      />
+                    )}
                   </Link>
                 );
               })}
             </div>
           </div>
 
-          {/* User Menu */}
+          {/* Enhanced User Menu */}
           <div className="relative">
             <button
               onClick={() => setShowUserMenu(!showUserMenu)}
-              className="flex items-center space-x-3 text-slate-300 hover:text-white transition-colors duration-200"
+              className="flex items-center space-x-4 text-slate-300 hover:text-white transition-colors duration-300 group"
             >
               <div className="hidden sm:block text-right">
-                <p className="text-sm font-medium">{user?.full_name || 'User'}</p>
-                <p className="text-xs text-slate-400 capitalize">{user?.subscription_tier || 'free'} tier</p>
+                <p className="text-sm font-semibold">{user?.full_name || 'User'}</p>
+                <div className="flex items-center justify-end space-x-2">
+                  <span className={`text-xs px-2 py-1 rounded-full bg-gradient-to-r ${subscriptionBadge.color} ${subscriptionBadge.textColor} font-bold`}>
+                    {subscriptionBadge.label}
+                  </span>
+                  {user?.facebook_group_member && (
+                    <span className="text-xs px-2 py-1 rounded-full bg-blue-500 text-white font-bold">
+                      67K Member
+                    </span>
+                  )}
+                </div>
               </div>
-              <div className="w-8 h-8 bg-gradient-to-br from-cyan-400 to-emerald-400 rounded-full flex items-center justify-center">
-                <span className="text-white font-semibold text-sm">
-                  {user?.full_name?.charAt(0) || 'U'}
-                </span>
+              
+              <div className="relative">
+                <div className="w-12 h-12 bg-gradient-to-br from-cyan-400 to-emerald-400 rounded-xl flex items-center justify-center shadow-lg group-hover:shadow-xl group-hover:shadow-cyan-400/25 transition-all duration-300">
+                  <span className="text-white font-bold text-lg">
+                    {user?.full_name?.charAt(0) || 'U'}
+                  </span>
+                </div>
+                <div className="absolute -top-1 -right-1 w-4 h-4 bg-green-400 rounded-full border-2 border-slate-900"></div>
               </div>
             </button>
 
-            {/* User Dropdown */}
-            {showUserMenu && (
-              <motion.div
-                initial={{ opacity: 0, y: -10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -10 }}
-                className="absolute right-0 mt-2 w-48 glass-card overflow-hidden z-50"
-              >
-                <Link
-                  to="/profile"
-                  className="flex items-center px-4 py-3 text-sm text-slate-300 hover:text-white hover:bg-white/5 transition-colors duration-200"
-                  onClick={() => setShowUserMenu(false)}
+            {/* Enhanced User Dropdown */}
+            <AnimatePresence>
+              {showUserMenu && (
+                <motion.div
+                  initial={{ opacity: 0, y: -10, scale: 0.95 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={{ opacity: 0, y: -10, scale: 0.95 }}
+                  transition={{ duration: 0.2 }}
+                  className="absolute right-0 mt-3 w-64 glass-card overflow-hidden z-50 border border-white/10"
                 >
-                  <UserCircleIcon className="w-4 h-4 mr-3" />
-                  Profile Settings
-                </Link>
-                <button
-                  onClick={handleLogout}
-                  className="w-full flex items-center px-4 py-3 text-sm text-slate-300 hover:text-white hover:bg-white/5 transition-colors duration-200"
-                >
-                  <ArrowRightOnRectangleIcon className="w-4 h-4 mr-3" />
-                  Sign Out
-                </button>
-              </motion.div>
-            )}
+                  <div className="p-4 border-b border-white/10">
+                    <p className="font-semibold text-white">{user?.full_name}</p>
+                    <p className="text-sm text-slate-400">{user?.email}</p>
+                    <div className="flex items-center space-x-2 mt-2">
+                      <span className={`text-xs px-3 py-1 rounded-full bg-gradient-to-r ${subscriptionBadge.color} ${subscriptionBadge.textColor} font-bold`}>
+                        {subscriptionBadge.label} Tier
+                      </span>
+                      {user?.facebook_group_member && (
+                        <span className="text-xs px-3 py-1 rounded-full bg-blue-500 text-white font-bold">
+                          Elite Member
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                  
+                  <Link
+                    to="/profile"
+                    className="flex items-center px-4 py-3 text-sm text-slate-300 hover:text-white hover:bg-white/5 transition-colors duration-200"
+                    onClick={() => setShowUserMenu(false)}
+                  >
+                    <UserCircleIcon className="w-5 h-5 mr-3" />
+                    Profile & Settings
+                  </Link>
+                  
+                  <button
+                    onClick={handleLogout}
+                    className="w-full flex items-center px-4 py-3 text-sm text-slate-300 hover:text-white hover:bg-white/5 transition-colors duration-200"
+                  >
+                    <ArrowRightOnRectangleIcon className="w-5 h-5 mr-3" />
+                    Sign Out
+                  </button>
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
 
-          {/* Mobile menu button */}
+          {/* Enhanced Mobile menu button */}
           <div className="md:hidden">
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="text-slate-300 hover:text-white p-2"
+              className="text-slate-300 hover:text-white p-2 rounded-xl hover:bg-white/5 transition-all duration-200"
             >
-              {isMobileMenuOpen ? (
-                <XMarkIcon className="w-6 h-6" />
-              ) : (
-                <Bars3Icon className="w-6 h-6" />
-              )}
+              <motion.div
+                animate={{ rotate: isMobileMenuOpen ? 180 : 0 }}
+                transition={{ duration: 0.3 }}
+              >
+                {isMobileMenuOpen ? (
+                  <XMarkIcon className="w-7 h-7" />
+                ) : (
+                  <Bars3Icon className="w-7 h-7" />
+                )}
+              </motion.div>
             </button>
           </div>
         </div>
 
-        {/* Mobile Navigation */}
-        {isMobileMenuOpen && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            exit={{ opacity: 0, height: 0 }}
-            className="md:hidden border-t border-white/10"
-          >
-            <div className="px-2 pt-2 pb-3 space-y-1">
-              {navigation.map((item) => {
-                const Icon = item.icon;
-                return (
-                  <Link
-                    key={item.name}
-                    to={item.href}
-                    className={`nav-link flex items-center space-x-3 px-3 py-2 rounded-lg ${
-                      isActive(item.href) ? 'active' : ''
-                    }`}
-                    onClick={() => setIsMobileMenuOpen(false)}
-                  >
-                    <Icon className="w-5 h-5" />
-                    <span>{item.name}</span>
-                  </Link>
-                );
-              })}
-            </div>
-          </motion.div>
-        )}
+        {/* Enhanced Mobile Navigation */}
+        <AnimatePresence>
+          {isMobileMenuOpen && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: 'auto' }}
+              exit={{ opacity: 0, height: 0 }}
+              transition={{ duration: 0.3 }}
+              className="md:hidden border-t border-white/10 bg-slate-900/50 backdrop-blur-xl"
+            >
+              <div className="px-2 pt-2 pb-3 space-y-1">
+                {navigation.map((item) => {
+                  const Icon = item.icon;
+                  const active = isActive(item.href);
+                  return (
+                    <Link
+                      key={item.name}
+                      to={item.href}
+                      className={`flex items-center space-x-4 px-4 py-3 rounded-xl font-medium transition-all duration-300 ${
+                        active 
+                          ? 'text-cyan-400 bg-cyan-400/10' 
+                          : 'text-slate-300 hover:text-white hover:bg-white/5'
+                      }`}
+                      onClick={() => setIsMobileMenuOpen(false)}
+                    >
+                      <Icon className="w-6 h-6" />
+                      <span>{item.name}</span>
+                    </Link>
+                  );
+                })}
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
 
       {/* Click outside to close menus */}
