@@ -512,7 +512,7 @@ const PricingPage = ({ onOpenAuth }) => {
             Join the <span className="gradient-text-gold">$8.4M Success Story</span>
           </h2>
           <p className="text-xl text-slate-300 mb-8">
-            Our 67,000 Facebook Group members are generating massive returns with SiteAtlas
+            Professional laundromat operators are generating exceptional returns with LaundroTech Intelligence
           </p>
           
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
