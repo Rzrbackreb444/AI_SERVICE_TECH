@@ -512,8 +512,8 @@ const PricingPage = ({ onOpenAuth }) => {
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
             {[
               { label: "Total Members", value: "67,000+", icon: "👥" },
-              { label: "Monthly Revenue Potential", value: "$700K+", icon: "💰" },
-              { label: "Annual Projection", value: "$8.4M+", icon: "📈" },
+              { label: "Professional Network", value: "67K Members", icon: "👥" },
+              { label: "Data Integration", value: "Real-Time", icon: "📊" },
               { label: "Success Rate", value: "98%", icon: "🎯" }
             ].map((stat, index) => (
               <div key={index} className="text-center">
