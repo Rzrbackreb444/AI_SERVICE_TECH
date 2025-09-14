@@ -257,7 +257,7 @@ const AuthModal = ({ mode, onClose, onSwitchMode }) => {
               <div className="flex justify-center items-center space-x-6 text-slate-400 text-xs">
                 <div>67K+ Members</div>
                 <div>•</div>
-                <div>$8.4M+ Revenue</div>
+                <div>Professional Network</div>
                 <div>•</div>
                 <div>98% Success Rate</div>
               </div>
