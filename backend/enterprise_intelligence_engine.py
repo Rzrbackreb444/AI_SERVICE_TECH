@@ -298,37 +298,7 @@ class EnterpriseIntelligenceEngine:
             print(f"Census data error: {e}")
             return await self.estimate_demographics_from_location(lat, lng)
 
-    async def get_census_tract(self, lat: float, lng: float) -> Optional[Dict[str, str]]:
-        """Get Census tract for coordinates"""
-        try:
-            url = "https://geocoding.geo.census.gov/geocoder/geographies/coordinates"
-            params = {
-                "x": lng,
-                "y": lat,
-                "benchmark": "Public_AR_Current",
-                "vintage": "Current_Current",
-                "format": "json"
-            }
-            
-            async with aiohttp.ClientSession() as session:
-                async with session.get(url, params=params) as response:
-                    if response.status == 200:
-                        data = await response.json()
-                        
-                        geographies = data.get('result', {}).get('geographies', {})
-                        census_tracts = geographies.get('Census Tracts', [])
-                        
-                        if census_tracts:
-                            tract = census_tracts[0]
-                            return {
-                                "state": tract['STATE'],
-                                "county": tract['COUNTY'],
-                                "tract": tract['TRACT']
-                            }
-        except Exception as e:
-            print(f"Census tract lookup error: {e}")
-            
-        return None
+    # Removed duplicate get_census_tract method - using string version below
 
     async def get_attom_real_estate_data(self, lat: float, lng: float) -> Dict[str, Any]:
         """Get ATTOM Data real estate information"""
