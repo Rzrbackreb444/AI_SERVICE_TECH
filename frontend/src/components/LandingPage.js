@@ -201,7 +201,6 @@ const LandingPage = ({ onOpenAuth }) => {
           >
             {/* Premium LaundroTech Branding */}
             <div className="mb-12">
-              {/* Professional Laundromat Image */}
               {/* AI Analysis Demo */}
               <motion.div
                 initial={{ opacity: 0, scale: 0.95 }}
