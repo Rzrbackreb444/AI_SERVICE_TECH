@@ -1128,6 +1128,13 @@ async def analyze_location(
     current_user: User = Depends(get_current_user)
 ):
     """ENTERPRISE LAUNDROTECH ANALYSIS - Using 3-generation Arkansas expertise + Advanced AI"""
+    # Check rate limits
+    if not await check_rate_limit(current_user.id, current_user.subscription_tier, 'analyze'):
+        raise HTTPException(
+            status_code=429, 
+            detail=f"Rate limit exceeded. Upgrade subscription for higher limits."
+        )
+    
     tier_access = {
         'free': ['scout'],
         'analyzer': ['scout', 'analyzer'],
