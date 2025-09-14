@@ -320,7 +320,7 @@ class EnterpriseIntelligenceEngine:
             
         return None
 
-    async def get_attom_real_estate_data(self, lat: float, lng: lng) -> Dict[str, Any]:
+    async def get_attom_real_estate_data(self, lat: float, lng: float) -> Dict[str, Any]:
         """Get ATTOM Data real estate information"""
         try:
             if self.attom_api_key == 'YOUR_ATTOM_API_KEY':
