@@ -288,6 +288,11 @@ def create_consultant_router() -> APIRouter:
                 'user_id': current_user.id
             }).sort('timestamp', -1).limit(10).to_list(length=10)
             
+            # Clean up interactions for JSON serialization
+            for interaction in recent_interactions:
+                if '_id' in interaction:
+                    interaction['_id'] = str(interaction['_id'])
+            
             # Calculate engagement metrics
             total_interactions = await db.consultant_interactions.count_documents({'user_id': current_user.id})
             
