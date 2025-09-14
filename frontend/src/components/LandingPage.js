@@ -201,19 +201,8 @@ const LandingPage = ({ onOpenAuth }) => {
           >
             {/* Premium LaundroTech Branding */}
             <div className="mb-12">
-              <motion.div
-                initial={{ scale: 0.8, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                transition={{ duration: 1.2, ease: "easeOut" }}
-                className="relative inline-block mb-8"
-              >
-                <img 
-                  src="https://customer-assets.emergentagent.com/job_laundrosight/artifacts/68vqd4wq_Logo%2C%20Transparent.png" 
-                  alt="LaundroTech Logo"
-                  className="h-144 md:h-168 lg:h-192 mx-auto drop-shadow-2xl filter brightness-110"
-                />
-                <div className="absolute inset-0 bg-gradient-to-r from-cyan-400/20 to-emerald-400/20 blur-3xl -z-10"></div>
-              </motion.div>
+              {/* Clean Hero Section */}
+              <div className="mb-8"></div>
               
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
