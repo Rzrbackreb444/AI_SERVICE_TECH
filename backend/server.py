@@ -23,6 +23,7 @@ from emergentintegrations.payments.stripe.checkout import StripeCheckout, Checko
 from emergentintegrations.llm.chat import LlmChat, UserMessage
 import paypalrestsdk
 from premium_report_generator import PremiumReportGenerator
+from ai_intelligence_engine import ai_intelligence
 from email_service import email_service
 from admin_endpoints import create_admin_router
 from immersive_analytics import immersive_analytics
