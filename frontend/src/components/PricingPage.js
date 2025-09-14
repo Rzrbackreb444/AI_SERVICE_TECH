@@ -384,11 +384,11 @@ const PricingPage = ({ onOpenAuth }) => {
                   )}
                 </div>
                 
-                {/* PayPal Price Display */}
+                {/* Alternative Payment Option */}
                 {tier.paypalDiscount && (
                   <div className="flex items-center justify-center space-x-2 mb-2">
-                    <span className="text-yellow-400 font-bold text-lg">
-                      ${tier.paypalPrice} with PayPal
+                    <span className="text-slate-400 text-sm">
+                      ${tier.paypalPrice} via alternate payment
                     </span>
                   </div>
                 )}
