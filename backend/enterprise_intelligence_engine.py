@@ -1265,5 +1265,153 @@ class EnterpriseIntelligenceEngine:
                 "annual_profit": 15000
             }
 
+    async def get_census_tract(self, lat: float, lng: float) -> str:
+        """Get census tract for coordinates"""
+        try:
+            # Use Census geocoding API
+            url = "https://geocoding.geo.census.gov/geocoder/geographies/coordinates"
+            params = {
+                'x': lng, 'y': lat,
+                'benchmark': 'Public_AR_Current',
+                'vintage': 'Current_Current',
+                'format': 'json'
+            }
+            
+            async with aiohttp.ClientSession() as session:
+                async with session.get(url, params=params) as response:
+                    data = await response.json()
+                    
+            if 'result' in data and data['result']['geographies']:
+                tract_info = data['result']['geographies']['Census Tracts'][0]
+                return f"{tract_info['STATE']}{tract_info['COUNTY']}{tract_info['TRACT']}"
+            
+            return "unknown"
+        except:
+            return "unknown"
+
+    async def estimate_real_estate_data(self, lat: float, lng: float) -> Dict[str, Any]:
+        """Estimate real estate data when ATTOM API unavailable"""
+        return {
+            "average_property_value": 180000,  # Arkansas average
+            "property_types": {"single_family": 0.7, "multi_family": 0.3},
+            "market_trend": "stable",
+            "data_source": "estimated"
+        }
+
+    def optimize_equipment_mix(self, capacity: int, median_income: int) -> Dict[str, Any]:
+        """Optimize equipment mix based on Arkansas expertise"""
+        if median_income >= 60000:
+            return {
+                "20lb_washers": 4, "30lb_washers": 6, "40lb_washers": 4, "60lb_washers": 2,
+                "30lb_dryers": 8, "45lb_dryers": 8
+            }
+        elif median_income >= 40000:
+            return {
+                "20lb_washers": 6, "30lb_washers": 8, "40lb_washers": 2,
+                "30lb_dryers": 10, "45lb_dryers": 6
+            }
+        else:
+            return {
+                "20lb_washers": 8, "30lb_washers": 6,
+                "30lb_dryers": 12, "45lb_dryers": 2
+            }
+
+    def get_financing_recommendations(self, total_investment: float) -> List[Dict[str, Any]]:
+        """Arkansas-specific financing recommendations"""
+        return [
+            {
+                "option": "SBA 7(a) Loan",
+                "amount": total_investment * 0.8,
+                "rate": "Prime + 2.75%",
+                "term": "10 years",
+                "description": "Best option for laundromat startups in Arkansas"
+            },
+            {
+                "option": "Equipment Financing",
+                "amount": total_investment * 0.7,
+                "rate": "8-12%",
+                "term": "7 years",
+                "description": "Direct equipment financing through distributors"
+            },
+            {
+                "option": "Commercial Real Estate Loan",
+                "amount": total_investment * 0.75,
+                "rate": "6-8%",
+                "term": "15-20 years",
+                "description": "If purchasing building"
+            }
+        ]
+
+    def calculate_maintenance_costs(self, equipment_mix: Dict) -> Dict[str, Any]:
+        """Calculate maintenance costs based on Arkansas service network"""
+        total_machines = sum(equipment_mix.values()) if isinstance(next(iter(equipment_mix.values())), int) else 20
+        
+        return {
+            "monthly_maintenance": total_machines * 45,  # $45 per machine/month
+            "annual_maintenance": total_machines * 540,
+            "major_repair_reserve": total_machines * 200,  # Annual reserve
+            "service_network": "Excellent - Arkansas has strong commercial laundry service"
+        }
+
+    def create_equipment_replacement_schedule(self, equipment_mix: Dict) -> Dict[str, Any]:
+        """Equipment replacement schedule based on Arkansas expertise"""
+        return {
+            "washers": {
+                "expected_life": "12-15 years",
+                "major_service": "5-7 years",
+                "replacement_priority": "Replace oldest units first"
+            },
+            "dryers": {
+                "expected_life": "15-18 years", 
+                "major_service": "8-10 years",
+                "replacement_priority": "Focus on high-usage units"
+            },
+            "recommended_brands": {
+                "Speed Queen": "Premium choice - Nick's grandfather was distributor",
+                "Huebsch": "Solid middle choice",
+                "Continental/Dexter": "Budget option - Nick's father was Dexter distributor"
+            }
+        }
+
+    def score_to_grade(self, score: float) -> str:
+        """Convert numeric score to letter grade"""
+        if score >= 90: return "A+"
+        elif score >= 85: return "A"
+        elif score >= 80: return "A-"
+        elif score >= 75: return "B+"
+        elif score >= 70: return "B"
+        elif score >= 65: return "B-"
+        elif score >= 60: return "C+"
+        elif score >= 55: return "C"
+        elif score >= 50: return "C-"
+        elif score >= 45: return "D+"
+        elif score >= 40: return "D"
+        else: return "F"
+
+    async def analyze_competitor_reviews(self, competitors: List[Dict]) -> Dict[str, Any]:
+        """Analyze competitor reviews for insights"""
+        try:
+            total_reviews = sum(c.get('user_ratings_total', 0) for c in competitors)
+            avg_rating = sum(c.get('rating', 0) * c.get('user_ratings_total', 1) for c in competitors) / max(total_reviews, 1)
+            
+            # Identify service gaps
+            low_rated = [c for c in competitors if c.get('rating', 0) < 3.5]
+            high_rated = [c for c in competitors if c.get('rating', 0) >= 4.0]
+            
+            return {
+                "market_average_rating": round(avg_rating, 2),
+                "total_reviews_analyzed": total_reviews,
+                "low_rated_competitors": len(low_rated),
+                "high_rated_competitors": len(high_rated),
+                "service_gap_opportunity": len(low_rated) > len(high_rated),
+                "competitive_advantage": "Focus on cleanliness and customer service" if len(low_rated) > 0 else "Market has high standards"
+            }
+        except:
+            return {
+                "market_average_rating": 3.5,
+                "service_gap_opportunity": True,
+                "competitive_advantage": "Focus on superior service"
+            }
+
 # Global instance
 enterprise_engine = EnterpriseIntelligenceEngine()
