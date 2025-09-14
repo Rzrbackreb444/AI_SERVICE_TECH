@@ -616,6 +616,12 @@ class EnterpriseIntelligenceEngine:
         competitor_count = competition.get('total_competitors', 0)
         opportunity_score = competition.get('opportunity_score', 50)
         
+        # Ensure opportunity_score is a number
+        if isinstance(opportunity_score, dict):
+            opportunity_score = 50  # Default value
+        elif not isinstance(opportunity_score, (int, float)):
+            opportunity_score = 50  # Default value
+        
         # Market saturation analysis
         if opportunity_score >= 75:
             comp_score += 25  # Low competition, high opportunity
