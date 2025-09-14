@@ -24,6 +24,8 @@ import HeatmapComponent from './components/HeatmapComponent';
 import ConsultantWidget from './components/ConsultantWidget';
 import EnterpriseLocationAnalyzer from './components/EnterpriseLocationAnalyzer';
 import FacebookGroupMonetization from './components/FacebookGroupMonetization';
+import MRRDashboard from './components/MRRDashboard';
+import EnterprisePortal from './components/EnterprisePortal';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
