@@ -947,5 +947,41 @@ class EnterpriseIntelligenceEngine:
             print(f"PDF generation error: {e}")
             return ""
 
+    def recommend_equipment_brand(self, analysis_data: Dict[str, Any]) -> Dict[str, Any]:
+        """Arkansas expertise: Equipment recommendations based on 3-generation knowledge"""
+        try:
+            total_score = analysis_data.get('total_score', 50)
+            demographics = analysis_data.get('demographics', {})
+            
+            # Speed Queen - Premium choice (Nick's grandfather was a distributor)
+            if total_score >= 75 and demographics.get('median_income', 0) >= 50000:
+                primary_brand = "Speed Queen"
+                reasoning = "Premium location warrants premium equipment. Speed Queen's reliability and Arkansas service network make it the top choice."
+                
+            # Huebsch - Good middle ground  
+            elif total_score >= 60:
+                primary_brand = "Huebsch"
+                reasoning = "Solid commercial-grade equipment with good service support. Best value for this market."
+                
+            # Continental/Dexter - Budget conscious (Nick's father was Dexter distributor)
+            else:
+                primary_brand = "Continental/Dexter"
+                reasoning = "Cost-effective option for this market. Focus on reliable basics with local service availability."
+            
+            return {
+                "primary_brand": primary_brand,
+                "reasoning": reasoning,
+                "service_availability": "Excellent - Arkansas has strong commercial laundry service network",
+                "parts_availability": "Good",
+                "warranty_support": "Standard commercial warranty"
+            }
+            
+        except Exception as e:
+            return {
+                "primary_brand": "Speed Queen",
+                "reasoning": "Default recommendation based on Arkansas expertise",
+                "error": str(e)
+            }
+
 # Global instance
 enterprise_engine = EnterpriseIntelligenceEngine()
