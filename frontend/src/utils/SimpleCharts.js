@@ -92,3 +92,31 @@ export const AreaChart = ({ data, children }) => (
     </div>
   </div>
 );
+
+export const RadialBarChart = ({ data, children }) => (
+  <div className="simple-radial-chart">
+    <div className="radial-container">
+      {data && data.map((item, index) => (
+        <div 
+          key={index} 
+          className="radial-item"
+          style={{
+            '--progress': `${(item.value || 0)}%`,
+            '--color': `hsl(${index * 45}, 70%, 50%)`
+          }}
+        >
+          <div className="radial-bar">
+            <div className="radial-fill"></div>
+            <div className="radial-label">
+              <span className="radial-name">{item.name}</span>
+              <span className="radial-value">{item.value}%</span>
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+    {children}
+  </div>
+);
+
+export const RadialBar = ({ dataKey, fill }) => null;
