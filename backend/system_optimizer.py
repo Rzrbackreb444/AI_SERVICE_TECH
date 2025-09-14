@@ -14,6 +14,8 @@ import json
 from motor.motor_asyncio import AsyncIOMotorClient
 import redis
 
+logger = logging.getLogger(__name__)
+
 class SystemOptimizer:
     """Optimize entire system performance and reliability"""
     
