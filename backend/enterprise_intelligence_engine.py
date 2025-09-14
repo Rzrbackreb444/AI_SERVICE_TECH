@@ -1344,7 +1344,20 @@ class EnterpriseIntelligenceEngine:
 
     def calculate_maintenance_costs(self, equipment_mix: Dict) -> Dict[str, Any]:
         """Calculate maintenance costs based on Arkansas service network"""
-        total_machines = sum(equipment_mix.values()) if isinstance(next(iter(equipment_mix.values())), int) else 20
+        try:
+            # Count total machines from equipment mix
+            total_machines = 0
+            if isinstance(equipment_mix, dict):
+                for category in equipment_mix.values():
+                    if isinstance(category, dict):
+                        total_machines += sum(item.get('count', 0) for item in category.values() if isinstance(item, dict))
+                    else:
+                        total_machines += category if isinstance(category, int) else 0
+            
+            if total_machines == 0:
+                total_machines = 20  # Default
+        except:
+            total_machines = 20
         
         return {
             "monthly_maintenance": total_machines * 45,  # $45 per machine/month
