@@ -205,6 +205,10 @@ function App() {
               path="/facebook-group" 
               element={<FacebookGroupMonetization />} 
             />
+            <Route 
+              path="/about" 
+              element={<AboutUs />} 
+            />
 
             {/* Protected Routes */}
             <Route path="/dashboard" element={
