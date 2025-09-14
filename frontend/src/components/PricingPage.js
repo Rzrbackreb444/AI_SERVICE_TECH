@@ -287,14 +287,16 @@ const PricingPage = ({ onOpenAuth }) => {
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
-          {/* LaundroTech Logo */}
-          <div className="mb-8">
-            <img 
-              src="https://customer-assets.emergentagent.com/job_laundrosight/artifacts/68vqd4wq_Logo%2C%20Transparent.png" 
-              alt="LaundroTech Intelligence Logo"
-              className="h-32 mx-auto mb-4 drop-shadow-2xl"
-            />
-          </div>
+          {/* LaundroTech Branding */}
+          <motion.div 
+            className="text-center mb-12"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+          >
+            <h2 className="text-4xl font-bold text-white mb-2">LaundroTech Intelligence</h2>
+            <p className="text-slate-400 text-sm">Powered by SiteAtlas</p>
+          </motion.div>
 
           <h1 className="text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight">
             Professional Location Intelligence
