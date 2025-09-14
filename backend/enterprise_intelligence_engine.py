@@ -987,5 +987,52 @@ class EnterpriseIntelligenceEngine:
         except Exception as e:
             return 4200  # Default cost
 
+    def calculate_population_density(self, population: int, lat: float, lng: float) -> float:
+        """Calculate population density estimate"""
+        # Simple density calculation - in real implementation would use actual area data
+        return population / 10.0  # Rough estimate per square mile
+
+    async def estimate_demographics_from_location(self, lat: float, lng: float) -> Dict[str, Any]:
+        """Estimate demographics when Census API is not available"""
+        return {
+            "data_source": "estimation",
+            "total_population": 8000,
+            "median_household_income": 45000,
+            "renter_percentage": 0.45,
+            "renter_units": 1800,
+            "total_housing_units": 4000,
+            "population_density": 800,
+            "laundromat_target_score": 65
+        }
+
+    def calculate_demographic_score(self, median_income: int, renter_percentage: float, population: int) -> int:
+        """Calculate demographic suitability score"""
+        score = 0
+        if 35000 <= median_income <= 75000:
+            score += 40
+        elif median_income >= 25000:
+            score += 25
+        
+        if 0.4 <= renter_percentage <= 0.7:
+            score += 30
+        elif renter_percentage >= 0.25:
+            score += 20
+        
+        if population >= 5000:
+            score += 30
+        elif population >= 2000:
+            score += 20
+        
+        return min(score, 100)
+
+    def calculate_real_estate_score(self, avg_value: float, property_types: Dict) -> int:
+        """Calculate real estate market score"""
+        if 150000 <= avg_value <= 400000:
+            return 85
+        elif 100000 <= avg_value <= 600000:
+            return 70
+        else:
+            return 50
+
 # Global instance
 enterprise_engine = EnterpriseIntelligenceEngine()
