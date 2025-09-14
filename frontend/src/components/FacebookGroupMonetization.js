@@ -315,7 +315,7 @@ const FacebookGroupMonetization = () => {
       name: "Jennifer Martinez",
       role: "Vendor Partner", 
       badge: "vendor_partner",
-      content: "As a Vendor Partner, I get featured placement and direct access to serious buyers. Generated $25K in new business just last month from group referrals alone.",
+      content: "As a Vendor Partner, I get featured placement and direct access to serious buyers. The professional network has been invaluable for connecting with qualified prospects.",
       revenue: "$25K/month",
       avatar: "JM"
     },
