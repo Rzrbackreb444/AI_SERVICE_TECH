@@ -605,6 +605,18 @@ class ComprehensiveFinalTester:
             print("   ⚠️  Skipping - No authentication token")
             return False
         
+        # First upgrade user to analyzer tier to allow analyses
+        upgrade_success, upgrade_response = self.run_test(
+            "Upgrade User to Analyzer Tier",
+            "PUT",
+            "user/profile",
+            200,
+            data={'subscription_tier': 'analyzer'}
+        )
+        
+        if not upgrade_success:
+            print("   ⚠️  Could not upgrade user tier, trying with scout analysis type")
+        
         # Run a few analyses to generate data
         test_addresses = [
             "123 Main Street, Springfield, IL",
@@ -614,6 +626,9 @@ class ComprehensiveFinalTester:
         
         analyses_created = 0
         for address in test_addresses:
+            # Try with scout first (free tier), then analyzer if upgraded
+            analysis_type = 'scout' if not upgrade_success else 'analyzer'
+            
             success, response = self.run_test(
                 f"Generate Analysis Data - {address}",
                 "POST",
@@ -621,7 +636,7 @@ class ComprehensiveFinalTester:
                 200,
                 data={
                     'address': address,
-                    'analysis_type': 'analyzer',
+                    'analysis_type': analysis_type,
                     'additional_data': {}
                 }
             )
