@@ -597,6 +597,321 @@ class ComprehensiveFinalTester:
         
         return paypal_success and stripe_success
 
+    # ========== MRR OPTIMIZATION SYSTEMS TESTING ==========
+    
+    def test_analyze_endpoint_for_data_generation(self):
+        """Run analysis to generate data for MRR testing"""
+        if not self.token:
+            print("   ⚠️  Skipping - No authentication token")
+            return False
+        
+        # Run a few analyses to generate data
+        test_addresses = [
+            "123 Main Street, Springfield, IL",
+            "456 Oak Avenue, Chicago, IL", 
+            "789 University Drive, Urbana, IL"
+        ]
+        
+        analyses_created = 0
+        for address in test_addresses:
+            success, response = self.run_test(
+                f"Generate Analysis Data - {address}",
+                "POST",
+                "analyze",
+                200,
+                data={
+                    'address': address,
+                    'analysis_type': 'analyzer',
+                    'additional_data': {}
+                }
+            )
+            
+            if success:
+                analyses_created += 1
+                print(f"   📊 Analysis created for: {address}")
+                # Store analysis ID for later use
+                if hasattr(self, 'analysis_ids'):
+                    self.analysis_ids.append(response.get('analysis_id'))
+                else:
+                    self.analysis_ids = [response.get('analysis_id')]
+            
+            # Small delay between requests
+            time.sleep(1)
+        
+        print(f"   ✅ Generated {analyses_created} analyses for MRR testing")
+        return analyses_created > 0
+
+    def test_recurring_value_engine(self):
+        """Test RECURRING VALUE ENGINE - /api/dashboard/performance and /api/alerts/market"""
+        if not self.token:
+            print("   ⚠️  Skipping - No authentication token")
+            return False
+        
+        # Test performance dashboard
+        perf_success, perf_response = self.run_test(
+            "Recurring Value Engine - Performance Dashboard",
+            "GET",
+            "dashboard/performance",
+            200,
+            critical=True
+        )
+        
+        if perf_success:
+            print(f"   📊 Total Analyses: {perf_response.get('total_analyses', 0)}")
+            print(f"   📈 Average Score: {perf_response.get('average_score', 0)}")
+            print(f"   🚨 Recent Alerts: {perf_response.get('recent_alerts', 0)}")
+            print(f"   📱 Engagement Score: {perf_response.get('engagement_score', 0)}")
+        
+        # Test market alerts
+        alerts_success, alerts_response = self.run_test(
+            "Recurring Value Engine - Market Alerts",
+            "GET",
+            "alerts/market",
+            200,
+            critical=True
+        )
+        
+        if alerts_success:
+            alerts = alerts_response.get('alerts', [])
+            print(f"   🚨 Market Alerts Generated: {len(alerts)}")
+            for alert in alerts[:2]:  # Show first 2
+                print(f"      - {alert.get('title', 'Unknown')}: {alert.get('severity', 'unknown')}")
+        
+        return perf_success and alerts_success
+
+    def test_usage_based_billing_system(self):
+        """Test USAGE-BASED BILLING SYSTEM - /api/usage/current and /api/billing/report"""
+        if not self.token:
+            print("   ⚠️  Skipping - No authentication token")
+            return False
+        
+        # Test current usage
+        usage_success, usage_response = self.run_test(
+            "Usage-Based Billing - Current Usage",
+            "GET",
+            "usage/current",
+            200,
+            critical=True
+        )
+        
+        if usage_success:
+            print(f"   📊 API Calls Used: {usage_response.get('api_calls_used', 0)}/{usage_response.get('api_calls_limit', 0)}")
+            print(f"   🔬 Analyses Used: {usage_response.get('analyses_used', 0)}/{usage_response.get('analyses_limit', 0)}")
+            print(f"   💰 Overage Charges: ${usage_response.get('overage_charges', 0)}")
+            print(f"   📈 Utilization: {usage_response.get('utilization_percent', 0)}%")
+            
+            if usage_response.get('upsell_trigger'):
+                print(f"   🎯 UPSELL OPPORTUNITY DETECTED!")
+        
+        # Test billing report
+        billing_success, billing_response = self.run_test(
+            "Usage-Based Billing - Billing Report",
+            "GET",
+            "billing/report",
+            200,
+            critical=True
+        )
+        
+        if billing_success:
+            print(f"   💳 Base Subscription: ${billing_response.get('base_subscription', 0)}")
+            print(f"   💸 Overage Charges: ${billing_response.get('overage_charges', 0)}")
+            print(f"   💰 Total Billing: ${billing_response.get('total_billing', 0)}")
+            
+            usage_summary = billing_response.get('usage_summary', {})
+            print(f"   📊 Usage Summary: {usage_summary.get('api_calls', 0)} calls, {usage_summary.get('analyses', 0)} analyses")
+        
+        return usage_success and billing_success
+
+    def test_multi_location_dashboard(self):
+        """Test MULTI-LOCATION DASHBOARD - /api/portfolio/dashboard and /api/portfolio/expansion"""
+        if not self.token:
+            print("   ⚠️  Skipping - No authentication token")
+            return False
+        
+        # Test portfolio dashboard
+        portfolio_success, portfolio_response = self.run_test(
+            "Multi-Location Dashboard - Portfolio Dashboard",
+            "GET",
+            "portfolio/dashboard",
+            200,
+            critical=True
+        )
+        
+        if portfolio_success:
+            print(f"   🏢 Total Locations: {portfolio_response.get('total_locations', 0)}")
+            
+            portfolio_stats = portfolio_response.get('portfolio_stats', {})
+            print(f"   📊 Average Score: {portfolio_stats.get('average_score', 0)}")
+            print(f"   💰 Total Investment: ${portfolio_stats.get('total_investment_estimated', 0):,}")
+            print(f"   🏆 Best Location: {portfolio_stats.get('best_performing_location', 'None')}")
+            print(f"   🚀 Expansion Opportunities: {portfolio_stats.get('expansion_opportunities', 0)}")
+        
+        # Test portfolio expansion analysis
+        expansion_success, expansion_response = self.run_test(
+            "Multi-Location Dashboard - Expansion Analysis",
+            "POST",
+            "portfolio/expansion",
+            200,
+            data={'target_market': 'Chicago Metro Area'},
+            critical=True
+        )
+        
+        if expansion_success:
+            gap_analysis = expansion_response.get('market_gap_analysis', {})
+            print(f"   🎯 Underserved Areas: {gap_analysis.get('underserved_areas', 0)}")
+            print(f"   💪 Competitor Weakness Zones: {gap_analysis.get('competitor_weakness_zones', 0)}")
+            
+            recommendations = expansion_response.get('expansion_recommendations', [])
+            print(f"   📋 Expansion Recommendations: {len(recommendations)}")
+            for rec in recommendations[:1]:  # Show first recommendation
+                print(f"      - {rec.get('area', 'Unknown')}: Score {rec.get('opportunity_score', 0)}")
+        
+        return portfolio_success and expansion_success
+
+    def test_enterprise_api_layer(self):
+        """Test ENTERPRISE API LAYER - /api/enterprise/api-key and /api/enterprise/bulk-analysis"""
+        if not self.token:
+            print("   ⚠️  Skipping - No authentication token")
+            return False
+        
+        # Test enterprise API key creation
+        api_key_success, api_key_response = self.run_test(
+            "Enterprise API Layer - API Key Creation",
+            "POST",
+            "enterprise/api-key",
+            200,
+            data={'organization': 'LaundroTech Enterprises LLC'},
+            critical=True
+        )
+        
+        enterprise_api_key = None
+        if api_key_success:
+            enterprise_api_key = api_key_response.get('api_key')
+            print(f"   🔑 API Key: {enterprise_api_key}")
+            print(f"   🔐 Secret Key: {api_key_response.get('secret_key', 'Hidden')[:10]}...")
+            print(f"   📊 API Limit: {api_key_response.get('api_limit', 0):,}")
+            print(f"   ⚡ Rate Limit: {api_key_response.get('rate_limit', 'Unknown')}")
+            print(f"   💰 Monthly Fee: ${api_key_response.get('monthly_fee', 0)}")
+        
+        # Test bulk analysis endpoint
+        bulk_addresses = [
+            "100 Enterprise Blvd, Chicago, IL",
+            "200 Business Park Dr, Springfield, IL",
+            "300 Commercial Ave, Peoria, IL"
+        ]
+        
+        bulk_success, bulk_response = self.run_test(
+            "Enterprise API Layer - Bulk Analysis",
+            "POST",
+            "enterprise/bulk-analysis",
+            200,
+            data={'addresses': bulk_addresses},
+            critical=True
+        )
+        
+        if bulk_success:
+            print(f"   📊 Request ID: {bulk_response.get('request_id', 'Unknown')}")
+            print(f"   🏢 Total Addresses: {bulk_response.get('total_addresses', 0)}")
+            print(f"   ⚡ Processing Time: {bulk_response.get('processing_time', 'Unknown')}")
+            print(f"   📞 API Calls Used: {bulk_response.get('api_calls_used', 0)}")
+            print(f"   💰 Billing Amount: ${bulk_response.get('billing_amount', 0)}")
+            
+            results = bulk_response.get('results', [])
+            print(f"   📋 Analysis Results: {len(results)}")
+            for result in results[:2]:  # Show first 2 results
+                print(f"      - {result.get('address', 'Unknown')}: Score {result.get('score', 0)} ({result.get('grade', 'F')})")
+        
+        return api_key_success and bulk_success
+
+    def test_sticky_ecosystem_features(self):
+        """Test STICKY ECOSYSTEM FEATURES - /api/marketplace/equipment, /api/financing/pre-approval, /api/real-estate/deals"""
+        if not self.token:
+            print("   ⚠️  Skipping - No authentication token")
+            return False
+        
+        # Get an analysis ID for testing (use first one if available)
+        analysis_id = getattr(self, 'analysis_ids', ['test_analysis_id'])[0] if hasattr(self, 'analysis_ids') and self.analysis_ids else 'test_analysis_id'
+        
+        # Test equipment marketplace
+        equipment_success, equipment_response = self.run_test(
+            "Sticky Ecosystem - Equipment Marketplace",
+            "GET",
+            f"marketplace/equipment?analysis_id={analysis_id}",
+            200,
+            critical=True
+        )
+        
+        if equipment_success:
+            washers = equipment_response.get('recommended_washers', [])
+            dryers = equipment_response.get('recommended_dryers', [])
+            print(f"   🧺 Recommended Washers: {len(washers)}")
+            print(f"   🌪️  Recommended Dryers: {len(dryers)}")
+            print(f"   💰 Total Equipment Cost: ${equipment_response.get('total_equipment_cost', 0):,}")
+            
+            financing_options = equipment_response.get('financing_options', [])
+            print(f"   💳 Financing Options: {len(financing_options)}")
+            for option in financing_options[:1]:  # Show first option
+                print(f"      - {option.get('lender', 'Unknown')}: {option.get('rate', 0)}% for {option.get('term', 0)} months")
+        
+        # Test financing pre-approval
+        financing_success, financing_response = self.run_test(
+            "Sticky Ecosystem - Financing Pre-Approval",
+            "POST",
+            "financing/pre-approval",
+            200,
+            data={'analysis_id': analysis_id},
+            critical=True
+        )
+        
+        if financing_success:
+            print(f"   ✅ Pre-Approval Status: {financing_response.get('pre_approval_status', 'Unknown')}")
+            print(f"   💰 Approved Amount: ${financing_response.get('approved_amount', 0):,}")
+            print(f"   📊 Interest Rate: {financing_response.get('interest_rate', 0)}%")
+            print(f"   💳 Monthly Payment: ${financing_response.get('monthly_payment', 0):,}")
+        
+        # Test real estate deals
+        deals_success, deals_response = self.run_test(
+            "Sticky Ecosystem - Real Estate Deals",
+            "GET",
+            "real-estate/deals",
+            200,
+            critical=True
+        )
+        
+        if deals_success:
+            active_deals = deals_response.get('active_deals', [])
+            print(f"   🏢 Active Deals: {len(active_deals)}")
+            print(f"   📅 New Deals This Week: {deals_response.get('new_deals_this_week', 0)}")
+            
+            for deal in active_deals[:2]:  # Show first 2 deals
+                print(f"      - {deal.get('address', 'Unknown')}: ${deal.get('purchase_price', 0):,} ({deal.get('deal_quality', 'Unknown')})")
+                print(f"        Score: {deal.get('laundromat_suitability_score', 0)}, Size: {deal.get('size_sqft', 0)} sqft")
+        
+        return equipment_success and financing_success and deals_success
+
+    def test_user_lifetime_value_analytics(self):
+        """Test user lifetime value calculation"""
+        if not self.token:
+            print("   ⚠️  Skipping - No authentication token")
+            return False
+        
+        success, response = self.run_test(
+            "User Lifetime Value Analytics",
+            "GET",
+            "analytics/ltv",
+            200,
+            critical=True
+        )
+        
+        if success:
+            print(f"   👤 User Tier: {response.get('current_tier', 'Unknown')}")
+            print(f"   💰 Base Monthly Value: ${response.get('base_monthly_value', 0)}")
+            print(f"   💸 Avg Monthly Overages: ${response.get('avg_monthly_overages', 0)}")
+            print(f"   📊 Estimated LTV: ${response.get('estimated_ltv', 0)}")
+            print(f"   📅 Retention Months: {response.get('retention_months', 0)}")
+        
+        return success
+
     # ========== PRODUCTION READINESS CHECKS ==========
     
     def test_api_root_and_health(self):
