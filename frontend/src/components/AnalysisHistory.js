@@ -296,7 +296,7 @@ const AnalysisHistory = () => {
                           <h4 className="text-sm font-semibold text-slate-300 mb-3">ROI ESTIMATE</h4>
                           <div className="space-y-2 text-sm">
                             <div className="flex justify-between">
-                              <span className="text-slate-400">Monthly Revenue:</span>
+                              <span className="text-slate-400">Market Score:</span>
                               <span className="text-white">
                                 ${analysis.roi_estimate.estimated_monthly_revenue?.toLocaleString() || 'N/A'}
                               </span>
