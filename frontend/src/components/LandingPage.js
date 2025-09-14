@@ -268,7 +268,7 @@ const LandingPage = ({ onOpenAuth }) => {
               className="text-xl md:text-2xl text-slate-300 mb-12 max-w-4xl mx-auto leading-relaxed"
             >
               AI-powered location intelligence, hybrid business opportunities, and portfolio management 
-              trusted by laundromat professionals at <span className="text-cyan-400 font-bold">facebook.com/groups/thelaundromat</span>
+              trusted by laundromat professionals in our exclusive Facebook community
             </motion.p>
 
             <motion.div
