@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { CheckCircleIcon, ArrowRightIcon, StarIcon, BoltIcon, CreditCardIcon } from '@heroicons/react/24/outline';
+import { CheckCircleIcon, ArrowRightIcon, StarIcon, BoltIcon, CreditCardIcon, UserGroupIcon } from '@heroicons/react/24/outline';
 import { PayPalScriptProvider, PayPalButtons } from '@paypal/react-paypal-js';
 import axios from 'axios';
 import { useAuth } from '../App';
