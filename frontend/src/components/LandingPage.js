@@ -54,7 +54,7 @@ const LandingPage = ({ onOpenAuth }) => {
       icon: ChartBarIcon,
       title: "6-Tier Intelligence Ecosystem",
       description: "From free reconnaissance to enterprise portfolio management - scale with machine learning that evolves with your business growth",
-      stat: "$8.4M Generated",
+      stat: "Intelligence Network",
       color: "from-emerald-400 to-teal-500"
     },
     {
