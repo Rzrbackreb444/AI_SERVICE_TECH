@@ -160,7 +160,7 @@ const UserDashboard = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <Link to="/" className="text-xl font-bold text-white">
-              LaundroTech <span className="text-slate-400 text-sm">Powered by SiteAtlas</span>
+              LaundroTech <span className="text-slate-400 text-sm">Intelligence Platform</span>
             </Link>
             
             <div className="flex items-center space-x-6">
