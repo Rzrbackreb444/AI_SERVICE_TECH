@@ -153,6 +153,12 @@ const ProtectedRoute = ({ children }) => {
   return isAuthenticated ? children : <Navigate to="/" replace />;
 };
 
+// Consultant Widget Wrapper Component
+const ConsultantWidgetWrapper = () => {
+  const { user } = useAuth();
+  return <ConsultantWidget userTier={user?.subscription_tier || 'free'} />;
+};
+
 // Main App Component
 function App() {
   const [showAuthModal, setShowAuthModal] = useState(false);
