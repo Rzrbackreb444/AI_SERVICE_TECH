@@ -261,6 +261,31 @@ def create_advanced_revenue_router() -> APIRouter:
             base_config = revenue_strategy.depth_pricing.get(analysis_type, {})
             base_price = base_config.get('price', 99)
             
+            # Handle free tier pricing (avoid division by zero)
+            if base_price == 0:
+                return {
+                    'dynamic_pricing': {
+                        'base_price': 0,
+                        'dynamic_price': 0,
+                        'price_adjustment': '0.0%',
+                        'market_conditions': market_conditions,
+                        'user_tier_discount': '0%',
+                        'pricing_factors': {
+                            'demand_adjustment': '0%',
+                            'seasonal_adjustment': '0%',
+                            'loyalty_discount': '0%'
+                        },
+                        'recommendations': {
+                            'optimal_purchase_timing': 'FREE TIER',
+                            'price_trend': 'STABLE',
+                            'value_proposition': 'FREE'
+                        }
+                    },
+                    'address': address,
+                    'analysis_type': analysis_type,
+                    'status': 'success'
+                }
+            
             # Apply dynamic pricing logic
             dynamic_multiplier = 1.0
             
