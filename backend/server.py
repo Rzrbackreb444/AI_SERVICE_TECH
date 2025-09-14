@@ -1139,6 +1139,7 @@ async def get_user_badges(current_user: User = Depends(get_current_user)):
     return {"badges": [FacebookGroupSubscription(**badge) for badge in badges]}
 
 @api_router.post("/analyze")
+@monitor_performance("enterprise_analysis")
 async def analyze_location(
     request: LocationRequest,
     background_tasks: BackgroundTasks,
