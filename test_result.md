@@ -492,16 +492,13 @@ metadata:
 
 test_plan:
   current_focus:
-    - "MRR Optimization Engine - All 5 Revenue Systems"
-    - "RECURRING VALUE ENGINE - Performance Dashboard & Market Alerts"
-    - "USAGE-BASED BILLING SYSTEM - Current Usage & Billing Reports"
-    - "MULTI-LOCATION DASHBOARD - Portfolio Management & Expansion Analysis"
-    - "ENTERPRISE API LAYER - API Key Creation & Bulk Analysis"
-    - "STICKY ECOSYSTEM FEATURES - Equipment Marketplace, Financing, Real Estate"
+    - "New Optimization Endpoints - System, Performance, Revenue"
+    - "Performance Under Load Testing"
+    - "MRR Integration Validation After Optimization"
   stuck_tasks: 
     - "Stripe integration requires valid API key (expired key causing checkout failures)"
   test_all: true
-  test_priority: "mrr_optimization_ready"
+  test_priority: "optimization_complete_validation"
 
 agent_communication:
   - agent: "main"
