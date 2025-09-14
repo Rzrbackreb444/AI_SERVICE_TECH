@@ -4,12 +4,52 @@ Preview/blur, pay-per-depth, report caching, real-time monitoring
 """
 
 from fastapi import APIRouter, HTTPException, Depends, BackgroundTasks
+from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from typing import Dict, List, Any, Optional
 from datetime import datetime, timezone
 import logging
+import jwt
+import os
 from revenue_strategy_optimizer import revenue_strategy
-from server import get_current_user, User
 import json
+
+# Import User model and auth functions to avoid circular import
+from pydantic import BaseModel, Field, EmailStr
+from motor.motor_asyncio import AsyncIOMotorClient
+
+# Load environment variables for JWT
+JWT_SECRET = os.environ.get('JWT_SECRET', 'laundrotech-empire-2024')
+JWT_ALGORITHM = "HS256"
+
+# MongoDB connection for user lookup
+mongo_url = os.environ.get('MONGO_URL', 'mongodb://localhost:27017/siteatlas')
+client = AsyncIOMotorClient(mongo_url)
+db = client[os.environ.get('DB_NAME', 'sitetitan_db')]
+
+# Security
+security = HTTPBearer()
+
+class User(BaseModel):
+    id: str
+    email: EmailStr
+    full_name: str
+    subscription_tier: str = "free"
+    created_at: datetime
+    facebook_group_member: bool = False
+
+async def get_current_user(credentials: HTTPAuthorizationCredentials = Depends(security)):
+    try:
+        payload = jwt.decode(credentials.credentials, JWT_SECRET, algorithms=[JWT_ALGORITHM])
+        user_id: str = payload.get("sub")
+        if user_id is None:
+            raise HTTPException(status_code=401, detail="Invalid authentication credentials")
+    except jwt.PyJWTError:
+        raise HTTPException(status_code=401, detail="Invalid authentication credentials")
+    
+    user = await db.users.find_one({"id": user_id})
+    if user is None:
+        raise HTTPException(status_code=401, detail="User not found")
+    return User(**user)
 
 logger = logging.getLogger(__name__)
 
