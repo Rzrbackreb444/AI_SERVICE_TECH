@@ -60,56 +60,16 @@ const SecuritySettings = () => {
     } catch (error) {
       console.error('Failed to load security data:', error);
       
-      // Mock data for demonstration
-      setSecuritySettings({
-        two_factor_enabled: false,
-        password_last_changed: '2024-01-15T10:30:00Z',
-        backup_codes_remaining: 8,
-        login_notifications: true,
-        security_alerts: true
-      });
-      
-      setSessions([
-        {
-          id: '1',
-          device: 'MacBook Pro (Chrome)',
-          location: 'New York, NY',
-          ip_address: '192.168.1.100',
-          is_current: true,
-          last_activity: new Date().toISOString(),
-          created_at: '2024-01-20T09:00:00Z'
-        },
-        {
-          id: '2',
-          device: 'iPhone 15 Pro (Safari)',
-          location: 'New York, NY',
-          ip_address: '192.168.1.101',
-          is_current: false,
-          last_activity: '2024-01-20T08:45:00Z',
-          created_at: '2024-01-19T14:30:00Z'
-        }
+      // Get REAL security data from backend - no mock data
+      const [securityResponse, sessionsResponse, auditResponse] = await Promise.all([
+        axios.get(`${API}/security/security-settings`, { headers: getAuthHeaders() }),
+        axios.get(`${API}/security/sessions`, { headers: getAuthHeaders() }),
+        axios.get(`${API}/security/audit-log?limit=20`, { headers: getAuthHeaders() })
       ]);
-      
-      setAuditLog([
-        {
-          id: '1',
-          event_type: 'login_success',
-          created_at: '2024-01-20T09:00:00Z',
-          ip_address: '192.168.1.100',
-          location: 'New York, NY',
-          success: true,
-          details: {}
-        },
-        {
-          id: '2',
-          event_type: 'password_changed',
-          created_at: '2024-01-15T10:30:00Z',
-          ip_address: '192.168.1.100',
-          location: 'New York, NY',
-          success: true,
-          details: {}
-        }
-      ]);
+
+      setSecuritySettings(securityResponse.data || {});
+      setSessions(sessionsResponse.data.sessions || []);
+      setAuditLog(auditResponse.data.events || []);
     } finally {
       setLoading(false);
     }
