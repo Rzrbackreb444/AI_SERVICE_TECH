@@ -653,13 +653,13 @@ class DataIntegrationService:
 class LocationAnalysisEngine:
     def __init__(self):
         self.data_service = DataIntegrationService()
-        self.model = RandomForestRegressor(n_estimators=100, random_state=42)
-        self._train_dummy_model()
-    
-    def _train_dummy_model(self):
-        X_dummy = np.random.rand(1000, 10)
-        y_dummy = np.random.rand(1000) * 100
-        self.model.fit(X_dummy, y_dummy)
+        # Initialize with real scoring algorithms, not dummy data
+        self.scoring_weights = {
+            'demographics': 0.35,
+            'competition': 0.25, 
+            'real_estate': 0.20,
+            'traffic': 0.20
+        }
     
     async def analyze_location(self, address: str, analysis_type: str) -> LocationAnalysis:
         """Comprehensive location analysis"""
