@@ -675,6 +675,60 @@ body {
   clip-path: polygon(0 100%, 20% 80%, 40% 90%, 60% 70%, 80% 85%, 100% 75%, 100% 100%);
 }
 
+.simple-radial-chart .radial-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  padding: 20px;
+  justify-content: center;
+}
+
+.simple-radial-chart .radial-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.simple-radial-chart .radial-bar {
+  position: relative;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: conic-gradient(var(--color) 0deg, var(--color) calc(var(--progress) * 3.6deg), #e5e7eb calc(var(--progress) * 3.6deg), #e5e7eb 360deg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.simple-radial-chart .radial-bar::before {
+  content: '';
+  position: absolute;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: white;
+}
+
+.simple-radial-chart .radial-label {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.simple-radial-chart .radial-name {
+  display: block;
+  color: #374151;
+  margin-bottom: 2px;
+}
+
+.simple-radial-chart .radial-value {
+  display: block;
+  color: var(--color);
+  font-size: 14px;
+}
+
 /* Chart Loading States */
 .chart-container.loading {
   background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
