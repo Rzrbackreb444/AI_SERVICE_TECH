@@ -1085,7 +1085,7 @@ async def analyze_location(
     background_tasks: BackgroundTasks,
     current_user: User = Depends(get_current_user)
 ):
-    """Analyze a location with LaundroTech intelligence"""
+    """ENTERPRISE LAUNDROTECH ANALYSIS - Using 3-generation Arkansas expertise + Advanced AI"""
     tier_access = {
         'free': ['scout'],
         'analyzer': ['scout', 'analyzer'],
@@ -1098,20 +1098,40 @@ async def analyze_location(
     if request.analysis_type not in tier_access.get(current_user.subscription_tier, ['scout']):
         raise HTTPException(status_code=403, detail="Upgrade subscription to access this analysis type")
     
-    analysis = await analysis_engine.analyze_location(request.address, request.analysis_type)
-    analysis.user_id = current_user.id
+    # Use ENTERPRISE intelligence engine with ALL APIs integrated
+    enterprise_analysis = await enterprise_engine.comprehensive_location_analysis(
+        request.address,
+        request.analysis_type
+    )
     
-    analysis_dict = analysis.dict()
-    await db.analyses.insert_one(analysis_dict)
+    # Add Next-Gen AI scoring
+    if enterprise_analysis and not enterprise_analysis.get('error'):
+        ai_analysis = await next_gen_ai.revolutionary_scoring_algorithm(enterprise_analysis)
+        enterprise_analysis['ai_analysis'] = ai_analysis
+        
+        # Record for self-learning AI
+        analysis_id = str(uuid.uuid4())
+        enterprise_analysis['analysis_id'] = analysis_id
+        await self_learning_ai.record_prediction(
+            analysis_id, 
+            ai_analysis, 
+            request.address
+        )
     
+    # Store in database
+    enterprise_analysis['user_id'] = current_user.id
+    enterprise_analysis['created_at'] = datetime.now(timezone.utc)
+    await db.analyses.insert_one(enterprise_analysis)
+    
+    # Send completion email
     background_tasks.add_task(
         email_service.send_analysis_complete_email,
         current_user.email,
         current_user.full_name,
-        analysis_dict
+        enterprise_analysis
     )
     
-    return analysis
+    return enterprise_analysis
 
 @api_router.get("/user/subscriptions")
 async def get_user_subscriptions(current_user: User = Depends(get_current_user)):
