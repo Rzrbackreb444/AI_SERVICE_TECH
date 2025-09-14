@@ -965,5 +965,27 @@ class EnterpriseIntelligenceEngine:
         except Exception as e:
             return "Speed Queen"  # Default recommendation based on Arkansas expertise
 
+    def get_equipment_cost(self, size: str, equipment_type: str) -> int:
+        """Get equipment cost based on size and type"""
+        try:
+            if equipment_type == "washer":
+                cost_map = {
+                    "20lb_washers": 4200,
+                    "30lb_washers": 5800,
+                    "40lb_washers": 7500,
+                    "60lb_washers": 9500
+                }
+                return cost_map.get(size, 4200)
+            elif equipment_type == "dryer":
+                cost_map = {
+                    "30lb_stack": 3400,
+                    "45lb_single": 4600
+                }
+                return cost_map.get(size, 3400)
+            else:
+                return 4200  # Default cost
+        except Exception as e:
+            return 4200  # Default cost
+
 # Global instance
 enterprise_engine = EnterpriseIntelligenceEngine()
