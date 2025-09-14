@@ -11,7 +11,17 @@ from motor.motor_asyncio import AsyncIOMotorClient
 import logging
 import uuid
 import os
-from emergentintegrations import get_universal_llm_client
+try:
+    from emergentintegrations import get_universal_llm_client
+except ImportError:
+    # Fallback if emergentintegrations doesn't have get_universal_llm_client
+    try:
+        from emergentintegrations.llm.chat import LlmChat
+        def get_universal_llm_client():
+            return LlmChat()
+    except ImportError:
+        def get_universal_llm_client():
+            return None
 
 logger = logging.getLogger(__name__)
 
