@@ -28,7 +28,7 @@ const PricingPage = ({ onOpenAuth }) => {
         "Simple demographic estimates",
         "Basic competition search",
         "3 location analyses per month",
-        "Community access to facebook.com/groups/thelaundromat",
+        "Community access to The Laundromat Facebook Group",
         "Email support"
       ],
       limitations: [
