@@ -1113,5 +1113,95 @@ class EnterpriseIntelligenceEngine:
         strategies.append("Implement loyalty programs and competitive pricing")
         return strategies
 
+    def calculate_equipment_investment(self, size: str, demographics: Dict) -> Dict[str, Any]:
+        """Calculate equipment investment requirements - Arkansas expertise"""
+        try:
+            median_income = demographics.get('median_income', 45000)
+            
+            # Equipment mix based on Arkansas market knowledge
+            if median_income >= 60000:
+                # Premium area - bigger machines, more capacity
+                equipment = {
+                    "washers": {
+                        "20lb_washers": {"count": 4, "cost": 4200},
+                        "30lb_washers": {"count": 6, "cost": 5800},
+                        "40lb_washers": {"count": 4, "cost": 7500},
+                        "60lb_washers": {"count": 2, "cost": 9500}
+                    },
+                    "dryers": {
+                        "30lb_stack": {"count": 8, "cost": 3400},
+                        "45lb_single": {"count": 8, "cost": 4600}
+                    }
+                }
+            elif median_income >= 40000:
+                # Middle market - balanced mix
+                equipment = {
+                    "washers": {
+                        "20lb_washers": {"count": 6, "cost": 4200},
+                        "30lb_washers": {"count": 8, "cost": 5800},
+                        "40lb_washers": {"count": 2, "cost": 7500}
+                    },
+                    "dryers": {
+                        "30lb_stack": {"count": 10, "cost": 3400},
+                        "45lb_single": {"count": 6, "cost": 4600}
+                    }
+                }
+            else:
+                # Budget area - focus on 20lb and 30lb
+                equipment = {
+                    "washers": {
+                        "20lb_washers": {"count": 8, "cost": 4200},
+                        "30lb_washers": {"count": 6, "cost": 5800}
+                    },
+                    "dryers": {
+                        "30lb_stack": {"count": 12, "cost": 3400},
+                        "45lb_single": {"count": 2, "cost": 4600}
+                    }
+                }
+            
+            # Calculate totals
+            total_washers = sum(item["count"] for item in equipment["washers"].values())
+            total_dryers = sum(item["count"] for item in equipment["dryers"].values())
+            
+            washer_cost = sum(item["count"] * item["cost"] for item in equipment["washers"].values())
+            dryer_cost = sum(item["count"] * item["cost"] for item in equipment["dryers"].values())
+            
+            total_equipment_cost = washer_cost + dryer_cost
+            
+            # Additional costs (Arkansas market)
+            installation = total_equipment_cost * 0.15
+            permits_legal = 5000
+            initial_supplies = 2500
+            
+            total_investment = total_equipment_cost + installation + permits_legal + initial_supplies
+            
+            return {
+                "equipment_breakdown": equipment,
+                "equipment_summary": {
+                    "total_washers": total_washers,
+                    "total_dryers": total_dryers,
+                    "washer_cost": washer_cost,
+                    "dryer_cost": dryer_cost,
+                    "total_equipment_cost": total_equipment_cost
+                },
+                "additional_costs": {
+                    "installation": installation,
+                    "permits_legal": permits_legal,
+                    "initial_supplies": initial_supplies
+                },
+                "total_investment": total_investment,
+                "recommended_brands": {
+                    "primary": self.recommend_equipment_brand(size, median_income),
+                    "reasoning": "Based on 3-generation Arkansas laundromat expertise"
+                }
+            }
+            
+        except Exception as e:
+            return {
+                "error": str(e),
+                "total_investment": 150000,  # Conservative estimate
+                "equipment_summary": {"total_washers": 14, "total_dryers": 16}
+            }
+
 # Global instance
 enterprise_engine = EnterpriseIntelligenceEngine()
