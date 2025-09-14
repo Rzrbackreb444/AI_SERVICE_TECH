@@ -526,6 +526,97 @@ def create_analytics_router(db, get_current_user):
             logger.error(f"Revenue prediction error: {e}")
             raise HTTPException(status_code=500, detail="Failed to generate predictions")
     
+    @analytics_router.get("/dashboard")
+    async def get_analytics_dashboard():
+        """Get dashboard analytics data"""
+        try:
+            # Get recent analyses
+            recent_analyses = await db.location_analyses.find().sort("created_at", -1).limit(10).to_list(10)
+            
+            # Calculate summary statistics
+            total_analyses = await db.location_analyses.count_documents({})
+            avg_grade_score = 0
+            grade_distribution = {"A": 0, "B": 0, "C": 0, "D": 0}
+            
+            if recent_analyses:
+                scores = [a['grade_score'] for a in recent_analyses]
+                avg_grade_score = sum(scores) / len(scores)
+                
+                for analysis in recent_analyses:
+                    grade_letter = analysis['overall_grade'][0]
+                    if grade_letter in grade_distribution:
+                        grade_distribution[grade_letter] += 1
+            
+            return {
+                "total_analyses": total_analyses,
+                "recent_analyses": recent_analyses,
+                "average_grade_score": round(avg_grade_score, 1),
+                "grade_distribution": grade_distribution,
+                "market_trends": {
+                    "high_potential_markets": 5,
+                    "emerging_opportunities": 12,
+                    "competitive_markets": 8
+                }
+            }
+            
+        except Exception as e:
+            raise HTTPException(status_code=500, detail=f"Dashboard data failed: {str(e)}")
+
+    @analytics_router.post("/reports/generate-pdf/{analysis_id}")
+    async def generate_premium_report(analysis_id: str, user_info: dict = None):
+        """Generate premium PDF report for analysis"""
+        try:
+            # Get analysis from database
+            analysis = await db.location_analyses.find_one({"id": analysis_id})
+            if not analysis:
+                raise HTTPException(status_code=404, detail="Analysis not found")
+            
+            # Generate PDF report
+            pdf_bytes = await report_generator.generate_comprehensive_report(analysis, user_info)
+            
+            # Return PDF as response
+            from fastapi.responses import Response
+            
+            filename = f"LaundroTech_Report_{analysis_id[:8]}.pdf"
+            
+            return Response(
+                content=pdf_bytes,
+                media_type="application/pdf",
+                headers={
+                    "Content-Disposition": f"attachment; filename={filename}",
+                    "Content-Type": "application/pdf"
+                }
+            )
+            
+        except Exception as e:
+            raise HTTPException(status_code=500, detail=f"Report generation failed: {str(e)}")
+
+    @analytics_router.get("/reports/preview/{analysis_id}")
+    async def preview_report_data(analysis_id: str):
+        """Preview report data for frontend display"""
+        try:
+            # Get analysis from database
+            analysis = await db.location_analyses.find_one({"id": analysis_id})
+            if not analysis:
+                raise HTTPException(status_code=404, detail="Analysis not found")
+            
+            # Return structured preview data
+            return {
+                "analysis_id": analysis_id,
+                "address": analysis.get("address"),
+                "overall_grade": analysis.get("overall_grade"),
+                "overall_score": analysis.get("grade_score"),
+                "revenue_potential": analysis.get("revenue_potential", {}),
+                "competitor_count": len(analysis.get("competitors", [])),
+                "demographics": analysis.get("demographics", {}),
+                "risk_factors_count": len(analysis.get("risk_factors", [])),
+                "opportunities_count": len(analysis.get("opportunities", [])),
+                "created_at": analysis.get("created_at")
+            }
+            
+        except Exception as e:
+            raise HTTPException(status_code=500, detail=f"Report preview failed: {str(e)}")
+
     @analytics_router.get("/export")
     async def export_analytics_report(
         format: str = Query("pdf", description="pdf, csv, xlsx"),
