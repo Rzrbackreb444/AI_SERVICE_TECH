@@ -265,8 +265,10 @@ const LandingPage = ({ onOpenAuth }) => {
               >
                 <div className="absolute inset-0 bg-gradient-to-r from-cyan-400 to-emerald-400 rounded-2xl blur opacity-0 group-hover:opacity-50 transition-opacity duration-300"></div>
                 <span className="relative flex items-center">
-                  <SparklesIcon className="w-6 h-6 mr-3" />
-                  Start Free AI Analysis
+                  <svg className="w-6 h-6 mr-3" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M12 2C13.1 2 14 2.9 14 4V6H18C19.1 6 20 6.9 20 8V19C20 20.1 19.1 21 18 21H6C4.9 21 4 20.1 4 19V8C4 6.9 4.9 6 6 6H10V4C10 2.9 10.9 2 12 2ZM12 4V6H12V4ZM6 8V19H18V8H6ZM8 10H16V12H8V10ZM8 14H13V16H8V14Z"/>
+                  </svg>
+                  Join the Movement
                   <ArrowRightIcon className="w-6 h-6 ml-3 group-hover:translate-x-1 transition-transform duration-300" />
                 </span>
               </motion.button>
