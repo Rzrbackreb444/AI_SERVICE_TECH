@@ -493,7 +493,7 @@ const LandingPage = ({ onOpenAuth }) => {
               <h3 className="text-lg font-semibold text-white mb-4">Platform</h3>
               <ul className="space-y-2 text-slate-400 text-sm">
                 <li><Link to="/pricing" className="hover:text-white transition-colors">Pricing</Link></li>
-                <li><Link to="/facebook-group" className="hover:text-white transition-colors">Facebook Group</Link></li>
+                <li><Link to="/pricing" className="hover:text-white transition-colors">Professional Network</Link></li>
                 <li><a href="mailto:nick@laundryguys.net" className="hover:text-white transition-colors">Support</a></li>
                 <li><a href="mailto:nick@laundryguys.net" className="hover:text-white transition-colors">Partnership</a></li>
               </ul>
