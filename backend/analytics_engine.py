@@ -670,7 +670,7 @@ def create_analytics_router(db, get_current_user):
             ai_input_data = {
                 'address': request.get('address'),
                 'coordinates': location_data['coordinates'],
-                'competitors': [c.dict() for c in location_data['competitors']],
+                'competitors': location_data['competitors'],
                 'demographics': demographics.dict()
             }
             
