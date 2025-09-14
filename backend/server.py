@@ -63,6 +63,9 @@ if paypal_client_id and paypal_client_secret:
         "client_secret": paypal_client_secret
     })
 
+# Initialize report generator
+report_generator = PremiumReportGenerator()
+
 # FastAPI app setup
 app = FastAPI(
     title="LaundroTech - Powered by SiteAtlas",
