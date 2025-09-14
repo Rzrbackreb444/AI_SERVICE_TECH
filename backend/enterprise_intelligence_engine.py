@@ -746,7 +746,7 @@ class EnterpriseIntelligenceEngine:
         equipment_mix = self.optimize_equipment_mix(recommended_capacity, median_income)
         
         # Calculate total investment and valuation
-        total_investment = self.calculate_equipment_investment(equipment_mix)
+        total_investment = self.calculate_equipment_investment("medium", demographics)
         
         # ROI projections based on market conditions
         roi_projections = self.calculate_equipment_roi(equipment_mix, demographics, competition)
