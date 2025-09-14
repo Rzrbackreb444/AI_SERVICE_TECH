@@ -1270,8 +1270,8 @@ app.include_router(api_router)
 admin_router = create_admin_router(db, get_current_user)
 app.include_router(admin_router, prefix="/api")
 
-# Include consultant router
-app.include_router(consultant_router)
+# Include consultant router (disabled - replaced with immersive analytics)
+# app.include_router(consultant_router)
 
 # Include analytics router
 analytics_router = create_analytics_router(db, get_current_user)
