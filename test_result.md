@@ -585,11 +585,12 @@ metadata:
 
 test_plan:
   current_focus:
-    - "Advanced Revenue Optimization Strategies - All 7 Systems"
+    - "AI Consultant System - Revolutionary Personalized AI Consultant"
+    - "Revenue & Stickiness Validation - Subscription Model"
   stuck_tasks: 
     - "Stripe integration requires valid API key (expired key causing checkout failures)"
   test_all: false
-  test_priority: "revenue_optimization_complete"
+  test_priority: "consultant_stickiness_validation"
 
 agent_communication:
   - agent: "main"
