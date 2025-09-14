@@ -4,6 +4,7 @@ Enterprise-grade professional consulting API
 """
 
 import os
+import uuid
 from typing import Dict, Any, List
 from fastapi import APIRouter, HTTPException, Depends, BackgroundTasks
 from pydantic import BaseModel
