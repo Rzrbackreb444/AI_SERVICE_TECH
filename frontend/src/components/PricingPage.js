@@ -148,7 +148,7 @@ const PricingPage = ({ onOpenAuth }) => {
     },
     {
       id: "watch_pro",
-      name: "SiteAtlas Watch Pro",
+      name: "LaundroWatch Pro",
       price: 199,
       paypalPrice: 189,
       billing: "per location/month",
