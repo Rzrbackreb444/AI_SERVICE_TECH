@@ -1169,7 +1169,7 @@ class EnterpriseIntelligenceEngine:
             total_equipment_cost = washer_cost + dryer_cost
             
             # Additional costs (Arkansas market)
-            installation = total_equipment_cost * 0.15
+            installation = int(total_equipment_cost * 0.15)
             permits_legal = 5000
             initial_supplies = 2500
             
