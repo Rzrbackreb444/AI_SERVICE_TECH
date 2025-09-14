@@ -14,6 +14,7 @@ from typing import Dict, List, Optional, Any
 from dotenv import load_dotenv
 from motor.motor_asyncio import AsyncIOMotorClient
 from emergentintegrations.llm.chat import LlmChat, UserMessage
+from real_research_engine import real_research_engine
 
 # Load environment variables
 load_dotenv()
