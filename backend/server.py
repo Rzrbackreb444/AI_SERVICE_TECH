@@ -1633,6 +1633,9 @@ app.include_router(security_router, prefix="/api")
 notifications_router, notification_helpers = create_notifications_router(db, get_current_user)
 app.include_router(notifications_router, prefix="/api")
 
+# Include optimization router
+app.include_router(optimization_router)  # NEW: Optimization endpoints
+
 @app.on_event("shutdown")
 async def shutdown_db_client():
     client.close()
