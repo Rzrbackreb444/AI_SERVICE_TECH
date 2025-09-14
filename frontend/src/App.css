@@ -114,6 +114,32 @@ body {
   font-weight: 800;
 }
 
+/* Professional Typography */
+.hero-text {
+  color: #0f172a;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  line-height: 1.1;
+}
+
+.premium-text {
+  color: #1e293b;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.enterprise-heading {
+  color: #0f172a;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+
+.professional-subtext {
+  color: #64748b;
+  font-weight: 500;
+  line-height: 1.6;
+}
 /* Enhanced Button Styles */
 .btn-primary {
   background: linear-gradient(135deg, var(--primary-blue) 0%, var(--primary-cyan) 100%);
