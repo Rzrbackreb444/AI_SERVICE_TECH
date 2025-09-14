@@ -650,6 +650,7 @@ def create_analytics_router(db, get_current_user):
             
             # Import required modules
             from advanced_ai_algorithms import next_gen_ai
+            from self_learning_ai import self_learning_ai
             import uuid
             from datetime import timezone
             
