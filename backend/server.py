@@ -1276,6 +1276,9 @@ app.include_router(admin_router, prefix="/api")
 # Include real analytics router with NO FAKE DATA
 app.include_router(real_analytics_router)
 
+# Include enterprise router with ALL APIs CONNECTED
+app.include_router(enterprise_router)
+
 # Include analytics router
 analytics_router = create_analytics_router(db, get_current_user)
 app.include_router(analytics_router, prefix="/api")
