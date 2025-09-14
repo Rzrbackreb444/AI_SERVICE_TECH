@@ -18,7 +18,11 @@ import {
   WrenchScrewdriverIcon,
   BuildingOfficeIcon,
   DocumentTextIcon,
-  ArrowTopRightOnSquareIcon
+  ArrowTopRightOnSquareIcon,
+  LockClosedIcon,
+  CreditCardIcon,
+  FireIcon,
+  ExclamationTriangleIcon
 } from '@heroicons/react/24/outline';
 import axios from 'axios';
 
@@ -34,6 +38,9 @@ const AIConsultant = ({ isOpen, onClose, userTier = 'free' }) => {
   const [showFeatures, setShowFeatures] = useState(false);
   const [sessions, setSessions] = useState([]);
   const [activeSession, setActiveSession] = useState(null);
+  const [tierInfo, setTierInfo] = useState(null);
+  const [showUpgradeModal, setShowUpgradeModal] = useState(false);
+  const [upgradeInfo, setUpgradeInfo] = useState(null);
   const messagesEndRef = useRef(null);
   const inputRef = useRef(null);
 
@@ -50,25 +57,10 @@ const AIConsultant = ({ isOpen, onClose, userTier = 'free' }) => {
       loadConsultantFeatures();
       loadUserSessions();
       
-      // Add welcome message
+      // Add welcome message with tier info
       if (messages.length === 0) {
-        setMessages([{
-          id: 'welcome',
-          type: 'ai',
-          content: `👋 Welcome to **LaundroTech Master AI** - your professional laundromat consultant!
-
-I'm equivalent to a $500/hour industry expert, here to help with:
-
-🏗️ **Site Selection & Analysis** - Demographics, traffic, competition
-🏭 **Equipment Selection** - Washer/dryer optimization, ROI calculations  
-📊 **Business Operations** - Revenue optimization, pricing strategies
-🔧 **Technical Support** - Troubleshooting, maintenance, error codes
-📋 **Compliance** - ADA, zoning, permits, regulations
-
-What can I help you with today?`,
-          timestamp: new Date(),
-          features: []
-        }]);
+        const welcomeMessage = getWelcomeMessage(userTier);
+        setMessages([welcomeMessage]);
       }
       
       // Focus input when opened
@@ -77,6 +69,60 @@ What can I help you with today?`,
       }, 100);
     }
   }, [isOpen]);
+
+  const getWelcomeMessage = (tier) => {
+    const tierInfo = getTierInfo(tier);
+    const dailyLimit = getTierLimits(tier).daily_messages;
+    
+    return {
+      id: 'welcome',
+      type: 'ai',
+      content: `👋 Welcome to **LaundroTech Master AI** - your ${tier === 'free' ? 'professional' : 'premium'} laundromat consultant!
+
+${tier === 'free' ? '🆓 **Free Tier Active**' : `💎 **${tier.toUpperCase()} Tier Active**`}
+📊 You have **${dailyLimit} daily messages** available
+
+I'm equivalent to a $500/hour industry expert, here to help with:
+
+🏗️ **Site Selection & Analysis** - Demographics, traffic, competition
+🏭 **Equipment Selection** - Washer/dryer optimization, ROI calculations  
+📊 **Business Operations** - Revenue optimization, pricing strategies
+🔧 **Technical Support** - Troubleshooting, maintenance, error codes
+📋 **Compliance** - ADA, zoning, permits, regulations
+${tier !== 'free' && getTierLimits(tier).research_enabled ? '\n🔍 **Real-time Research** - Current industry data and trends' : ''}
+
+${tier === 'free' ? '\n💡 **Want more?** Upgrade for research capabilities, unlimited messages, and advanced features!' : ''}
+
+What can I help you with today?`,
+      timestamp: new Date(),
+      features: [],
+      tierInfo: { tier, dailyLimit }
+    };
+  };
+
+  const getTierInfo = (tier) => {
+    const badges = {
+      'free': { color: 'from-slate-500 to-slate-600', label: 'Scout', icon: UserCircleIcon },
+      'analyzer': { color: 'from-blue-500 to-blue-600', label: 'Analyzer', icon: ChartBarIcon },
+      'intelligence': { color: 'from-cyan-500 to-emerald-500', label: 'Intelligence', icon: CpuChipIcon },
+      'optimization': { color: 'from-purple-500 to-pink-500', label: 'Optimization', icon: BoltIcon },
+      'portfolio': { color: 'from-orange-500 to-red-500', label: 'Portfolio', icon: BuildingOfficeIcon },
+      'watch_pro': { color: 'from-green-500 to-teal-500', label: 'Watch Pro', icon: ShieldCheckIcon }
+    };
+    return badges[tier] || badges.free;
+  };
+
+  const getTierLimits = (tier) => {
+    const limits = {
+      'free': { daily_messages: 3, research_enabled: false },
+      'analyzer': { daily_messages: 15, research_enabled: false },
+      'intelligence': { daily_messages: 50, research_enabled: true },
+      'optimization': { daily_messages: 150, research_enabled: true },
+      'portfolio': { daily_messages: 300, research_enabled: true },
+      'watch_pro': { daily_messages: 500, research_enabled: true }
+    };
+    return limits[tier] || limits.free;
+  };
 
   const getAuthHeaders = () => {
     const token = localStorage.getItem('token');
@@ -124,7 +170,8 @@ What can I help you with today?`,
           type: 'ai',
           content: conv.ai_response,
           timestamp: new Date(conv.created_at),
-          features: []
+          features: [],
+          tierInfo: conv.tier_info
         }
       ])).flat();
       
@@ -158,18 +205,40 @@ What can I help you with today?`,
         headers: getAuthHeaders()
       });
 
-      const aiMessage = {
-        id: `ai-${Date.now()}`,
-        type: 'ai',
-        content: response.data.response,
-        timestamp: new Date(response.data.timestamp),
-        features: response.data.enhanced_features || [],
-        userTier: response.data.user_tier,
-        consultantType: response.data.consultant_type
-      };
+      if (response.data.blocked) {
+        // Handle tier limit exceeded
+        const blockedMessage = {
+          id: `blocked-${Date.now()}`,
+          type: 'ai',
+          content: response.data.message,
+          timestamp: new Date(),
+          features: [],
+          isBlocked: true,
+          upgradeInfo: response.data.upgrade_info
+        };
+        
+        setMessages(prev => [...prev, blockedMessage]);
+        setUpgradeInfo(response.data.upgrade_info);
+        setShowUpgradeModal(true);
+        
+      } else {
+        const aiMessage = {
+          id: `ai-${Date.now()}`,
+          type: 'ai',
+          content: response.data.response,
+          timestamp: new Date(response.data.timestamp || new Date()),
+          features: response.data.enhanced_features || [],
+          userTier: response.data.user_tier,
+          consultantType: response.data.consultant_type,
+          tierInfo: response.data.tier_info,
+          researchUsed: response.data.research_used,
+          upgradeUrl: response.data.upgrade_suggested ? '/pricing' : null
+        };
 
-      setMessages(prev => [...prev, aiMessage]);
-      setSessionId(response.data.session_id);
+        setMessages(prev => [...prev, aiMessage]);
+        setSessionId(response.data.session_id);
+        setTierInfo(response.data.tier_info);
+      }
       
       // Refresh sessions list
       await loadUserSessions();
@@ -200,60 +269,83 @@ What can I help you with today?`,
   };
 
   const startNewSession = () => {
-    setMessages([{
-      id: 'welcome-new',
-      type: 'ai',
-      content: `🚀 **New Consultation Session Started**
-
-I'm ready to provide professional laundromat consulting. What's your biggest challenge or question today?
-
-**Popular Topics:**
-• Site evaluation and selection
-• Equipment recommendations  
-• Financial projections and ROI
-• Operational optimization
-• Troubleshooting and repairs`,
-      timestamp: new Date(),
-      features: []
-    }]);
+    const welcomeMessage = getWelcomeMessage(userTier);
+    setMessages([welcomeMessage]);
     setSessionId(null);
     setActiveSession(null);
   };
 
-  const getTierBadge = (tier) => {
-    const badges = {
-      'free': { color: 'from-slate-500 to-slate-600', label: 'Scout', icon: UserCircleIcon },
-      'analyzer': { color: 'from-blue-500 to-blue-600', label: 'Analyzer', icon: ChartBarIcon },
-      'intelligence': { color: 'from-cyan-500 to-emerald-500', label: 'Intelligence', icon: CpuChipIcon },
-      'optimization': { color: 'from-purple-500 to-pink-500', label: 'Optimization', icon: BoltIcon },
-      'portfolio': { color: 'from-orange-500 to-red-500', label: 'Portfolio', icon: BuildingOfficeIcon },
-      'watch_pro': { color: 'from-green-500 to-teal-500', label: 'Watch Pro', icon: ShieldCheckIcon }
-    };
-    return badges[tier] || badges.free;
+  const handleUpgrade = (tier) => {
+    window.open(`/pricing?highlight=${tier}&source=consultant`, '_blank');
+    setShowUpgradeModal(false);
   };
 
   const formatMessage = (content) => {
-    // Convert markdown-style formatting to JSX
-    return content
-      .split('\n')
-      .map((line, index) => {
-        // Headers
-        if (line.startsWith('**') && line.endsWith('**')) {
-          return <div key={index} className="font-bold text-white mb-2">{line.slice(2, -2)}</div>;
-        }
-        // Bullet points
-        if (line.startsWith('• ') || line.startsWith('- ')) {
-          return <div key={index} className="ml-4 text-slate-300 mb-1">• {line.slice(2)}</div>;
-        }
-        // Emojis and regular text
+    // Convert markdown-style formatting to JSX with better parsing
+    const lines = content.split('\n');
+    
+    return lines.map((line, index) => {
+      // Handle headers
+      if (line.startsWith('**') && line.endsWith('**') && line.length > 4) {
+        return <div key={index} className="font-bold text-white mb-2 text-lg">{line.slice(2, -2)}</div>;
+      }
+      
+      // Handle upgrade links
+      if (line.includes('[Upgrade') && line.includes('](')) {
+        const linkRegex = /\[([^\]]+)\]\(([^)]+)\)/g;
+        const parts = line.split(linkRegex);
+        return (
+          <div key={index} className="mb-2">
+            {parts.map((part, i) => {
+              if (i % 3 === 1) { // Link text
+                return (
+                  <button
+                    key={i}
+                    onClick={() => window.open('/pricing', '_blank')}
+                    className="inline-flex items-center space-x-2 bg-gradient-to-r from-blue-500 to-cyan-500 text-white px-4 py-2 rounded-lg hover:shadow-lg transition-all font-medium"
+                  >
+                    <CreditCardIcon className="w-4 h-4" />
+                    <span>{part}</span>
+                  </button>
+                );
+              } else if (i % 3 === 0) { // Regular text
+                return <span key={i} className="text-slate-300">{part}</span>;
+              }
+              return null;
+            })}
+          </div>
+        );
+      }
+      
+      // Handle bullet points
+      if (line.startsWith('• ') || line.startsWith('- ')) {
+        return <div key={index} className="ml-4 text-slate-300 mb-1 flex items-start"><span className="text-cyan-400 mr-2">•</span>{line.slice(2)}</div>;
+      }
+      
+      // Handle tier indicators
+      if (line.includes('🆓') || line.includes('💎')) {
+        return <div key={index} className="bg-slate-800/50 border border-slate-600/30 rounded-lg p-3 mb-2 font-medium text-cyan-400">{line}</div>;
+      }
+      
+      // Handle warnings and important messages
+      if (line.includes('⚠️') || line.includes('🔒')) {
+        return <div key={index} className="bg-orange-500/10 border border-orange-500/30 rounded-lg p-3 mb-2 text-orange-300">{line}</div>;
+      }
+      
+      // Regular text and emojis
+      if (line.trim()) {
         return <div key={index} className="text-slate-300 mb-1">{line}</div>;
-      });
+      }
+      
+      return <div key={index} className="mb-1"></div>;
+    });
   };
 
   if (!isOpen) return null;
 
-  const tierBadge = getTierBadge(userTier);
+  const tierBadge = getTierInfo(userTier);
   const TierIcon = tierBadge.icon;
+  const tierLimits = getTierLimits(userTier);
 
   return (
     <AnimatePresence>
@@ -268,7 +360,7 @@ I'm ready to provide professional laundromat consulting. What's your biggest cha
           initial={{ scale: 0.9, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           exit={{ scale: 0.9, opacity: 0 }}
-          className="glass-card w-full max-w-4xl h-[80vh] flex flex-col overflow-hidden"
+          className="glass-card w-full max-w-5xl h-[85vh] flex flex-col overflow-hidden"
           onClick={e => e.stopPropagation()}
         >
           {/* Header */}
@@ -279,17 +371,32 @@ I'm ready to provide professional laundromat consulting. What's your biggest cha
               </div>
               <div>
                 <h2 className="text-xl font-bold text-white">LaundroTech Master AI</h2>
-                <div className="flex items-center space-x-2">
+                <div className="flex items-center space-x-3">
                   <span className="text-slate-400 text-sm">Professional Consultant</span>
-                  <div className={`px-2 py-1 rounded-full bg-gradient-to-r ${tierBadge.color} text-white text-xs font-bold flex items-center space-x-1`}>
+                  <div className={`px-3 py-1 rounded-full bg-gradient-to-r ${tierBadge.color} text-white text-xs font-bold flex items-center space-x-1`}>
                     <TierIcon className="w-3 h-3" />
                     <span>{tierBadge.label}</span>
                   </div>
+                  {tierInfo && (
+                    <div className="text-xs text-slate-400">
+                      {tierInfo.messages_remaining}/{tierInfo.daily_limit} messages today
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
             
             <div className="flex items-center space-x-3">
+              {userTier === 'free' && (
+                <button
+                  onClick={() => window.open('/pricing?source=consultant', '_blank')}
+                  className="flex items-center space-x-2 bg-gradient-to-r from-orange-500 to-red-500 text-white px-4 py-2 rounded-lg hover:shadow-lg transition-all text-sm font-medium"
+                >
+                  <FireIcon className="w-4 h-4" />
+                  <span>Upgrade</span>
+                </button>
+              )}
+              
               <button
                 onClick={() => setShowFeatures(!showFeatures)}
                 className="flex items-center space-x-2 bg-slate-700 text-white px-3 py-2 rounded-lg hover:bg-slate-600 transition-colors text-sm"
@@ -330,7 +437,7 @@ I'm ready to provide professional laundromat consulting. What's your biggest cha
                         : 'bg-slate-800/50 hover:bg-slate-700/50'
                     }`}
                   >
-                    <div className="text-white text-sm font-medium mb-1">
+                    <div className="text-white text-sm font-medium mb-1 truncate">
                       {session.preview}
                     </div>
                     <div className="flex items-center justify-between text-xs text-slate-400">
@@ -339,6 +446,27 @@ I'm ready to provide professional laundromat consulting. What's your biggest cha
                     </div>
                   </button>
                 ))}
+              </div>
+              
+              {/* Tier Usage Summary */}
+              <div className="mt-6 p-4 bg-slate-800/30 rounded-lg border border-slate-600/30">
+                <h4 className="text-white font-medium mb-2 text-sm">Usage Summary</h4>
+                <div className="space-y-2 text-xs">
+                  <div className="flex justify-between text-slate-300">
+                    <span>Tier:</span>
+                    <span className="font-medium">{tierBadge.label}</span>
+                  </div>
+                  <div className="flex justify-between text-slate-300">
+                    <span>Daily Limit:</span>
+                    <span>{tierLimits.daily_messages}</span>
+                  </div>
+                  <div className="flex justify-between text-slate-300">
+                    <span>Research:</span>
+                    <span className={tierLimits.research_enabled ? 'text-green-400' : 'text-red-400'}>
+                      {tierLimits.research_enabled ? 'Enabled' : 'Disabled'}
+                    </span>
+                  </div>
+                </div>
               </div>
             </div>
 
@@ -361,6 +489,12 @@ I'm ready to provide professional laundromat consulting. What's your biggest cha
                           <span className="text-slate-300">{feature.feature}</span>
                         </div>
                       ))}
+                      {!tierLimits.research_enabled && (
+                        <div className="flex items-center space-x-2 text-sm">
+                          <LockClosedIcon className="w-4 h-4 text-orange-400" />
+                          <span className="text-orange-300">Real-time Research (Premium)</span>
+                        </div>
+                      )}
                     </div>
                   </motion.div>
                 )}
@@ -375,25 +509,31 @@ I'm ready to provide professional laundromat consulting. What's your biggest cha
                     animate={{ opacity: 1, y: 0 }}
                     className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}
                   >
-                    <div className={`max-w-3xl ${message.type === 'user' ? 'order-2' : 'order-1'}`}>
+                    <div className={`max-w-4xl ${message.type === 'user' ? 'order-2' : 'order-1'}`}>
                       <div className={`flex items-start space-x-3 ${message.type === 'user' ? 'flex-row-reverse space-x-reverse' : ''}`}>
                         <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
                           message.type === 'user' 
                             ? 'bg-gradient-to-r from-blue-500 to-cyan-500' 
+                            : message.isBlocked || message.isError
+                            ? 'bg-gradient-to-r from-orange-500 to-red-500'
                             : 'bg-gradient-to-r from-purple-500 to-pink-500'
                         }`}>
                           {message.type === 'user' ? (
                             <UserCircleIcon className="w-5 h-5 text-white" />
+                          ) : message.isBlocked ? (
+                            <LockClosedIcon className="w-5 h-5 text-white" />
                           ) : (
                             <SparklesIcon className="w-5 h-5 text-white" />
                           )}
                         </div>
                         
-                        <div className={`p-4 rounded-2xl ${
+                        <div className={`p-4 rounded-2xl max-w-3xl ${
                           message.type === 'user'
                             ? 'bg-gradient-to-r from-blue-500 to-cyan-500 text-white'
                             : message.isError
                             ? 'bg-red-500/20 border border-red-500/30'
+                            : message.isBlocked
+                            ? 'bg-orange-500/20 border border-orange-500/30'
                             : 'bg-slate-800/50 border border-slate-600/30'
                         }`}>
                           <div className="prose prose-invert max-w-none">
@@ -408,12 +548,32 @@ I'm ready to provide professional laundromat consulting. What's your biggest cha
                             <div className="mt-3 pt-3 border-t border-slate-600/30">
                               <div className="text-xs text-slate-400 mb-1">Enhanced Features Used:</div>
                               <div className="flex flex-wrap gap-1">
-                                {message.features.slice(0, 3).map((feature, index) => (
+                                {message.features.slice(0, 4).map((feature, index) => (
                                   <span key={index} className="bg-blue-500/20 text-blue-400 px-2 py-1 rounded text-xs">
                                     {feature}
                                   </span>
                                 ))}
                               </div>
+                            </div>
+                          )}
+                          
+                          {message.researchUsed && (
+                            <div className="mt-3 pt-3 border-t border-slate-600/30">
+                              <div className="flex items-center space-x-2 text-xs text-cyan-400">
+                                <SparklesIcon className="w-3 h-3" />
+                                <span>Real-time research conducted</span>
+                              </div>
+                            </div>
+                          )}
+                          
+                          {message.upgradeInfo && (
+                            <div className="mt-3 pt-3 border-t border-slate-600/30">
+                              <button
+                                onClick={() => handleUpgrade(message.upgradeInfo.next_tier)}
+                                className="w-full bg-gradient-to-r from-orange-500 to-red-500 text-white px-4 py-2 rounded-lg hover:shadow-lg transition-all text-sm font-medium"
+                              >
+                                Upgrade to {message.upgradeInfo.next_tier} - {message.upgradeInfo.price}
+                              </button>
                             </div>
                           )}
                           
@@ -446,7 +606,7 @@ I'm ready to provide professional laundromat consulting. What's your biggest cha
                       <div className="bg-slate-800/50 border border-slate-600/30 p-4 rounded-2xl">
                         <div className="flex items-center space-x-2">
                           <ArrowPathIcon className="w-4 h-4 text-blue-400 animate-spin" />
-                          <span className="text-slate-300">Consulting...</span>
+                          <span className="text-slate-300">Consulting{tierLimits.research_enabled ? ' & researching' : ''}...</span>
                         </div>
                       </div>
                     </div>
@@ -465,7 +625,7 @@ I'm ready to provide professional laundromat consulting. What's your biggest cha
                       value={inputMessage}
                       onChange={(e) => setInputMessage(e.target.value)}
                       onKeyPress={handleKeyPress}
-                      placeholder="Ask your professional laundromat consultant anything..."
+                      placeholder={`Ask your ${tierLimits.research_enabled ? 'research-enabled ' : ''}professional laundromat consultant anything...`}
                       className="w-full bg-slate-800/50 border border-slate-600 text-white px-4 py-3 rounded-xl focus:outline-none focus:border-blue-400 transition-colors resize-none"
                       rows={inputMessage.split('\n').length || 1}
                       disabled={isLoading}
@@ -486,12 +646,73 @@ I'm ready to provide professional laundromat consulting. What's your biggest cha
                 
                 <div className="flex items-center justify-between mt-2 text-xs text-slate-400">
                   <span>💡 Press Enter to send, Shift+Enter for new line</span>
-                  <span>Powered by Claude 3.7 Sonnet</span>
+                  <div className="flex items-center space-x-4">
+                    {tierInfo && (
+                      <span>
+                        {tierInfo.messages_remaining}/{tierInfo.daily_limit} messages remaining
+                      </span>
+                    )}
+                    <span>Powered by Claude 3.7 Sonnet</span>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </motion.div>
+
+        {/* Upgrade Modal */}
+        <AnimatePresence>
+          {showUpgradeModal && upgradeInfo && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 bg-black/80 flex items-center justify-center z-60 p-4"
+              onClick={() => setShowUpgradeModal(false)}
+            >
+              <motion.div
+                initial={{ scale: 0.9, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 0.9, opacity: 0 }}
+                className="glass-card max-w-md w-full p-6"
+                onClick={e => e.stopPropagation()}
+              >
+                <div className="text-center mb-6">
+                  <ExclamationTriangleIcon className="w-16 h-16 text-orange-400 mx-auto mb-4" />
+                  <h3 className="text-xl font-bold text-white mb-2">Daily Limit Reached</h3>
+                  <p className="text-slate-400">Upgrade for unlimited access to professional consulting</p>
+                </div>
+
+                <div className="space-y-4 mb-6">
+                  <h4 className="font-medium text-white">Upgrade to {upgradeInfo.next_tier} ({upgradeInfo.price}):</h4>
+                  <ul className="space-y-2">
+                    {upgradeInfo.benefits.map((benefit, index) => (
+                      <li key={index} className="flex items-center space-x-2 text-sm text-slate-300">
+                        <CheckBadgeIcon className="w-4 h-4 text-green-400" />
+                        <span>{benefit}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                <div className="flex space-x-3">
+                  <button
+                    onClick={() => setShowUpgradeModal(false)}
+                    className="flex-1 bg-slate-700 text-white px-4 py-2 rounded-lg hover:bg-slate-600 transition-colors"
+                  >
+                    Maybe Later
+                  </button>
+                  <button
+                    onClick={() => handleUpgrade(upgradeInfo.next_tier)}
+                    className="flex-1 bg-gradient-to-r from-orange-500 to-red-500 text-white px-4 py-2 rounded-lg hover:shadow-lg transition-all font-medium"
+                  >
+                    Upgrade Now
+                  </button>
+                </div>
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </motion.div>
     </AnimatePresence>
   );
