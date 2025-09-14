@@ -1267,6 +1267,35 @@ async def submit_support_request(request_data: Dict[str, Any]):
         logger.error(f"Failed to submit support request: {e}")
         raise HTTPException(status_code=500, detail="Failed to submit support request")
 
+@api_router.post("/ai/record-outcome/{analysis_id}")
+async def record_business_outcome(analysis_id: str, outcome_data: dict):
+    """Record real business outcome to teach the AI"""
+    try:
+        learning_result = await self_learning_ai.record_real_outcome(analysis_id, outcome_data)
+        
+        return {
+            'success': True,
+            'message': '🎯 Business outcome recorded - AI learning in progress',
+            'learning_result': learning_result
+        }
+        
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to record outcome: {str(e)}")
+
+@api_router.get("/ai/learning-stats")
+async def get_ai_learning_statistics():
+    """Get AI learning and improvement statistics"""
+    try:
+        stats = await self_learning_ai.get_ai_learning_stats()
+        
+        return {
+            'success': True,
+            'message': '🧠 AI Learning Statistics',
+            'learning_stats': stats
+        }
+        
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to get learning stats: {str(e)}")
 @api_router.get("/")
 async def root():
     """API root endpoint"""
