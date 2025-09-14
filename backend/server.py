@@ -27,6 +27,7 @@ from admin_endpoints import create_admin_router
 from immersive_analytics import immersive_analytics
 from real_analytics_endpoints import router as real_analytics_router
 from enterprise_intelligence_engine import enterprise_engine
+from enterprise_endpoints import router as enterprise_router
 from analytics_engine import create_analytics_router
 from security_manager import create_security_router
 from notifications_engine import create_notifications_router
