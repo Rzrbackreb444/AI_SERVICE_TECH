@@ -1440,5 +1440,208 @@ class EnterpriseIntelligenceEngine:
                 "competitive_advantage": "Focus on superior service"
             }
 
+    async def calculate_advanced_financials(self, location_score: Dict, demographics: Dict, 
+                                          real_estate: Dict, equipment_analysis: Dict) -> Dict[str, Any]:
+        """Calculate advanced financial projections"""
+        try:
+            # Extract key metrics safely
+            score = location_score.get('total_score', 50)
+            if not isinstance(score, (int, float)):
+                score = 50
+                
+            median_income = demographics.get('median_household_income', 50000)
+            if not isinstance(median_income, (int, float)):
+                median_income = 50000
+                
+            population = demographics.get('total_population', 5000)
+            if not isinstance(population, (int, float)):
+                population = 5000
+            
+            # Base revenue calculation
+            base_monthly_revenue = max(3000, population * 0.8 * (score / 100))
+            
+            # Adjust for income level
+            income_multiplier = min(1.5, median_income / 50000)
+            monthly_revenue = base_monthly_revenue * income_multiplier
+            
+            # Operating expenses
+            monthly_expenses = monthly_revenue * 0.65  # 65% expense ratio
+            monthly_profit = monthly_revenue - monthly_expenses
+            
+            # Annual projections
+            annual_revenue = monthly_revenue * 12
+            annual_expenses = monthly_expenses * 12
+            annual_profit = monthly_profit * 12
+            
+            # ROI calculations
+            total_investment = equipment_analysis.get('total_investment', 150000)
+            if not isinstance(total_investment, (int, float)):
+                total_investment = 150000
+                
+            annual_roi = (annual_profit / total_investment * 100) if total_investment > 0 else 0
+            payback_period = total_investment / annual_profit if annual_profit > 0 else 99
+            
+            return {
+                "monthly_revenue": round(monthly_revenue, 2),
+                "monthly_expenses": round(monthly_expenses, 2),
+                "monthly_profit": round(monthly_profit, 2),
+                "annual_revenue": round(annual_revenue, 2),
+                "annual_expenses": round(annual_expenses, 2),
+                "annual_profit": round(annual_profit, 2),
+                "annual_roi": round(annual_roi, 1),
+                "payback_period_years": round(payback_period, 1),
+                "total_investment": total_investment,
+                "break_even_months": round(total_investment / monthly_profit, 1) if monthly_profit > 0 else 99
+            }
+            
+        except Exception as e:
+            print(f"Financial projections error: {e}")
+            return {
+                "monthly_revenue": 4000,
+                "monthly_expenses": 2600,
+                "monthly_profit": 1400,
+                "annual_revenue": 48000,
+                "annual_expenses": 31200,
+                "annual_profit": 16800,
+                "annual_roi": 11.2,
+                "payback_period_years": 8.9,
+                "total_investment": 150000,
+                "break_even_months": 107.1
+            }
+
+    async def comprehensive_risk_assessment(self, location_data: Dict, demographics: Dict, 
+                                          real_estate: Dict, competition: Dict) -> Dict[str, Any]:
+        """Comprehensive risk assessment"""
+        try:
+            risk_factors = []
+            risk_score = 0  # Lower is better
+            
+            # Competition risk
+            competitor_count = competition.get('total_competitors', 0)
+            if isinstance(competitor_count, (int, float)) and competitor_count > 3:
+                risk_factors.append("High competition density")
+                risk_score += 20
+            elif isinstance(competitor_count, (int, float)) and competitor_count > 1:
+                risk_score += 10
+            
+            # Demographics risk
+            median_income = demographics.get('median_household_income', 50000)
+            if isinstance(median_income, (int, float)):
+                if median_income < 30000:
+                    risk_factors.append("Low median income area")
+                    risk_score += 15
+                elif median_income > 100000:
+                    risk_factors.append("High income area - may prefer services")
+                    risk_score += 10
+            
+            # Market saturation risk
+            population = demographics.get('total_population', 5000)
+            if isinstance(population, (int, float)) and isinstance(competitor_count, (int, float)):
+                people_per_competitor = population / max(competitor_count, 1)
+                if people_per_competitor < 2000:
+                    risk_factors.append("Market saturation risk")
+                    risk_score += 25
+            
+            # Determine risk level
+            if risk_score <= 15:
+                risk_level = "LOW"
+            elif risk_score <= 35:
+                risk_level = "MEDIUM"
+            elif risk_score <= 55:
+                risk_level = "HIGH"
+            else:
+                risk_level = "VERY HIGH"
+            
+            return {
+                "risk_score": risk_score,
+                "risk_level": risk_level,
+                "risk_factors": risk_factors,
+                "mitigation_strategies": self.generate_risk_mitigation_strategies(risk_factors),
+                "confidence_level": "HIGH" if risk_score <= 25 else "MEDIUM" if risk_score <= 45 else "LOW"
+            }
+            
+        except Exception as e:
+            print(f"Risk assessment error: {e}")
+            return {
+                "risk_score": 30,
+                "risk_level": "MEDIUM",
+                "risk_factors": ["Standard market risks"],
+                "mitigation_strategies": ["Thorough market research", "Competitive pricing strategy"],
+                "confidence_level": "MEDIUM"
+            }
+
+    def generate_risk_mitigation_strategies(self, risk_factors: List[str]) -> List[str]:
+        """Generate risk mitigation strategies"""
+        strategies = []
+        
+        for factor in risk_factors:
+            if "competition" in factor.lower():
+                strategies.append("Focus on superior customer service and cleanliness")
+                strategies.append("Implement loyalty programs")
+            elif "income" in factor.lower():
+                strategies.append("Adjust pricing strategy for local market")
+                strategies.append("Offer value-added services")
+            elif "saturation" in factor.lower():
+                strategies.append("Consider alternative locations")
+                strategies.append("Differentiate with premium services")
+        
+        if not strategies:
+            strategies = ["Regular market monitoring", "Flexible business model", "Strong customer relationships"]
+        
+        return strategies[:5]  # Limit to 5 strategies
+
+    async def generate_strategic_recommendations(self, location_score: Dict, demographics: Dict, 
+                                               real_estate: Dict, competition: Dict, 
+                                               financial_projections: Dict) -> List[str]:
+        """Generate strategic recommendations"""
+        try:
+            recommendations = []
+            
+            score = location_score.get('total_score', 50)
+            if isinstance(score, (int, float)):
+                if score >= 80:
+                    recommendations.append("🎯 EXCELLENT LOCATION - Proceed with confidence")
+                    recommendations.append("Consider premium equipment and services")
+                elif score >= 65:
+                    recommendations.append("✅ GOOD LOCATION - Solid investment opportunity")
+                    recommendations.append("Standard equipment mix recommended")
+                elif score >= 50:
+                    recommendations.append("⚠️ MODERATE LOCATION - Proceed with caution")
+                    recommendations.append("Focus on cost control and efficiency")
+                else:
+                    recommendations.append("❌ CHALLENGING LOCATION - Consider alternatives")
+                    recommendations.append("Extensive market research required")
+            
+            # Competition-based recommendations
+            competitor_count = competition.get('total_competitors', 0)
+            if isinstance(competitor_count, (int, float)):
+                if competitor_count == 0:
+                    recommendations.append("🚀 First-mover advantage - establish market presence")
+                elif competitor_count <= 2:
+                    recommendations.append("📈 Moderate competition - differentiation key")
+                else:
+                    recommendations.append("🏪 High competition - focus on unique value proposition")
+            
+            # Financial recommendations
+            roi = financial_projections.get('annual_roi', 0)
+            if isinstance(roi, (int, float)):
+                if roi >= 15:
+                    recommendations.append("💰 Strong ROI potential - attractive investment")
+                elif roi >= 10:
+                    recommendations.append("💵 Moderate ROI - acceptable returns")
+                else:
+                    recommendations.append("📊 Low ROI - consider cost optimization")
+            
+            return recommendations[:6]  # Limit to 6 recommendations
+            
+        except Exception as e:
+            print(f"Strategic recommendations error: {e}")
+            return [
+                "Conduct thorough market analysis",
+                "Implement competitive pricing strategy", 
+                "Focus on operational efficiency",
+                "Build strong customer relationships"
+            ]
+
 # Global instance
 enterprise_engine = EnterpriseIntelligenceEngine()
