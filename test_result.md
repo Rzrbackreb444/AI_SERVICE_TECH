@@ -459,10 +459,16 @@ metadata:
 
 test_plan:
   current_focus:
-    - "LAUNDROTECH INTELLIGENCE PLATFORM TESTING COMPLETED - ALL CORE FEATURES OPERATIONAL"
-  stuck_tasks: []
+    - "MRR Optimization Engine - All 5 Revenue Systems"
+    - "RECURRING VALUE ENGINE - Performance Dashboard & Market Alerts"
+    - "USAGE-BASED BILLING SYSTEM - Current Usage & Billing Reports"
+    - "MULTI-LOCATION DASHBOARD - Portfolio Management & Expansion Analysis"
+    - "ENTERPRISE API LAYER - API Key Creation & Bulk Analysis"
+    - "STICKY ECOSYSTEM FEATURES - Equipment Marketplace, Financing, Real Estate"
+  stuck_tasks: 
+    - "Stripe integration requires valid API key (expired key causing checkout failures)"
   test_all: true
-  test_priority: "laundrotech_intelligence_ready"
+  test_priority: "mrr_optimization_ready"
 
 agent_communication:
   - agent: "main"
