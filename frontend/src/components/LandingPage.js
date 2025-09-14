@@ -66,9 +66,9 @@ const LandingPage = ({ onOpenAuth }) => {
     },
     {
       icon: GlobeAltIcon,
-      title: "67K Professional Network",
-      description: "Exclusive access to the world's largest laundromat intelligence community with real-time market insights and insider knowledge",
-      stat: "67,000 Professionals",
+      title: "Market Intelligence",
+      description: "Advanced pattern recognition and competitive analysis powered by proprietary algorithms and real-time data integration",
+      stat: "24+ Hidden Patterns",
       color: "from-orange-400 to-red-500"
     }
   ];
