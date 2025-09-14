@@ -89,16 +89,11 @@ const LandingPage = ({ onOpenAuth }) => {
             {/* Logo and Branding */}
             <div className="flex items-center">
               <Link to="/" className="flex items-center space-x-4 group">
-                <div className="relative">
-                  <div className="h-12 w-12 bg-gradient-to-br from-slate-700 to-slate-800 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                    <MapPinIcon className="w-8 h-8 text-white" />
-                  </div>
-                </div>
                 <div className="hidden sm:block">
                   <h1 className="text-3xl font-black bg-gradient-to-r from-cyan-400 via-blue-400 to-emerald-400 bg-clip-text text-transparent leading-tight">
                     LaundroTech
                   </h1>
-                  <div className="text-sm text-slate-400 font-medium -mt-1">Business Intelligence Platform</div>
+                  <div className="text-sm text-slate-400 font-medium -mt-1">Powered by SiteAtlas</div>
                 </div>
               </Link>
             </div>
