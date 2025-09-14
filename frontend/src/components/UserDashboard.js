@@ -28,6 +28,7 @@ const UserDashboard = () => {
   const [user, setUser] = useState(null);
   const [subscriptions, setSubscriptions] = useState([]);
   const [transactions, setTransactions] = useState([]);
+  const [analyses, setAnalyses] = useState([]);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('overview');
 
