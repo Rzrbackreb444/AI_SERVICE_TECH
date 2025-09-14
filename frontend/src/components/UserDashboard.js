@@ -63,6 +63,12 @@ const UserDashboard = () => {
       });
       setTransactions(transResponse.data.transactions || []);
 
+      // Load analysis history
+      const analysesResponse = await axios.get(`${API}/user/analyses`, {
+        headers: getAuthHeaders()
+      });
+      setAnalyses(analysesResponse.data.analyses || []);
+
     } catch (error) {
       console.error('Failed to load dashboard data:', error);
     } finally {
