@@ -40,6 +40,8 @@ from performance_optimizer import performance_optimizer, monitor_performance, ca
 from system_optimizer import system_optimizer
 from revenue_optimizer import revenue_optimizer
 from optimization_endpoints import optimization_router
+from revenue_strategy_optimizer import revenue_strategy
+from advanced_revenue_endpoints import advanced_revenue_router
 
 # Load environment variables
 ROOT_DIR = Path(__file__).parent
