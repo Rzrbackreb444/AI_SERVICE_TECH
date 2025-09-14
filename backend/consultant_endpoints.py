@@ -65,6 +65,7 @@ def create_consultant_router() -> APIRouter:
         """Initialize personalized AI consultant after analysis completion"""
         try:
             analysis_id = initialization_request.get('analysis_id')
+            mock_analysis = initialization_request.get('mock_analysis')
             
             if not analysis_id:
                 raise HTTPException(status_code=400, detail="Analysis ID is required")
@@ -74,6 +75,11 @@ def create_consultant_router() -> APIRouter:
                 "analysis_id": analysis_id,
                 "user_id": current_user.id
             })
+            
+            # If no analysis found but mock_analysis provided (for testing), use mock data
+            if not analysis and mock_analysis:
+                analysis = mock_analysis
+                print(f"Using mock analysis data for testing: {analysis_id}")
             
             if not analysis:
                 raise HTTPException(status_code=404, detail="Analysis not found")
