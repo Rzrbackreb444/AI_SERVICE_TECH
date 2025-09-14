@@ -745,17 +745,17 @@ frontend:
 metadata:
   created_by: "main_agent"
   version: "1.0"
-  test_sequence: 1
-  run_ui: false
+  test_sequence: 2
+  run_ui: true
 
 test_plan:
   current_focus:
-    - "AI Consultant System - Revolutionary Personalized AI Consultant"
-    - "Revenue & Stickiness Validation - Subscription Model"
+    - "Complete Frontend System Validation"
+    - "Production Readiness Assessment"
   stuck_tasks: 
     - "Stripe integration requires valid API key (expired key causing checkout failures)"
-  test_all: false
-  test_priority: "consultant_stickiness_validation"
+  test_all: true
+  test_priority: "frontend_system_validation_complete"
 
 agent_communication:
   - agent: "main"
