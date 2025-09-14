@@ -261,55 +261,82 @@ Always acknowledge the user's tier and suggest relevant upgrades when they need 
         }
 
     async def web_search(self, query: str, user_tier: str) -> Dict[str, Any]:
-        """Perform web search for research (premium feature)"""
+        """Perform REAL web search for research using the real research engine"""
         try:
-            # Enhanced search query for laundromat industry
-            enhanced_query = f"commercial laundromat {query} 2024 2025 industry equipment regulations"
-            
-            # Simulate web search API call
-            # In production, integrate with actual search APIs like Google Custom Search, Bing, etc.
-            search_results = {
-                "query": query,
-                "enhanced_query": enhanced_query,
-                "results": [
-                    {
-                        "title": f"Current Industry Data: {query}",
-                        "snippet": f"Latest information about {query} in the commercial laundromat industry. Current market trends, equipment specifications, and regulatory updates.",
-                        "url": "https://laundromatindustry.com/research",
-                        "relevance": 0.95,
-                        "source_type": "industry_publication"
-                    },
-                    {
-                        "title": f"Equipment & Technology: {query}",
-                        "snippet": f"Technical specifications, pricing, and performance data for {query}. Includes ROI calculations and maintenance requirements.",
-                        "url": "https://commerciallaundryequipment.com/specs",
-                        "relevance": 0.90,
-                        "source_type": "technical_documentation"
-                    },
-                    {
-                        "title": f"Regulatory Compliance: {query}",
-                        "snippet": f"Current regulations, permits, and compliance requirements related to {query} in commercial laundromats.",
-                        "url": "https://laundryregulations.gov/compliance",
-                        "relevance": 0.85,
-                        "source_type": "regulatory"
+            async with real_research_engine as engine:
+                # Use real research engine for location-based queries
+                if any(term in query.lower() for term in ['location', 'address', 'site', 'laundromat', 'demographic']):
+                    # Try to extract address/location from query
+                    address = self.extract_address_from_query(query)
+                    if address:
+                        research_result = await engine.research_location_demographics(address)
+                        return {
+                            "query": query,
+                            "research_type": "location_analysis",
+                            "results": research_result,
+                            "tier_used": user_tier,
+                            "timestamp": datetime.now(timezone.utc).isoformat()
+                        }
+                
+                # Equipment pricing research
+                elif any(term in query.lower() for term in ['equipment', 'washer', 'dryer', 'price', 'cost']):
+                    equipment_data = await engine.research_equipment_prices()
+                    return {
+                        "query": query,
+                        "research_type": "equipment_pricing",
+                        "results": equipment_data,
+                        "tier_used": user_tier,
+                        "timestamp": datetime.now(timezone.utc).isoformat()
                     }
-                ],
-                "search_timestamp": datetime.now(timezone.utc).isoformat(),
-                "tier_used": user_tier,
-                "research_type": "comprehensive" if user_tier in ['optimization', 'portfolio', 'watch_pro'] else "standard"
-            }
-            
-            # Save research for caching
-            await self.save_research_data(query, search_results, user_tier)
-            
-            return search_results
-            
+                
+                # General industry research using web scraping
+                else:
+                    # Enhanced search query for laundromat industry
+                    enhanced_query = f"commercial laundromat {query} 2024 2025 industry equipment regulations"
+                    
+                    # Use real web scraping capabilities
+                    search_results = await engine.web_search_businesses(enhanced_query, 0, 0)  # Default coords
+                    
+                    return {
+                        "query": query,
+                        "enhanced_query": enhanced_query,
+                        "research_type": "industry_research",
+                        "results": search_results,
+                        "tier_used": user_tier,
+                        "timestamp": datetime.now(timezone.utc).isoformat()
+                    }
+                    
         except Exception as e:
-            print(f"Error during web search: {e}")
+            print(f"Real research error: {e}")
             return {
                 "error": "Research service temporarily unavailable",
                 "fallback": "Providing expert knowledge without current research data"
             }
+
+    def extract_address_from_query(self, query: str) -> Optional[str]:
+        """Extract address or location from user query"""
+        # Simple extraction - in production would use NLP
+        import re
+        
+        # Look for address patterns
+        address_patterns = [
+            r'\d+\s+[A-Za-z\s]+(?:Street|St|Avenue|Ave|Road|Rd|Drive|Dr|Lane|Ln|Boulevard|Blvd)',
+            r'[A-Za-z\s]+,\s*[A-Z]{2}(?:\s+\d{5})?',  # City, State format
+            r'\d{5}(?:-\d{4})?'  # ZIP code
+        ]
+        
+        for pattern in address_patterns:
+            match = re.search(pattern, query)
+            if match:
+                return match.group()
+        
+        # Look for city names (simplified)
+        cities = ['New York', 'Los Angeles', 'Chicago', 'Houston', 'Phoenix', 'Philadelphia', 'San Antonio', 'San Diego', 'Dallas', 'San Jose']
+        for city in cities:
+            if city.lower() in query.lower():
+                return city
+                
+        return None
 
     async def research_topic(self, query: str, user_tier: str, context: str = "") -> Dict[str, Any]:
         """Research a topic with tier-based capabilities"""
