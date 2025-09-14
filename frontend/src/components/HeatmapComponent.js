@@ -43,6 +43,35 @@ const HeatmapComponent = ({ data, title = "Data Heatmap", className = "" }) => {
     return token ? { 'Authorization': `Bearer ${token}` } : {};
   };
 
+  const createHeatmapFromRealData = (analyticsData) => {
+    // Convert real analytics data into heatmap format
+    const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+    const hours = Array.from({ length: 24 }, (_, i) => i);
+    
+    // Use actual user activity data if available
+    const activityData = analyticsData.analysis_activity || [];
+    
+    return days.map((day, dayIndex) => ({
+      day,
+      dayIndex,
+      hours: hours.map(hour => {
+        // Calculate real activity for this time slot
+        const activityCount = activityData.filter(activity => {
+          const activityDate = new Date(activity._id?.date || activity.created_at);
+          return activityDate.getDay() === dayIndex && activityDate.getHours() === hour;
+        }).length;
+        
+        return {
+          hour,
+          day,
+          value: activityCount,
+          intensity: Math.min(activityCount / 10, 1), // Normalize to 0-1
+          timestamp: new Date(2024, 0, dayIndex + 1, hour).toISOString()
+        };
+      })
+    }));
+  };
+
   const loadHeatmapData = async () => {
     try {
       setLoading(true);
