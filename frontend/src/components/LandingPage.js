@@ -301,24 +301,24 @@ const LandingPage = ({ onOpenAuth }) => {
               </motion.button>
             </motion.div>
 
-            {/* Enhanced Stats Row */}
+            {/* AI Capabilities Showcase */}
             <motion.div 
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 1, delay: 1.3 }}
               className="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-6xl mx-auto"
             >
-              {stats.map((stat, index) => (
+              {aiCapabilities.map((capability, index) => (
                 <motion.div
-                  key={index}
+                  key={capability.label}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.8, delay: 1.5 + index * 0.1 }}
-                  className="glass-card p-6 text-center hover:scale-105 transition-transform duration-300"
+                  className="glass-card p-6 text-center hover:scale-105 transition-transform duration-300 border border-slate-700/50"
                 >
-                  <stat.icon className={`w-10 h-10 mx-auto mb-3 ${stat.color}`} />
-                  <div className="text-3xl font-bold text-white">{stat.value}</div>
-                  <div className="text-sm text-slate-400 mt-1">{stat.label}</div>
+                  <capability.icon className={`w-10 h-10 mx-auto mb-3 ${capability.color}`} />
+                  <div className="text-3xl font-bold text-white">{capability.value}</div>
+                  <div className="text-sm text-slate-400 mt-1">{capability.label}</div>
                 </motion.div>
               ))}
             </motion.div>
