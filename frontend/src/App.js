@@ -251,6 +251,24 @@ function App() {
               </ProtectedRoute>
             } />
             
+            <Route path="/mrr" element={
+              <ProtectedRoute>
+                <>
+                  <Navbar />
+                  <MRRDashboard />
+                </>
+              </ProtectedRoute>
+            } />
+            
+            <Route path="/enterprise" element={
+              <ProtectedRoute>
+                <>
+                  <Navbar />
+                  <EnterprisePortal />
+                </>
+              </ProtectedRoute>
+            } />
+            
             <Route path="/map" element={
               <ProtectedRoute>
                 <>
