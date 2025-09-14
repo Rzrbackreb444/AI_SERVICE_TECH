@@ -522,7 +522,7 @@ def create_analytics_router(db, get_current_user):
                 "confidence": round(confidence, 2),
                 "totalPredictedRevenue": sum(p["predictedRevenue"] for p in predictions),
                 "averageDailyPrediction": sum(p["predictedRevenue"] for p in predictions) / horizon,
-                "trendDirection": "up" if model.coef_[0] > 0 else "down"
+                "trendDirection": "up" if slope > 0 else "down"
             }
             
         except Exception as e:
