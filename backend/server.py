@@ -1133,6 +1133,35 @@ async def analyze_location(
     
     return enterprise_analysis
 
+@api_router.get("/reports/generate-pdf/{analysis_id}")
+async def generate_premium_pdf_report(
+    analysis_id: str,
+    current_user: User = Depends(get_current_user)
+):
+    """Generate premium PDF report for analysis"""
+    try:
+        # Get the analysis from database
+        analysis = await db.analyses.find_one({
+            "analysis_id": analysis_id,
+            "user_id": current_user.id
+        })
+        
+        if not analysis:
+            raise HTTPException(status_code=404, detail="Analysis not found")
+        
+        # Generate premium PDF using the report generator
+        pdf_content = await report_generator.generate_comprehensive_report(analysis)
+        
+        return Response(
+            content=pdf_content,
+            media_type="application/pdf",
+            headers={"Content-Disposition": f"attachment; filename=LaundroTech_Analysis_{analysis_id}.pdf"}
+        )
+        
+    except Exception as e:
+        logger.error(f"PDF generation error: {e}")
+        raise HTTPException(status_code=500, detail="PDF generation failed")
+
 @api_router.get("/user/subscriptions")
 async def get_user_subscriptions(current_user: User = Depends(get_current_user)):
     """Get user's Facebook Group subscriptions"""
