@@ -21,19 +21,20 @@ const PricingPage = ({ onOpenAuth }) => {
       price: 0,
       paypalPrice: 0,
       originalPrice: null,
-      description: "Perfect for getting started",
+      description: "Basic tools to get started",
       badge: "FREE",
       features: [
-        "Basic location grade (A-F)",
-        "Population demographics (surface level)",
-        "Competitor count within 1 mile",
-        "Traffic estimate (Low/Medium/High only)"
+        "Basic location scoring algorithm",
+        "Simple demographic estimates",
+        "Basic competition search",
+        "3 location analyses per month",
+        "Community access to facebook.com/groups/thelaundromat",
+        "Email support"
       ],
       limitations: [
-        "Grade displayed without reasoning",
-        "No detailed ROI estimates",
-        "No competitive intelligence",
-        "Limited to basic census data"
+        "Limited to basic scoring only",
+        "No real-time data connections",
+        "No advanced research capabilities"
       ],
       cta: "Start Free",
       popular: false,
@@ -42,78 +43,81 @@ const PricingPage = ({ onOpenAuth }) => {
     },
     {
       id: "analyzer",
-      name: "Location Analyzer",
-      price: 99,
-      paypalPrice: 94,
+      name: "Real Data Analyzer",
+      price: 49,
+      paypalPrice: 44,
       originalPrice: null,
-      description: "For serious location shoppers",
-      badge: "MOST CHOSEN",
+      description: "Enhanced with real demographic data",
+      badge: "REAL DATA",
       features: [
-        "Complete grade breakdown with reasoning",
-        "Detailed demographics and income analysis",
-        "Competitor mapping with threat levels",
-        "ROI estimate with industry benchmarks",
-        "Basic equipment recommendations",
-        "Market timing insights"
+        "Real Census demographic integration",
+        "Actual competition mapping within 2 miles",
+        "Traffic pattern estimation algorithms",
+        "Equipment ROI calculations with real pricing",
+        "Unlimited location analyses",
+        "Basic financial projections",
+        "AI consultant (15 messages/day)"
       ],
       limitations: [
-        "Competitor strategies hidden",
-        "Equipment optimization requires upgrade",
-        "Basic risk analysis only"
+        "No real-time research capabilities",
+        "No live equipment pricing feeds",
+        "Limited AI research access"
       ],
-      cta: "Choose Analyzer",
-      popular: false,
+      cta: "Get Real Data",
+      popular: true,
       color: "from-blue-600 to-blue-700",
       paypalDiscount: true
     },
     {
       id: "intelligence",
-      name: "Location Intelligence",
-      price: 249,
-      paypalPrice: 237,
-      originalPrice: 349,
-      description: "Ready-to-invest decision makers",
-      badge: "BEST VALUE",
+      name: "Research Intelligence",
+      price: 99,
+      paypalPrice: 89,
+      originalPrice: 149,
+      description: "Real-time research + professional AI",
+      badge: "RESEARCH POWERED",
       features: [
-        "Everything in Location Analyzer PLUS:",
-        "Competitive intelligence (SWOT analysis)",
-        "Equipment optimization strategies",
-        "Marketing strategy development",
-        "Revenue optimization recommendations",
-        "Risk mitigation strategies",
-        "Financing recommendations and lender connections"
+        "Everything in Real Data Analyzer PLUS:",
+        "Live industry research & web scraping",
+        "Real-time equipment pricing from manufacturers",
+        "Advanced competition intelligence",
+        "Professional AI consultant (50 messages/day)",
+        "Custom financial modeling",
+        "Priority support"
       ],
-      limitations: [],
-      cta: "Get Intelligence",
-      popular: true,
+      limitations: [
+        "No Google Street View integration yet",
+        "Limited to standard PDF reports",
+        "No multi-location portfolio tools"
+      ],
+      cta: "Unlock Research",
+      popular: false,
       color: "from-cyan-500 to-emerald-500",
       paypalDiscount: true
     },
     {
       id: "optimization",
-      name: "SiteAtlas Optimization",
-      price: 499,
-      paypalPrice: 474,
-      originalPrice: 699,
-      description: "Existing owners + serious investors",
-      badge: "PREMIUM",
+      name: "Portfolio Intelligence",
+      price: 199,
+      paypalPrice: 179,
+      originalPrice: 299,
+      description: "Full business intelligence suite",
+      badge: "ENTERPRISE",
       features: [
-        "Everything in Location Intelligence PLUS:",
-        "Existing laundromat valuation",
-        "Machine-by-machine ROI analysis",
-        "Revenue optimization heat maps",
-        "Customer behavior flow analysis",
-        "Hybrid business opportunity assessment",
-        "90-day optimization implementation plan"
+        "Everything in Research Intelligence PLUS:",
+        "Multi-location portfolio management",
+        "Advanced analytics dashboard with real charts",
+        "Immersive reports with live data visualizations",
+        "Master AI consultant (150 messages/day)",
+        "Live market intelligence feeds",
+        "Direct phone support",
+        "Facebook group VIP access"
       ],
-      hybridFeatures: [
-        "Coffee shop integration analysis",
-        "Car wash synergy assessment",
-        "Barber shop opportunity evaluation",
-        "Tattoo studio potential analysis"
+      limitations: [
+        "Google Street View integration coming Q2 2025",
+        "Some advanced features in development"
       ],
-      limitations: [],
-      cta: "Optimize Business",
+      cta: "Go Enterprise",
       popular: false,
       color: "from-purple-600 to-pink-600",
       paypalDiscount: true
