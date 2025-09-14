@@ -1203,7 +1203,17 @@ class EnterpriseIntelligenceEngine:
         """Calculate ROI based on Arkansas market knowledge"""
         try:
             median_income = demographics.get('median_income', 45000)
-            competitor_count = len(competition.get('competitors', []))
+            
+            # Ensure median_income is a number
+            if not isinstance(median_income, (int, float)):
+                median_income = 45000
+            
+            # Safely get competitor count
+            competitors = competition.get('competitors', [])
+            if isinstance(competitors, list):
+                competitor_count = len(competitors)
+            else:
+                competitor_count = 0
             
             # Revenue calculations based on Arkansas markets
             if median_income >= 60000:
