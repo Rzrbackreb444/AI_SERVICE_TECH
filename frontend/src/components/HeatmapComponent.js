@@ -111,37 +111,7 @@ const HeatmapComponent = ({ data, title = "Data Heatmap", className = "" }) => {
     }
   };
 
-  const generateMockHeatmapData = () => {
-    const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-    const hours = Array.from({ length: 24 }, (_, i) => i);
-    
-    return days.map((day, dayIndex) => ({
-      day,
-      dayIndex,
-      hours: hours.map(hour => {
-        const baseValue = selectedMetric === 'revenue' ? 1000 : 
-                         selectedMetric === 'users' ? 50 : 
-                         selectedMetric === 'badges' ? 10 : 
-                         selectedMetric === 'conversion' ? 15 : 80;
-        
-        // Create realistic patterns - higher activity during business hours
-        let multiplier = 0.3;
-        if (hour >= 9 && hour <= 17) multiplier = 1.2; // Business hours
-        if (hour >= 18 && hour <= 22) multiplier = 0.8; // Evening
-        if (dayIndex === 0 || dayIndex === 6) multiplier *= 0.6; // Weekends
-        
-        const value = Math.floor(baseValue * multiplier * (0.5 + Math.random()));
-        
-        return {
-          hour,
-          day,
-          value,
-          intensity: Math.min(value / (baseValue * 1.5), 1),
-          timestamp: new Date(2024, 0, dayIndex + 1, hour).toISOString()
-        };
-      })
-    }));
-  };
+  // Remove the old mock data generation function completely
 
   const getIntensityColor = (intensity, metric) => {
     const colors = {
