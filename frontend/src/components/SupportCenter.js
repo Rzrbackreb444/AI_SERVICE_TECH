@@ -55,7 +55,7 @@ const SupportCenter = () => {
       category: 'Getting Started',
       questions: [
         {
-          q: 'How accurate is LaundroTech's location analysis?',
+          q: 'How accurate is LaundroTech\'s location analysis?',
           a: 'Our analysis combines real-time data from multiple sources including Google Maps, Census Bureau, ATTOM Data, and our proprietary AI algorithms. We achieve 85-92% accuracy in predicting location success, backed by three generations of Arkansas laundromat expertise.'
         },
         {
