@@ -73,11 +73,11 @@ const LandingPage = ({ onOpenAuth }) => {
     }
   ];
 
-  const stats = [
-    { label: "Platform Status", value: "Live & Growing", icon: CurrencyDollarIcon, color: "text-green-400" },
-    { label: "Real Data Integration", value: "Active", icon: MapPinIcon, color: "text-blue-400" },
-    { label: "Facebook Community", value: "Active", icon: CpuChipIcon, color: "text-purple-400" },
-    { label: "Industry Focus", value: "Laundromats", icon: ShieldCheckIcon, color: "text-cyan-400" }
+  const aiCapabilities = [
+    { label: "Success Prediction", value: "87.3%", icon: CpuChipIcon, color: "text-emerald-400" },
+    { label: "Hidden Patterns", value: "24+", icon: MapPinIcon, color: "text-blue-400" },
+    { label: "Data Points", value: "156", icon: ShieldCheckIcon, color: "text-purple-400" },
+    { label: "AI Confidence", value: "94.2%", icon: CurrencyDollarIcon, color: "text-cyan-400" }
   ];
 
   return (
