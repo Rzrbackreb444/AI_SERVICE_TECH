@@ -320,9 +320,85 @@ const LandingPage = ({ onOpenAuth }) => {
               transition={{ duration: 1, delay: 0.9 }}
               className="text-xl md:text-2xl text-slate-300 mb-12 max-w-4xl mx-auto leading-relaxed"
             >
-              AI-powered location intelligence, hybrid business opportunities, and portfolio management 
-              trusted by laundromat professionals in our exclusive Facebook community
+              Next-generation algorithms analyze market patterns humans can't detect. Real-time intelligence 
+              across 156+ data points delivers unprecedented location insights.
             </motion.p>
+
+            {/* AI Analysis Demo - Moved here for better positioning */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 1.2, delay: 1.1 }}
+              className="mb-12 max-w-6xl mx-auto"
+            >
+              <div className="grid md:grid-cols-2 gap-8">
+                
+                {/* Success Probability Chart */}
+                <div className="glass-card p-6 border border-slate-700/50">
+                  <h3 className="text-lg font-semibold text-white mb-4">AI Success Prediction</h3>
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-between">
+                      <span className="text-slate-300">Little Rock, AR</span>
+                      <div className="flex items-center">
+                        <div className="w-24 h-2 bg-slate-700 rounded-full mr-3">
+                          <div className="w-20 h-2 bg-green-400 rounded-full"></div>
+                        </div>
+                        <span className="text-green-400 font-bold">87.3%</span>
+                      </div>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <span className="text-slate-300">Fayetteville, AR</span>
+                      <div className="flex items-center">
+                        <div className="w-24 h-2 bg-slate-700 rounded-full mr-3">
+                          <div className="w-16 h-2 bg-blue-400 rounded-full"></div>
+                        </div>
+                        <span className="text-blue-400 font-bold">72.1%</span>
+                      </div>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <span className="text-slate-300">Conway, AR</span>
+                      <div className="flex items-center">
+                        <div className="w-24 h-2 bg-slate-700 rounded-full mr-3">
+                          <div className="w-14 h-2 bg-yellow-400 rounded-full"></div>
+                        </div>
+                        <span className="text-yellow-400 font-bold">64.8%</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="mt-4 text-xs text-slate-500">AI analyzes 156+ data points for predictions</div>
+                </div>
+
+                {/* Competitive Intelligence Preview */}
+                <div className="glass-card p-6 border border-slate-700/50">
+                  <h3 className="text-lg font-semibold text-white mb-4">Competitive Intelligence</h3>
+                  <div className="space-y-3">
+                    <div className="flex items-center justify-between p-3 bg-slate-800/50 rounded-lg">
+                      <div>
+                        <div className="text-white text-sm font-medium">Market Leader Opportunity</div>
+                        <div className="text-slate-400 text-xs">Low density area detected</div>
+                      </div>
+                      <div className="text-green-400 text-sm font-bold">+34%</div>
+                    </div>
+                    <div className="flex items-center justify-between p-3 bg-slate-800/50 rounded-lg">
+                      <div>
+                        <div className="text-white text-sm font-medium">Premium Service Gap</div>
+                        <div className="text-slate-400 text-xs">AI detected underserved market</div>
+                      </div>
+                      <div className="text-blue-400 text-sm font-bold">+28%</div>
+                    </div>
+                    <div className="flex items-center justify-between p-3 bg-slate-800/50 rounded-lg">
+                      <div>
+                        <div className="text-white text-sm font-medium">Traffic Pattern Advantage</div>
+                        <div className="text-slate-400 text-xs">Rush hour proximity bonus</div>
+                      </div>
+                      <div className="text-purple-400 text-sm font-bold">+19%</div>
+                    </div>
+                  </div>
+                  <div className="mt-4 text-xs text-slate-500">Advanced pattern recognition beyond human analysis</div>
+                </div>
+
+              </div>
+            </motion.div>
 
             <motion.div
               initial={{ opacity: 0, y: 20 }}
