@@ -25,6 +25,8 @@ const Navbar = () => {
     { name: 'AI Dashboard', href: '/dashboard', icon: CpuChipIcon },
     { name: 'Location Intelligence', href: '/analyze', icon: MapPinIcon },
     { name: 'Analysis Archive', href: '/history', icon: ClockIcon },
+    { name: '💰 MRR Dashboard', href: '/mrr', icon: ChartBarIcon },
+    { name: '🏢 Enterprise Portal', href: '/enterprise', icon: CpuChipIcon },
   ];
 
   const handleLogout = () => {
