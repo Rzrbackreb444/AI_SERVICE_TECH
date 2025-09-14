@@ -397,6 +397,9 @@ function App() {
             {/* Catch all route */}
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
+          
+          {/* Global AI Consultant Widget - Available on all pages */}
+          <ConsultantWidgetWrapper />
         </div>
       </BrowserRouter>
     </AuthProvider>
