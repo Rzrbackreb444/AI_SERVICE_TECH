@@ -77,7 +77,7 @@ const LandingPage = ({ onOpenAuth }) => {
   const stats = [
     { label: "Platform Status", value: "Live & Growing", icon: CurrencyDollarIcon, color: "text-green-400" },
     { label: "Real Data Integration", value: "Active", icon: MapPinIcon, color: "text-blue-400" },
-    { label: "Community Hub", value: "Facebook Group", icon: CpuChipIcon, color: "text-purple-400" },
+    { label: "Facebook Community", value: "Active", icon: CpuChipIcon, color: "text-purple-400" },
     { label: "Industry Focus", value: "Laundromats", icon: ShieldCheckIcon, color: "text-cyan-400" }
   ];
 
