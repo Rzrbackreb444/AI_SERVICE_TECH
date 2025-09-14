@@ -620,6 +620,86 @@ def create_analytics_router(db, get_current_user):
         except Exception as e:
             raise HTTPException(status_code=500, detail=f"Report preview failed: {str(e)}")
 
+    @analytics_router.post("/ai/next-gen-analysis")
+    async def next_gen_ai_analysis(request: dict):
+        """NEXT-GENERATION AI ANALYSIS - Beyond Human Capability"""
+        try:
+            print(f"🤖 NEXT-GEN AI ANALYSIS: {request.get('address')}")
+            
+            # Import required modules
+            from advanced_ai_algorithms import next_gen_ai
+            import uuid
+            from datetime import timezone
+            
+            # Get comprehensive location data first
+            location_data = await get_location_data(
+                request.get('address'), 
+                request.get('latitude'), 
+                request.get('longitude')
+            )
+            
+            # Get demographic data
+            demographics = await get_demographic_data(
+                location_data['coordinates']['lat'],
+                location_data['coordinates']['lng']
+            )
+            
+            # Prepare comprehensive data for AI
+            ai_input_data = {
+                'address': request.get('address'),
+                'coordinates': location_data['coordinates'],
+                'competitors': [c.dict() for c in location_data['competitors']],
+                'demographics': demographics.dict()
+            }
+            
+            # 🚀 UNLEASH THE ADVANCED AI
+            ai_results = await next_gen_ai.revolutionary_scoring_algorithm(ai_input_data)
+            
+            # Enhanced result with AI insights
+            result = {
+                'id': str(uuid.uuid4()),
+                'address': request.get('address'),
+                'coordinates': location_data['coordinates'],
+                'analysis_tier': 'next_gen_ai',
+                'created_at': datetime.now(timezone.utc),
+                
+                # AI RESULTS
+                'ai_grade': ai_results['ai_grade'],
+                'ai_success_probability': ai_results['success_probability'],
+                'ai_confidence_score': ai_results['confidence_score'],
+                
+                # ADVANCED REVENUE PREDICTION
+                'ai_revenue_prediction': ai_results['revenue_prediction'],
+                
+                # AI INSIGHTS BEYOND HUMAN CAPABILITY
+                'ai_insights': ai_results['ai_insights'],
+                'hidden_patterns_detected': ai_results['hidden_patterns_detected'],
+                'competitive_advantages': ai_results['competitive_advantages'],
+                
+                # RISK ANALYSIS
+                'ai_risk_analysis': ai_results['risk_analysis'],
+                
+                # RAW DATA
+                'competitors': location_data['competitors'],
+                'demographics': demographics,
+                
+                # ALGORITHM INFO
+                'algorithm_version': ai_results['algorithm_version']
+            }
+            
+            # Store in database with AI tag
+            await db.ai_analyses.insert_one(result)
+            
+            return {
+                'success': True,
+                'message': '🤖 NEXT-GEN AI ANALYSIS COMPLETE',
+                'data': result
+            }
+            
+        except Exception as e:
+            print(f"❌ Next-Gen AI Analysis failed: {str(e)}")
+            raise HTTPException(status_code=500, detail=f"Next-Gen AI Analysis failed: {str(e)}")
+
     @analytics_router.get("/export")
     async def export_analytics_report(
         format: str = Query("pdf", description="pdf, csv, xlsx"),
