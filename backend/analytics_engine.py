@@ -484,18 +484,21 @@ def create_analytics_router(db, get_current_user):
             dates = sorted(daily_revenue.keys())
             revenues = [daily_revenue[date] for date in dates]
             
-            # Simple linear regression for trend
-            X = np.array(range(len(revenues))).reshape(-1, 1)
+            # Simple trend calculation using numpy
+            X = np.array(range(len(revenues)))
             y = np.array(revenues)
             
-            model = LinearRegression()
-            model.fit(X, y)
+            # Calculate linear trend using numpy polyfit
+            if len(revenues) > 1:
+                slope, intercept = np.polyfit(X, y, 1)
+            else:
+                slope, intercept = 0, np.mean(y) if len(y) > 0 else 0
             
             # Generate predictions
             predictions = []
             for i in range(horizon):
                 future_day = len(revenues) + i
-                predicted_revenue = model.predict([[future_day]])[0]
+                predicted_revenue = slope * future_day + intercept
                 
                 # Add some seasonal variation (simplified)
                 day_of_week = (end_date + timedelta(days=i)).weekday()
@@ -508,10 +511,12 @@ def create_analytics_router(db, get_current_user):
                     "confidence": max(0.3, 0.9 - (i * 0.02))  # Decreasing confidence over time
                 })
             
-            # Calculate model confidence based on R²
-            from sklearn.metrics import r2_score
-            y_pred = model.predict(X)
-            confidence = max(0, r2_score(y, y_pred))
+            # Calculate simple correlation coefficient as confidence measure
+            if len(revenues) > 1:
+                correlation = np.corrcoef(X, y)[0, 1] if not np.isnan(np.corrcoef(X, y)[0, 1]) else 0
+                confidence = max(0, correlation ** 2)  # R-squared approximation
+            else:
+                confidence = 0.5
             
             return {
                 "predictions": predictions,
