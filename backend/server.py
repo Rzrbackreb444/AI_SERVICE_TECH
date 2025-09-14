@@ -36,6 +36,10 @@ from analytics_engine import create_analytics_router
 from security_manager import create_security_router
 from notifications_engine import create_notifications_router
 from mrr_optimization_engine import mrr_engine
+from performance_optimizer import performance_optimizer, monitor_performance, cache_result
+from system_optimizer import system_optimizer
+from revenue_optimizer import revenue_optimizer
+from optimization_endpoints import optimization_router
 
 # Load environment variables
 ROOT_DIR = Path(__file__).parent
