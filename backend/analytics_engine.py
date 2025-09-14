@@ -713,10 +713,18 @@ def create_analytics_router(db, get_current_user):
             # Store in database with AI tag
             await db.ai_analyses.insert_one(result)
             
+            # 🧠 RECORD PREDICTION FOR SELF-LEARNING
+            learning_record = await self_learning_ai.record_prediction(
+                result['id'], 
+                ai_results, 
+                request.address
+            )
+            
             return {
                 'success': True,
-                'message': '🤖 NEXT-GEN AI ANALYSIS COMPLETE',
-                'data': result
+                'message': '🤖 NEXT-GEN AI ANALYSIS COMPLETE - Learning Enabled',
+                'data': result,
+                'ai_learning': learning_record
             }
             
         except Exception as e:
