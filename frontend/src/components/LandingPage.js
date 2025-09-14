@@ -202,23 +202,79 @@ const LandingPage = ({ onOpenAuth }) => {
             {/* Premium LaundroTech Branding */}
             <div className="mb-12">
               {/* Professional Laundromat Image */}
+              {/* AI Analysis Demo */}
               <motion.div
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 1.2 }}
-                className="mb-8"
+                className="mb-12 max-w-6xl mx-auto"
               >
-                <div className="relative max-w-4xl mx-auto">
-                  <img 
-                    src="https://images.unsplash.com/photo-1648116853709-6018f289c080" 
-                    alt="Modern Professional Laundromat"
-                    className="w-full h-64 md:h-80 object-cover rounded-xl shadow-2xl"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-slate-900/60 to-transparent rounded-xl"></div>
-                  <div className="absolute bottom-4 left-4 right-4">
-                    <div className="text-white font-medium">Advanced Location Intelligence</div>
-                    <div className="text-slate-300 text-sm">Technology meets professional analysis</div>
+                <div className="grid md:grid-cols-2 gap-8">
+                  
+                  {/* Success Probability Chart */}
+                  <div className="glass-card p-6 border border-slate-700/50">
+                    <h3 className="text-lg font-semibold text-white mb-4">AI Success Prediction</h3>
+                    <div className="space-y-4">
+                      <div className="flex items-center justify-between">
+                        <span className="text-slate-300">Little Rock, AR</span>
+                        <div className="flex items-center">
+                          <div className="w-24 h-2 bg-slate-700 rounded-full mr-3">
+                            <div className="w-20 h-2 bg-green-400 rounded-full"></div>
+                          </div>
+                          <span className="text-green-400 font-bold">87.3%</span>
+                        </div>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <span className="text-slate-300">Fayetteville, AR</span>
+                        <div className="flex items-center">
+                          <div className="w-24 h-2 bg-slate-700 rounded-full mr-3">
+                            <div className="w-16 h-2 bg-blue-400 rounded-full"></div>
+                          </div>
+                          <span className="text-blue-400 font-bold">72.1%</span>
+                        </div>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <span className="text-slate-300">Conway, AR</span>
+                        <div className="flex items-center">
+                          <div className="w-24 h-2 bg-slate-700 rounded-full mr-3">
+                            <div className="w-14 h-2 bg-yellow-400 rounded-full"></div>
+                          </div>
+                          <span className="text-yellow-400 font-bold">64.8%</span>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="mt-4 text-xs text-slate-500">AI analyzes 156+ data points for predictions</div>
                   </div>
+
+                  {/* Competitive Intelligence Preview */}
+                  <div className="glass-card p-6 border border-slate-700/50">
+                    <h3 className="text-lg font-semibold text-white mb-4">Competitive Intelligence</h3>
+                    <div className="space-y-3">
+                      <div className="flex items-center justify-between p-3 bg-slate-800/50 rounded-lg">
+                        <div>
+                          <div className="text-white text-sm font-medium">Market Leader Opportunity</div>
+                          <div className="text-slate-400 text-xs">Low density area detected</div>
+                        </div>
+                        <div className="text-green-400 text-sm font-bold">+34%</div>
+                      </div>
+                      <div className="flex items-center justify-between p-3 bg-slate-800/50 rounded-lg">
+                        <div>
+                          <div className="text-white text-sm font-medium">Premium Service Gap</div>
+                          <div className="text-slate-400 text-xs">AI detected underserved market</div>
+                        </div>
+                        <div className="text-blue-400 text-sm font-bold">+28%</div>
+                      </div>
+                      <div className="flex items-center justify-between p-3 bg-slate-800/50 rounded-lg">
+                        <div>
+                          <div className="text-white text-sm font-medium">Traffic Pattern Advantage</div>
+                          <div className="text-slate-400 text-xs">Rush hour proximity bonus</div>
+                        </div>
+                        <div className="text-purple-400 text-sm font-bold">+19%</div>
+                      </div>
+                    </div>
+                    <div className="mt-4 text-xs text-slate-500">Advanced pattern recognition beyond human analysis</div>
+                  </div>
+
                 </div>
               </motion.div>
               
