@@ -24,6 +24,7 @@ from emergentintegrations.payments.stripe.checkout import StripeCheckout, Checko
 import paypalrestsdk
 from email_service import email_service
 from admin_endpoints import create_admin_router
+from consultant_endpoints import router as consultant_router
 from analytics_engine import create_analytics_router
 from security_manager import create_security_router
 from notifications_engine import create_notifications_router
