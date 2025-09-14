@@ -124,7 +124,7 @@ const PricingPage = ({ onOpenAuth }) => {
     },
     {
       id: "portfolio",
-      name: "SiteAtlas Portfolio",
+      name: "LaundroEmpire Portfolio",
       price: 999,
       paypalPrice: 949,
       originalPrice: 1299,
