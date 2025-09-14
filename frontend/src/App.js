@@ -284,8 +284,15 @@ function App() {
             <Route path="/analyze" element={
               <ProtectedRoute>
                 <>
-                  <Navbar />
-                  <LocationAnalyzer />
+                  <EnterpriseLocationAnalyzer />
+                </>
+              </ProtectedRoute>
+            } />
+            
+            <Route path="/enterprise-analyzer" element={
+              <ProtectedRoute>
+                <>
+                  <EnterpriseLocationAnalyzer />
                 </>
               </ProtectedRoute>
             } />
