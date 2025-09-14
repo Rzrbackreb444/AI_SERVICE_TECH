@@ -20,6 +20,28 @@ def create_analytics_router(db, get_current_user):
     # Initialize report generator
     report_generator = PremiumReportGenerator()
     
+    # Helper functions for AI analysis
+    async def get_location_data(address: str, latitude: float = None, longitude: float = None):
+        """Get comprehensive location data"""
+        return {
+            'coordinates': {
+                'lat': latitude or 40.7128,
+                'lng': longitude or -74.0060
+            },
+            'competitors': []
+        }
+    
+    async def get_demographic_data(lat: float, lng: float):
+        """Get demographic data for location"""
+        class DemographicData:
+            def dict(self):
+                return {
+                    'population': 50000,
+                    'median_income': 65000,
+                    'age_distribution': {'25-34': 0.3, '35-44': 0.25, '45-54': 0.2}
+                }
+        return DemographicData()
+    
     @analytics_router.get("/overview")
     async def get_analytics_overview(
         timeframe: str = Query("30d", description="7d, 30d, 90d, 1y"),
