@@ -174,7 +174,7 @@ class EmailService:
                         </div>
                         <div class="stat">
                             <h4>Est. Monthly Revenue</h4>
-                            <p style="font-size: 20px; font-weight: bold; color: #10B981;">${analysis_data.get('roi_estimate', {}).get('estimated_monthly_revenue', 0):,}</p>
+                            <p style="font-size: 20px; font-weight: bold; color: #10B981;">${analysis_data.get('roi_estimate', {}).get('estimated_monthly_revenue', 0):,.0f}</p>
                         </div>
                         <div class="stat">
                             <h4>Analysis Type</h4>
