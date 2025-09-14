@@ -1282,6 +1282,128 @@ async def get_user_analyses(current_user: User = Depends(get_current_user)):
         logger.error(f"Get analyses error: {e}")
         raise HTTPException(status_code=500, detail="Failed to retrieve analyses")
 
+# ═══════════════════════════════════════════════════════════════
+# MRR OPTIMIZATION ENDPOINTS - THE MONEY MAKERS
+# ═══════════════════════════════════════════════════════════════
+
+@api_router.get("/dashboard/performance")
+async def get_performance_dashboard(current_user: User = Depends(get_current_user)):
+    """Get recurring performance dashboard data"""
+    dashboard_data = await mrr_engine.get_performance_dashboard_data(current_user.id)
+    return dashboard_data
+
+@api_router.get("/alerts/market")
+async def get_market_alerts(current_user: User = Depends(get_current_user)):
+    """Get market alerts for user locations"""
+    alerts = await mrr_engine.generate_recurring_alerts(current_user.id)
+    return {"alerts": [alert.__dict__ for alert in alerts]}
+
+@api_router.get("/usage/current")
+async def get_current_usage(current_user: User = Depends(get_current_user)):
+    """Get current billing period usage"""
+    usage_info = await mrr_engine.track_api_usage(
+        current_user.id, 
+        'check', 
+        current_user.subscription_tier
+    )
+    return usage_info
+
+@api_router.get("/billing/report")
+async def get_billing_report(current_user: User = Depends(get_current_user)):
+    """Get current billing report with overages"""
+    billing_report = await mrr_engine.generate_usage_billing_report(current_user.id)
+    return billing_report
+
+@api_router.get("/portfolio/dashboard") 
+async def get_portfolio_dashboard(current_user: User = Depends(get_current_user)):
+    """Get multi-location portfolio dashboard"""
+    portfolio_data = await mrr_engine.create_portfolio_dashboard(current_user.id)
+    return portfolio_data
+
+@api_router.post("/portfolio/expansion")
+async def analyze_portfolio_expansion(
+    expansion_request: Dict[str, str],
+    current_user: User = Depends(get_current_user)
+):
+    """Analyze expansion opportunities for portfolio"""
+    target_market = expansion_request.get('target_market', 'Unknown Market')
+    expansion_analysis = await mrr_engine.portfolio_expansion_analysis(current_user.id, target_market)
+    return expansion_analysis
+
+@api_router.post("/enterprise/api-key")
+async def create_enterprise_api_key(
+    enterprise_request: Dict[str, str],
+    current_user: User = Depends(get_current_user)
+):
+    """Create enterprise API key for white-label usage"""
+    organization = enterprise_request.get('organization', 'Unknown Organization')
+    api_key_data = await mrr_engine.create_enterprise_api_key(current_user.id, organization)
+    return api_key_data
+
+@api_router.post("/enterprise/bulk-analysis")
+async def enterprise_bulk_analysis(
+    bulk_request: Dict[str, Any],
+    api_key: str = Depends(lambda: "demo_key")  # In production, extract from headers
+):
+    """Enterprise bulk analysis endpoint"""
+    addresses = bulk_request.get('addresses', [])
+    if len(addresses) > 50:
+        raise HTTPException(status_code=400, detail="Maximum 50 addresses per request")
+    
+    bulk_results = await mrr_engine.bulk_analysis_endpoint(api_key, addresses)
+    return bulk_results
+
+@api_router.get("/marketplace/equipment")
+async def get_equipment_marketplace(
+    analysis_id: str,
+    current_user: User = Depends(get_current_user)
+):
+    """Get equipment marketplace recommendations"""
+    # Get analysis data
+    analysis = await db.analyses.find_one({
+        "analysis_id": analysis_id,
+        "user_id": current_user.id
+    })
+    
+    if not analysis:
+        raise HTTPException(status_code=404, detail="Analysis not found")
+    
+    equipment_data = await mrr_engine.equipment_marketplace_integration(current_user.id, analysis)
+    return equipment_data
+
+@api_router.post("/financing/pre-approval")
+async def get_financing_pre_approval(
+    financing_request: Dict[str, str],
+    current_user: User = Depends(get_current_user)
+):
+    """Get financing pre-approval for location"""
+    analysis_id = financing_request.get('analysis_id')
+    
+    # Get analysis data
+    analysis = await db.analyses.find_one({
+        "analysis_id": analysis_id,
+        "user_id": current_user.id
+    })
+    
+    if not analysis:
+        raise HTTPException(status_code=404, detail="Analysis not found")
+    
+    financing_profile = await mrr_engine.financing_pre_approval_system(current_user.id, analysis)
+    return financing_profile
+
+@api_router.get("/real-estate/deals")
+async def get_real_estate_deals(current_user: User = Depends(get_current_user)):
+    """Get real estate deal alerts"""
+    target_criteria = {"max_price": 800000, "min_sqft": 2500, "max_lease_rate": 25}
+    deal_alerts = await mrr_engine.real_estate_deal_alerts(current_user.id, target_criteria)
+    return deal_alerts
+
+@api_router.get("/analytics/ltv")
+async def get_user_lifetime_value(current_user: User = Depends(get_current_user)):
+    """Get user lifetime value analytics"""
+    ltv_data = await mrr_engine.calculate_user_ltv(current_user.id)
+    return ltv_data
+
 @api_router.get("/user/subscriptions")
 async def get_user_subscriptions(current_user: User = Depends(get_current_user)):
     """Get user's Facebook Group subscriptions"""
