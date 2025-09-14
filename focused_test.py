@@ -11,7 +11,7 @@ from datetime import datetime
 import time
 
 class FocusedAPITester:
-    def __init__(self, base_url="https://siteatlas-dash.preview.emergentagent.com/api"):
+    def __init__(self, base_url="https://siteanalytics.preview.emergentagent.com/api"):
         self.base_url = base_url
         self.token = None
         self.user_data = None
