@@ -166,7 +166,7 @@ class EmailService:
                     <div class="stats">
                         <div class="stat">
                             <h4>Population</h4>
-                            <p style="font-size: 20px; font-weight: bold; color: #06B6D4;">{analysis_data.get('demographics', {}).get('population', 'N/A'):,}</p>
+                            <p style="font-size: 20px; font-weight: bold; color: #06B6D4;">{analysis_data.get('demographics', {}).get('population', 'N/A') if isinstance(analysis_data.get('demographics', {}).get('population', 'N/A'), str) else f"{analysis_data.get('demographics', {}).get('population', 0):,}"}</p>
                         </div>
                         <div class="stat">
                             <h4>Competitors</h4>
