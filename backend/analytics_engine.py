@@ -703,7 +703,7 @@ def create_analytics_router(db, get_current_user):
                 
                 # RAW DATA
                 'competitors': location_data['competitors'],
-                'demographics': demographics,
+                'demographics': demographics.dict(),
                 
                 # ALGORITHM INFO
                 'algorithm_version': ai_results['algorithm_version']
