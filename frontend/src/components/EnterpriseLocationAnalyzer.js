@@ -638,7 +638,7 @@ const EnterpriseLocationAnalyzer = () => {
                       <div className="text-2xl font-bold text-green-400">
                         ${analysisResult.financial_projections.monthly_revenue?.toLocaleString() || 'N/A'}
                       </div>
-                      <div className="text-slate-400">Monthly Revenue</div>
+                      <div className="text-slate-400">Market Potential</div>
                     </div>
                     <div className="text-center">
                       <div className="text-2xl font-bold text-blue-400">
