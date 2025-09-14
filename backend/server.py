@@ -93,6 +93,48 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# Rate limiting configuration
+RATE_LIMITS = {
+    'free': {'requests_per_hour': 5, 'analyses_per_day': 1},
+    'analyzer': {'requests_per_hour': 50, 'analyses_per_day': 10},
+    'intelligence': {'requests_per_hour': 100, 'analyses_per_day': 25},
+    'optimization': {'requests_per_hour': 200, 'analyses_per_day': 50},
+    'portfolio': {'requests_per_hour': 500, 'analyses_per_day': 100},
+    'watch_pro': {'requests_per_hour': 1000, 'analyses_per_day': 250}
+}
+
+async def check_rate_limit(user_id: str, tier: str, endpoint: str) -> bool:
+    """Check if user has exceeded rate limits"""
+    try:
+        limits = RATE_LIMITS.get(tier, RATE_LIMITS['free'])
+        now = datetime.now(timezone.utc)
+        hour_key = f"rate_limit:{user_id}:{endpoint}:{now.strftime('%Y-%m-%d-%H')}"
+        day_key = f"analyses:{user_id}:{now.strftime('%Y-%m-%d')}"
+        
+        # Check hourly requests
+        hourly_count = redis_client.get(hour_key)
+        if hourly_count and int(hourly_count) >= limits['requests_per_hour']:
+            return False
+        
+        # Check daily analyses (for /analyze endpoint)
+        if endpoint == 'analyze':
+            daily_count = redis_client.get(day_key)
+            if daily_count and int(daily_count) >= limits['analyses_per_day']:
+                return False
+        
+        # Increment counters
+        redis_client.incr(hour_key)
+        redis_client.expire(hour_key, 3600)  # 1 hour
+        
+        if endpoint == 'analyze':
+            redis_client.incr(day_key)
+            redis_client.expire(day_key, 86400)  # 24 hours
+        
+        return True
+    except Exception as e:
+        logger.error(f"Rate limiting error: {e}")
+        return True  # Allow on error
+
 # Logging setup
 logging.basicConfig(
     level=logging.INFO,
