@@ -6,12 +6,41 @@ Enterprise-grade professional consulting API
 import os
 import uuid
 from typing import Dict, Any, List
-from fastapi import APIRouter, HTTPException, Depends, BackgroundTasks
+from fastapi import APIRouter, HTTPException, Depends, BackgroundTasks, Header
+from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from pydantic import BaseModel
 from datetime import datetime
-from auth import get_current_user
+import jwt
 from ai_consultant import laundry_consultant
 from motor.motor_asyncio import AsyncIOMotorClient
+
+# Security
+security = HTTPBearer()
+JWT_SECRET = os.environ.get('JWT_SECRET', 'your-secret-key-change-this-in-production')
+JWT_ALGORITHM = 'HS256'
+
+# Database connection
+mongo_url = os.environ.get('MONGO_URL', 'mongodb://localhost:27017')
+db_name = os.environ.get('DB_NAME', 'sitetitan_db')
+
+async def get_current_user(credentials: HTTPAuthorizationCredentials = Depends(security)):
+    """Get current authenticated user"""
+    try:
+        payload = jwt.decode(credentials.credentials, JWT_SECRET, algorithms=[JWT_ALGORITHM])
+        user_id: str = payload.get("sub")
+        if user_id is None:
+            raise HTTPException(status_code=401, detail="Invalid authentication credentials")
+    except jwt.PyJWTError:
+        raise HTTPException(status_code=401, detail="Invalid authentication credentials")
+    
+    client = AsyncIOMotorClient(mongo_url)
+    db = client[db_name]
+    user = await db.users.find_one({"id": user_id})
+    
+    if user is None:
+        raise HTTPException(status_code=401, detail="User not found")
+    
+    return user
 
 router = APIRouter(prefix="/api/consultant", tags=["AI Consultant"])
 
