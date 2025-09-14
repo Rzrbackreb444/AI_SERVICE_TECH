@@ -1211,6 +1211,24 @@ async def generate_premium_pdf_report(
         logger.error(f"PDF generation error: {e}")
         raise HTTPException(status_code=500, detail="PDF generation failed")
 
+@api_router.get("/user/analyses")
+async def get_user_analyses(current_user: User = Depends(get_current_user)):
+    """Get user's analysis history"""
+    try:
+        analyses = await db.analyses.find({
+            "user_id": current_user.id
+        }).sort("created_at", -1).to_list(length=50)
+        
+        # Convert ObjectId to string for JSON serialization
+        for analysis in analyses:
+            if "_id" in analysis:
+                analysis["_id"] = str(analysis["_id"])
+        
+        return {"analyses": analyses}
+    except Exception as e:
+        logger.error(f"Get analyses error: {e}")
+        raise HTTPException(status_code=500, detail="Failed to retrieve analyses")
+
 @api_router.get("/user/subscriptions")
 async def get_user_subscriptions(current_user: User = Depends(get_current_user)):
     """Get user's Facebook Group subscriptions"""
