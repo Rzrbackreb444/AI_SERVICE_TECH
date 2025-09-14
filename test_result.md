@@ -495,13 +495,11 @@ metadata:
 
 test_plan:
   current_focus:
-    - "New Optimization Endpoints - System, Performance, Revenue"
-    - "Performance Under Load Testing"
-    - "MRR Integration Validation After Optimization"
+    - "Stripe integration with emergentintegrations"
   stuck_tasks: 
     - "Stripe integration requires valid API key (expired key causing checkout failures)"
-  test_all: true
-  test_priority: "optimization_complete_validation"
+  test_all: false
+  test_priority: "stripe_critical_fix"
 
 agent_communication:
   - agent: "main"
