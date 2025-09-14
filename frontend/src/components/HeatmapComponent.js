@@ -59,15 +59,22 @@ const HeatmapComponent = ({ data, title = "Data Heatmap", className = "" }) => {
     } catch (error) {
       console.error('Failed to load heatmap data:', error);
       
-      // Get REAL heatmap data from backend API
-      const response = await axios.get(`${API}/real-analytics/heatmap-data/${lat}/${lng}?data_type=${selectedMetric}`, {
-        headers: getAuthHeaders()
-      });
-      
-      if (response.data.success) {
-        setHeatmapData(response.data.heatmap_data || []);
-      } else {
-        // Only show empty state if no real data exists
+      try {
+        // Get REAL heatmap data from backend API - no mock data
+        const response = await axios.get(`${API}/real-analytics/charts/activity-heatmap?timeframe_days=${selectedTimeframe}`, {
+          headers: getAuthHeaders()
+        });
+        
+        if (response.data.success && response.data.analytics_data) {
+          // Use real data to create meaningful heatmap
+          const realData = createHeatmapFromRealData(response.data.analytics_data);
+          setHeatmapData(realData);
+        } else {
+          // Show empty state - no fake data
+          setHeatmapData([]);
+        }
+      } catch (error) {
+        console.error('Failed to load real heatmap data:', error);
         setHeatmapData([]);
       }
     } finally {
