@@ -311,15 +311,15 @@ const PricingPage = ({ onOpenAuth }) => {
             Comprehensive business intelligence platform for commercial laundromat analysis and investment decisions
           </p>
           
-          {/* PayPal Discount Banner */}
+          {/* Enterprise Features Banner */}
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="inline-flex items-center bg-gradient-to-r from-yellow-500/20 to-orange-500/20 border border-yellow-500/30 rounded-2xl px-6 py-3 mb-8"
+            className="inline-flex items-center bg-slate-800/50 border border-slate-600/30 rounded-lg px-6 py-3 mb-8"
           >
-            <BoltIcon className="w-6 h-6 text-yellow-400 mr-3" />
-            <span className="text-yellow-300 font-semibold">Save 5% with PayPal payments on all premium tiers!</span>
+            <BoltIcon className="w-5 h-5 text-slate-400 mr-3" />
+            <span className="text-slate-300 font-medium">Real-time data integration • No mock data • Professional insights</span>
           </motion.div>
           
           {/* Facebook Group Benefits */}
