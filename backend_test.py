@@ -921,6 +921,331 @@ class ComprehensiveFinalTester:
         
         return success
 
+    # ========== NEW OPTIMIZATION ENDPOINTS TESTING ==========
+    
+    def test_system_optimization_endpoints(self):
+        """Test new system optimization endpoints"""
+        print(f"\n🚀 TESTING NEW SYSTEM OPTIMIZATION ENDPOINTS")
+        
+        # Test system health check
+        health_success, health_response = self.run_test(
+            "System Health Check",
+            "GET",
+            "optimization/system/health",
+            200,
+            critical=True
+        )
+        
+        if health_success:
+            system_health = health_response.get('system_health', {})
+            print(f"   🏥 System Status: {system_health.get('status', 'Unknown')}")
+            print(f"   💾 Memory Usage: {system_health.get('memory_usage_percent', 0)}%")
+            print(f"   🗄️  Database Status: {system_health.get('database_status', 'Unknown')}")
+            print(f"   🔄 Redis Status: {system_health.get('redis_status', 'Unknown')}")
+            print(f"   ⚡ Optimization Status: {health_response.get('optimization_status', 'Unknown')}")
+        
+        # Test full system optimization
+        optimize_success, optimize_response = self.run_test(
+            "Full System Optimization",
+            "POST",
+            "optimization/system/optimize",
+            200,
+            critical=True
+        )
+        
+        if optimize_success:
+            results = optimize_response.get('optimization_results', {})
+            optimizations = results.get('optimizations_applied', [])
+            print(f"   🔧 Optimizations Applied: {len(optimizations)}")
+            for opt in optimizations:
+                print(f"      - {opt}")
+            print(f"   ⏰ Optimization Time: {results.get('optimization_timestamp', 'Unknown')}")
+        
+        return health_success and optimize_success
+    
+    def test_performance_optimization_endpoints(self):
+        """Test performance optimization endpoints"""
+        print(f"\n📊 TESTING PERFORMANCE OPTIMIZATION ENDPOINTS")
+        
+        # Test performance metrics
+        metrics_success, metrics_response = self.run_test(
+            "Performance Metrics",
+            "GET",
+            "optimization/performance/metrics",
+            200,
+            critical=True
+        )
+        
+        if metrics_success:
+            metrics = metrics_response.get('performance_metrics', {})
+            print(f"   ⚡ API Response Time: {metrics.get('avg_response_time', 0)}ms")
+            print(f"   💾 Memory Usage: {metrics.get('memory_usage', 0)}MB")
+            print(f"   🔄 Cache Hit Rate: {metrics.get('cache_hit_rate', 0)}%")
+            print(f"   📈 Throughput: {metrics.get('requests_per_second', 0)} req/s")
+        
+        # Test cache status
+        cache_success, cache_response = self.run_test(
+            "Cache Performance Status",
+            "GET",
+            "optimization/cache/status",
+            200,
+            critical=True
+        )
+        
+        if cache_success:
+            cache_status = cache_response.get('cache_status', {})
+            print(f"   🗄️  Cache Active: {cache_status.get('active', False)}")
+            print(f"   📦 Cache Size: {cache_status.get('cache_size', 0)} items")
+            print(f"   📊 Hit Ratio: {cache_status.get('cache_hit_ratio', 'Unknown')}")
+            print(f"   ⚡ Performance Impact: {cache_status.get('performance_impact', 'Unknown')}")
+        
+        # Test database index optimization
+        db_success, db_response = self.run_test(
+            "Database Index Optimization",
+            "GET",
+            "optimization/database/indexes",
+            200,
+            critical=True
+        )
+        
+        if db_success:
+            db_opt = db_response.get('database_optimization', {})
+            collections = db_opt.get('collections_optimized', [])
+            print(f"   🗃️  Collections Optimized: {len(collections)}")
+            print(f"   📈 Performance Improvement: {db_opt.get('performance_improvement', 'Unknown')}")
+        
+        return metrics_success and cache_success and db_success
+    
+    def test_revenue_optimization_endpoints(self):
+        """Test revenue optimization endpoints"""
+        print(f"\n💰 TESTING REVENUE OPTIMIZATION ENDPOINTS")
+        
+        # Test dynamic pricing optimization
+        pricing_success, pricing_response = self.run_test(
+            "Dynamic Pricing Optimization",
+            "POST",
+            "optimization/revenue/pricing",
+            200,
+            data={
+                'user_data': {
+                    'subscription_tier': 'free',
+                    'usage_history': {'api_calls': 50, 'analyses': 3}
+                },
+                'market_conditions': {
+                    'demand_level': 'high',
+                    'competitor_pricing': {'avg_price': 99.0},
+                    'seasonal_factor': 1.2
+                }
+            },
+            critical=True
+        )
+        
+        if pricing_success:
+            pricing_opt = pricing_response.get('pricing_optimization', {})
+            print(f"   💵 Recommended Price: ${pricing_opt.get('recommended_price', 0)}")
+            print(f"   📊 Price Adjustment: {pricing_opt.get('price_adjustment_percent', 0)}%")
+            print(f"   🎯 Revenue Impact: ${pricing_opt.get('estimated_revenue_impact', 0)}")
+            print(f"   📈 Conversion Rate: {pricing_opt.get('expected_conversion_rate', 0)}%")
+        
+        # Test revenue forecasting
+        forecast_success, forecast_response = self.run_test(
+            "Revenue Forecasting with Optimization",
+            "POST",
+            "optimization/revenue/forecast",
+            200,
+            data={
+                'historical_data': {
+                    'monthly_revenue': [10000, 12000, 15000, 18000, 22000],
+                    'user_growth': [100, 120, 150, 180, 220],
+                    'churn_rate': [0.05, 0.04, 0.03, 0.03, 0.02]
+                },
+                'optimization_impacts': {
+                    'pricing_optimization': 0.15,
+                    'conversion_optimization': 0.12,
+                    'churn_reduction': 0.08
+                }
+            },
+            critical=True
+        )
+        
+        if forecast_success:
+            forecasts = forecast_response.get('revenue_forecasts', {})
+            print(f"   📈 Next Month Forecast: ${forecasts.get('next_month_revenue', 0):,}")
+            print(f"   📊 3-Month Forecast: ${forecasts.get('three_month_revenue', 0):,}")
+            print(f"   🎯 Annual Forecast: ${forecasts.get('annual_revenue', 0):,}")
+            print(f"   💰 Optimization Impact: ${forecasts.get('optimization_impact', 0):,}")
+        
+        # Test conversion funnel optimization (if user exists)
+        conversion_success = True
+        if self.user_data and self.user_data.get('id'):
+            conversion_success, conversion_response = self.run_test(
+                "Conversion Funnel Optimization",
+                "POST",
+                f"optimization/revenue/conversion/{self.user_data['id']}",
+                200,
+                data={
+                    'user_behavior': {
+                        'page_views': 25,
+                        'time_on_site': 180,
+                        'bounce_rate': 0.3,
+                        'conversion_events': ['signup', 'pricing_view']
+                    }
+                },
+                critical=True
+            )
+            
+            if conversion_success:
+                conv_opt = conversion_response.get('conversion_optimization', {})
+                print(f"   🎯 Conversion Score: {conv_opt.get('current_conversion_score', 0)}")
+                print(f"   📈 Improvement Potential: {conv_opt.get('improvement_potential', 0)}%")
+                recommendations = conv_opt.get('recommendations', [])
+                print(f"   💡 Recommendations: {len(recommendations)}")
+        
+        # Test churn prediction (if user exists)
+        churn_success = True
+        if self.user_data and self.user_data.get('id'):
+            churn_success, churn_response = self.run_test(
+                "Churn Prediction and Prevention",
+                "POST",
+                f"optimization/revenue/churn/{self.user_data['id']}",
+                200,
+                data={
+                    'usage_data': {
+                        'last_login': '2024-12-20',
+                        'api_calls_last_30_days': 15,
+                        'feature_usage': {'analyze': 3, 'reports': 1},
+                        'support_tickets': 0
+                    }
+                },
+                critical=True
+            )
+            
+            if churn_success:
+                churn_analysis = churn_response.get('churn_analysis', {})
+                print(f"   ⚠️  Churn Risk: {churn_analysis.get('churn_risk_level', 'Unknown')}")
+                print(f"   📊 Risk Score: {churn_analysis.get('churn_risk_score', 0)}")
+                prevention = churn_analysis.get('prevention_strategies', [])
+                print(f"   🛡️  Prevention Strategies: {len(prevention)}")
+        
+        # Test upsell optimization (if user exists)
+        upsell_success = True
+        if self.user_data and self.user_data.get('id'):
+            upsell_success, upsell_response = self.run_test(
+                "Upsell Opportunity Optimization",
+                "POST",
+                f"optimization/revenue/upsell/{self.user_data['id']}",
+                200,
+                data={
+                    'current_tier': 'free',
+                    'usage_data': {
+                        'api_calls_used': 45,
+                        'api_calls_limit': 50,
+                        'analyses_used': 1,
+                        'analyses_limit': 1,
+                        'feature_requests': ['premium_reports', 'bulk_analysis']
+                    }
+                },
+                critical=True
+            )
+            
+            if upsell_success:
+                upsell_opt = upsell_response.get('upsell_optimization', {})
+                print(f"   🎯 Upsell Score: {upsell_opt.get('upsell_score', 0)}")
+                print(f"   💰 Recommended Tier: {upsell_opt.get('recommended_tier', 'Unknown')}")
+                print(f"   📈 Revenue Potential: ${upsell_opt.get('revenue_potential', 0)}")
+                triggers = upsell_opt.get('upsell_triggers', [])
+                print(f"   🚀 Upsell Triggers: {len(triggers)}")
+        
+        return pricing_success and forecast_success and conversion_success and churn_success and upsell_success
+    
+    def test_mrr_integration_validation(self):
+        """Test that all 5 MRR systems still work after optimization"""
+        print(f"\n🔄 TESTING MRR INTEGRATION AFTER OPTIMIZATION")
+        
+        # Re-test all MRR systems to ensure they still work
+        mrr_tests = [
+            ("Recurring Value Engine", self.test_recurring_value_engine),
+            ("Usage-Based Billing", self.test_usage_based_billing_system),
+            ("Multi-Location Dashboard", self.test_multi_location_dashboard),
+            ("Enterprise API Layer", self.test_enterprise_api_layer),
+            ("Sticky Ecosystem Features", self.test_sticky_ecosystem_features)
+        ]
+        
+        all_passed = True
+        for test_name, test_func in mrr_tests:
+            print(f"\n   🔍 Re-testing {test_name}...")
+            try:
+                success = test_func()
+                if success:
+                    print(f"   ✅ {test_name}: STILL WORKING after optimization")
+                else:
+                    print(f"   ❌ {test_name}: BROKEN after optimization")
+                    all_passed = False
+            except Exception as e:
+                print(f"   💥 {test_name}: ERROR after optimization - {e}")
+                all_passed = False
+        
+        return all_passed
+    
+    def test_performance_under_load(self):
+        """Test system performance under simulated load"""
+        print(f"\n⚡ TESTING PERFORMANCE UNDER LOAD CONDITIONS")
+        
+        # Test multiple concurrent requests to analyze endpoint
+        if not self.token:
+            print("   ⚠️  Skipping - No authentication token")
+            return False
+        
+        import threading
+        import time
+        
+        results = []
+        
+        def make_request():
+            try:
+                success, response = self.run_test(
+                    "Load Test - Analyze Endpoint",
+                    "POST",
+                    "analyze",
+                    200,
+                    data={
+                        'address': f'123 Load Test St, Chicago, IL',
+                        'analysis_type': 'scout',
+                        'additional_data': {}
+                    }
+                )
+                results.append(success)
+            except Exception as e:
+                results.append(False)
+        
+        # Create 5 concurrent requests
+        threads = []
+        start_time = time.time()
+        
+        for i in range(5):
+            thread = threading.Thread(target=make_request)
+            threads.append(thread)
+            thread.start()
+        
+        # Wait for all threads to complete
+        for thread in threads:
+            thread.join()
+        
+        end_time = time.time()
+        total_time = end_time - start_time
+        
+        successful_requests = sum(results)
+        success_rate = (successful_requests / len(results)) * 100 if results else 0
+        
+        print(f"   📊 Concurrent Requests: {len(results)}")
+        print(f"   ✅ Successful: {successful_requests}")
+        print(f"   📈 Success Rate: {success_rate:.1f}%")
+        print(f"   ⏱️  Total Time: {total_time:.2f}s")
+        print(f"   ⚡ Avg Response Time: {total_time/len(results):.2f}s per request")
+        
+        # Test passes if at least 80% of requests succeed and total time is reasonable
+        return success_rate >= 80 and total_time < 30
+
     # ========== PRODUCTION READINESS CHECKS ==========
     
     def test_api_root_and_health(self):
