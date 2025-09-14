@@ -7,13 +7,8 @@ from fastapi import APIRouter, HTTPException, Depends, Query
 from datetime import datetime, timedelta
 from typing import Dict, Any, List, Optional
 import logging
-import json
 from collections import defaultdict, Counter
 import numpy as np
-from sklearn.linear_model import LinearRegression
-from sklearn.ensemble import RandomForestRegressor
-import pandas as pd
-import asyncio
 from premium_report_generator import PremiumReportGenerator
 
 logger = logging.getLogger(__name__)
