@@ -503,7 +503,7 @@ const PricingPage = ({ onOpenAuth }) => {
           className="mt-12 glass-card p-8 text-center"
         >
           <h2 className="text-3xl font-bold text-white mb-4">
-            Join the <span className="gradient-text-gold">$8.4M Success Story</span>
+            Join Professional Laundromat Operators
           </h2>
           <p className="text-xl text-slate-300 mb-8">
             Professional laundromat operators are generating exceptional returns with LaundroTech Intelligence
