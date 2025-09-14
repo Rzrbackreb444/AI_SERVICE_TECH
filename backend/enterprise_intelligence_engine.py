@@ -1034,5 +1034,84 @@ class EnterpriseIntelligenceEngine:
         else:
             return 50
 
+    def calculate_threat_level(self, place_info: Dict, distance: float) -> str:
+        """Calculate competitive threat level"""
+        rating = place_info.get('rating', 0)
+        review_count = place_info.get('user_ratings_total', 0)
+        
+        if distance < 0.5 and rating >= 4.0 and review_count >= 50:
+            return "HIGH"
+        elif distance < 1.0 and rating >= 3.5:
+            return "MEDIUM"
+        else:
+            return "LOW"
+
+    def identify_competitive_gaps(self, place_info: Dict) -> List[str]:
+        """Identify competitive advantages"""
+        gaps = []
+        if not place_info.get('website'):
+            gaps.append("No website")
+        if place_info.get('rating', 0) < 4.0:
+            gaps.append("Low rating")
+        if place_info.get('user_ratings_total', 0) < 20:
+            gaps.append("Few reviews")
+        return gaps
+
+    def calculate_market_saturation(self, competitors: List[Dict], lat: float, lng: float) -> Dict[str, Any]:
+        """Calculate market saturation metrics"""
+        nearby_competitors = [c for c in competitors if c.get('distance_miles', 999) <= 1.0]
+        return {
+            "saturation_level": "HIGH" if len(nearby_competitors) >= 3 else "MEDIUM" if len(nearby_competitors) >= 1 else "LOW",
+            "competitors_within_1_mile": len(nearby_competitors),
+            "average_competitor_rating": sum(c.get('rating', 0) for c in competitors) / len(competitors) if competitors else 0
+        }
+
+    def analyze_competitive_landscape(self, competitors: List[Dict]) -> Dict[str, Any]:
+        """Analyze overall competitive landscape"""
+        if not competitors:
+            return {"landscape": "CLEAR", "opportunity": "EXCELLENT"}
+        
+        avg_rating = sum(c.get('rating', 0) for c in competitors) / len(competitors)
+        high_threat = sum(1 for c in competitors if c.get('threat_level') == 'HIGH')
+        
+        if high_threat >= 2:
+            return {"landscape": "SATURATED", "opportunity": "POOR"}
+        elif avg_rating >= 4.0:
+            return {"landscape": "COMPETITIVE", "opportunity": "FAIR"}
+        else:
+            return {"landscape": "MODERATE", "opportunity": "GOOD"}
+
+    def calculate_opportunity_score(self, competitors: List[Dict], market_analysis: Dict) -> int:
+        """Calculate market opportunity score"""
+        base_score = 100
+        
+        # Reduce score based on competition
+        nearby_competitors = sum(1 for c in competitors if c.get('distance_miles', 999) <= 1.0)
+        base_score -= nearby_competitors * 15
+        
+        # Adjust for competitor quality
+        high_quality_competitors = sum(1 for c in competitors if c.get('rating', 0) >= 4.0)
+        base_score -= high_quality_competitors * 10
+        
+        return max(base_score, 10)
+
+    def generate_competitive_strategy(self, competitors: List[Dict]) -> List[str]:
+        """Generate competitive strategy recommendations"""
+        strategies = []
+        
+        if not competitors:
+            strategies.append("First-mover advantage - establish strong market presence")
+        else:
+            avg_rating = sum(c.get('rating', 0) for c in competitors) / len(competitors)
+            if avg_rating < 3.5:
+                strategies.append("Focus on superior customer service and cleanliness")
+            
+            websites = sum(1 for c in competitors if c.get('has_website'))
+            if websites < len(competitors) * 0.5:
+                strategies.append("Invest in strong online presence and digital marketing")
+        
+        strategies.append("Implement loyalty programs and competitive pricing")
+        return strategies
+
 # Global instance
 enterprise_engine = EnterpriseIntelligenceEngine()
