@@ -219,9 +219,19 @@ class EnterpriseIntelligenceEngine:
         """Get detailed Census Bureau demographics"""
         try:
             # Convert coordinates to Census tract
-            census_tract = await self.get_census_tract(lat, lng)
+            census_tract_str = await self.get_census_tract(lat, lng)
             
-            if not census_tract:
+            if census_tract_str == "unknown":
+                return await self.estimate_demographics_from_location(lat, lng)
+            
+            # Parse census tract string (format: SSCCCTTTTTT)
+            if len(census_tract_str) >= 11:
+                census_tract = {
+                    'state': census_tract_str[:2],
+                    'county': census_tract_str[2:5], 
+                    'tract': census_tract_str[5:]
+                }
+            else:
                 return await self.estimate_demographics_from_location(lat, lng)
             
             # Get ACS 5-year data (most comprehensive)
