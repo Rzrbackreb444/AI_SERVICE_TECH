@@ -201,8 +201,26 @@ const LandingPage = ({ onOpenAuth }) => {
           >
             {/* Premium LaundroTech Branding */}
             <div className="mb-12">
-              {/* Clean Hero Section */}
-              <div className="mb-8"></div>
+              {/* Professional Laundromat Image */}
+              <motion.div
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 1.2 }}
+                className="mb-8"
+              >
+                <div className="relative max-w-4xl mx-auto">
+                  <img 
+                    src="https://images.unsplash.com/photo-1648116853709-6018f289c080" 
+                    alt="Modern Professional Laundromat"
+                    className="w-full h-64 md:h-80 object-cover rounded-xl shadow-2xl"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-slate-900/60 to-transparent rounded-xl"></div>
+                  <div className="absolute bottom-4 left-4 right-4">
+                    <div className="text-white font-medium">Advanced Location Intelligence</div>
+                    <div className="text-slate-300 text-sm">Technology meets professional analysis</div>
+                  </div>
+                </div>
+              </motion.div>
               
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
