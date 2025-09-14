@@ -22,6 +22,9 @@ def create_analytics_router(db, get_current_user):
     """Create comprehensive analytics router with enterprise-grade features"""
     analytics_router = APIRouter(prefix="/analytics", tags=["analytics"])
     
+    # Initialize report generator
+    report_generator = PremiumReportGenerator()
+    
     @analytics_router.get("/overview")
     async def get_analytics_overview(
         timeframe: str = Query("30d", description="7d, 30d, 90d, 1y"),
