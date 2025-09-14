@@ -2084,7 +2084,7 @@ class AIConsultantTester:
         # Create analysis for consultant initialization
         analysis_request = {
             'address': '123 Main Street, Springfield, IL 62701',
-            'analysis_type': 'intelligence',
+            'analysis_type': 'scout',  # Use free tier analysis type
             'additional_data': {}
         }
         
