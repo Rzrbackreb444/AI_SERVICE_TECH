@@ -245,42 +245,34 @@ const PricingPage = ({ onOpenAuth }) => {
 
     return (
       <div className="space-y-3">
-        {/* PayPal Button with Discount */}
+        {/* Primary Payment Button */}
         <motion.button
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
-          className="w-full py-3 px-4 rounded-xl font-semibold transition-all duration-200 bg-gradient-to-r from-yellow-500 to-orange-500 text-white relative overflow-hidden"
-          onClick={() => handlePayPalCheckout(tier)}
-          disabled={processing}
-        >
-          <div className="flex items-center justify-center space-x-2">
-            <BoltIcon className="w-5 h-5" />
-            <span>PayPal - ${tier.paypalPrice} (Save 5%!)</span>
-          </div>
-          {tier.paypalDiscount && (
-            <div className="absolute top-1 right-1 bg-red-500 text-white text-xs px-2 py-0.5 rounded-full">
-              SAVE $5
-            </div>
-          )}
-        </motion.button>
-
-        {/* Stripe Button */}
-        <motion.button
-          whileHover={{ scale: 1.02 }}
-          whileTap={{ scale: 0.98 }}
-          className={`w-full py-3 px-4 rounded-xl font-semibold transition-all duration-200 ${
-            tier.popular 
-              ? 'bg-gradient-to-r from-cyan-500 to-emerald-500 text-white' 
-              : `bg-gradient-to-r ${tier.color} text-white`
-          }`}
+          className="w-full py-4 px-6 rounded-lg font-semibold transition-all duration-200 bg-slate-800 hover:bg-slate-700 text-white border border-slate-600"
           onClick={() => handleStripeCheckout(tier)}
           disabled={processing}
         >
           <div className="flex items-center justify-center space-x-2">
             <CreditCardIcon className="w-5 h-5" />
-            <span>Credit Card - ${tier.price}</span>
+            <span>{tier.cta} - ${tier.price}</span>
           </div>
         </motion.button>
+
+        {/* Alternative Payment */}
+        {tier.paypalDiscount && (
+          <motion.button
+            whileHover={{ scale: 1.01 }}
+            whileTap={{ scale: 0.99 }}
+            className="w-full py-3 px-4 rounded-lg font-medium transition-all duration-200 bg-white hover:bg-gray-50 text-slate-700 border border-slate-300 text-sm"
+            onClick={() => handlePayPalCheckout(tier)}
+            disabled={processing}
+          >
+            <div className="flex items-center justify-center space-x-2">
+              <span>Alternative payment - ${tier.paypalPrice}</span>
+            </div>
+          </motion.button>
+        )}
       </div>
     );
   };
