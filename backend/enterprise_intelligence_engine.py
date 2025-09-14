@@ -727,6 +727,14 @@ class EnterpriseIntelligenceEngine:
         median_income = demographics.get('median_household_income', 50000)
         competitor_count = competition.get('total_competitors', 2)
         
+        # Ensure all values are numbers
+        if not isinstance(population, (int, float)):
+            population = 5000
+        if not isinstance(median_income, (int, float)):
+            median_income = 50000
+        if not isinstance(competitor_count, (int, float)):
+            competitor_count = 2
+        
         # Calculate optimal capacity based on market analysis
         base_capacity = min(population / 200, 50)  # Base: 1 washer per 200 people, max 50
         competition_factor = max(0.5, 1 - (competitor_count * 0.1))  # Reduce capacity if high competition
