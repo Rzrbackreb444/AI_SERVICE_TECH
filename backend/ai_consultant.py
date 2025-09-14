@@ -1,11 +1,14 @@
 """
 Enterprise-Grade AI Laundromat Consultant System
 Provides professional consulting, equipment guidance, site selection, compliance advice, and technical support
+With real-time research capabilities
 """
 
 import os
 import json
 import uuid
+import asyncio
+import aiohttp
 from datetime import datetime, timezone
 from typing import Dict, List, Optional, Any
 from dotenv import load_dotenv
