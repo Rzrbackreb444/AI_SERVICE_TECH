@@ -1291,7 +1291,7 @@ class ComprehensiveFinalTester:
     
     def run_comprehensive_final_testing(self):
         """Run all critical tests for production deployment"""
-        print(f"\n🧪 COMPREHENSIVE FINAL TESTING SUITE - MRR OPTIMIZATION FOCUS")
+        print(f"\n🧪 COMPREHENSIVE FINAL OPTIMIZATION TESTING SUITE - $500K+ MRR TARGET")
         print("=" * 80)
         
         # 1. Authentication & User Management
@@ -1314,7 +1314,18 @@ class ComprehensiveFinalTester:
         data_gen_passed = sum(1 for test in data_gen_tests if test())
         print(f"📊 Data Generation Tests: {data_gen_passed}/{len(data_gen_tests)} passed")
         
-        # 3. MRR OPTIMIZATION SYSTEMS - THE MONEY MAKERS
+        # 3. NEW OPTIMIZATION ENDPOINTS - CRITICAL FOR PERFORMANCE
+        print(f"\n🚀 NEW OPTIMIZATION ENDPOINTS - PERFORMANCE & REVENUE")
+        print("-" * 50)
+        optimization_tests = [
+            self.test_system_optimization_endpoints,
+            self.test_performance_optimization_endpoints,
+            self.test_revenue_optimization_endpoints
+        ]
+        optimization_passed = sum(1 for test in optimization_tests if test())
+        print(f"📊 Optimization Tests: {optimization_passed}/{len(optimization_tests)} passed")
+        
+        # 4. MRR OPTIMIZATION SYSTEMS - THE MONEY MAKERS
         print(f"\n💰 MRR OPTIMIZATION SYSTEMS - $500K+ TARGET")
         print("-" * 50)
         mrr_tests = [
@@ -1328,7 +1339,25 @@ class ComprehensiveFinalTester:
         mrr_passed = sum(1 for test in mrr_tests if test())
         print(f"📊 MRR Optimization Tests: {mrr_passed}/{len(mrr_tests)} passed")
         
-        # 4. Facebook Group Offers & Pricing
+        # 5. MRR INTEGRATION VALIDATION - ENSURE NO REGRESSIONS
+        print(f"\n🔄 MRR INTEGRATION VALIDATION AFTER OPTIMIZATION")
+        print("-" * 50)
+        integration_tests = [
+            self.test_mrr_integration_validation
+        ]
+        integration_passed = sum(1 for test in integration_tests if test())
+        print(f"📊 Integration Validation Tests: {integration_passed}/{len(integration_tests)} passed")
+        
+        # 6. PERFORMANCE UNDER LOAD - SYSTEM STRESS TESTING
+        print(f"\n⚡ PERFORMANCE UNDER LOAD TESTING")
+        print("-" * 50)
+        load_tests = [
+            self.test_performance_under_load
+        ]
+        load_passed = sum(1 for test in load_tests if test())
+        print(f"📊 Load Testing: {load_passed}/{len(load_tests)} passed")
+        
+        # 7. Facebook Group Offers & Pricing
         print(f"\n💰 FACEBOOK GROUP OFFERS & PRICING")
         print("-" * 50)
         pricing_tests = [
@@ -1337,7 +1366,7 @@ class ComprehensiveFinalTester:
         pricing_passed = sum(1 for test in pricing_tests if test())
         print(f"📊 Pricing Tests: {pricing_passed}/{len(pricing_tests)} passed")
         
-        # 5. Payment Integration
+        # 8. Payment Integration
         print(f"\n💳 PAYMENT INTEGRATION TESTING")
         print("-" * 50)
         payment_tests = [
@@ -1349,7 +1378,7 @@ class ComprehensiveFinalTester:
         payment_passed = sum(1 for test in payment_tests if test())
         print(f"📊 Payment Tests: {payment_passed}/{len(payment_tests)} passed")
         
-        # 6. User Dashboard System
+        # 9. User Dashboard System
         print(f"\n👤 USER DASHBOARD SYSTEM")
         print("-" * 50)
         user_dashboard_tests = [
@@ -1361,7 +1390,7 @@ class ComprehensiveFinalTester:
         user_dashboard_passed = sum(1 for test in user_dashboard_tests if test())
         print(f"📊 User Dashboard Tests: {user_dashboard_passed}/{len(user_dashboard_tests)} passed")
         
-        # 7. Admin Dashboard System
+        # 10. Admin Dashboard System
         print(f"\n🛠️  ADMIN DASHBOARD SYSTEM")
         print("-" * 50)
         admin_tests = [
@@ -1373,7 +1402,7 @@ class ComprehensiveFinalTester:
         admin_passed = sum(1 for test in admin_tests if test())
         print(f"📊 Admin Dashboard Tests: {admin_passed}/{len(admin_tests)} passed")
         
-        # 8. Customer Support System
+        # 11. Customer Support System
         print(f"\n🎫 CUSTOMER SUPPORT SYSTEM")
         print("-" * 50)
         support_tests = [
