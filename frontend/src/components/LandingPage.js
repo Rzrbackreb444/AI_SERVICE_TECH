@@ -37,9 +37,8 @@ const LandingPage = ({ onOpenAuth }) => {
   const navigationLinks = [
     { name: 'Platform', href: '/', current: true },
     { name: 'Pricing', href: '/pricing' },
-    { name: 'Facebook Group', href: '/facebook-group' },
-    { name: 'Privacy', href: '/privacy' },
-    { name: 'Terms', href: '/terms' },
+    { name: 'Analytics', href: '/dashboard' },
+    { name: 'Enterprise', href: '/analyze' },
     { name: 'Contact', href: 'mailto:nick@laundryguys.net' }
   ];
 
