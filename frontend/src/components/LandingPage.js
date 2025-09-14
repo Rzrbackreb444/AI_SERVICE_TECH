@@ -487,30 +487,36 @@ const LandingPage = ({ onOpenAuth }) => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: 0.1 }}
-              className="glass-card p-8 text-center hover:scale-105 transition-all duration-300"
+              className="glass-card p-8 text-center hover:scale-105 transition-all duration-300 border border-slate-700/50"
             >
-              <UserGroupIcon className="w-16 h-16 text-blue-400 mx-auto mb-4" />
-              <h3 className="text-xl font-bold text-white mb-4">Professional Network</h3>
-              <p className="text-slate-300 mb-6">Access to exclusive laundromat industry insights and professional community of 67K members</p>
+              <CpuChipIcon className="w-16 h-16 text-purple-400 mx-auto mb-4" />
+              <h3 className="text-xl font-bold text-white mb-4">Advanced AI Insights</h3>
+              <p className="text-slate-300 mb-6">Next-generation algorithms detect patterns humans miss. Real-time intelligence across 156+ data points.</p>
               
-              {/* Professional Network Button */}
-              <motion.a
-                href="https://facebook.com/groups/thelaundromat"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center space-x-3 bg-gradient-to-r from-slate-700 to-slate-800 hover:from-slate-600 hover:to-slate-700 text-white px-6 py-3 rounded-lg font-medium text-sm shadow-lg hover:shadow-slate-500/25 transition-all duration-300"
+              <div className="grid grid-cols-3 gap-4 mb-6">
+                <div className="p-3 bg-slate-800/50 rounded-lg">
+                  <div className="text-lg font-bold text-emerald-400">87.3%</div>
+                  <div className="text-xs text-slate-400">Success Rate</div>
+                </div>
+                <div className="p-3 bg-slate-800/50 rounded-lg">
+                  <div className="text-lg font-bold text-blue-400">24+</div>
+                  <div className="text-xs text-slate-400">Hidden Patterns</div>
+                </div>
+                <div className="p-3 bg-slate-800/50 rounded-lg">
+                  <div className="text-lg font-bold text-purple-400">94%</div>
+                  <div className="text-xs text-slate-400">AI Confidence</div>
+                </div>
+              </div>
+              
+              <motion.button
+                onClick={onOpenAuth}
+                className="inline-flex items-center space-x-3 bg-slate-800 hover:bg-slate-700 text-white px-6 py-3 rounded-lg font-medium text-sm shadow-lg transition-all duration-300 w-full justify-center"
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
               >
-                <UserGroupIcon className="w-5 h-5" />
-                <span>Professional Community Access</span>
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
-                </svg>
-              </motion.a>
-              <Link to="/pricing" className="btn-secondary w-full mt-4">
-                Join Community
-              </Link>
+                <CpuChipIcon className="w-5 h-5" />
+                <span>Experience AI Analysis</span>
+              </motion.button>
             </motion.div>
 
             <motion.div
