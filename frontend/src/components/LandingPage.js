@@ -90,12 +90,9 @@ const LandingPage = ({ onOpenAuth }) => {
             <div className="flex items-center">
               <Link to="/" className="flex items-center space-x-4 group">
                 <div className="relative">
-                  <img 
-                    src="https://customer-assets.emergentagent.com/job_laundrosight/artifacts/68vqd4wq_Logo%2C%20Transparent.png" 
-                    alt="LaundroTech Logo"
-                    className="h-48 w-48 group-hover:scale-110 transition-transform duration-300"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-r from-cyan-400/20 to-emerald-400/20 blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                  <div className="h-12 w-12 bg-gradient-to-br from-slate-700 to-slate-800 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                    <MapPinIcon className="w-8 h-8 text-white" />
+                  </div>
                 </div>
                 <div className="hidden sm:block">
                   <h1 className="text-3xl font-black bg-gradient-to-r from-cyan-400 via-blue-400 to-emerald-400 bg-clip-text text-transparent leading-tight">
