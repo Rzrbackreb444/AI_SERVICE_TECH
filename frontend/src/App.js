@@ -153,11 +153,10 @@ const ProtectedRoute = ({ children }) => {
   return isAuthenticated ? children : <Navigate to="/" replace />;
 };
 
-// App Content Component (needs to be inside AuthProvider to use useAuth)
-function AppContent() {
+// Main App Component
+function App() {
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [authMode, setAuthMode] = useState('login');
-  const { user } = useAuth();
 
   const openAuthModal = (mode = 'login') => {
     setAuthMode(mode);
