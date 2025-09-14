@@ -1170,7 +1170,14 @@ async def analyze_location(
     # Store in database
     enterprise_analysis['user_id'] = current_user.id
     enterprise_analysis['created_at'] = datetime.now(timezone.utc)
-    await db.analyses.insert_one(enterprise_analysis)
+    
+    # Create a copy for database storage
+    db_analysis = enterprise_analysis.copy()
+    await db.analyses.insert_one(db_analysis)
+    
+    # Remove any ObjectId fields that might have been added
+    if '_id' in enterprise_analysis:
+        del enterprise_analysis['_id']
     
     # Send completion email
     background_tasks.add_task(
