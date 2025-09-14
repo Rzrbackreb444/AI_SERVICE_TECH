@@ -436,7 +436,7 @@ const LandingPage = ({ onOpenAuth }) => {
             >
               <UserGroupIcon className="w-16 h-16 text-blue-400 mx-auto mb-4" />
               <h3 className="text-xl font-bold text-white mb-4">Facebook Group</h3>
-              <p className="text-slate-300 mb-6">Exclusive 67K member community with premium features and networking</p>
+              <p className="text-slate-300 mb-6">Connect with our growing community of laundromat professionals and industry experts</p>
               <Link to="/facebook-group" className="btn-secondary w-full">
                 Join Community
               </Link>
