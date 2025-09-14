@@ -295,11 +295,11 @@ const PricingPage = ({ onOpenAuth }) => {
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
-          {/* SiteAtlas Logo */}
+          {/* LaundroTech Logo */}
           <div className="mb-8">
             <img 
               src="https://customer-assets.emergentagent.com/job_laundrosight/artifacts/68vqd4wq_Logo%2C%20Transparent.png" 
-              alt="SiteAtlas Logo"
+              alt="LaundroTech Intelligence Logo"
               className="h-32 mx-auto mb-4 drop-shadow-2xl"
             />
           </div>
