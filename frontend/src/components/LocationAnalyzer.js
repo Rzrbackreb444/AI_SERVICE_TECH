@@ -310,7 +310,7 @@ const LocationAnalyzer = () => {
                 </div>
                 <div className="space-y-3">
                   <div className="flex justify-between">
-                    <span className="text-slate-400">Monthly Revenue:</span>
+                    <span className="text-slate-400">Market Analysis:</span>
                     <span className="text-white font-medium">
                       ${result.roi_estimate.estimated_monthly_revenue?.toLocaleString() || 'N/A'}
                     </span>
