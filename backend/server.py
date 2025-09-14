@@ -20,7 +20,9 @@ import asyncio
 import numpy as np
 import pandas as pd
 from emergentintegrations.payments.stripe.checkout import StripeCheckout, CheckoutSessionResponse, CheckoutStatusResponse, CheckoutSessionRequest
+from emergentintegrations.llm.chat import LlmChat, UserMessage
 import paypalrestsdk
+from premium_report_generator import PremiumReportGenerator
 from email_service import email_service
 from admin_endpoints import create_admin_router
 from immersive_analytics import immersive_analytics
