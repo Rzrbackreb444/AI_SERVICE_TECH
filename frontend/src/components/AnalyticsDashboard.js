@@ -111,35 +111,56 @@ const AnalyticsDashboard = () => {
 
     } catch (error) {
       console.error('Failed to load analytics data:', error);
-      // Mock data for demonstration
-      setAnalyticsData({
-        totalRevenue: 45780,
-        revenueGrowth: 23.5,
-        totalUsers: 1247,
-        userGrowth: 18.2,
-        activeSubscriptions: 312,
-        subscriptionGrowth: 31.7,
-        averageRevenuePer: 146.5,
-        churnRate: 4.2,
-        conversionRate: 12.8,
-        customerLifetimeValue: 890
-      });
-      
-      // Mock revenue data
-      setRevenueData([
-        { date: '2024-01-01', revenue: 1200, subscriptions: 15, oneTime: 800 },
-        { date: '2024-01-07', revenue: 2100, subscriptions: 28, oneTime: 950 },
-        { date: '2024-01-14', revenue: 1800, subscriptions: 22, oneTime: 1200 },
-        { date: '2024-01-21', revenue: 3200, subscriptions: 35, oneTime: 1600 },
-        { date: '2024-01-28', revenue: 2800, subscriptions: 31, oneTime: 1400 }
-      ]);
-      
-      // Mock badge distribution
-      setBadgeDistribution([
-        { name: 'Verified Seller', value: 45, count: 142, revenue: 12890, color: '#10B981' },
-        { name: 'Vendor Partner', value: 30, count: 94, revenue: 18760, color: '#3B82F6' },
-        { name: 'Verified Funder', value: 25, count: 76, revenue: 14130, color: '#8B5CF6' }
-      ]);
+      try {
+        // Get REAL analytics data from database
+        const response = await axios.get(`${API}/real-analytics/dashboard?timeframe_days=30`, {
+          headers: getAuthHeaders()
+        });
+
+        if (response.data.success) {
+          const realData = response.data.dashboard.raw_data;
+          
+          setAnalyticsData({
+            totalUsers: realData.overview.total_users,
+            totalRevenue: realData.overview.total_revenue,
+            monthlyRevenue: realData.overview.monthly_revenue,
+            activeSubscriptions: realData.overview.active_subscriptions,
+            revenueGrowth: realData.overview.growth_rate,
+            conversionRate: ((realData.overview.active_subscriptions / Math.max(realData.overview.total_users, 1)) * 100).toFixed(1),
+            // Real user growth data
+            userGrowthData: realData.user_growth || [],
+            subscriptionData: realData.subscription_distribution || [],
+            analysisActivity: realData.analysis_activity || []
+          });
+        } else {
+          // Show empty state with real zero values
+          setAnalyticsData({
+            totalUsers: 0,
+            totalRevenue: 0,
+            monthlyRevenue: 0,
+            activeSubscriptions: 0,
+            revenueGrowth: 0,
+            conversionRate: 0,
+            userGrowthData: [],
+            subscriptionData: [],
+            analysisActivity: []
+          });
+        }
+      } catch (error) {
+        console.error('Failed to load analytics:', error);
+        // Show empty state on error
+        setAnalyticsData({
+          totalUsers: 0,
+          totalRevenue: 0,
+          monthlyRevenue: 0,
+          activeSubscriptions: 0,
+          revenueGrowth: 0,
+          conversionRate: 0,
+          userGrowthData: [],
+          subscriptionData: [],
+          analysisActivity: []
+        });
+      }
     } finally {
       setLoading(false);
     }
