@@ -9,7 +9,7 @@ import {
   PlusIcon,
   EyeIcon
 } from '@heroicons/react/24/outline';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar } from 'recharts';
+// Using CSS-based charts instead of recharts to avoid dependency conflicts
 import axios from 'axios';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
