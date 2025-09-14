@@ -575,7 +575,7 @@ const LandingPage = ({ onOpenAuth }) => {
             <div>
               <h3 className="text-lg font-semibold text-white mb-4">Company</h3>
               <ul className="space-y-2 text-slate-400 text-sm">
-                <li><a href="mailto:nick@laundryguys.net" className="hover:text-white transition-colors">About Us</a></li>
+                <li><Link to="/about" className="hover:text-white transition-colors">About Us</Link></li>
                 <li><a href="mailto:nick@laundryguys.net" className="hover:text-white transition-colors">Careers</a></li>
                 <li><a href="mailto:nick@laundryguys.net" className="hover:text-white transition-colors">Press</a></li>
                 <li><a href="mailto:nick@laundryguys.net" className="hover:text-white transition-colors">Investors</a></li>
