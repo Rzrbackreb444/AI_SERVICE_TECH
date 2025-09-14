@@ -14,6 +14,7 @@ from sklearn.linear_model import LinearRegression
 from sklearn.ensemble import RandomForestRegressor
 import pandas as pd
 import asyncio
+from premium_report_generator import PremiumReportGenerator
 
 logger = logging.getLogger(__name__)
 
