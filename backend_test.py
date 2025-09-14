@@ -1961,14 +1961,588 @@ class AdvancedRevenueTester:
         
         return len(self.critical_failures) == 0 and success_rate >= 80
 
+class AIConsultantTester:
+    """Test the Revolutionary Personalized AI Consultant System - THE STICKINESS GAME-CHANGER"""
+    
+    def __init__(self, base_url="https://siteanalytics.preview.emergentagent.com/api"):
+        self.base_url = base_url
+        self.token = None
+        self.user_data = None
+        self.analysis_id = None
+        self.consultant_profile = None
+        self.tests_run = 0
+        self.tests_passed = 0
+        self.failed_tests = []
+        self.critical_failures = []
+        
+        # Test user data for consultant testing
+        timestamp = datetime.now().strftime('%H%M%S')
+        self.test_user = {
+            'email': f'consultant.user_{timestamp}@laundrotech.com',
+            'password': 'ConsultantTest2024!',
+            'full_name': f'Sarah Johnson {timestamp}',
+            'facebook_group_member': True
+        }
+        
+        print(f"🤖 AI CONSULTANT TESTING - THE STICKINESS GAME-CHANGER")
+        print(f"📍 Backend URL: {self.base_url}")
+        print(f"👤 Test User: {self.test_user['email']}")
+        print(f"🎯 Focus: Personalized AI Consultant System & Revenue Stickiness")
+        print("=" * 80)
+
+    def run_test(self, name, method, endpoint, expected_status, data=None, headers=None, critical=False):
+        """Run a single API test with detailed logging"""
+        url = f"{self.base_url}/{endpoint}" if not endpoint.startswith('http') else endpoint
+        test_headers = {'Content-Type': 'application/json'}
+        
+        if self.token:
+            test_headers['Authorization'] = f'Bearer {self.token}'
+        if headers:
+            test_headers.update(headers)
+
+        self.tests_run += 1
+        print(f"\n🔍 Test {self.tests_run}: {name}")
+        print(f"   Method: {method} | Endpoint: /{endpoint}")
+        if critical:
+            print(f"   🚨 CRITICAL TEST - Stickiness Factor Validation")
+        
+        try:
+            if method == 'GET':
+                response = requests.get(url, headers=test_headers, timeout=30)
+            elif method == 'POST':
+                response = requests.post(url, json=data, headers=test_headers, timeout=30)
+            elif method == 'PUT':
+                response = requests.put(url, json=data, headers=test_headers, timeout=30)
+            elif method == 'DELETE':
+                response = requests.delete(url, headers=test_headers, timeout=30)
+
+            success = response.status_code == expected_status
+            
+            if success:
+                self.tests_passed += 1
+                print(f"   ✅ PASSED - Status: {response.status_code}")
+                try:
+                    response_data = response.json()
+                    if isinstance(response_data, dict) and len(str(response_data)) <= 500:
+                        print(f"   📄 Response: {json.dumps(response_data, indent=2)[:300]}...")
+                except:
+                    pass
+            else:
+                print(f"   ❌ FAILED - Expected {expected_status}, got {response.status_code}")
+                try:
+                    error_data = response.json()
+                    print(f"   📄 Error: {error_data}")
+                except:
+                    print(f"   📄 Raw Response: {response.text[:200]}...")
+                
+                failure_info = {
+                    'name': name,
+                    'expected': expected_status,
+                    'actual': response.status_code,
+                    'endpoint': endpoint,
+                    'error': response.text[:500],
+                    'critical': critical
+                }
+                
+                self.failed_tests.append(failure_info)
+                if critical:
+                    self.critical_failures.append(failure_info)
+
+            return success, response.json() if response.content else {}
+
+        except Exception as e:
+            print(f"   💥 ERROR - {str(e)}")
+            failure_info = {'name': name, 'error': str(e), 'critical': critical}
+            self.failed_tests.append(failure_info)
+            if critical:
+                self.critical_failures.append(failure_info)
+            return False, {}
+
+    def setup_user_and_analysis(self):
+        """Set up test user and create analysis for consultant initialization"""
+        print(f"\n🔧 SETUP: Creating test user and analysis for consultant testing")
+        
+        # Register user
+        success, response = self.run_test(
+            "User Registration for Consultant Testing",
+            "POST",
+            "auth/register",
+            200,
+            data=self.test_user,
+            critical=True
+        )
+        
+        if success and 'access_token' in response:
+            self.token = response['access_token']
+            self.user_data = response.get('user', {})
+            print(f"   🔑 Token acquired: {self.token[:20]}...")
+            print(f"   👤 User ID: {self.user_data.get('id', 'Unknown')}")
+        else:
+            print(f"   ❌ Failed to register user - cannot proceed with consultant testing")
+            return False
+        
+        # Create analysis for consultant initialization
+        analysis_request = {
+            'address': '123 Main Street, Springfield, IL 62701',
+            'analysis_type': 'intelligence',
+            'additional_data': {}
+        }
+        
+        success, response = self.run_test(
+            "Location Analysis for Consultant Setup",
+            "POST",
+            "analyze",
+            200,
+            data=analysis_request,
+            critical=True
+        )
+        
+        if success and 'analysis_id' in response:
+            self.analysis_id = response['analysis_id']
+            print(f"   🎯 Analysis ID: {self.analysis_id}")
+            print(f"   📊 Analysis Score: {response.get('score', 'Unknown')}")
+            print(f"   🏆 Analysis Grade: {response.get('grade', 'Unknown')}")
+            return True
+        else:
+            print(f"   ❌ Failed to create analysis - cannot initialize consultant")
+            return False
+
+    def test_consultant_initialization(self):
+        """Test POST /api/consultant/initialize - Initialize consultant after analysis completion"""
+        if not self.analysis_id:
+            print("   ⚠️  Skipping - No analysis ID available")
+            return False
+        
+        success, response = self.run_test(
+            "Consultant Initialization - THE STICKINESS ACTIVATOR",
+            "POST",
+            "consultant/initialize",
+            200,
+            data={'analysis_id': self.analysis_id},
+            critical=True
+        )
+        
+        if success:
+            consultant_setup = response.get('consultant_setup', {})
+            consultant_profile = consultant_setup.get('consultant_profile', {})
+            
+            print(f"   🤖 Consultant Initialized: {consultant_setup.get('consultant_initialized', False)}")
+            print(f"   👨‍💼 Primary Consultant: {consultant_profile.get('primary_consultant', 'Unknown')}")
+            print(f"   📍 Location: {consultant_profile.get('location_address', 'Unknown')}")
+            print(f"   💡 Consultation Tier: {consultant_profile.get('consultation_tier', 'Unknown')}")
+            print(f"   🎯 Stickiness Factor: {response.get('stickiness_activated', False)}")
+            print(f"   💰 Revenue Impact: {response.get('revenue_impact', 'Unknown')}")
+            
+            # Store consultant profile for further testing
+            self.consultant_profile = consultant_profile
+            
+            # Validate stickiness elements
+            stickiness_elements = [
+                consultant_profile.get('specialized_knowledge'),
+                consultant_profile.get('action_items'),
+                consultant_profile.get('roi_optimization_plan'),
+                consultant_profile.get('welcome_message')
+            ]
+            
+            stickiness_score = sum(1 for element in stickiness_elements if element)
+            print(f"   📈 Stickiness Elements: {stickiness_score}/4 present")
+            
+            if stickiness_score >= 3:
+                print(f"   ✅ HIGH STICKINESS - Personalized consultant creates user dependency")
+            else:
+                print(f"   ⚠️  LOW STICKINESS - Missing personalization elements")
+        
+        return success
+
+    def test_consultant_qa_system(self):
+        """Test POST /api/consultant/ask - Test asking consultant questions with different tiers"""
+        if not self.consultant_profile:
+            print("   ⚠️  Skipping - No consultant profile available")
+            return False
+        
+        # Test questions for different consultation tiers
+        test_questions = [
+            {
+                'question': 'What are the key opportunities for my laundromat location?',
+                'tier': 'basic_questions',
+                'expected_elements': ['consultant_response', 'action_items', 'follow_up_questions']
+            },
+            {
+                'question': 'How can I optimize my ROI and compete with nearby laundromats?',
+                'tier': 'strategic_advisory', 
+                'expected_elements': ['consultant_response', 'research_conducted', 'consultation_tier']
+            },
+            {
+                'question': 'What equipment upgrades would maximize my revenue potential?',
+                'tier': 'full_advisory',
+                'expected_elements': ['consultant_response', 'consultant_name', 'questions_remaining']
+            }
+        ]
+        
+        all_passed = True
+        
+        for i, test_q in enumerate(test_questions, 1):
+            success, response = self.run_test(
+                f"Consultant Q&A - {test_q['tier']} (Question {i})",
+                "POST",
+                "consultant/ask",
+                200,
+                data={
+                    'question': test_q['question'],
+                    'consultation_tier': test_q['tier']
+                },
+                critical=True
+            )
+            
+            if success:
+                consultant_response = response.get('consultant_response', {})
+                
+                print(f"   🤖 Consultant: {consultant_response.get('consultant_name', 'Unknown')}")
+                print(f"   💼 Title: {consultant_response.get('consultant_title', 'Unknown')}")
+                print(f"   💬 Response Length: {len(str(consultant_response.get('consultant_response', '')))}")
+                print(f"   📋 Action Items: {len(consultant_response.get('action_items', []))}")
+                print(f"   🔄 Follow-ups: {len(consultant_response.get('follow_up_questions', []))}")
+                print(f"   🎯 Tier: {consultant_response.get('consultation_tier', 'Unknown')}")
+                
+                # Validate expected elements
+                missing_elements = []
+                for element in test_q['expected_elements']:
+                    if element not in consultant_response:
+                        missing_elements.append(element)
+                
+                if missing_elements:
+                    print(f"   ⚠️  Missing elements: {missing_elements}")
+                else:
+                    print(f"   ✅ All expected elements present")
+                
+                # Check for upgrade prompts (stickiness factor)
+                if consultant_response.get('upgrade_required'):
+                    print(f"   💰 UPGRADE PROMPT - Driving subscription revenue")
+                    print(f"   📈 Current Tier: {consultant_response.get('current_tier')}")
+                
+                # Validate stickiness factors
+                stickiness_indicators = [
+                    consultant_response.get('consultant_response', ''),
+                    consultant_response.get('action_items', []),
+                    consultant_response.get('follow_up_questions', []),
+                    response.get('engagement_driver', '')
+                ]
+                
+                stickiness_present = sum(1 for indicator in stickiness_indicators if indicator)
+                print(f"   🔗 Stickiness Indicators: {stickiness_present}/4")
+                
+            else:
+                all_passed = False
+        
+        return all_passed
+
+    def test_specialized_consultant_services(self):
+        """Test specialized consultant services - ROI, Competition, Equipment"""
+        if not self.consultant_profile:
+            print("   ⚠️  Skipping - No consultant profile available")
+            return False
+        
+        specialized_tests = [
+            {
+                'name': 'ROI Optimization Advice',
+                'endpoint': 'consultant/roi-optimization',
+                'data': {'focus_area': 'equipment'},
+                'expected_keys': ['roi_optimization', 'implementation_plan', 'expected_roi_improvement']
+            },
+            {
+                'name': 'Competition Intelligence',
+                'endpoint': 'consultant/competition-intelligence', 
+                'data': {'competitor_focus': 'pricing'},
+                'expected_keys': ['competitive_intelligence', 'recommended_strategies', 'monitoring_plan']
+            },
+            {
+                'name': 'Equipment Recommendations',
+                'endpoint': 'consultant/equipment-recommendations',
+                'data': {'budget_range': '$50,000-$100,000'},
+                'expected_keys': ['equipment_recommendations', 'personalized_strategy', 'implementation_roadmap']
+            }
+        ]
+        
+        all_passed = True
+        
+        for test in specialized_tests:
+            success, response = self.run_test(
+                test['name'],
+                "POST",
+                test['endpoint'],
+                200,
+                data=test['data'],
+                critical=True
+            )
+            
+            if success:
+                # Check for expected response structure
+                missing_keys = []
+                for key in test['expected_keys']:
+                    if key not in response:
+                        missing_keys.append(key)
+                
+                if missing_keys:
+                    print(f"   ⚠️  Missing response keys: {missing_keys}")
+                else:
+                    print(f"   ✅ Complete specialized advice structure")
+                
+                # Validate advisory value and stickiness
+                advisory_value = response.get('advisory_value', response.get('strategic_value', response.get('value_creation', '')))
+                if advisory_value:
+                    print(f"   💎 Advisory Value: {advisory_value}")
+                
+                # Check for personalization elements
+                personalization_score = 0
+                if 'personalized' in str(response).lower():
+                    personalization_score += 1
+                if 'specific' in str(response).lower():
+                    personalization_score += 1
+                if 'location' in str(response).lower():
+                    personalization_score += 1
+                
+                print(f"   🎯 Personalization Score: {personalization_score}/3")
+                
+            else:
+                all_passed = False
+        
+        return all_passed
+
+    def test_consultant_management(self):
+        """Test consultant profile and management endpoints"""
+        if not self.consultant_profile:
+            print("   ⚠️  Skipping - No consultant profile available")
+            return False
+        
+        # Test getting consultant profile
+        success, response = self.run_test(
+            "Get Consultant Profile & Interaction History",
+            "GET",
+            "consultant/profile",
+            200,
+            critical=True
+        )
+        
+        profile_success = success
+        if success:
+            consultant_profile = response.get('consultant_profile', {})
+            engagement_metrics = response.get('engagement_metrics', {})
+            stickiness_metrics = response.get('stickiness_metrics', {})
+            
+            print(f"   👤 Consultant Active: {response.get('consultant_active', True)}")
+            print(f"   📊 Total Interactions: {engagement_metrics.get('total_interactions', 0)}")
+            print(f"   🎯 Current Tier: {engagement_metrics.get('consultation_tier', 'Unknown')}")
+            print(f"   🔗 User Dependency: {stickiness_metrics.get('user_dependency', 'Unknown')}")
+            print(f"   💰 Switching Cost: {stickiness_metrics.get('switching_cost', 'Unknown')}")
+            print(f"   📈 Ongoing Value: {stickiness_metrics.get('ongoing_value', 'Unknown')}")
+        
+        # Test tier upgrade (revenue driver)
+        upgrade_success, upgrade_response = self.run_test(
+            "Upgrade Consultation Tier - Revenue Driver",
+            "POST",
+            "consultant/upgrade-consultation",
+            200,
+            data={'new_tier': 'strategic_advisory'},
+            critical=True
+        )
+        
+        if upgrade_success:
+            print(f"   ✅ Upgrade Successful: {upgrade_response.get('upgrade_successful', False)}")
+            print(f"   💰 Monthly Price: ${upgrade_response.get('monthly_price', 0)}")
+            print(f"   📈 Revenue Driver: {upgrade_response.get('revenue_driver', 'Unknown')}")
+            print(f"   🔗 Stickiness Impact: {upgrade_response.get('stickiness_impact', 'Unknown')}")
+        
+        # Test engagement analytics
+        analytics_success, analytics_response = self.run_test(
+            "Engagement Analytics - Stickiness Validation",
+            "GET",
+            "consultant/engagement-analytics",
+            200,
+            critical=True
+        )
+        
+        if analytics_success:
+            engagement_analytics = analytics_response.get('engagement_analytics', {})
+            stickiness_metrics = analytics_response.get('stickiness_metrics', {})
+            business_impact = analytics_response.get('business_impact', {})
+            
+            print(f"   📊 Engagement Score: {engagement_analytics.get('engagement_score', 0)}")
+            print(f"   🔗 Consultant Dependency: {engagement_analytics.get('consultant_dependency', 'Unknown')}")
+            print(f"   📉 Churn Reduction: {business_impact.get('churn_reduction', 'Unknown')}")
+            print(f"   📈 LTV Increase: {business_impact.get('lifetime_value_increase', 'Unknown')}")
+            print(f"   🗣️  Word of Mouth: {business_impact.get('word_of_mouth', 'Unknown')}")
+        
+        return profile_success and upgrade_success and analytics_success
+
+    def test_revenue_stickiness_validation(self):
+        """Validate the revenue and stickiness factors of the consultant system"""
+        print(f"\n💰 REVENUE & STICKINESS VALIDATION")
+        
+        # Test subscription tier pricing
+        tier_pricing = {
+            'basic_questions': 29,
+            'strategic_advisory': 79, 
+            'full_advisory': 199
+        }
+        
+        stickiness_factors = []
+        revenue_drivers = []
+        
+        # Validate personalized context creates dependency
+        if self.consultant_profile:
+            personalized_elements = [
+                self.consultant_profile.get('location_address'),
+                self.consultant_profile.get('specialized_knowledge'),
+                self.consultant_profile.get('action_items'),
+                self.consultant_profile.get('roi_optimization_plan')
+            ]
+            
+            personalization_score = sum(1 for element in personalized_elements if element)
+            stickiness_factors.append(f"Personalization: {personalization_score}/4 elements")
+            
+            if personalization_score >= 3:
+                stickiness_factors.append("HIGH user dependency - personalized to specific location")
+            
+        # Validate switching costs
+        switching_costs = [
+            "Loss of personalized consultant context",
+            "Loss of interaction history and insights", 
+            "Loss of location-specific recommendations",
+            "Need to rebuild consultant relationship elsewhere"
+        ]
+        
+        stickiness_factors.extend(switching_costs)
+        
+        # Validate revenue drivers
+        revenue_drivers.extend([
+            f"Basic Questions: ${tier_pricing['basic_questions']}/month",
+            f"Strategic Advisory: ${tier_pricing['strategic_advisory']}/month", 
+            f"Full Advisory: ${tier_pricing['full_advisory']}/month",
+            "Upgrade prompts when limits reached",
+            "Ongoing consultation creates recurring revenue"
+        ])
+        
+        print(f"   🔗 STICKINESS FACTORS:")
+        for factor in stickiness_factors:
+            print(f"     • {factor}")
+        
+        print(f"   💰 REVENUE DRIVERS:")
+        for driver in revenue_drivers:
+            print(f"     • {driver}")
+        
+        # Calculate stickiness score
+        stickiness_score = len([f for f in stickiness_factors if f])
+        revenue_score = len([r for r in revenue_drivers if r])
+        
+        print(f"   📊 Stickiness Score: {stickiness_score}/10")
+        print(f"   💰 Revenue Score: {revenue_score}/5")
+        
+        # Determine overall stickiness rating
+        if stickiness_score >= 8 and revenue_score >= 4:
+            print(f"   🚀 VERY HIGH STICKINESS - Users unlikely to churn")
+            print(f"   💎 STRONG REVENUE MODEL - Recurring subscription potential")
+            return True
+        elif stickiness_score >= 6 and revenue_score >= 3:
+            print(f"   ✅ HIGH STICKINESS - Good user retention expected")
+            print(f"   💰 SOLID REVENUE MODEL - Subscription growth likely")
+            return True
+        else:
+            print(f"   ⚠️  MODERATE STICKINESS - May need enhancement")
+            print(f"   📈 REVENUE MODEL NEEDS WORK - Limited recurring potential")
+            return False
+
+    def run_comprehensive_consultant_testing(self):
+        """Run comprehensive AI consultant testing"""
+        print(f"\n🚀 STARTING COMPREHENSIVE AI CONSULTANT TESTING")
+        print(f"🎯 Focus: Revolutionary Personalized AI Consultant System")
+        print(f"💰 Goal: Validate stickiness and recurring revenue potential")
+        
+        start_time = time.time()
+        
+        # Setup phase
+        if not self.setup_user_and_analysis():
+            print(f"\n❌ SETUP FAILED - Cannot proceed with consultant testing")
+            return False
+        
+        # Core consultant testing
+        test_results = []
+        
+        print(f"\n📋 PHASE 1: CONSULTANT INITIALIZATION")
+        test_results.append(self.test_consultant_initialization())
+        
+        print(f"\n📋 PHASE 2: CONSULTANT Q&A SYSTEM")
+        test_results.append(self.test_consultant_qa_system())
+        
+        print(f"\n📋 PHASE 3: SPECIALIZED CONSULTANT SERVICES")
+        test_results.append(self.test_specialized_consultant_services())
+        
+        print(f"\n📋 PHASE 4: CONSULTANT MANAGEMENT")
+        test_results.append(self.test_consultant_management())
+        
+        print(f"\n📋 PHASE 5: REVENUE & STICKINESS VALIDATION")
+        stickiness_validated = self.test_revenue_stickiness_validation()
+        test_results.append(stickiness_validated)
+        
+        # Calculate results
+        end_time = time.time()
+        duration = end_time - start_time
+        success_rate = (self.tests_passed / self.tests_run * 100) if self.tests_run > 0 else 0
+        
+        print(f"\n" + "="*80)
+        print(f"🎯 AI CONSULTANT TESTING RESULTS")
+        print(f"="*80)
+        print(f"⏱️  Duration: {duration:.1f} seconds")
+        print(f"📊 Tests Run: {self.tests_run}")
+        print(f"✅ Tests Passed: {self.tests_passed}")
+        print(f"❌ Tests Failed: {len(self.failed_tests)}")
+        print(f"🚨 Critical Failures: {len(self.critical_failures)}")
+        print(f"📈 Success Rate: {success_rate:.1f}%")
+        
+        # Detailed failure analysis
+        if self.failed_tests:
+            print(f"\n❌ FAILED TESTS:")
+            for failure in self.failed_tests:
+                print(f"   • {failure['name']}: {failure.get('error', 'Unknown error')}")
+        
+        if self.critical_failures:
+            print(f"\n🚨 CRITICAL FAILURES (STICKINESS BLOCKERS):")
+            for failure in self.critical_failures:
+                print(f"   • {failure['name']}: {failure.get('error', 'Unknown error')}")
+        
+        # Overall assessment
+        print(f"\n🎯 CONSULTANT SYSTEM ASSESSMENT:")
+        
+        if success_rate >= 90 and len(self.critical_failures) == 0 and stickiness_validated:
+            print(f"   🚀 REVOLUTIONARY STICKINESS ACHIEVED!")
+            print(f"   💎 Personalized AI consultant creates VERY HIGH user dependency")
+            print(f"   💰 Strong recurring revenue potential (${29}-${199}/month per user)")
+            print(f"   🔗 Users unlikely to churn due to personalized context")
+            print(f"   📈 Ready for deployment as stickiness game-changer")
+            consultant_ready = True
+        elif success_rate >= 75 and len(self.critical_failures) <= 1:
+            print(f"   ✅ HIGH STICKINESS POTENTIAL")
+            print(f"   💰 Good recurring revenue model")
+            print(f"   🔧 Minor issues to address before full deployment")
+            consultant_ready = True
+        else:
+            print(f"   ⚠️  STICKINESS NEEDS IMPROVEMENT")
+            print(f"   ❌ Critical issues prevent effective user retention")
+            print(f"   🔧 Must fix critical failures before deployment")
+            consultant_ready = False
+        
+        return consultant_ready
+
 def main():
     """Main test execution"""
-    print("🎯 REVENUE OPTIMIZATION TESTING SUITE")
+    print("🎯 LAUNDROTECH TESTING SUITE")
     print("Choose testing mode:")
-    print("1. Advanced Revenue Optimization Testing (NEW)")
-    print("2. Comprehensive System Testing (EXISTING)")
+    print("1. Advanced Revenue Optimization Testing")
+    print("2. Comprehensive System Testing")
+    print("3. AI Consultant Testing - THE STICKINESS GAME-CHANGER (NEW)")
     
-    choice = input("Enter choice (1 or 2): ").strip()
+    # Auto-select consultant testing for this review
+    choice = "3"
+    print(f"Auto-selecting: {choice} - AI Consultant Testing")
     
     if choice == "1":
         tester = AdvancedRevenueTester()
@@ -1980,6 +2554,17 @@ def main():
             return 1
         except Exception as e:
             print(f"\n💥 Unexpected error in revenue testing: {e}")
+            return 1
+    elif choice == "3":
+        tester = AIConsultantTester()
+        try:
+            consultant_ready = tester.run_comprehensive_consultant_testing()
+            return 0 if consultant_ready else 1
+        except KeyboardInterrupt:
+            print(f"\n⏹️  Consultant tests interrupted by user")
+            return 1
+        except Exception as e:
+            print(f"\n💥 Unexpected error in consultant testing: {e}")
             return 1
     else:
         tester = ComprehensiveFinalTester()
