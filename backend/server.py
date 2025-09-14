@@ -1148,6 +1148,18 @@ async def analyze_location(
             detail=f"Rate limit exceeded. Upgrade subscription for higher limits."
         )
     
+    # Track API usage for billing optimization
+    usage_info = await mrr_engine.track_api_usage(
+        current_user.id, 
+        'analyze', 
+        current_user.subscription_tier
+    )
+    
+    # Trigger upsell if user is approaching limits
+    if usage_info.get('upsell_trigger'):
+        # Log upsell opportunity
+        logger.info(f"Upsell opportunity for user {current_user.id}: {usage_info['utilization_percent']}% usage")
+    
     tier_access = {
         'free': ['scout'],
         'analyzer': ['scout', 'analyzer'],
@@ -1178,6 +1190,27 @@ async def analyze_location(
             analysis_id, 
             ai_analysis, 
             request.address
+        )
+        
+        # Add MRR optimization features
+        # 1. Equipment marketplace integration
+        equipment_marketplace = await mrr_engine.equipment_marketplace_integration(
+            current_user.id, 
+            enterprise_analysis
+        )
+        enterprise_analysis['equipment_marketplace'] = equipment_marketplace
+        
+        # 2. Financing pre-approval
+        financing_profile = await mrr_engine.financing_pre_approval_system(
+            current_user.id,
+            enterprise_analysis
+        )
+        enterprise_analysis['financing_options'] = financing_profile
+        
+        # 3. Set up market monitoring for recurring value
+        await mrr_engine.create_market_monitoring_system(
+            current_user.id,
+            [{'id': analysis_id, 'address': request.address, 'competitors': enterprise_analysis.get('competitors', [])}]
         )
     
     # Store in database
