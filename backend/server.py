@@ -712,6 +712,17 @@ class LocationAnalysisEngine:
         ]
         return features
     
+    def _calculate_real_score(self, features):
+        """Use real scoring algorithm instead of dummy model"""
+        # Implement actual location scoring logic
+        demographic_score = features[0] * self.scoring_weights['demographics']
+        competition_score = features[1] * self.scoring_weights['competition'] 
+        real_estate_score = features[2] * self.scoring_weights['real_estate']
+        traffic_score = features[3] * self.scoring_weights['traffic']
+        
+        total_score = demographic_score + competition_score + real_estate_score + traffic_score
+        return min(max(total_score, 0), 100)  # Clamp between 0-100
+    
     def _score_to_grade(self, score: float) -> str:
         if score >= 90: return "A+"
         elif score >= 85: return "A"
