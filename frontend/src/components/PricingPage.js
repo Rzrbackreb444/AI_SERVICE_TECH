@@ -304,11 +304,11 @@ const PricingPage = ({ onOpenAuth }) => {
             />
           </div>
 
-          <h1 className="text-5xl font-bold text-white mb-4">
-            Choose Your <span className="gradient-text">Intelligence Level</span>
+          <h1 className="text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight">
+            Professional Location Intelligence
           </h1>
-          <p className="text-xl text-slate-300 max-w-3xl mx-auto mb-8">
-            From free scouting to empire building - scale as you grow with AI-powered insights
+          <p className="text-xl text-slate-300 mb-8 max-w-3xl mx-auto leading-relaxed">
+            Comprehensive business intelligence platform for commercial laundromat analysis and investment decisions
           </p>
           
           {/* PayPal Discount Banner */}
