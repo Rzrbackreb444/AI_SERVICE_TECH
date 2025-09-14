@@ -17,7 +17,6 @@ import googlemaps
 import redis
 import json
 import asyncio
-from sklearn.ensemble import RandomForestRegressor
 import numpy as np
 import pandas as pd
 from emergentintegrations.payments.stripe.checkout import StripeCheckout, CheckoutSessionResponse, CheckoutStatusResponse, CheckoutSessionRequest
