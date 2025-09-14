@@ -9,8 +9,8 @@ from typing import Dict, Any, List
 from fastapi import APIRouter, HTTPException, Depends, BackgroundTasks
 from pydantic import BaseModel
 from datetime import datetime
-from .auth import get_current_user
-from .ai_consultant import laundry_consultant
+from auth import get_current_user
+from ai_consultant import laundry_consultant
 from motor.motor_asyncio import AsyncIOMotorClient
 
 router = APIRouter(prefix="/api/consultant", tags=["AI Consultant"])
