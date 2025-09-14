@@ -5,7 +5,6 @@ Comprehensive business intelligence, forecasting, and advanced analytics for Fac
 
 from fastapi import APIRouter, HTTPException, Depends, Query
 from datetime import datetime, timedelta
-from typing import Dict, Any, List, Optional
 import logging
 from collections import defaultdict, Counter
 import numpy as np
