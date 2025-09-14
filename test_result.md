@@ -284,11 +284,11 @@ backend:
 
   - task: "Stripe integration with emergentintegrations"
     implemented: true
-    working: true
+    working: false
     file: "/app/backend/server.py"
-    stuck_count: 0
-    priority: "medium"
-    needs_retesting: false
+    stuck_count: 1
+    priority: "high"
+    needs_retesting: true
     status_history:
       - working: "NA"
         agent: "main"
@@ -302,6 +302,9 @@ backend:
       - working: true
         agent: "testing"
         comment: "✅ FIXED WITH REAL CREDENTIALS: Stripe integration now fully operational with real secret key (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). Tested checkout creation for all badge types - Verified Seller ($29), Vendor Partner ($149), Verified Funder ($299). All checkout sessions created successfully with proper URLs and session IDs. Payment status checking functional. Stripe integration ready for production deployment."
+      - working: false
+        agent: "testing"
+        comment: "❌ CRITICAL PAYMENT ISSUE CONFIRMED: After backend restart, Stripe integration fails with 'Expired API Key provided: sk_live_*********************************************************************************************i8aoHU'. The current API key in .env is expired. ✅ WEBHOOK WORKING: Stripe webhook endpoint (/api/webhook/stripe) processes test payloads correctly and returns 200 status. ✅ PAYPAL WORKING: PayPal integration working perfectly with 10% discount logic (verified_seller: $29→$26.10). ✅ API KEY LOADING: System correctly loads API key from .env but key is expired. SOLUTION: User needs to update STRIPE_API_KEY in .env with valid secret key from Stripe dashboard."
 
   - task: "User Dashboard System (/api/user/subscriptions, /api/user/transactions, /api/user/subscriptions/{id}/cancel)"
     implemented: true
