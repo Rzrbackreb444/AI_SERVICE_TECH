@@ -440,7 +440,7 @@ class EnterpriseIntelligenceEngine:
                             place_id=place['place_id'],
                             fields=['name', 'rating', 'user_ratings_total', 'price_level',
                                    'opening_hours', 'website', 'formatted_phone_number',
-                                   'reviews', 'photos', 'geometry']
+                                   'reviews', 'geometry']
                         )
                         
                         place_info = details['result']
