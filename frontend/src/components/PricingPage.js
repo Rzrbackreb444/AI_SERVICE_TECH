@@ -322,12 +322,12 @@ const PricingPage = ({ onOpenAuth }) => {
             <span className="text-slate-300 font-medium">Real-time data integration • No mock data • Professional insights</span>
           </motion.div>
           
-          {/* Facebook Group Benefits */}
+          {/* Professional Network Access */}
           <div className="glass-card p-6 max-w-2xl mx-auto mb-8">
             <div className="flex items-center justify-center mb-4">
-              <StarIcon className="w-6 h-6 text-yellow-400 mr-2" />
+              <UserGroupIcon className="w-5 h-5 text-slate-400 mr-2" />
               <h3 className="text-lg font-semibold text-white">
-                67K Facebook Group Member Benefits
+                Professional Network Access Included
               </h3>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm text-slate-300">
