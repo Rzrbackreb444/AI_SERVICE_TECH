@@ -557,10 +557,19 @@ const LandingPage = ({ onOpenAuth }) => {
               <h3 className="text-lg font-semibold text-white mb-4">Platform</h3>
               <ul className="space-y-2 text-slate-400 text-sm">
                 <li><Link to="/pricing" className="hover:text-white transition-colors">Pricing</Link></li>
-                <li><Link to="/pricing" className="hover:text-white transition-colors">Professional Network</Link></li>
                 <li><a href="mailto:nick@laundryguys.net" className="hover:text-white transition-colors">Support</a></li>
                 <li><a href="mailto:nick@laundryguys.net" className="hover:text-white transition-colors">Partnership</a></li>
               </ul>
+              <div className="mt-4">
+                <a 
+                  href="https://facebook.com/groups/thelaundromat" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center px-4 py-2 bg-slate-800 hover:bg-slate-700 text-white text-sm rounded-lg transition-colors"
+                >
+                  Professional Network
+                </a>
+              </div>
             </div>
             
             <div>
