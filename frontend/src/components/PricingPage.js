@@ -131,7 +131,7 @@ const PricingPage = ({ onOpenAuth }) => {
       description: "Multi-location owners, franchisees",
       badge: "ENTERPRISE",
       features: [
-        "Everything in SiteAtlas Optimization PLUS:",
+        "Everything in LaundroMax Optimization PLUS:",
         "Multi-location portfolio analysis",
         "Franchise territory analysis and expansion planning",
         "Market expansion strategies with timing",
