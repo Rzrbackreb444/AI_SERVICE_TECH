@@ -21,6 +21,7 @@ import UserProfileSettings from './components/UserProfileSettings';
 import SecuritySettings from './components/SecuritySettings';
 import InteractiveMap from './components/InteractiveMap';
 import HeatmapComponent from './components/HeatmapComponent';
+import ConsultantWidget from './components/ConsultantWidget';
 import FacebookGroupMonetization from './components/FacebookGroupMonetization';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
