@@ -675,7 +675,7 @@ class LocationAnalysisEngine:
             competitors = await self.data_service.get_google_places_data(lat, lng)
             
             features = self._extract_features(census_data, competitors, {})
-            score = self.model.predict([features])[0]
+            score = self._calculate_real_score(features)
             grade = self._score_to_grade(score)
             
             recommendations = self._generate_recommendations(analysis_type, census_data, competitors, score)
