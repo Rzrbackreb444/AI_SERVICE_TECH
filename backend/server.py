@@ -25,6 +25,7 @@ import paypalrestsdk
 from premium_report_generator import PremiumReportGenerator
 from ai_intelligence_engine import ai_intelligence
 from advanced_ai_algorithms import next_gen_ai
+from self_learning_ai import self_learning_ai
 from email_service import email_service
 from admin_endpoints import create_admin_router
 from immersive_analytics import immersive_analytics
