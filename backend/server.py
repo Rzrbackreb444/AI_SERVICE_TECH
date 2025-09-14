@@ -44,6 +44,7 @@ from revenue_strategy_optimizer import revenue_strategy
 from advanced_revenue_endpoints import advanced_revenue_router
 from personalized_ai_consultant import ai_consultant
 from consultant_endpoints import consultant_router
+from business_endpoints import business_router
 
 # Load environment variables
 ROOT_DIR = Path(__file__).parent
