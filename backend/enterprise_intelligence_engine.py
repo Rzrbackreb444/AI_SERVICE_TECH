@@ -645,7 +645,13 @@ class EnterpriseIntelligenceEngine:
             re_score += 10
         
         # Traffic & Accessibility Score (20 points)
-        traffic_score = traffic.get('accessibility_score', 50) * 0.2
+        accessibility_score = traffic.get('accessibility_score', 50)
+        # Ensure accessibility_score is a number
+        if isinstance(accessibility_score, dict):
+            accessibility_score = 50  # Default value
+        elif not isinstance(accessibility_score, (int, float)):
+            accessibility_score = 50  # Default value
+        traffic_score = accessibility_score * 0.2
         
         # Calculate final score
         total_score = demo_score + comp_score + re_score + traffic_score
