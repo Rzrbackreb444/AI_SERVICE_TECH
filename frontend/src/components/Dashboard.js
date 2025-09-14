@@ -112,7 +112,7 @@ const Dashboard = () => {
               change: '+2'
             },
             {
-              title: 'Monthly Revenue',
+              title: 'Analysis Reports',
               value: '$32.1K',
               icon: ArrowTrendingUpIcon,
               color: 'from-orange-500 to-red-500',
