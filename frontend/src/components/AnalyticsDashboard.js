@@ -291,30 +291,37 @@ const AnalyticsDashboard = () => {
       </nav>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Key Metrics Overview */}
+        {/* Premium Key Metrics Overview */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="glass-card p-6"
+            className="glass-card p-6 bg-gradient-to-br from-slate-800/80 to-slate-900/60 border border-slate-700/50 hover:border-green-500/30 transition-all duration-300 group"
           >
             <div className="flex items-center justify-between">
-              <div>
-                <p className="text-slate-400 text-sm font-medium">Total Revenue</p>
-                <p className="text-3xl font-bold text-white">{formatCurrency(analyticsData.totalRevenue)}</p>
-                <div className="flex items-center text-sm mt-1">
-                  {analyticsData.revenueGrowth >= 0 ? (
+              <div className="flex-1">
+                <div className="flex items-center space-x-2 mb-2">
+                  <p className="text-slate-400 text-sm font-medium">Total Revenue</p>
+                  <div className="px-2 py-1 bg-green-500/10 rounded-full">
+                    <span className="text-green-400 text-xs font-semibold">MRR</span>
+                  </div>
+                </div>
+                <p className="text-3xl font-bold text-white mb-1">{formatCurrency(analyticsData.totalRevenue || 0)}</p>
+                <div className="flex items-center text-sm">
+                  {(analyticsData.revenueGrowth || 0) >= 0 ? (
                     <ArrowTrendingUpIcon className="w-4 h-4 text-green-400 mr-1" />
                   ) : (
                     <ArrowTrendingDownIcon className="w-4 h-4 text-red-400 mr-1" />
                   )}
-                  <span className={analyticsData.revenueGrowth >= 0 ? 'text-green-400' : 'text-red-400'}>
-                    {formatPercentage(analyticsData.revenueGrowth)}
+                  <span className={(analyticsData.revenueGrowth || 0) >= 0 ? 'text-green-400' : 'text-red-400'}>
+                    {formatPercentage(analyticsData.revenueGrowth || 0)}
                   </span>
                   <span className="text-slate-400 ml-1">vs prev period</span>
                 </div>
               </div>
-              <CurrencyDollarIcon className="w-8 h-8 text-green-400" />
+              <div className="w-12 h-12 bg-gradient-to-br from-green-500/20 to-emerald-600/20 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                <CurrencyDollarIcon className="w-6 h-6 text-green-400" />
+              </div>
             </div>
           </motion.div>
 
@@ -322,19 +329,26 @@ const AnalyticsDashboard = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="glass-card p-6"
+            className="glass-card p-6 bg-gradient-to-br from-slate-800/80 to-slate-900/60 border border-slate-700/50 hover:border-blue-500/30 transition-all duration-300 group"
           >
             <div className="flex items-center justify-between">
-              <div>
-                <p className="text-slate-400 text-sm font-medium">Active Users</p>
-                <p className="text-3xl font-bold text-white">{analyticsData.totalUsers?.toLocaleString()}</p>
-                <div className="flex items-center text-sm mt-1">
+              <div className="flex-1">
+                <div className="flex items-center space-x-2 mb-2">
+                  <p className="text-slate-400 text-sm font-medium">Active Users</p>
+                  <div className="px-2 py-1 bg-blue-500/10 rounded-full">
+                    <span className="text-blue-400 text-xs font-semibold">LIVE</span>
+                  </div>
+                </div>
+                <p className="text-3xl font-bold text-white mb-1">{(analyticsData.totalUsers || 0).toLocaleString()}</p>
+                <div className="flex items-center text-sm">
                   <ArrowTrendingUpIcon className="w-4 h-4 text-blue-400 mr-1" />
-                  <span className="text-blue-400">{formatPercentage(analyticsData.userGrowth)}</span>
+                  <span className="text-blue-400">{formatPercentage(analyticsData.userGrowth || 0)}</span>
                   <span className="text-slate-400 ml-1">growth</span>
                 </div>
               </div>
-              <UserGroupIcon className="w-8 h-8 text-blue-400" />
+              <div className="w-12 h-12 bg-gradient-to-br from-blue-500/20 to-cyan-600/20 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                <UserGroupIcon className="w-6 h-6 text-blue-400" />
+              </div>
             </div>
           </motion.div>
 
@@ -342,19 +356,26 @@ const AnalyticsDashboard = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
-            className="glass-card p-6"
+            className="glass-card p-6 bg-gradient-to-br from-slate-800/80 to-slate-900/60 border border-slate-700/50 hover:border-purple-500/30 transition-all duration-300 group"
           >
             <div className="flex items-center justify-between">
-              <div>
-                <p className="text-slate-400 text-sm font-medium">Conversion Rate</p>
-                <p className="text-3xl font-bold text-white">{analyticsData.conversionRate}%</p>
-                <div className="flex items-center text-sm mt-1">
+              <div className="flex-1">
+                <div className="flex items-center space-x-2 mb-2">
+                  <p className="text-slate-400 text-sm font-medium">Conversion Rate</p>
+                  <div className="px-2 py-1 bg-purple-500/10 rounded-full">
+                    <span className="text-purple-400 text-xs font-semibold">CVR</span>
+                  </div>
+                </div>
+                <p className="text-3xl font-bold text-white mb-1">{(analyticsData.conversionRate || 0)}%</p>
+                <div className="flex items-center text-sm">
                   <FunnelIcon className="w-4 h-4 text-purple-400 mr-1" />
-                  <span className="text-purple-400">{analyticsData.activeSubscriptions}</span>
+                  <span className="text-purple-400">{analyticsData.activeSubscriptions || 0}</span>
                   <span className="text-slate-400 ml-1">active subs</span>
                 </div>
               </div>
-              <ChartBarIcon className="w-8 h-8 text-purple-400" />
+              <div className="w-12 h-12 bg-gradient-to-br from-purple-500/20 to-violet-600/20 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                <ChartBarIcon className="w-6 h-6 text-purple-400" />
+              </div>
             </div>
           </motion.div>
 
@@ -362,19 +383,26 @@ const AnalyticsDashboard = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
-            className="glass-card p-6"
+            className="glass-card p-6 bg-gradient-to-br from-slate-800/80 to-slate-900/60 border border-slate-700/50 hover:border-yellow-500/30 transition-all duration-300 group"
           >
             <div className="flex items-center justify-between">
-              <div>
-                <p className="text-slate-400 text-sm font-medium">Customer LTV</p>
-                <p className="text-3xl font-bold text-white">{formatCurrency(analyticsData.customerLifetimeValue)}</p>
-                <div className="flex items-center text-sm mt-1">
+              <div className="flex-1">
+                <div className="flex items-center space-x-2 mb-2">
+                  <p className="text-slate-400 text-sm font-medium">Customer LTV</p>
+                  <div className="px-2 py-1 bg-yellow-500/10 rounded-full">
+                    <span className="text-yellow-400 text-xs font-semibold">LTV</span>
+                  </div>
+                </div>
+                <p className="text-3xl font-bold text-white mb-1">{formatCurrency(analyticsData.customerLifetimeValue || 0)}</p>
+                <div className="flex items-center text-sm">
                   <ClockIcon className="w-4 h-4 text-yellow-400 mr-1" />
-                  <span className="text-yellow-400">{analyticsData.churnRate}%</span>
+                  <span className="text-yellow-400">{(analyticsData.churnRate || 0)}%</span>
                   <span className="text-slate-400 ml-1">churn rate</span>
                 </div>
               </div>
-              <ArrowTrendingUpIcon className="w-8 h-8 text-yellow-400" />
+              <div className="w-12 h-12 bg-gradient-to-br from-yellow-500/20 to-orange-600/20 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                <ArrowTrendingUpIcon className="w-6 h-6 text-yellow-400" />
+              </div>
             </div>
           </motion.div>
         </div>
