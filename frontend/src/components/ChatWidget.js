@@ -43,17 +43,54 @@ const ChatWidget = () => {
     setInputMessage('');
     setIsTyping(true);
 
-    // Simulate AI response
-    setTimeout(() => {
-      const botResponse = {
+    try {
+      // Use enhanced chat endpoint with memory and personalization
+      const response = await axios.post(`${API}/consultant/chat`, {
+        message: inputMessage,
+        context: {
+          timestamp: new Date().toISOString(),
+          user_stage: 'general_inquiry'
+        }
+      }, {
+        headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
+      });
+
+      const botMessage = {
         id: Date.now() + 1,
         type: 'bot',
-        message: generateBotResponse(inputMessage),
+        message: response.data.response,
+        timestamp: new Date(),
+        consultant_name: response.data.consultant_name,
+        usage_info: response.data.usage_info,
+        follow_up_actions: response.data.follow_up_actions || []
+      };
+
+      setMessages(prev => [...prev, botMessage]);
+      
+      // Show usage info if approaching limit
+      if (response.data.usage_info && response.data.usage_info.remaining_questions <= 1) {
+        setTimeout(() => {
+          const warningMessage = {
+            id: Date.now() + 2,
+            type: 'system',
+            message: `You have ${response.data.usage_info.remaining_questions} questions remaining today. Upgrade for unlimited access!`,
+            timestamp: new Date()
+          };
+          setMessages(prev => [...prev, warningMessage]);
+        }, 1000);
+      }
+
+    } catch (error) {
+      const errorMessage = {
+        id: Date.now() + 1,
+        type: 'bot',
+        message: 'I apologize, but I encountered an issue. Please try again or contact support if the problem persists.',
         timestamp: new Date()
       };
-      setMessages(prev => [...prev, botResponse]);
+      setMessages(prev => [...prev, errorMessage]);
+    } finally {
       setIsTyping(false);
-    }, 1500);
+    }
   };
 
   const generateBotResponse = (userInput) => {
