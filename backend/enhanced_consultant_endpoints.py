@@ -83,7 +83,13 @@ async def get_current_user(credentials: HTTPAuthorizationCredentials = Depends(s
         raise HTTPException(status_code=401, detail="Authentication failed")
 
 router = APIRouter()
-consultant_system = EnhancedConsultantSystem(db, llm_client)
+consultant_system = None
+
+def init_consultant_system():
+    """Initialize consultant system after database is available"""
+    global consultant_system
+    if db:
+        consultant_system = EnhancedConsultantSystem(db, llm_client)
 
 logger = logging.getLogger(__name__)
 
