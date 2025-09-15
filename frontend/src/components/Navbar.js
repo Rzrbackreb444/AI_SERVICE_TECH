@@ -51,7 +51,7 @@ const Navbar = () => {
   const subscriptionBadge = getSubscriptionBadge(user?.subscription_tier);
 
   return (
-    <nav className="glass border-b border-white/10 sticky top-0 z-50 backdrop-blur-xl">
+    <nav className="glass border-b border-white/10 sticky top-0 z-50 backdrop-blur-xl relative">
       <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-20">
           {/* Enhanced LaundroTech Branding - Larger Logo */}
