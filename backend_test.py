@@ -1289,9 +1289,821 @@ class ComprehensivePlatformAuditor:
         
         return success
 
-    # ========== COMPREHENSIVE TEST EXECUTION ==========
+    # ========== ANALYTICS ENGINE VALIDATION ==========
     
-    def run_comprehensive_final_testing(self):
+    def test_analytics_overview_endpoint(self):
+        """Test analytics overview endpoint for real data integration"""
+        if not self.token:
+            print("   ⚠️  Skipping - No authentication token")
+            return False
+        
+        success, response = self.run_test(
+            "Analytics Engine - Overview Endpoint",
+            "GET",
+            "analytics/overview",
+            200,
+            critical=True
+        )
+        
+        if success:
+            # Check for real data vs mock data
+            overview = response.get('overview', {})
+            total_users = overview.get('total_users', 0)
+            total_analyses = overview.get('total_analyses', 0)
+            total_revenue = overview.get('total_revenue', 0)
+            
+            print(f"   👥 Total Users: {total_users}")
+            print(f"   📊 Total Analyses: {total_analyses}")
+            print(f"   💰 Total Revenue: ${total_revenue}")
+            
+            # Detect zero values that might need population
+            if total_users == 0:
+                self.zero_value_sections.append("Analytics Overview - Total Users")
+            if total_analyses == 0:
+                self.zero_value_sections.append("Analytics Overview - Total Analyses")
+            if total_revenue == 0:
+                self.zero_value_sections.append("Analytics Overview - Total Revenue")
+            
+            # Check for mock data patterns
+            if isinstance(overview.get('growth_rate'), str) and 'mock' in overview.get('growth_rate', '').lower():
+                self.mock_data_detected.append("Analytics Overview - Growth Rate")
+        
+        return success
+    
+    def test_analytics_revenue_endpoint(self):
+        """Test analytics revenue endpoint"""
+        if not self.token:
+            print("   ⚠️  Skipping - No authentication token")
+            return False
+        
+        success, response = self.run_test(
+            "Analytics Engine - Revenue Analytics",
+            "GET",
+            "analytics/revenue",
+            200,
+            critical=True
+        )
+        
+        if success:
+            revenue_data = response.get('revenue_data', {})
+            monthly_revenue = revenue_data.get('monthly_revenue', [])
+            mrr = revenue_data.get('mrr', 0)
+            
+            print(f"   💰 MRR: ${mrr}")
+            print(f"   📈 Monthly Revenue Points: {len(monthly_revenue)}")
+            
+            if mrr == 0:
+                self.zero_value_sections.append("Analytics Revenue - MRR")
+            if not monthly_revenue:
+                self.zero_value_sections.append("Analytics Revenue - Monthly Revenue Data")
+        
+        return success
+    
+    def test_analytics_user_growth_endpoint(self):
+        """Test analytics user growth endpoint"""
+        if not self.token:
+            print("   ⚠️  Skipping - No authentication token")
+            return False
+        
+        success, response = self.run_test(
+            "Analytics Engine - User Growth",
+            "GET",
+            "analytics/user-growth",
+            200,
+            critical=True
+        )
+        
+        if success:
+            growth_data = response.get('growth_data', {})
+            new_users = growth_data.get('new_users_this_month', 0)
+            growth_rate = growth_data.get('growth_rate', 0)
+            
+            print(f"   👥 New Users This Month: {new_users}")
+            print(f"   📈 Growth Rate: {growth_rate}%")
+            
+            if new_users == 0:
+                self.zero_value_sections.append("Analytics User Growth - New Users")
+            if growth_rate == 0:
+                self.zero_value_sections.append("Analytics User Growth - Growth Rate")
+        
+        return success
+    
+    def test_analytics_badge_distribution_endpoint(self):
+        """Test analytics badge distribution endpoint"""
+        if not self.token:
+            print("   ⚠️  Skipping - No authentication token")
+            return False
+        
+        success, response = self.run_test(
+            "Analytics Engine - Badge Distribution",
+            "GET",
+            "analytics/badge-distribution",
+            200,
+            critical=True
+        )
+        
+        if success:
+            distribution = response.get('badge_distribution', {})
+            total_badges = sum(distribution.values()) if distribution else 0
+            
+            print(f"   🏆 Total Active Badges: {total_badges}")
+            for badge_type, count in distribution.items():
+                print(f"      - {badge_type}: {count}")
+            
+            if total_badges == 0:
+                self.zero_value_sections.append("Analytics Badge Distribution - Total Badges")
+        
+        return success
+    
+    def test_analytics_conversion_funnel_endpoint(self):
+        """Test analytics conversion funnel endpoint"""
+        if not self.token:
+            print("   ⚠️  Skipping - No authentication token")
+            return False
+        
+        success, response = self.run_test(
+            "Analytics Engine - Conversion Funnel",
+            "GET",
+            "analytics/conversion-funnel",
+            200,
+            critical=True
+        )
+        
+        if success:
+            funnel = response.get('conversion_funnel', {})
+            visitors = funnel.get('visitors', 0)
+            signups = funnel.get('signups', 0)
+            purchases = funnel.get('purchases', 0)
+            
+            print(f"   👁️  Visitors: {visitors}")
+            print(f"   ✍️  Signups: {signups}")
+            print(f"   💳 Purchases: {purchases}")
+            
+            if visitors == 0:
+                self.zero_value_sections.append("Analytics Conversion Funnel - Visitors")
+            if signups == 0:
+                self.zero_value_sections.append("Analytics Conversion Funnel - Signups")
+            if purchases == 0:
+                self.zero_value_sections.append("Analytics Conversion Funnel - Purchases")
+        
+        return success
+    
+    def test_analytics_geographic_endpoint(self):
+        """Test analytics geographic distribution endpoint"""
+        if not self.token:
+            print("   ⚠️  Skipping - No authentication token")
+            return False
+        
+        success, response = self.run_test(
+            "Analytics Engine - Geographic Distribution",
+            "GET",
+            "analytics/geographic",
+            200,
+            critical=True
+        )
+        
+        if success:
+            geographic = response.get('geographic_data', {})
+            regions = geographic.get('regions', [])
+            
+            print(f"   🌍 Geographic Regions: {len(regions)}")
+            for region in regions[:3]:  # Show first 3
+                print(f"      - {region.get('name', 'Unknown')}: {region.get('users', 0)} users")
+            
+            if not regions:
+                self.zero_value_sections.append("Analytics Geographic - Regions Data")
+        
+        return success
+    
+    def test_analytics_cohort_analysis_endpoint(self):
+        """Test analytics cohort analysis endpoint"""
+        if not self.token:
+            print("   ⚠️  Skipping - No authentication token")
+            return False
+        
+        success, response = self.run_test(
+            "Analytics Engine - Cohort Analysis",
+            "GET",
+            "analytics/cohort-analysis",
+            200,
+            critical=True
+        )
+        
+        if success:
+            cohorts = response.get('cohort_data', [])
+            retention_rates = response.get('retention_rates', {})
+            
+            print(f"   📊 Cohort Groups: {len(cohorts)}")
+            print(f"   🔄 Retention Rates: {len(retention_rates)} periods")
+            
+            if not cohorts:
+                self.zero_value_sections.append("Analytics Cohort Analysis - Cohort Data")
+            if not retention_rates:
+                self.zero_value_sections.append("Analytics Cohort Analysis - Retention Rates")
+        
+        return success
+    
+    # ========== ENHANCED AI CONSULTANT SYSTEM ==========
+    
+    def test_consultant_initialize_endpoint(self):
+        """Test AI consultant initialization endpoint"""
+        if not self.token:
+            print("   ⚠️  Skipping - No authentication token")
+            return False
+        
+        success, response = self.run_test(
+            "AI Consultant - Initialize",
+            "POST",
+            "consultant/initialize",
+            200,
+            data={
+                'user_profile': {
+                    'experience_level': 'intermediate',
+                    'business_goals': ['expansion', 'optimization'],
+                    'location': 'Chicago, IL',
+                    'budget_range': '500k-1m'
+                }
+            },
+            critical=True
+        )
+        
+        if success:
+            consultant = response.get('consultant', {})
+            consultant_id = consultant.get('consultant_id')
+            specialization = consultant.get('specialization')
+            
+            print(f"   🤖 Consultant ID: {consultant_id}")
+            print(f"   🎯 Specialization: {specialization}")
+            print(f"   📋 Action Items: {len(consultant.get('action_items', []))}")
+            
+            # Store consultant ID for further testing
+            self.consultant_id = consultant_id
+            
+            # Check for personalization
+            if not consultant_id or 'default' in str(consultant_id).lower():
+                self.mock_data_detected.append("AI Consultant - Generic Consultant ID")
+        
+        return success
+    
+    def test_consultant_chat_endpoint(self):
+        """Test AI consultant chat endpoint"""
+        if not self.token:
+            print("   ⚠️  Skipping - No authentication token")
+            return False
+        
+        success, response = self.run_test(
+            "AI Consultant - Chat",
+            "POST",
+            "consultant/chat",
+            200,
+            data={
+                'message': 'What are the key factors for successful laundromat location selection?',
+                'conversation_context': {
+                    'previous_topics': ['location_analysis'],
+                    'user_tier': 'premium'
+                }
+            },
+            critical=True
+        )
+        
+        if success:
+            chat_response = response.get('response', '')
+            conversation_id = response.get('conversation_id')
+            usage_info = response.get('usage_info', {})
+            
+            print(f"   💬 Response Length: {len(chat_response)} chars")
+            print(f"   🆔 Conversation ID: {conversation_id}")
+            print(f"   📊 Usage Remaining: {usage_info.get('remaining_queries', 'Unknown')}")
+            
+            # Check for personalized responses
+            if 'generic' in chat_response.lower() or len(chat_response) < 50:
+                self.mock_data_detected.append("AI Consultant - Generic Chat Response")
+        
+        return success
+    
+    def test_consultant_profile_endpoint(self):
+        """Test AI consultant profile endpoint"""
+        if not self.token:
+            print("   ⚠️  Skipping - No authentication token")
+            return False
+        
+        success, response = self.run_test(
+            "AI Consultant - Profile",
+            "GET",
+            "consultant/profile",
+            200,
+            critical=True
+        )
+        
+        if success:
+            profile = response.get('profile', {})
+            subscription_tier = profile.get('subscription_tier')
+            consultation_history = profile.get('consultation_history', [])
+            
+            print(f"   🎫 Subscription Tier: {subscription_tier}")
+            print(f"   📚 Consultation History: {len(consultation_history)} sessions")
+            
+            if not consultation_history:
+                self.zero_value_sections.append("AI Consultant Profile - Consultation History")
+        
+        return success
+    
+    def test_consultant_update_profile_endpoint(self):
+        """Test AI consultant profile update endpoint"""
+        if not self.token:
+            print("   ⚠️  Skipping - No authentication token")
+            return False
+        
+        success, response = self.run_test(
+            "AI Consultant - Update Profile",
+            "PUT",
+            "consultant/update-profile",
+            200,
+            data={
+                'preferences': {
+                    'communication_style': 'detailed',
+                    'focus_areas': ['roi_optimization', 'market_analysis'],
+                    'notification_frequency': 'weekly'
+                }
+            },
+            critical=True
+        )
+        
+        if success:
+            updated_profile = response.get('updated_profile', {})
+            print(f"   ✅ Profile Updated: {updated_profile.get('success', False)}")
+            print(f"   🎯 Focus Areas: {len(updated_profile.get('focus_areas', []))}")
+        
+        return success
+    
+    def test_consultant_analytics_endpoint(self):
+        """Test AI consultant analytics endpoint"""
+        if not self.token:
+            print("   ⚠️  Skipping - No authentication token")
+            return False
+        
+        success, response = self.run_test(
+            "AI Consultant - Analytics",
+            "GET",
+            "consultant/analytics",
+            200,
+            critical=True
+        )
+        
+        if success:
+            analytics = response.get('analytics', {})
+            engagement_score = analytics.get('engagement_score', 0)
+            satisfaction_rating = analytics.get('satisfaction_rating', 0)
+            
+            print(f"   📊 Engagement Score: {engagement_score}")
+            print(f"   ⭐ Satisfaction Rating: {satisfaction_rating}")
+            
+            if engagement_score == 0:
+                self.zero_value_sections.append("AI Consultant Analytics - Engagement Score")
+            if satisfaction_rating == 0:
+                self.zero_value_sections.append("AI Consultant Analytics - Satisfaction Rating")
+        
+        return success
+    
+    # ========== SUBSCRIPTION MANAGEMENT SYSTEM ==========
+    
+    def test_subscription_tier_access(self):
+        """Test subscription tier-based access control"""
+        if not self.token:
+            print("   ⚠️  Skipping - No authentication token")
+            return False
+        
+        # Test access to premium feature with free tier
+        success, response = self.run_test(
+            "Subscription Management - Tier Access Control",
+            "POST",
+            "analyze",
+            403,  # Should be forbidden for premium analysis on free tier
+            data={
+                'address': '123 Premium Test St, Chicago, IL',
+                'analysis_type': 'portfolio',  # Premium tier feature
+                'additional_data': {}
+            },
+            critical=True
+        )
+        
+        if success:
+            print(f"   ✅ Tier-based access control working correctly")
+        else:
+            print(f"   ❌ Tier-based access control may not be enforced")
+        
+        return success
+    
+    def test_subscription_upgrade_flow(self):
+        """Test subscription upgrade functionality"""
+        if not self.token:
+            print("   ⚠️  Skipping - No authentication token")
+            return False
+        
+        success, response = self.run_test(
+            "Subscription Management - Upgrade Flow",
+            "POST",
+            "payments/checkout",
+            200,
+            data={
+                'offer_type': 'analyzer',
+                'platform': 'platform',
+                'payment_method': 'stripe'
+            },
+            critical=True
+        )
+        
+        if success:
+            checkout_url = response.get('checkout_url')
+            session_id = response.get('session_id')
+            
+            print(f"   🔗 Checkout URL: {'✅' if checkout_url else '❌'}")
+            print(f"   🆔 Session ID: {'✅' if session_id else '❌'}")
+            
+            if not checkout_url or not session_id:
+                self.critical_failures.append({
+                    'name': 'Subscription Upgrade Flow',
+                    'error': 'Missing checkout URL or session ID',
+                    'critical': True
+                })
+        
+        return success
+    
+    def test_subscription_status_check(self):
+        """Test subscription status checking"""
+        if not self.token:
+            print("   ⚠️  Skipping - No authentication token")
+            return False
+        
+        success, response = self.run_test(
+            "Subscription Management - Status Check",
+            "GET",
+            "user/subscriptions",
+            200,
+            critical=True
+        )
+        
+        if success:
+            subscriptions = response.get('subscriptions', [])
+            active_subs = [s for s in subscriptions if s.get('subscription_status') == 'active']
+            
+            print(f"   📋 Total Subscriptions: {len(subscriptions)}")
+            print(f"   ✅ Active Subscriptions: {len(active_subs)}")
+            
+            # Check subscription data completeness
+            for sub in subscriptions[:3]:  # Check first 3
+                if not sub.get('offer_type') or not sub.get('payment_provider'):
+                    self.mock_data_detected.append("Subscription Management - Incomplete Subscription Data")
+        
+        return success
+    
+    # ========== MRR DASHBOARD BACKEND ==========
+    
+    def test_mrr_dashboard_performance_metrics(self):
+        """Test MRR dashboard performance metrics"""
+        if not self.token:
+            print("   ⚠️  Skipping - No authentication token")
+            return False
+        
+        success, response = self.run_test(
+            "MRR Dashboard - Performance Metrics",
+            "GET",
+            "dashboard/performance",
+            200,
+            critical=True
+        )
+        
+        if success:
+            performance = response.get('performance_data', {})
+            mrr = performance.get('current_mrr', 0)
+            growth_rate = performance.get('mrr_growth_rate', 0)
+            churn_rate = performance.get('churn_rate', 0)
+            
+            print(f"   💰 Current MRR: ${mrr}")
+            print(f"   📈 MRR Growth Rate: {growth_rate}%")
+            print(f"   📉 Churn Rate: {churn_rate}%")
+            
+            if mrr == 0:
+                self.zero_value_sections.append("MRR Dashboard - Current MRR")
+            if growth_rate == 0:
+                self.zero_value_sections.append("MRR Dashboard - Growth Rate")
+        
+        return success
+    
+    def test_mrr_usage_billing_system(self):
+        """Test MRR usage and billing system"""
+        if not self.token:
+            print("   ⚠️  Skipping - No authentication token")
+            return False
+        
+        success, response = self.run_test(
+            "MRR Dashboard - Usage & Billing",
+            "GET",
+            "usage/current",
+            200,
+            critical=True
+        )
+        
+        if success:
+            usage = response.get('usage_data', {})
+            api_calls_used = usage.get('api_calls_used', 0)
+            billing_amount = usage.get('current_billing', 0)
+            
+            print(f"   📊 API Calls Used: {api_calls_used}")
+            print(f"   💳 Current Billing: ${billing_amount}")
+            
+            # Test billing report
+            billing_success, billing_response = self.run_test(
+                "MRR Dashboard - Billing Report",
+                "GET",
+                "billing/report",
+                200
+            )
+            
+            if billing_success:
+                billing_data = billing_response.get('billing_report', {})
+                total_charges = billing_data.get('total_charges', 0)
+                print(f"   💰 Total Charges: ${total_charges}")
+        
+        return success
+    
+    def test_mrr_portfolio_management(self):
+        """Test MRR portfolio management features"""
+        if not self.token:
+            print("   ⚠️  Skipping - No authentication token")
+            return False
+        
+        success, response = self.run_test(
+            "MRR Dashboard - Portfolio Management",
+            "GET",
+            "portfolio/dashboard",
+            200,
+            critical=True
+        )
+        
+        if success:
+            portfolio = response.get('portfolio_data', {})
+            total_locations = portfolio.get('total_locations', 0)
+            total_investment = portfolio.get('total_investment', 0)
+            
+            print(f"   🏢 Total Locations: {total_locations}")
+            print(f"   💰 Total Investment: ${total_investment}")
+            
+            if total_locations == 0:
+                self.zero_value_sections.append("MRR Portfolio - Total Locations")
+            if total_investment == 0:
+                self.zero_value_sections.append("MRR Portfolio - Total Investment")
+        
+        return success
+    
+    def test_mrr_market_alerts(self):
+        """Test MRR market alerts system"""
+        if not self.token:
+            print("   ⚠️  Skipping - No authentication token")
+            return False
+        
+        success, response = self.run_test(
+            "MRR Dashboard - Market Alerts",
+            "GET",
+            "alerts/market",
+            200,
+            critical=True
+        )
+        
+        if success:
+            alerts = response.get('alerts', [])
+            high_priority = [a for a in alerts if a.get('priority') == 'high']
+            
+            print(f"   🚨 Total Alerts: {len(alerts)}")
+            print(f"   🔴 High Priority: {len(high_priority)}")
+            
+            if not alerts:
+                self.zero_value_sections.append("MRR Market Alerts - No Alerts Generated")
+        
+        return success
+    
+    # ========== ENTERPRISE INTELLIGENCE FEATURES ==========
+    
+    def test_enterprise_location_analysis(self):
+        """Test enterprise location analysis endpoints"""
+        if not self.token:
+            print("   ⚠️  Skipping - No authentication token")
+            return False
+        
+        success, response = self.run_test(
+            "Enterprise Intelligence - Location Analysis",
+            "POST",
+            "analyze",
+            200,
+            data={
+                'address': '100 Enterprise Blvd, Chicago, IL',
+                'analysis_type': 'scout',
+                'additional_data': {
+                    'enterprise_features': True,
+                    'detailed_demographics': True
+                }
+            },
+            critical=True
+        )
+        
+        if success:
+            analysis = response.get('analysis_data', response)
+            score = analysis.get('score', 0)
+            grade = analysis.get('grade', 'Unknown')
+            competitors = analysis.get('competitors', [])
+            demographics = analysis.get('demographics', {})
+            
+            print(f"   📊 Analysis Score: {score}")
+            print(f"   🎯 Grade: {grade}")
+            print(f"   🏪 Competitors Found: {len(competitors)}")
+            print(f"   👥 Demographics: {'✅' if demographics else '❌'}")
+            
+            # Check for real data integration
+            if score == 0 or not competitors:
+                self.zero_value_sections.append("Enterprise Location Analysis - Missing Data")
+            
+            # Check for mock data patterns
+            if 'mock' in str(analysis).lower() or 'dummy' in str(analysis).lower():
+                self.mock_data_detected.append("Enterprise Location Analysis - Mock Data Detected")
+        
+        return success
+    
+    def test_enterprise_pdf_report_generation(self):
+        """Test enterprise PDF report generation"""
+        if not self.token:
+            print("   ⚠️  Skipping - No authentication token")
+            return False
+        
+        # First, get user analyses to find an analysis ID
+        analyses_success, analyses_response = self.run_test(
+            "Get User Analyses for PDF Test",
+            "GET",
+            "user/analyses",
+            200
+        )
+        
+        if analyses_success and analyses_response.get('analyses'):
+            analysis_id = analyses_response['analyses'][0].get('analysis_id')
+            if analysis_id:
+                success, response = self.run_test(
+                    "Enterprise Intelligence - PDF Report Generation",
+                    "GET",
+                    f"reports/generate-pdf/{analysis_id}",
+                    200,
+                    critical=True
+                )
+                
+                if success:
+                    print(f"   📄 PDF Report Generated Successfully")
+                    # Note: Response would be binary PDF data
+                    return True
+        
+        print("   ℹ️  No analysis data available for PDF generation test")
+        return True  # Don't fail if no data available
+    
+    def test_enterprise_api_integrations(self):
+        """Test enterprise API integrations (Google Maps, Census, etc.)"""
+        if not self.token:
+            print("   ⚠️  Skipping - No authentication token")
+            return False
+        
+        # Test by running an analysis and checking for API integration data
+        success, response = self.run_test(
+            "Enterprise Intelligence - API Integrations Test",
+            "POST",
+            "analyze",
+            200,
+            data={
+                'address': '200 API Test Ave, Springfield, IL',
+                'analysis_type': 'scout',
+                'additional_data': {}
+            },
+            critical=True
+        )
+        
+        if success:
+            analysis = response.get('analysis_data', response)
+            demographics = analysis.get('demographics', {})
+            competitors = analysis.get('competitors', [])
+            
+            # Check for Google Maps integration (competitors)
+            google_maps_working = len(competitors) > 0
+            print(f"   🗺️  Google Maps Integration: {'✅' if google_maps_working else '❌'}")
+            
+            # Check for Census API integration (demographics)
+            census_working = bool(demographics.get('population') or demographics.get('median_income'))
+            print(f"   📊 Census API Integration: {'✅' if census_working else '❌'}")
+            
+            if not google_maps_working:
+                self.zero_value_sections.append("Enterprise API - Google Maps Integration")
+            if not census_working:
+                self.zero_value_sections.append("Enterprise API - Census Integration")
+        
+        return success
+    
+    # ========== AUTHENTICATION & USER MANAGEMENT ==========
+    
+    def test_jwt_authentication_across_endpoints(self):
+        """Test JWT authentication works across all protected endpoints"""
+        # Test without token first
+        no_auth_success, no_auth_response = self.run_test(
+            "Authentication - Protected Endpoint Without Token",
+            "GET",
+            "dashboard/stats",
+            401,  # Should be unauthorized
+            critical=True
+        )
+        
+        if no_auth_success:
+            print(f"   ✅ Protected endpoints properly secured")
+        
+        # Test with invalid token
+        invalid_token = "Bearer invalid_token_12345"
+        invalid_success, invalid_response = self.run_test(
+            "Authentication - Invalid Token",
+            "GET",
+            "dashboard/stats",
+            401,
+            headers={'Authorization': invalid_token},
+            critical=True
+        )
+        
+        if invalid_success:
+            print(f"   ✅ Invalid tokens properly rejected")
+        
+        return no_auth_success and invalid_success
+    
+    def test_user_dashboard_statistics(self):
+        """Test user dashboard statistics endpoint"""
+        if not self.token:
+            print("   ⚠️  Skipping - No authentication token")
+            return False
+        
+        success, response = self.run_test(
+            "User Management - Dashboard Statistics",
+            "GET",
+            "dashboard/stats",
+            200,
+            critical=True
+        )
+        
+        if success:
+            stats = response.get('stats', response)
+            total_analyses = stats.get('total_analyses', 0)
+            average_score = stats.get('average_score', 0)
+            subscription_tier = stats.get('subscription_tier', 'Unknown')
+            
+            print(f"   📊 Total Analyses: {total_analyses}")
+            print(f"   📈 Average Score: {average_score}")
+            print(f"   🎫 Subscription Tier: {subscription_tier}")
+            
+            if total_analyses == 0:
+                self.zero_value_sections.append("User Dashboard - Total Analyses")
+        
+        return success
+    
+    def test_user_profile_settings(self):
+        """Test user profile and settings endpoints"""
+        if not self.token:
+            print("   ⚠️  Skipping - No authentication token")
+            return False
+        
+        # Test get profile
+        get_success, get_response = self.run_test(
+            "User Management - Get Profile",
+            "GET",
+            "user/profile",
+            200,
+            critical=True
+        )
+        
+        if get_success:
+            profile = get_response.get('user', {})
+            print(f"   👤 User Email: {profile.get('email', 'Unknown')}")
+            print(f"   📝 Full Name: {profile.get('full_name', 'Unknown')}")
+        
+        # Test update profile
+        update_success, update_response = self.run_test(
+            "User Management - Update Profile",
+            "PUT",
+            "user/profile",
+            200,
+            data={
+                'full_name': 'Updated Enterprise Auditor',
+                'company': 'LaundroTech Enterprises',
+                'role': 'Platform Auditor'
+            },
+            critical=True
+        )
+        
+        if update_success:
+            print(f"   ✅ Profile Update: {update_response.get('success', False)}")
+        
+        return get_success and update_success
+    
+    # ========== COMPREHENSIVE AUDIT EXECUTION ==========
+    
+    def run_comprehensive_platform_audit(self):
         """Run all critical tests for production deployment"""
         print(f"\n🧪 COMPREHENSIVE FINAL OPTIMIZATION TESTING SUITE - $500K+ MRR TARGET")
         print("=" * 80)
