@@ -625,6 +625,21 @@ frontend:
         agent: "testing"
         comment: "✅ AUTHENTICATION SYSTEM WORKING: Registration modal opens with email/password fields, Facebook Group member checkbox, 'Sign In' toggle functionality. Form validation working, professional user experience confirmed. Protected routes correctly redirect unauthenticated users."
 
+  - task: "Login Flow Dashboard Redirect Issue Fix"
+    implemented: true
+    working: true
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: false
+        agent: "testing"
+        comment: "❌ CRITICAL ISSUE: Users could log in successfully but were not redirected to dashboard. Root cause: Missing API route decorator for `/api/dashboard/stats` endpoint causing 404 errors that triggered logout and homepage redirect."
+      - working: true
+        agent: "testing"
+        comment: "✅ FIXED: Added `@api_router.get('/dashboard/stats')` decorator to existing `get_dashboard_stats` function. Login flow now works perfectly - users log in, get redirected to /dashboard, JWT token stored in localStorage, dashboard loads with user data. All API calls return 200 status. Authentication modal, form submission, success animation, dashboard redirect, and data loading all working correctly."
+
   - task: "Navigation to All Sections (Dashboard, Analyze, History, MRR, Enterprise)"
     implemented: true
     working: true
