@@ -37,6 +37,7 @@ const LandingPage = ({ onOpenAuth }) => {
   const navigationLinks = [
     { name: 'Platform', href: '/', current: true },
     { name: 'Pricing', href: '/pricing' },
+    { name: 'Blog', href: '/blog' },
     { name: 'Analytics', href: '/dashboard' },
     { name: 'Enterprise', href: '/analyze' },
     { name: 'Contact', href: 'mailto:nick@laundryguys.net' }
