@@ -1,19 +1,12 @@
-import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, { useState } from 'react';
+import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { 
-  PencilIcon,
-  EyeIcon,
-  CalendarIcon,
-  TagIcon,
-  ShareIcon,
-  ChartBarIcon,
   FireIcon,
   TrendingUpIcon,
-  GlobeAltIcon,
-  MagnifyingGlassIcon,
-  BookmarkIcon,
-  ArrowRightIcon
+  EyeIcon,
+  ArrowRightIcon,
+  MagnifyingGlassIcon
 } from '@heroicons/react/24/outline';
 import Navbar from './Navbar';
 
