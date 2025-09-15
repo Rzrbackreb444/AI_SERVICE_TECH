@@ -508,13 +508,16 @@ backend:
     implemented: false
     working: false
     file: "/app/backend/consultant_endpoints.py"
-    stuck_count: 0
+    stuck_count: 1
     priority: "high"
     needs_retesting: true
     status_history:
       - working: false
         agent: "testing"
         comment: "❌ AI CONSULTANT CRITICAL ISSUES: 1) /api/consultant/initialize endpoint failing with 500 error 'Analysis ID is required' - initialization should work without analysis ID, 2) /api/consultant/update-profile endpoint returns 405 Method Not Allowed - endpoint missing or incorrectly configured. IMPACT: AI consultant system non-functional for new users. FIXES NEEDED: Update initialization logic to work without analysis ID, implement missing update-profile PUT endpoint."
+      - working: false
+        agent: "testing"
+        comment: "❌ AI CONSULTANT SYSTEM STILL BROKEN: 1) Initialization endpoint still requires analysis ID (500 error: 'Analysis ID is required'), preventing new users from accessing consultant. 2) Update profile endpoint still returns 405 Method Not Allowed - endpoint not implemented. 3) Chat endpoint works but lacks subscription tier awareness. Backend logs confirm: 'Consultant initialization error: 400: Analysis ID is required'. System remains non-functional for new users."
 
   - task: "Enterprise PDF Report Generation Fix"
     implemented: false
