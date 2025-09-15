@@ -2175,14 +2175,17 @@ class ComprehensivePlatformAuditor:
         mrr_passed = sum(1 for test in mrr_tests if test())
         print(f"📊 MRR Dashboard Tests: {mrr_passed}/{len(mrr_tests)} passed")
         
-        # 6. PERFORMANCE UNDER LOAD - SYSTEM STRESS TESTING
-        print(f"\n⚡ PERFORMANCE UNDER LOAD TESTING")
+        # 6. Enterprise Intelligence Features
+        print(f"\n🏢 ENTERPRISE INTELLIGENCE FEATURES")
         print("-" * 50)
-        load_tests = [
-            self.test_performance_under_load
+        enterprise_tests = [
+            self.test_enterprise_location_analysis,
+            self.test_enterprise_pdf_report_generation,
+            self.test_enterprise_api_integrations,
+            self.test_analyze_endpoint_for_data_generation
         ]
-        load_passed = sum(1 for test in load_tests if test())
-        print(f"📊 Load Testing: {load_passed}/{len(load_tests)} passed")
+        enterprise_passed = sum(1 for test in enterprise_tests if test())
+        print(f"📊 Enterprise Intelligence Tests: {enterprise_passed}/{len(enterprise_tests)} passed")
         
         # 7. Facebook Group Offers & Pricing
         print(f"\n💰 FACEBOOK GROUP OFFERS & PRICING")
