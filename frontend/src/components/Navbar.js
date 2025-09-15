@@ -225,9 +225,9 @@ const Navbar = () => {
               animate={{ opacity: 1, height: 'auto' }}
               exit={{ opacity: 0, height: 0 }}
               transition={{ duration: 0.3 }}
-              className="md:hidden border-t border-white/10 bg-slate-900/50 backdrop-blur-xl"
+              className="md:hidden border-t border-white/10 bg-slate-900/95 backdrop-blur-xl absolute top-full left-0 right-0 z-40"
             >
-              <div className="px-2 pt-2 pb-3 space-y-1">
+              <div className="px-2 pt-2 pb-3 space-y-1 shadow-lg">
                 {navigation.map((item) => {
                   const Icon = item.icon;
                   const active = isActive(item.href);
