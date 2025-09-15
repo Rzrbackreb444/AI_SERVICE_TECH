@@ -302,12 +302,8 @@ function App() {
               </ProtectedRoute>
             } />
             
-            {/* Updated analyze route to use new RevenueAnalyzer */}
-            <Route path="/analyze" element={
-              <ProtectedRoute>
-                <RevenueAnalyzer />
-              </ProtectedRoute>
-            } />
+            {/* Updated analyze route to use new RevenueAnalyzer (public for case studies) */}
+            <Route path="/analyze" element={<RevenueAnalyzer />} />
             
             <Route path="/enterprise-analyzer" element={
               <ProtectedRoute>
