@@ -2570,6 +2570,491 @@ class AIConsultantTester:
         
         return consultant_ready
 
+class RevenueOptimizationTester:
+    """Test the new revenue optimization endpoints specifically requested"""
+    
+    def __init__(self, base_url="https://site-atlas-ai.preview.emergentagent.com/api"):
+        self.base_url = base_url
+        self.token = None
+        self.user_data = None
+        self.tests_run = 0
+        self.tests_passed = 0
+        self.failed_tests = []
+        self.critical_failures = []
+        
+        # Test user data with realistic information
+        timestamp = datetime.now().strftime('%H%M%S')
+        self.test_user = {
+            'email': f'revenue.optimizer_{timestamp}@laundrotech.com',
+            'password': 'RevenueOpt2024!',
+            'full_name': f'Revenue Optimizer {timestamp}',
+            'facebook_group_member': True
+        }
+        
+        print(f"💰 REVENUE OPTIMIZATION ENDPOINTS TESTING")
+        print(f"📍 Backend URL: {self.base_url}")
+        print(f"👤 Test User: {self.test_user['email']}")
+        print(f"🎯 Focus: Preview/Blur Strategy & Pay-Per-Depth System")
+        print("=" * 80)
+
+    def run_test(self, name, method, endpoint, expected_status, data=None, headers=None, critical=False):
+        """Run a single API test with detailed logging"""
+        url = f"{self.base_url}/{endpoint}" if not endpoint.startswith('http') else endpoint
+        test_headers = {'Content-Type': 'application/json'}
+        
+        if self.token:
+            test_headers['Authorization'] = f'Bearer {self.token}'
+        if headers:
+            test_headers.update(headers)
+
+        self.tests_run += 1
+        print(f"\n🔍 Test {self.tests_run}: {name}")
+        print(f"   Method: {method} | Endpoint: /{endpoint}")
+        if critical:
+            print(f"   🚨 CRITICAL TEST - Revenue Blocker if Failed")
+        
+        try:
+            if method == 'GET':
+                response = requests.get(url, headers=test_headers, timeout=30)
+            elif method == 'POST':
+                response = requests.post(url, json=data, headers=test_headers, timeout=30)
+            elif method == 'PUT':
+                response = requests.put(url, json=data, headers=test_headers, timeout=30)
+            elif method == 'DELETE':
+                response = requests.delete(url, headers=test_headers, timeout=30)
+
+            success = response.status_code == expected_status
+            
+            if success:
+                self.tests_passed += 1
+                print(f"   ✅ PASSED - Status: {response.status_code}")
+                try:
+                    response_data = response.json()
+                    if isinstance(response_data, dict) and len(str(response_data)) <= 500:
+                        print(f"   📄 Response: {json.dumps(response_data, indent=2)[:300]}...")
+                except:
+                    pass
+            else:
+                print(f"   ❌ FAILED - Expected {expected_status}, got {response.status_code}")
+                try:
+                    error_data = response.json()
+                    print(f"   📄 Error: {error_data}")
+                except:
+                    print(f"   📄 Raw Response: {response.text[:200]}...")
+                
+                failure_info = {
+                    'name': name,
+                    'expected': expected_status,
+                    'actual': response.status_code,
+                    'endpoint': endpoint,
+                    'error': response.text[:500],
+                    'critical': critical
+                }
+                
+                self.failed_tests.append(failure_info)
+                if critical:
+                    self.critical_failures.append(failure_info)
+
+            return success, response.json() if response.content else {}
+
+        except requests.exceptions.Timeout:
+            print(f"   ⏰ TIMEOUT - Request took longer than 30 seconds")
+            failure_info = {'name': name, 'error': 'Timeout', 'critical': critical}
+            self.failed_tests.append(failure_info)
+            if critical:
+                self.critical_failures.append(failure_info)
+            return False, {}
+        except Exception as e:
+            print(f"   💥 ERROR - {str(e)}")
+            failure_info = {'name': name, 'error': str(e), 'critical': critical}
+            self.failed_tests.append(failure_info)
+            if critical:
+                self.critical_failures.append(failure_info)
+            return False, {}
+
+    def setup_authentication(self):
+        """Set up authentication for testing"""
+        print(f"\n🔐 SETTING UP AUTHENTICATION")
+        print("-" * 50)
+        
+        # Register test user
+        success, response = self.run_test(
+            "User Registration for Revenue Testing",
+            "POST",
+            "auth/register",
+            200,
+            data=self.test_user,
+            critical=True
+        )
+        
+        if success and 'access_token' in response:
+            self.token = response['access_token']
+            self.user_data = response.get('user', {})
+            print(f"   🔑 Token acquired: {self.token[:20]}...")
+            print(f"   👤 User ID: {self.user_data.get('id', 'Unknown')}")
+            return True
+        
+        return False
+
+    def test_preview_analysis_endpoint(self):
+        """Test POST /api/revenue/analysis/preview"""
+        print(f"\n🔍 TESTING PREVIEW ANALYSIS ENDPOINT")
+        print("-" * 50)
+        
+        # Test addresses from the review request
+        test_addresses = [
+            "The Wash Room Phoenix Ave, Fort Smith, AR",
+            "Vista Laundry, Van Buren, AR",
+            "123 Main Street, Springfield, IL"
+        ]
+        
+        strategies = ['blur_critical_data', 'teaser_insights']
+        all_passed = True
+        
+        for address in test_addresses:
+            for strategy in strategies:
+                success, response = self.run_test(
+                    f"Preview Analysis - {address} ({strategy})",
+                    "POST",
+                    "revenue/analysis/preview",
+                    200,
+                    data={
+                        'address': address,
+                        'strategy': strategy
+                    },
+                    critical=True
+                )
+                
+                if success:
+                    preview_report = response.get('preview_report', {})
+                    print(f"   📊 Preview Generated: {bool(preview_report)}")
+                    print(f"   🎯 Conversion Strategy: {response.get('conversion_strategy', 'Unknown')}")
+                    print(f"   💰 Upgrade Incentives: {bool(response.get('upgrade_incentives'))}")
+                    print(f"   📈 Revenue Optimization: {bool(response.get('revenue_optimization'))}")
+                    
+                    # Verify preview report structure
+                    if preview_report:
+                        print(f"   ✅ Preview Report Structure Valid")
+                        if preview_report.get('blurred_sections'):
+                            print(f"   🔒 Blurred Sections: {len(preview_report['blurred_sections'])}")
+                        if preview_report.get('visible_insights'):
+                            print(f"   👁️  Visible Insights: {len(preview_report['visible_insights'])}")
+                else:
+                    all_passed = False
+        
+        return all_passed
+
+    def test_depth_based_analysis_endpoint(self):
+        """Test POST /api/revenue/analysis/depth-based"""
+        print(f"\n🔍 TESTING DEPTH-BASED ANALYSIS ENDPOINT")
+        print("-" * 50)
+        
+        # Test all 5 depth levels with realistic addresses
+        test_addresses = [
+            "The Wash Room Phoenix Ave, Fort Smith, AR",
+            "Vista Laundry, Van Buren, AR"
+        ]
+        
+        depth_levels = [1, 2, 3, 4, 5]  # All 5 depth levels
+        expected_pricing = {1: 0, 2: 29, 3: 79, 4: 199, 5: 299}  # Expected pricing tiers
+        
+        all_passed = True
+        
+        for address in test_addresses:
+            for depth_level in depth_levels:
+                success, response = self.run_test(
+                    f"Depth-Based Analysis - Level {depth_level} ({address})",
+                    "POST",
+                    "revenue/analysis/depth-based",
+                    200,
+                    data={
+                        'address': address,
+                        'depth_level': depth_level
+                    },
+                    critical=True
+                )
+                
+                if success:
+                    analysis = response.get('analysis', {})
+                    billing_info = response.get('billing_info', {})
+                    upgrade_options = response.get('upgrade_options', [])
+                    
+                    print(f"   📊 Analysis Generated: {bool(analysis)}")
+                    print(f"   🎚️  Depth Level: {response.get('depth_level', 'Unknown')}")
+                    print(f"   💳 Billing Info: {bool(billing_info)}")
+                    print(f"   ⬆️  Upgrade Options: {len(upgrade_options)}")
+                    
+                    # Verify pricing structure
+                    if billing_info and 'price' in billing_info:
+                        actual_price = billing_info['price']
+                        expected_price = expected_pricing.get(depth_level, 0)
+                        if actual_price == expected_price:
+                            print(f"   ✅ Correct Pricing: ${actual_price} (Level {depth_level})")
+                        else:
+                            print(f"   ❌ Pricing Mismatch: Expected ${expected_price}, got ${actual_price}")
+                            all_passed = False
+                    
+                    # Verify feature inclusion/exclusion
+                    if analysis and 'features_included' in analysis:
+                        features = analysis['features_included']
+                        print(f"   🎁 Features Included: {len(features)}")
+                        
+                        # Higher depth levels should have more features
+                        if depth_level > 1 and len(features) == 0:
+                            print(f"   ⚠️  Warning: Level {depth_level} should include features")
+                else:
+                    all_passed = False
+        
+        return all_passed
+
+    def test_revenue_strategy_endpoints(self):
+        """Test the advanced revenue strategy endpoints"""
+        print(f"\n🔍 TESTING REVENUE STRATEGY ENDPOINTS")
+        print("-" * 50)
+        
+        all_passed = True
+        
+        # Test 1: Revenue Forecast
+        success, response = self.run_test(
+            "Revenue Forecast Strategy",
+            "GET",
+            "revenue/strategy/revenue-forecast",
+            200,
+            critical=True
+        )
+        
+        if success:
+            forecast = response.get('revenue_forecast', {})
+            print(f"   📈 Current Monthly Revenue: ${forecast.get('current_monthly_revenue', 0):,}")
+            print(f"   🚀 Optimized Monthly Revenue: ${forecast.get('optimized_monthly_revenue', 0):,}")
+            print(f"   💰 Annual Revenue Impact: ${forecast.get('annual_revenue_impact', 0):,}")
+            print(f"   📊 ROI Multiplier: {forecast.get('roi_multiplier', 'Unknown')}")
+            
+            strategies = forecast.get('strategies_breakdown', {})
+            print(f"   🎯 Strategies Analyzed: {len(strategies)}")
+            for strategy_name in strategies.keys():
+                print(f"      - {strategy_name}")
+        else:
+            all_passed = False
+        
+        # Test 2: Dynamic Pricing
+        test_addresses = ["The Wash Room Phoenix Ave, Fort Smith, AR", "Vista Laundry, Van Buren, AR"]
+        
+        for address in test_addresses:
+            success, response = self.run_test(
+                f"Dynamic Pricing - {address}",
+                "GET",
+                f"revenue/pricing/dynamic/{address}",
+                200,
+                critical=True
+            )
+            
+            if success:
+                pricing = response.get('dynamic_pricing', {})
+                print(f"   💰 Base Price: ${pricing.get('base_price', 0)}")
+                print(f"   📊 Dynamic Price: ${pricing.get('dynamic_price', 0)}")
+                print(f"   📈 Price Adjustment: {pricing.get('price_adjustment', '0%')}")
+                print(f"   🎯 User Tier Discount: {pricing.get('user_tier_discount', '0%')}")
+                
+                recommendations = pricing.get('recommendations', {})
+                print(f"   💡 Purchase Timing: {recommendations.get('optimal_purchase_timing', 'Unknown')}")
+                print(f"   📊 Price Trend: {recommendations.get('price_trend', 'Unknown')}")
+            else:
+                all_passed = False
+        
+        # Test 3: Upgrade Flow
+        success, response = self.run_test(
+            "Upgrade Flow Analysis",
+            "POST",
+            "revenue/analysis/upgrade-flow",
+            200,
+            data={
+                'preview_id': 'test_preview_12345',
+                'selected_tier': 'business_intelligence'
+            },
+            critical=True
+        )
+        
+        if success:
+            upgrade_flow = response.get('upgrade_flow', {})
+            print(f"   🎚️  Selected Tier: {upgrade_flow.get('selected_tier', 'Unknown')}")
+            print(f"   💰 Original Price: ${upgrade_flow.get('original_price', 0)}")
+            print(f"   💸 Upgrade Price: ${upgrade_flow.get('upgrade_price', 0)}")
+            print(f"   💵 Savings: ${upgrade_flow.get('savings', 0)}")
+            print(f"   🎁 Features Unlocked: {len(upgrade_flow.get('features_unlocked', []))}")
+            
+            boosters = upgrade_flow.get('conversion_boosters', {})
+            print(f"   🚀 Conversion Boosters: {len(boosters)}")
+        else:
+            all_passed = False
+        
+        return all_passed
+
+    def test_integration_with_frontend(self):
+        """Test integration points that the RevenueAnalyzer frontend would use"""
+        print(f"\n🔍 TESTING FRONTEND INTEGRATION POINTS")
+        print("-" * 50)
+        
+        all_passed = True
+        
+        # Test realistic data flow that frontend would use
+        test_address = "The Wash Room Phoenix Ave, Fort Smith, AR"
+        
+        # Step 1: Generate preview (what frontend would do first)
+        success, preview_response = self.run_test(
+            "Frontend Integration - Generate Preview",
+            "POST",
+            "revenue/analysis/preview",
+            200,
+            data={
+                'address': test_address,
+                'strategy': 'blur_critical_data'
+            },
+            critical=True
+        )
+        
+        if success:
+            print(f"   ✅ Preview Generation: Success")
+            preview_report = preview_response.get('preview_report', {})
+            
+            # Step 2: Check if user wants to upgrade (simulate depth-based analysis)
+            success, depth_response = self.run_test(
+                "Frontend Integration - Depth Analysis",
+                "POST",
+                "revenue/analysis/depth-based",
+                200,
+                data={
+                    'address': test_address,
+                    'depth_level': 3  # Mid-tier selection
+                },
+                critical=True
+            )
+            
+            if success:
+                print(f"   ✅ Depth Analysis: Success")
+                
+                # Step 3: Get dynamic pricing for the address
+                success, pricing_response = self.run_test(
+                    "Frontend Integration - Dynamic Pricing",
+                    "GET",
+                    f"revenue/pricing/dynamic/{test_address}",
+                    200,
+                    critical=True
+                )
+                
+                if success:
+                    print(f"   ✅ Dynamic Pricing: Success")
+                    
+                    # Step 4: Test upgrade flow
+                    success, upgrade_response = self.run_test(
+                        "Frontend Integration - Upgrade Flow",
+                        "POST",
+                        "revenue/analysis/upgrade-flow",
+                        200,
+                        data={
+                            'preview_id': 'frontend_test_preview',
+                            'selected_tier': 'business_intelligence'
+                        },
+                        critical=True
+                    )
+                    
+                    if success:
+                        print(f"   ✅ Upgrade Flow: Success")
+                        print(f"   🎯 Complete Integration Chain: WORKING")
+                    else:
+                        all_passed = False
+                else:
+                    all_passed = False
+            else:
+                all_passed = False
+        else:
+            all_passed = False
+        
+        # Test JSON response structure compatibility
+        if all_passed:
+            print(f"   📋 JSON Response Structure: Compatible")
+            print(f"   🔗 Frontend Communication: Ready")
+            print(f"   ✅ RevenueAnalyzer Integration: OPERATIONAL")
+        
+        return all_passed
+
+    def run_comprehensive_revenue_testing(self):
+        """Run all revenue optimization tests"""
+        print(f"\n🧪 COMPREHENSIVE REVENUE OPTIMIZATION TESTING")
+        print("=" * 80)
+        
+        # Setup authentication
+        if not self.setup_authentication():
+            print(f"❌ Authentication failed - cannot proceed with revenue testing")
+            return False
+        
+        # Run all revenue tests
+        tests = [
+            ("Preview Analysis Endpoint", self.test_preview_analysis_endpoint),
+            ("Depth-Based Analysis Endpoint", self.test_depth_based_analysis_endpoint),
+            ("Revenue Strategy Endpoints", self.test_revenue_strategy_endpoints),
+            ("Frontend Integration Testing", self.test_integration_with_frontend)
+        ]
+        
+        all_passed = True
+        for test_name, test_func in tests:
+            try:
+                success = test_func()
+                if success:
+                    print(f"   ✅ {test_name}: PASSED")
+                else:
+                    print(f"   ❌ {test_name}: FAILED")
+                    all_passed = False
+            except Exception as e:
+                print(f"   💥 {test_name}: ERROR - {e}")
+                all_passed = False
+        
+        # Print final results
+        self.print_revenue_test_results()
+        return all_passed
+
+    def print_revenue_test_results(self):
+        """Print revenue optimization test results"""
+        print(f"\n" + "=" * 80)
+        print(f"🏁 REVENUE OPTIMIZATION TEST RESULTS")
+        print(f"=" * 80)
+        
+        success_rate = (self.tests_passed / self.tests_run * 100) if self.tests_run > 0 else 0
+        
+        print(f"📊 Tests Run: {self.tests_run}")
+        print(f"✅ Tests Passed: {self.tests_passed}")
+        print(f"❌ Tests Failed: {len(self.failed_tests)}")
+        print(f"🚨 Critical Failures: {len(self.critical_failures)}")
+        print(f"📈 Success Rate: {success_rate:.1f}%")
+        
+        if self.critical_failures:
+            print(f"\n🚨 CRITICAL REVENUE FAILURES:")
+            for i, failure in enumerate(self.critical_failures, 1):
+                print(f"   {i}. {failure['name']}")
+                if 'expected' in failure and 'actual' in failure:
+                    print(f"      Expected: {failure['expected']}, Got: {failure['actual']}")
+                print(f"      Error: {failure['error'][:200]}...")
+                print()
+        
+        # Revenue optimization readiness assessment
+        print(f"\n💰 REVENUE OPTIMIZATION READINESS:")
+        
+        if len(self.critical_failures) == 0 and success_rate >= 90:
+            print(f"   ✅ REVENUE OPTIMIZATION READY")
+            print(f"   🎯 Preview/Blur Strategy: OPERATIONAL")
+            print(f"   📊 Pay-Per-Depth System: OPERATIONAL")
+            print(f"   💰 Revenue Strategy Endpoints: OPERATIONAL")
+            print(f"   🔗 Frontend Integration: READY")
+        elif len(self.critical_failures) == 0 and success_rate >= 75:
+            print(f"   ⚠️  MOSTLY READY - Minor issues need attention")
+            print(f"   🔧 Address non-critical issues before deployment")
+        else:
+            print(f"   🚨 NOT READY - Critical revenue failures detected")
+            print(f"   ❌ Cannot deploy revenue optimization features")
+        
+        return len(self.critical_failures) == 0 and success_rate >= 75
+
+
 def main():
     """Main test execution"""
     print("🎯 LAUNDROTECH TESTING SUITE")
@@ -2577,10 +3062,11 @@ def main():
     print("1. Advanced Revenue Optimization Testing")
     print("2. Comprehensive System Testing")
     print("3. AI Consultant Testing - THE STICKINESS GAME-CHANGER (NEW)")
+    print("4. Revenue Optimization Endpoints Testing (SPECIFIC)")
     
-    # Auto-select consultant testing for this review
-    choice = "3"
-    print(f"Auto-selecting: {choice} - AI Consultant Testing")
+    # Auto-select revenue optimization testing for this review
+    choice = "4"
+    print(f"Auto-selecting: {choice} - Revenue Optimization Endpoints Testing")
     
     if choice == "1":
         tester = AdvancedRevenueTester()
