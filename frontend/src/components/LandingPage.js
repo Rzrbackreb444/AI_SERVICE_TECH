@@ -192,7 +192,7 @@ const LandingPage = ({ onOpenAuth }) => {
       </div>
 
       {/* Hero Section */}
-      <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
+      <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-16 sm:pt-20">
         <div className="relative z-10 max-w-8xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -200,16 +200,14 @@ const LandingPage = ({ onOpenAuth }) => {
             transition={{ duration: 1, ease: "easeOut" }}
           >
             {/* Premium LaundroTech Branding */}
-            <div className="mb-12">
-              {/* Moved AI Analysis Demo to better position above */}
-              
+            <div className="mb-8 sm:mb-12">
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 1, delay: 0.3 }}
                 className="space-y-4"
               >
-                <h1 className="text-8xl md:text-9xl lg:text-[10rem] font-black mb-4 tracking-tight leading-none">
+                <h1 className="text-6xl sm:text-7xl md:text-8xl lg:text-9xl xl:text-[10rem] font-black mb-4 tracking-tight leading-none">
                   <span className="bg-gradient-to-r from-cyan-400 via-blue-400 to-emerald-400 bg-clip-text text-transparent block">
                     LaundroTech
                   </span>
@@ -221,8 +219,8 @@ const LandingPage = ({ onOpenAuth }) => {
                   transition={{ duration: 1, delay: 0.5 }}
                   className="space-y-2"
                 >
-                  <p className="text-2xl md:text-3xl text-slate-300 font-medium">Powered by SiteAtlas</p>
-                  <p className="text-lg text-slate-400">Advanced Intelligence Platform</p>
+                  <p className="text-lg sm:text-xl md:text-2xl lg:text-3xl text-slate-300 font-medium">Powered by SiteAtlas</p>
+                  <p className="text-sm sm:text-base lg:text-lg text-slate-400">Advanced Intelligence Platform</p>
                 </motion.div>
               </motion.div>
             </div>
@@ -231,7 +229,7 @@ const LandingPage = ({ onOpenAuth }) => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 1, delay: 0.7 }}
-              className="text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-8 leading-tight"
+              className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-white mb-6 sm:mb-8 leading-tight"
             >
               Turn Location Data Into
               <br />
@@ -244,7 +242,7 @@ const LandingPage = ({ onOpenAuth }) => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 1, delay: 0.9 }}
-              className="text-xl md:text-2xl text-slate-300 mb-12 max-w-4xl mx-auto leading-relaxed"
+              className="text-lg sm:text-xl md:text-2xl text-slate-300 mb-8 sm:mb-12 max-w-4xl mx-auto leading-relaxed px-4"
             >
               Next-generation algorithms analyze market patterns humans can't detect. Real-time intelligence 
               across 156+ data points delivers unprecedented location insights.
