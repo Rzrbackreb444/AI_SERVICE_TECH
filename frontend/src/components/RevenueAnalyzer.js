@@ -492,92 +492,219 @@ const RevenueAnalyzer = () => {
               </div>
             </div>
 
-            {/* Blurred Content Sections */}
+            {/* Methodology and Intelligence Sections */}
             <div className="grid md:grid-cols-2 gap-6">
-              {/* Demographics Preview */}
-              <div className="glass-card p-6">
-                <h3 className="text-xl font-bold text-white mb-4 flex items-center">
-                  <ChartBarIcon className="w-6 h-6 mr-2 text-blue-400" />
-                  Demographics Analysis
-                </h3>
-                <div className="space-y-3">
-                  <div className="flex justify-between">
-                    <span className="text-slate-400">Population:</span>
-                    <span className="text-white font-bold">{previewReport.demographics_preview.population?.toLocaleString()}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-slate-400">Median Age:</span>
-                    <span className="text-white font-bold">{previewReport.demographics_preview.median_age}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-slate-400">Income Range:</span>
-                    <span className="text-orange-400 font-bold">{previewReport.demographics_preview.median_income_range}</span>
-                  </div>
-                  <div className="bg-slate-800/50 p-3 rounded-lg blur-sm">
-                    <div className="text-slate-400 text-sm">{previewReport.demographics_preview.education_level}</div>
+              {/* Analysis Methodology */}
+              {previewReport.analysis_methodology && (
+                <div className="glass-card p-6">
+                  <h3 className="text-xl font-bold text-white mb-4 flex items-center">
+                    <ChartBarIcon className="w-6 h-6 mr-2 text-blue-400" />
+                    Analysis Methodology
+                  </h3>
+                  <div className="space-y-4">
+                    <div>
+                      <h4 className="text-sm font-semibold text-slate-300 mb-2">Data Sources Analyzed:</h4>
+                      <div className="space-y-1">
+                        {previewReport.analysis_methodology.data_sources_analyzed.map((source, i) => (
+                          <div key={i} className="text-slate-400 text-sm flex items-center">
+                            <CheckCircleIcon className="w-3 h-3 mr-2 text-cyan-400" />
+                            {source}
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                    <div>
+                      <h4 className="text-sm font-semibold text-slate-300 mb-2">AI Algorithms Used:</h4>
+                      <div className="space-y-1">
+                        {previewReport.analysis_methodology.ai_algorithms_used.slice(0, 3).map((algorithm, i) => (
+                          <div key={i} className="text-slate-400 text-sm flex items-center">
+                            <CheckCircleIcon className="w-3 h-3 mr-2 text-purple-400" />
+                            {algorithm}
+                          </div>
+                        ))}
+                        <div className="text-slate-500 text-xs mt-2">+ {previewReport.analysis_methodology.ai_algorithms_used.length - 3} more algorithms</div>
+                      </div>
+                    </div>
                   </div>
                 </div>
-              </div>
+              )}
 
-              {/* Competition Overview */}
-              <div className="glass-card p-6">
-                <h3 className="text-xl font-bold text-white mb-4 flex items-center">
-                  <BuildingOfficeIcon className="w-6 h-6 mr-2 text-red-400" />
-                  Competition Analysis
-                </h3>
-                <div className="space-y-3">
-                  <div className="flex justify-between">
-                    <span className="text-slate-400">Total Competitors:</span>
-                    <span className="text-white font-bold">{previewReport.competition_overview.total_competitors}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-slate-400">Nearest:</span>
-                    <span className="text-white font-bold">{previewReport.competition_overview.nearest_competitor}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-slate-400">Density:</span>
-                    <span className="text-white font-bold">{previewReport.competition_overview.competitive_density}</span>
-                  </div>
-                  <div className="bg-slate-800/50 p-3 rounded-lg blur-sm">
-                    <div className="text-slate-400 text-sm">{previewReport.competition_overview.detailed_analysis}</div>
+              {/* Competitive Intelligence */}
+              {previewReport.competitive_intelligence && (
+                <div className="glass-card p-6">
+                  <h3 className="text-xl font-bold text-white mb-4 flex items-center">
+                    <BuildingOfficeIcon className="w-6 h-6 mr-2 text-red-400" />
+                    Competitive Intelligence
+                  </h3>
+                  <div className="space-y-3">
+                    <div>
+                      <span className="text-slate-400 text-sm">Market Position:</span>
+                      <div className="text-white font-bold">{previewReport.competitive_intelligence.market_positioning}</div>
+                    </div>
+                    
+                    <div>
+                      <h4 className="text-sm font-semibold text-slate-300 mb-2">Service Gaps Identified:</h4>
+                      <div className="space-y-1">
+                        {previewReport.competitive_intelligence.service_gaps_identified.map((gap, i) => (
+                          <div key={i} className="text-slate-400 text-sm flex items-center">
+                            <CheckCircleIcon className="w-3 h-3 mr-2 text-emerald-400" />
+                            {gap}
+                          </div>
+                        ))}
+                      </div>
+                    </div>
                   </div>
                 </div>
-              </div>
+              )}
             </div>
 
-            {/* ROI Preview (Heavily Blurred) */}
-            <div className="glass-card p-6">
-              <h3 className="text-xl font-bold text-white mb-4 flex items-center">
-                <CurrencyDollarIcon className="w-6 h-6 mr-2 text-green-400" />
-                Financial Projections
-                <LockClosedIcon className="w-5 h-5 ml-2 text-orange-400" />
-              </h3>
-              <div className="grid md:grid-cols-3 gap-6">
-                <div className="text-center blur-sm">
-                  <div className="text-2xl font-bold text-green-400">
-                    {previewReport.roi_preview.monthly_revenue_potential}
+            {/* Location Analysis */}
+            {previewReport.location_analysis && (
+              <div className="glass-card p-6">
+                <h3 className="text-xl font-bold text-white mb-4 flex items-center">
+                  <MapPinIcon className="w-6 h-6 mr-2 text-green-400" />
+                  Location Intelligence Analysis
+                </h3>
+                <div className="grid md:grid-cols-2 gap-6">
+                  <div>
+                    <h4 className="text-lg font-semibold text-white mb-3">Site Advantages</h4>
+                    <div className="space-y-2">
+                      {previewReport.location_analysis.site_advantages.map((advantage, i) => (
+                        <div key={i} className="text-slate-300 text-sm flex items-start">
+                          <CheckCircleIcon className="w-4 h-4 mr-2 text-green-400 mt-0.5" />
+                          {advantage}
+                        </div>
+                      ))}
+                    </div>
                   </div>
-                  <div className="text-slate-400">Monthly Revenue</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-2xl font-bold text-orange-400">
-                    {previewReport.roi_preview.investment_range}
+                  
+                  <div>
+                    <h4 className="text-lg font-semibold text-white mb-3">Intelligence Metrics</h4>
+                    <div className="space-y-3">
+                      <div className="bg-slate-800/50 p-3 rounded-lg">
+                        <div className="text-cyan-400 font-bold">Traffic Analysis</div>
+                        <div className="text-slate-300 text-sm">{previewReport.location_analysis.traffic_analysis}</div>
+                      </div>
+                      <div className="bg-slate-800/50 p-3 rounded-lg">
+                        <div className="text-emerald-400 font-bold">Accessibility Score</div>
+                        <div className="text-slate-300 text-sm">{previewReport.location_analysis.accessibility_score}</div>
+                      </div>
+                    </div>
                   </div>
-                  <div className="text-slate-400">Investment Range</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-2xl font-bold text-blue-400">
-                    {previewReport.roi_preview.roi_timeline}
-                  </div>
-                  <div className="text-slate-400">ROI Timeline</div>
                 </div>
               </div>
-              
-              <div className="mt-6 bg-slate-800/30 p-6 rounded-lg blur-md">
-                <p className="text-slate-400 text-center">{previewReport.roi_preview.detailed_projections}</p>
-                <p className="text-slate-400 text-center mt-2">{previewReport.roi_preview.cash_flow_analysis}</p>
+            )}
+
+            {/* Vista Laundry Decision Framework */}
+            {previewReport.vista_laundry_analysis && (
+              <div className="glass-card p-6 border border-orange-400/30">
+                <h3 className="text-xl font-bold text-white mb-4 flex items-center">
+                  <CurrencyDollarIcon className="w-6 h-6 mr-2 text-orange-400" />
+                  Vista Laundry Decision Analysis Framework
+                </h3>
+                <div className="grid md:grid-cols-2 gap-6">
+                  <div>
+                    <h4 className="text-lg font-semibold text-white mb-3">Renovation Considerations</h4>
+                    <div className="space-y-2">
+                      {previewReport.vista_laundry_analysis.decision_framework.renovation_considerations.map((consideration, i) => (
+                        <div key={i} className="text-slate-300 text-sm flex items-start">
+                          <CheckCircleIcon className="w-4 h-4 mr-2 text-yellow-400 mt-0.5" />
+                          {consideration}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                  
+                  <div>
+                    <h4 className="text-lg font-semibold text-white mb-3">New Construction Benefits</h4>
+                    <div className="space-y-2">
+                      {previewReport.vista_laundry_analysis.decision_framework.new_construction_benefits.map((benefit, i) => (
+                        <div key={i} className="text-slate-300 text-sm flex items-start">
+                          <CheckCircleIcon className="w-4 h-4 mr-2 text-green-400 mt-0.5" />
+                          {benefit}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+                
+                <div className="mt-4 p-4 bg-orange-500/20 border border-orange-500/30 rounded-lg">
+                  <div className="text-orange-300 font-semibold mb-2">Methodology Applied:</div>
+                  <div className="text-orange-200 text-sm">{previewReport.vista_laundry_analysis.decision_framework.methodology_applied}</div>
+                  <div className="text-orange-200 text-xs mt-2 italic">{previewReport.vista_laundry_analysis.decision_framework.privacy_note}</div>
+                </div>
               </div>
-            </div>
+            )}
+
+            {/* Wash Room Success Analysis */}
+            {previewReport.wash_room_success_analysis && (
+              <div className="glass-card p-6 border border-cyan-400/30">
+                <h3 className="text-xl font-bold text-white mb-4 flex items-center">
+                  <CurrencyDollarIcon className="w-6 h-6 mr-2 text-cyan-400" />
+                  The Wash Room Success Analysis
+                </h3>
+                <div>
+                  <h4 className="text-lg font-semibold text-white mb-3">Expansion Strategy Framework</h4>
+                  <div className="space-y-2 mb-4">
+                    {previewReport.wash_room_success_analysis.expansion_strategy.map((strategy, i) => (
+                      <div key={i} className="text-slate-300 text-sm flex items-start">
+                        <CheckCircleIcon className="w-4 h-4 mr-2 text-cyan-400 mt-0.5" />
+                        {strategy}
+                      </div>
+                    ))}
+                  </div>
+                  
+                  <div className="p-4 bg-cyan-500/20 border border-cyan-500/30 rounded-lg">
+                    <div className="text-cyan-300 font-semibold mb-2">Growth Methodology:</div>
+                    <div className="text-cyan-200 text-sm">{previewReport.wash_room_success_analysis.growth_methodology}</div>
+                    <div className="text-cyan-200 text-xs mt-2 italic">{previewReport.wash_room_success_analysis.privacy_note}</div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Intelligence Demonstration */}
+            {previewReport.intelligence_demonstration && (
+              <div className="glass-card p-6 border border-emerald-400/30">
+                <h3 className="text-xl font-bold text-white mb-4 flex items-center">
+                  <SparklesIcon className="w-6 h-6 mr-2 text-emerald-400" />
+                  Intelligence Platform Demonstration
+                </h3>
+                <div className="grid md:grid-cols-2 gap-6">
+                  <div>
+                    <h4 className="text-lg font-semibold text-white mb-3">What This Demonstrates</h4>
+                    <div className="space-y-2">
+                      {previewReport.intelligence_demonstration.what_this_shows.map((item, i) => (
+                        <div key={i} className="text-slate-300 text-sm flex items-start">
+                          <CheckCircleIcon className="w-4 h-4 mr-2 text-emerald-400 mt-0.5" />
+                          {item}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                  
+                  <div>
+                    <h4 className="text-lg font-semibold text-white mb-3">Platform Capabilities</h4>
+                    <div className="space-y-3">
+                      <div className="bg-slate-800/50 p-3 rounded-lg">
+                        <div className="text-emerald-400 font-bold">{previewReport.intelligence_demonstration.analysis_depth}</div>
+                        <div className="text-slate-300 text-sm">Comprehensive Analysis</div>
+                      </div>
+                      <div className="bg-slate-800/50 p-3 rounded-lg">
+                        <div className="text-blue-400 font-bold">{previewReport.intelligence_demonstration.ai_confidence}</div>
+                        <div className="text-slate-300 text-sm">AI Accuracy Rate</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+                <div className="mt-4 p-4 bg-slate-800/30 rounded-lg">
+                  <div className="text-slate-300 text-sm text-center italic">
+                    {previewReport.intelligence_demonstration.professional_note}
+                  </div>
+                </div>
+              </div>
+            )}
 
             {/* Upgrade Call-to-Action */}
             <div className="glass-card p-8 border border-cyan-400/30">
