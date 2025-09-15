@@ -217,6 +217,14 @@ function App() {
               path="/about" 
               element={<AboutUs />} 
             />
+            <Route 
+              path="/media-kit" 
+              element={<MediaKit />} 
+            />
+            <Route 
+              path="/api-docs" 
+              element={<APIDocumentation />} 
+            />
 
             {/* Case Study Showcase - Public Access */}
             <Route path="/analyze" element={<RevenueAnalyzer />} />
