@@ -406,7 +406,7 @@ const ProfessionalMarketplace = () => {
             >
               <div className="flex items-center justify-between mb-4">
                 <div className="p-3 rounded-xl bg-gradient-to-r from-orange-500 to-red-500 bg-opacity-10">
-                  <TrendingUpIcon className="w-6 h-6 text-white" />
+                  <ArrowTrendingUpIcon className="w-6 h-6 text-white" />
                 </div>
               </div>
               <div>
