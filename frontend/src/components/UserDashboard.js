@@ -174,9 +174,20 @@ const UserDashboard = () => {
               <Link to="/facebook-group" className="text-slate-300 hover:text-white transition-colors">
                 Facebook Group
               </Link>
-              <div className="flex items-center space-x-3">
+              <div className="flex items-center space-x-4">
                 <UserCircleIcon className="w-8 h-8 text-blue-400" />
                 <span className="text-white font-medium">{user?.full_name || 'User'}</span>
+                <button
+                  onClick={() => {
+                    localStorage.removeItem('token');
+                    localStorage.removeItem('user');
+                    window.location.href = '/';
+                  }}
+                  className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors duration-200 flex items-center space-x-2"
+                >
+                  <ArrowPathIcon className="w-4 h-4" />
+                  <span>Sign Out</span>
+                </button>
               </div>
             </div>
           </div>
