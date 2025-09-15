@@ -98,7 +98,13 @@ function App() {
         }
       } catch (error) {
         console.error('Token verification failed:', error);
-        logout();
+        // Only logout on 401 Unauthorized, not on other errors
+        if (error.response?.status === 401) {
+          logout();
+        } else {
+          // For other errors, just stop loading but keep user logged in
+          setLoading(false);
+        }
       }
     };
 
