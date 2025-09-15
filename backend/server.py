@@ -1185,10 +1185,14 @@ async def analyze_location(
         raise HTTPException(status_code=403, detail="Upgrade subscription to access this analysis type")
     
     # Use ENTERPRISE intelligence engine with ALL APIs integrated
-    enterprise_analysis = await enterprise_engine.comprehensive_location_analysis(
+    enterprise_analysis = await enterprise_analysis_engine.comprehensive_enterprise_analysis(
         request.address,
         request.analysis_type
     )
+    
+    # Generate premium visualizations
+    visualization_suite = await premium_viz_engine.generate_comprehensive_visualization_suite(enterprise_analysis)
+    enterprise_analysis['premium_visualizations'] = visualization_suite
     
     # Add Next-Gen AI scoring
     if enterprise_analysis and not enterprise_analysis.get('error'):
