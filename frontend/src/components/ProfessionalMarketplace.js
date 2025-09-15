@@ -14,7 +14,7 @@ import {
   ArrowRightIcon,
   SparklesIcon,
   PlusIcon,
-  FunnelIcon,
+  FunnelIcon as FilterIcon,
   MagnifyingGlassIcon,
   DocumentTextIcon,
   PhoneIcon,
