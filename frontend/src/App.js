@@ -438,9 +438,6 @@ function App() {
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
           
-          {/* Global AI Consultant Widget - Available on all pages */}
-          <ConsultantWidgetWrapper />
-          
           {/* Global Chat Widget - Fixed positioning with proper z-index */}
           <ChatWidget />
         </div>
