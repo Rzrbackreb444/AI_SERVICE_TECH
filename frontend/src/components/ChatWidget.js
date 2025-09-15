@@ -6,6 +6,7 @@ import {
   PaperAirplaneIcon,
   SparklesIcon
 } from '@heroicons/react/24/outline';
+import axios from 'axios';
 
 const ChatWidget = () => {
   const [isOpen, setIsOpen] = useState(false);
