@@ -720,6 +720,7 @@ const LandingPage = ({ onOpenAuth }) => {
               <h3 className="text-lg font-semibold text-white mb-4">Platform</h3>
               <ul className="space-y-2 text-slate-400 text-sm">
                 <li><Link to="/pricing" className="hover:text-white transition-colors">Pricing</Link></li>
+                <li><Link to="/api-docs" className="hover:text-white transition-colors">API Documentation</Link></li>
                 <li><a href="mailto:nick@laundryguys.net" className="hover:text-white transition-colors">Support</a></li>
                 <li><a href="mailto:nick@laundryguys.net" className="hover:text-white transition-colors">Partnership</a></li>
               </ul>
@@ -733,6 +734,16 @@ const LandingPage = ({ onOpenAuth }) => {
                   Professional Network
                 </a>
               </div>
+            </div>
+            
+            <div>
+              <h3 className="text-lg font-semibold text-white mb-4">Resources</h3>
+              <ul className="space-y-2 text-slate-400 text-sm">
+                <li><Link to="/media-kit" className="hover:text-white transition-colors">Media Kit</Link></li>
+                <li><Link to="/analyze" className="hover:text-white transition-colors">Case Studies</Link></li>
+                <li><a href="mailto:nick@laundryguys.net" className="hover:text-white transition-colors">White-Label</a></li>
+                <li><a href="mailto:nick@laundryguys.net" className="hover:text-white transition-colors">Healthcare (SiteAtlas)</a></li>
+              </ul>
             </div>
             
             <div>
