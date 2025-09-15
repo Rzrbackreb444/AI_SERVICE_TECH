@@ -177,7 +177,7 @@ const BlogSystem = () => {
             className="mb-12"
           >
             <div className="flex items-center space-x-2 mb-6">
-              <TrendingUpIcon className="w-6 h-6 text-red-400" />
+              <ArrowTrendingUpIcon className="w-6 h-6 text-red-400" />
               <h2 className="text-2xl font-bold text-white">Trending Intelligence</h2>
             </div>
             
