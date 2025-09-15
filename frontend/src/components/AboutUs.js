@@ -121,6 +121,69 @@ const AboutUs = () => {
           </motion.div>
         </div>
 
+        {/* Founder Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.4 }}
+          className="mb-16"
+        >
+          <div className="glass-card p-8 lg:p-12">
+            <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+              <div className="text-center lg:text-left">
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.8, delay: 0.6 }}
+                  className="w-48 h-48 mx-auto lg:mx-0 mb-6 rounded-full overflow-hidden border-4 border-cyan-400/30"
+                >
+                  <img 
+                    src="https://customer-assets.emergentagent.com/job_site-atlas-ai/artifacts/q1fcsvvw_IMG_1750.jpeg" 
+                    alt="Nick - Founder of LaundroTech" 
+                    className="w-full h-full object-cover"
+                  />
+                </motion.div>
+                <h3 className="text-2xl font-bold text-white mb-2">Nick</h3>
+                <p className="text-cyan-400 text-lg mb-4">Founder & CEO</p>
+                <div className="flex flex-wrap gap-2 justify-center lg:justify-start">
+                  <span className="bg-slate-800/50 px-3 py-1 rounded-full text-slate-300 text-sm">3rd Generation</span>
+                  <span className="bg-slate-800/50 px-3 py-1 rounded-full text-slate-300 text-sm">Arkansas Expert</span>
+                  <span className="bg-slate-800/50 px-3 py-1 rounded-full text-slate-300 text-sm">Industry Veteran</span>
+                </div>
+              </div>
+              
+              <div>
+                <h2 className="text-3xl lg:text-4xl font-bold text-white mb-6">Meet the Founder</h2>
+                <div className="space-y-4 text-slate-300 leading-relaxed">
+                  <p className="text-lg">
+                    With <strong className="text-white">three generations of Arkansas laundromat expertise</strong> running 
+                    through my family, I've seen firsthand how location intelligence can make or break 
+                    multi-million dollar investment decisions.
+                  </p>
+                  <p>
+                    After watching too many great entrepreneurs fail due to poor location analysis, 
+                    I combined our decades of industry knowledge with cutting-edge AI to create 
+                    LaundroTech Intelligence.
+                  </p>
+                  <p>
+                    <strong className="text-cyan-400">My mission is simple:</strong> Give every laundromat investor 
+                    access to the same level of intelligence that billion-dollar corporations use for their 
+                    location decisions.
+                  </p>
+                  <div className="bg-slate-800/30 border border-cyan-500/20 rounded-lg p-4 mt-6">
+                    <p className="text-cyan-300 font-semibold mb-2">Personal Note:</p>
+                    <p className="text-sm italic">
+                      "Every analysis we provide could be the difference between someone's dream succeeding 
+                      or failing. That's why we built LaundroTech to deliver institutional-grade intelligence 
+                      with the personal touch of three generations of industry experience."
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </motion.div>
+
         {/* Team Section */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
