@@ -388,6 +388,27 @@ What would you like to explore first?`;
     // Prospective Owner Path
     if (input.includes('prospective') || input.includes('exploring') || input.includes('investment')) {
       updateUserProfile({ stage: 'prospective_owner' });
+      
+      // Try to get user's location for personalized messaging
+      try {
+        const response = await axios.get(`${API}/listings/personalized`);
+        if (response.data.success && response.data.user_location) {
+          const location = response.data.user_location;
+          return `Great! I help investors find profitable laundromat opportunities.
+
+**I detected you're in ${location.city}, ${location.state}** - let me show you what's available:
+
+**Personalized Listings** - Current laundromats for sale in your area
+**Location Analysis** - Analyze any address for investment potential
+**Market Research** - Local demographics, competition, and success probability  
+**Financial Modeling** - ROI projections and investment requirements
+
+Would you like to see listings near you or analyze a specific location?`;
+        }
+      } catch (error) {
+        // Fallback to generic message
+      }
+      
       return `Great! I help investors find profitable laundromat opportunities.
 
 **Location Analysis** - Analyze any address for investment potential
