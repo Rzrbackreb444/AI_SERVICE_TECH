@@ -243,6 +243,9 @@ function App() {
 
             {/* NEW: Professional Marketplace */}
             <Route path="/marketplace" element={<MarketplaceDashboard />} />
+            
+            {/* NEW: User Management System */}
+            <Route path="/account" element={<UserManagement />} />
 
             {/* Protected Routes */}
             <Route path="/dashboard" element={
