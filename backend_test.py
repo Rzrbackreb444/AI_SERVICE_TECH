@@ -2122,14 +2122,20 @@ class ComprehensivePlatformAuditor:
         auth_passed = sum(1 for test in auth_tests if test())
         print(f"📊 Authentication Tests: {auth_passed}/{len(auth_tests)} passed")
         
-        # 2. Data Generation for MRR Testing
-        print(f"\n📊 DATA GENERATION FOR MRR TESTING")
+        # 2. Analytics Engine Validation
+        print(f"\n📊 ANALYTICS ENGINE VALIDATION")
         print("-" * 50)
-        data_gen_tests = [
-            self.test_analyze_endpoint_for_data_generation
+        analytics_tests = [
+            self.test_analytics_overview_endpoint,
+            self.test_analytics_revenue_endpoint,
+            self.test_analytics_user_growth_endpoint,
+            self.test_analytics_badge_distribution_endpoint,
+            self.test_analytics_conversion_funnel_endpoint,
+            self.test_analytics_geographic_endpoint,
+            self.test_analytics_cohort_analysis_endpoint
         ]
-        data_gen_passed = sum(1 for test in data_gen_tests if test())
-        print(f"📊 Data Generation Tests: {data_gen_passed}/{len(data_gen_tests)} passed")
+        analytics_passed = sum(1 for test in analytics_tests if test())
+        print(f"📊 Analytics Engine Tests: {analytics_passed}/{len(analytics_tests)} passed")
         
         # 3. NEW OPTIMIZATION ENDPOINTS - CRITICAL FOR PERFORMANCE
         print(f"\n🚀 NEW OPTIMIZATION ENDPOINTS - PERFORMANCE & REVENUE")
