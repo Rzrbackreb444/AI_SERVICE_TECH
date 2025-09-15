@@ -398,29 +398,48 @@ What specific question do you have?`;
   const generateContextualActions = (userInput) => {
     const input = userInput.toLowerCase();
     
-    if (input.includes('valuation') || input.includes('worth')) {
+    if (input.includes('support') || input.includes('help') || input.includes('problem')) {
       return [
-        { text: 'Analyze My Property', action: 'analyze' },
-        { text: 'Equipment ROI Calculator', action: 'equipment_roi' },
-        { text: 'Market Comparison', action: 'market_comp' },
-        { text: 'Growth Strategies', action: 'growth' }
+        { text: 'Billing Questions', action: 'billing' },
+        { text: 'Technical Support', action: 'support' },
+        { text: 'Account Issues', action: 'account' },
+        { text: 'Feature Demo', action: 'demo' }
       ];
     }
     
-    if (input.includes('competition') || input.includes('market')) {
+    if (input.includes('pricing') || input.includes('cost')) {
       return [
-        { text: 'Competition Analysis', action: 'competition' },
-        { text: 'Market Intelligence', action: 'market_intel' },
-        { text: 'Positioning Strategy', action: 'positioning' },
-        { text: 'Opportunity Mapping', action: 'opportunities' }
+        { text: 'View All Plans', action: 'pricing' },
+        { text: 'Free Trial', action: 'demo' },
+        { text: 'Feature Comparison', action: 'features' },
+        { text: 'Upgrade Benefits', action: 'upgrade' }
       ];
     }
     
+    if (input.includes('current owner')) {
+      return [
+        { text: 'Competition Analysis', action: 'competition_analysis' },
+        { text: 'Business Valuation', action: 'valuation' },
+        { text: 'ROI Calculator', action: 'roi' },
+        { text: 'Market Intelligence', action: 'market_intel' }
+      ];
+    }
+    
+    if (input.includes('prospective') || input.includes('exploring')) {
+      return [
+        { text: 'Analyze Location', action: 'location_analysis' },
+        { text: 'Market Research', action: 'research' },
+        { text: 'Investment Calculator', action: 'roi' },
+        { text: 'Success Probability', action: 'probability' }
+      ];
+    }
+    
+    // Default actions for general inquiries
     return [
-      { text: 'Location Analysis', action: 'location' },
-      { text: 'ROI Calculator', action: 'roi' },
-      { text: 'Market Research', action: 'research' },
-      { text: 'Get Pricing', action: 'pricing' }
+      { text: 'Platform Demo', action: 'demo' },
+      { text: 'Pricing Plans', action: 'pricing' },
+      { text: 'Location Analysis', action: 'location_analysis' },
+      { text: 'Get Support', action: 'support' }
     ];
   };
 
