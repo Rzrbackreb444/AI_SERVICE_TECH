@@ -148,9 +148,32 @@ const EnhancedConsultantWidget = () => {
     // Real Listings Feature
     if (input.includes('listings') || input.includes('properties') || input.includes('for sale')) {
       try {
-        const response = await axios.get(`${API}/listings/formatted-for-consultant`);
+        const response = await axios.get(`${API}/listings/personalized`);
         if (response.data.success) {
-          return response.data.formatted_message + "\n\n**Ready to analyze any of these opportunities?**";
+          const listings = response.data.listings;
+          const userLocation = response.data.user_location;
+          
+          let locationMessage = '';
+          if (userLocation) {
+            locationMessage = `**📍 Opportunities near ${userLocation.city}, ${userLocation.state}:**\n\n`;
+          } else {
+            locationMessage = `**🏢 Current Laundromat Opportunities:**\n\n`;
+          }
+          
+          let listingsText = '';
+          listings.slice(0, 4).forEach((listing, index) => {
+            listingsText += `**${index + 1}. ${listing.title}**\n`;
+            listingsText += `📍 ${listing.location}\n`;
+            listingsText += `💰 ${listing.price} | Revenue: ${listing.revenue}\n`;
+            listingsText += `📊 Cash Flow: ${listing.cash_flow}\n`;
+            if (listing.square_footage) {
+              listingsText += `📐 ${listing.square_footage}${listing.equipment_count ? ` | ${listing.equipment_count}` : ''}\n`;
+            }
+            listingsText += `🔗 Source: ${listing.source}\n`;
+            listingsText += `_${listing.description.substring(0, 80)}..._\n\n`;
+          });
+          
+          return locationMessage + listingsText + "**Want me to analyze any of these locations?**\nJust say 'Analyze [city name]' and I'll run our full intelligence report!";
         }
       } catch (error) {
         console.log('Using demo listings');
