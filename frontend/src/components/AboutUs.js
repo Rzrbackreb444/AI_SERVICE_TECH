@@ -271,6 +271,75 @@ const AboutUs = () => {
           </div>
         </motion.div>
 
+        {/* Contact Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 1.4 }}
+          className="mb-16"
+        >
+          <h2 className="text-4xl font-bold text-white text-center mb-12">Get in Touch</h2>
+          <div className="grid md:grid-cols-2 gap-8">
+            <div className="glass-card p-8">
+              <h3 className="text-xl font-bold text-white mb-4">Direct Contact</h3>
+              <div className="space-y-4">
+                <div className="flex items-center space-x-3">
+                  <div className="w-10 h-10 bg-cyan-500/20 rounded-lg flex items-center justify-center">
+                    <span className="text-cyan-400 text-sm font-bold">@</span>
+                  </div>
+                  <div>
+                    <div className="text-slate-400 text-sm">Email</div>
+                    <a href="mailto:nick@laundryguys.net" className="text-white hover:text-cyan-400 transition-colors">
+                      nick@laundryguys.net
+                    </a>
+                  </div>
+                </div>
+                <div className="flex items-center space-x-3">
+                  <div className="w-10 h-10 bg-emerald-500/20 rounded-lg flex items-center justify-center">
+                    <UserGroupIcon className="w-5 h-5 text-emerald-400" />
+                  </div>
+                  <div>
+                    <div className="text-slate-400 text-sm">Professional Network</div>
+                    <a 
+                      href="https://facebook.com/groups/thelaundromat" 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="text-white hover:text-emerald-400 transition-colors"
+                    >
+                      67K+ Laundromat Exchange Group
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div className="glass-card p-8">
+              <h3 className="text-xl font-bold text-white mb-4">Arkansas Expertise</h3>
+              <div className="space-y-3">
+                <div className="flex items-center space-x-3">
+                  <MapPinIcon className="w-5 h-5 text-cyan-400" />
+                  <span className="text-slate-300">Fort Smith & Van Buren Markets</span>
+                </div>
+                <div className="flex items-center space-x-3">
+                  <ShieldCheckIcon className="w-5 h-5 text-emerald-400" />
+                  <span className="text-slate-300">Equipment & Site Analysis</span>
+                </div>
+                <div className="flex items-center space-x-3">
+                  <CpuChipIcon className="w-5 h-5 text-purple-400" />
+                  <span className="text-slate-300">Investment Decision Support</span>
+                </div>
+              </div>
+              <div className="mt-6 p-4 bg-slate-800/30 rounded-lg">
+                <p className="text-slate-300 text-sm">
+                  <strong className="text-cyan-400">Personal Consultation Available</strong><br/>
+                  For critical investment decisions, I provide direct consultation 
+                  combining our AI analysis with three generations of hands-on experience.
+                </p>
+              </div>
+            </div>
+          </div>
+        </motion.div>
+
         {/* CTA Section */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
