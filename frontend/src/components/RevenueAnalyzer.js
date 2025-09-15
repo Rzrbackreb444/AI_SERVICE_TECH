@@ -480,13 +480,13 @@ const RevenueAnalyzer = () => {
                 </div>
                 <div className="text-center">
                   <div className="text-lg font-bold text-white">
-                    {previewReport.demographics_preview.population?.toLocaleString()}
+                    {previewReport.demographics_preview?.population?.toLocaleString() || 'Premium Analysis'}
                   </div>
                   <div className="text-slate-400">Population</div>
                 </div>
                 <div className="text-center">
                   <div className="text-lg font-bold text-white">
-                    {previewReport.competition_overview.total_competitors}
+                    {previewReport.competition_overview?.total_competitors || 'Intelligence Data'}
                   </div>
                   <div className="text-slate-400">Competitors</div>
                 </div>
