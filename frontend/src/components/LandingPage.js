@@ -511,13 +511,13 @@ const LandingPage = ({ onOpenAuth }) => {
               </div>
               
               <motion.button
-                onClick={onOpenAuth}
+                onClick={() => window.location.href = '/analyze'}
                 className="inline-flex items-center space-x-3 bg-slate-800 hover:bg-slate-700 text-white px-6 py-3 rounded-lg font-medium text-sm shadow-lg transition-all duration-300 w-full justify-center"
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
               >
                 <CpuChipIcon className="w-5 h-5" />
-                <span>Experience AI Analysis</span>
+                <span>See Real Case Studies</span>
               </motion.button>
             </motion.div>
 
