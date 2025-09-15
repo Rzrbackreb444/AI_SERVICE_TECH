@@ -368,10 +368,11 @@ What would you like to explore first?`;
       return `Great! I help investors find profitable laundromat opportunities.
 
 **Location Analysis** - Analyze any address for investment potential
-**Market Research** - Demographics, competition, and success probability
+**Market Research** - Demographics, competition, and success probability  
+**Real Listings** - Current laundromats for sale with instant analysis
 **Financial Modeling** - ROI projections and investment requirements
 
-Ready to analyze a specific location?`;
+Would you like to see current listings or analyze a specific location?`;
     }
 
     // Competition Intelligence (Current Owners)
