@@ -431,13 +431,19 @@ What specific question do you have?`;
   const handleQuickAction = (action) => {
     let message = '';
     switch(action) {
-      case 'exploring':
-        message = 'I\'m exploring laundromat investment opportunities';
-        updateUserProfile({ stage: 'prospect', interests: ['investment'] });
+      case 'current_owner':
+        message = 'I\'m a current laundromat owner';
+        updateUserProfile({ stage: 'current_owner' });
         break;
-      case 'owner':
-        message = 'I own laundromats and want to optimize my operations';
-        updateUserProfile({ stage: 'owner', interests: ['optimization'] });
+      case 'prospective_owner':
+        message = 'I\'m exploring laundromat investment opportunities';
+        updateUserProfile({ stage: 'prospective_owner' });
+        break;
+      case 'competition_analysis':
+        message = 'I want competition intelligence for my laundromat';
+        break;
+      case 'location_analysis':
+        message = 'I want to analyze a new location for investment';
         break;
       case 'valuation':
         message = 'How much is my laundromat worth?';
@@ -445,17 +451,17 @@ What specific question do you have?`;
       case 'roi':
         message = 'I want to analyze equipment ROI and upgrade potential';
         break;
-      case 'competition':
-        message = 'Tell me about my competition and market positioning';
+      case 'pricing':
+        message = 'What are your pricing plans?';
         break;
-      case 'analytics':
-        message = 'Show me performance analytics for my business';
+      case 'features':
+        message = 'What features does the platform have?';
         break;
-      case 'location':
-        message = 'I want to analyze a specific location';
+      case 'support':
+        message = 'I need help with my account';
         break;
-      case 'equipment':
-        message = 'Help me with equipment planning and ROI analysis';
+      case 'demo':
+        message = 'Can you show me how the platform works?';
         break;
       default:
         message = 'I need help with my laundromat business';
