@@ -12,7 +12,7 @@ import time
 import uuid
 
 class AuthenticationSystemTester:
-    def __init__(self, base_url="https://laundroinsight.preview.emergentagent.com/api"):
+    def __init__(self, base_url="https://laundrometrics.preview.emergentagent.com/api"):
         self.base_url = base_url
         self.token = None
         self.user_data = None
