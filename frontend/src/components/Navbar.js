@@ -10,7 +10,8 @@ import {
   UserCircleIcon,
   ArrowRightOnRectangleIcon,
   CpuChipIcon,
-  BellIcon
+  BellIcon,
+  BuildingOffice2Icon
 } from '@heroicons/react/24/outline';
 import { useAuth } from '../App';
 
