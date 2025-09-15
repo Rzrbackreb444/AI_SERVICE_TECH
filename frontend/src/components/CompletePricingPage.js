@@ -412,7 +412,7 @@ const CompletePricingPage = () => {
               Start Free Analysis
             </Link>
             <a
-              href="mailto:nick@laundryguys.net"
+              href="mailto:nick@laundrotech.xyz"
               className="bg-white/10 backdrop-blur-sm border border-white/20 text-white px-8 py-4 rounded-xl font-bold text-lg hover:bg-white/20 transition-all duration-300"
             >
               Contact Sales
