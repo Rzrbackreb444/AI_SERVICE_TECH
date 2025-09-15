@@ -9,7 +9,7 @@ import Navbar from './components/Navbar';
 import Dashboard from './components/Dashboard';
 import LocationAnalyzer from './components/LocationAnalyzer';
 import PricingPage from './components/PricingPage';
-import AuthModal from './components/AuthModal';
+import ImprovedAuthModal from './components/ImprovedAuthModal'; // Updated import
 import LandingPage from './components/LandingPage';
 import ProfilePage from './components/ProfilePage';
 import AnalysisHistory from './components/AnalysisHistory';
@@ -27,6 +27,8 @@ import FacebookGroupMonetization from './components/FacebookGroupMonetization';
 import MRRDashboard from './components/MRRDashboard';
 import EnterprisePortal from './components/EnterprisePortal';
 import AboutUs from './components/AboutUs';
+import RevenueAnalyzer from './components/RevenueAnalyzer'; // New revenue analyzer
+import ChatWidget from './components/ChatWidget'; // New chat widget
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
@@ -183,7 +185,7 @@ function App() {
         <div className="App min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900">
           <AnimatePresence>
             {showAuthModal && (
-              <AuthModal
+              <ImprovedAuthModal
                 mode={authMode}
                 onClose={closeAuthModal}
                 onSwitchMode={setAuthMode}
@@ -306,11 +308,10 @@ function App() {
               </ProtectedRoute>
             } />
             
+            {/* Updated analyze route to use new RevenueAnalyzer */}
             <Route path="/analyze" element={
               <ProtectedRoute>
-                <>
-                  <EnterpriseLocationAnalyzer />
-                </>
+                <RevenueAnalyzer />
               </ProtectedRoute>
             } />
             
@@ -439,6 +440,9 @@ function App() {
           
           {/* Global AI Consultant Widget - Available on all pages */}
           <ConsultantWidgetWrapper />
+          
+          {/* Global Chat Widget - Fixed positioning with proper z-index */}
+          <ChatWidget />
         </div>
       </BrowserRouter>
     </AuthProvider>
