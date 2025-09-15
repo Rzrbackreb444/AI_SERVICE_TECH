@@ -457,8 +457,8 @@ function App() {
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
           
-          {/* Global Chat Widget - Fixed positioning with proper z-index */}
-          <ChatWidget />
+          {/* Enhanced Consultant Widget - Intelligent guide to consultant transformation */}
+          <EnhancedConsultantWidget />
         </div>
       </BrowserRouter>
     </AuthProviderWithState>
