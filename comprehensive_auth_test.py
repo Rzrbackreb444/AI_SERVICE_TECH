@@ -10,7 +10,7 @@ from datetime import datetime
 import time
 
 def comprehensive_auth_test():
-    base_url = "https://siteatlas.preview.emergentagent.com/api"
+    base_url = "https://laundroinsight.preview.emergentagent.com/api"
     
     # Generate unique test user
     timestamp = datetime.now().strftime('%H%M%S%f')

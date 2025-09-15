@@ -91,7 +91,7 @@ class EmailService:
                     </div>
                     
                     <div class="cta">
-                        <a href="https://siteatlas.preview.emergentagent.com/analyze" class="button">
+                        <a href="https://laundroinsight.preview.emergentagent.com/analyze" class="button">
                             Start Your First AI Analysis
                         </a>
                     </div>
@@ -183,7 +183,7 @@ class EmailService:
                     </div>
                     
                     <div class="cta">
-                        <a href="https://siteatlas.preview.emergentagent.com/history" class="button">
+                        <a href="https://laundroinsight.preview.emergentagent.com/history" class="button">
                             View Full Analysis Report
                         </a>
                     </div>
@@ -421,7 +421,7 @@ class EmailService:
                 <div style="text-align: center; margin: 30px 0;">
                     <h3 style="color: #1F2937;">Want to Come Back?</h3>
                     <p style="color: #6B7280; margin-bottom: 20px;">You can reactivate your badge subscription anytime with just one click</p>
-                    <a href="https://siteatlas.preview.emergentagent.com/facebook-group" style="display: inline-block; background: linear-gradient(135deg, #3B82F6, #06B6D4); color: white; padding: 12px 24px; text-decoration: none; border-radius: 8px; font-weight: bold;">
+                    <a href="https://laundroinsight.preview.emergentagent.com/facebook-group" style="display: inline-block; background: linear-gradient(135deg, #3B82F6, #06B6D4); color: white; padding: 12px 24px; text-decoration: none; border-radius: 8px; font-weight: bold;">
                         Reactivate Subscription
                     </a>
                 </div>
@@ -578,7 +578,7 @@ class EmailService:
                             <p style="color: #6B7280; font-style: italic;">{message[:200]}{'...' if len(message) > 200 else ''}</p>
                         </div>
                         
-                        <p>In the meantime, you might find answers in our <a href="https://siteatlas.preview.emergentagent.com/support" style="color: #3B82F6;">FAQ section</a>.</p>
+                        <p>In the meantime, you might find answers in our <a href="https://laundroinsight.preview.emergentagent.com/support" style="color: #3B82F6;">FAQ section</a>.</p>
                         
                         <p>Best regards,<br>LaundroTech Support Team</p>
                     </div>
