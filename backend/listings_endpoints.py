@@ -3,7 +3,7 @@ Laundromat Listings API Endpoints
 Provides real laundromat listings for the consultant widget
 """
 
-from fastapi import APIRouter, HTTPException, Depends
+from fastapi import APIRouter, HTTPException, Depends, Request
 from typing import List, Dict, Optional
 import asyncio
 import logging
@@ -12,6 +12,7 @@ import json
 import os
 
 from listings_scraper import listings_scraper, LaundryListing
+from location_detector import location_detector, UserLocation
 
 router = APIRouter()
 
@@ -23,6 +24,20 @@ listings_cache = {
 }
 
 CACHE_DURATION_HOURS = 24
+
+def get_client_ip(request: Request) -> str:
+    """Extract client IP address from request"""
+    # Check for forwarded headers first (for proxies/load balancers)
+    forwarded_for = request.headers.get('X-Forwarded-For')
+    if forwarded_for:
+        return forwarded_for.split(',')[0].strip()
+    
+    real_ip = request.headers.get('X-Real-IP')
+    if real_ip:
+        return real_ip
+    
+    # Fallback to direct connection
+    return request.client.host if request.client else '127.0.0.1'
 
 async def get_cached_listings() -> List[Dict]:
     """Get listings from cache or refresh if expired"""
