@@ -31,7 +31,7 @@ import EnhancedConsultantWidget from './components/EnhancedConsultantWidget';
 import MediaKit from './components/MediaKit';
 import APIDocumentation from './components/APIDocumentation';
 import BlogSystem from './components/BlogSystem';
-import MarketplaceDashboard from './components/SimpleMarketplace';
+import MarketplaceDashboard from './components/ProfessionalMarketplace';
 import ListingCreator from './components/ListingCreator';
 import UserManagement from './components/UserManagement';
 
