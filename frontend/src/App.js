@@ -43,131 +43,6 @@ export const useAuth = () => {
   return context;
 };
 
-const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
-  const [token, setToken] = useState(localStorage.getItem('token'));
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    if (token) {
-      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-      fetchUserData();
-    } else {
-      setLoading(false);
-    }
-  }, [token]);
-
-  // Listen for auth events from components
-  useEffect(() => {
-    const handleOpenAuth = (event) => {
-      const mode = event.detail || 'login';
-      setShowAuthModal(true);
-      setAuthMode(mode);
-    };
-
-    window.addEventListener('openAuth', handleOpenAuth);
-    return () => window.removeEventListener('openAuth', handleOpenAuth);
-  }, []);
-
-  const fetchUserData = async () => {
-    try {
-      const response = await axios.get(`${API}/dashboard/stats`);
-      if (response.data) {
-        setLoading(false);
-      }
-    } catch (error) {
-      console.error('Token verification failed:', error);
-      logout();
-    }
-  };
-
-  const login = async (email, password) => {
-    try {
-      const response = await axios.post(`${API}/auth/login`, { email, password });
-      const { access_token, user: userData } = response.data;
-      
-      setToken(access_token);
-      setUser(userData);
-      localStorage.setItem('token', access_token);
-      axios.defaults.headers.common['Authorization'] = `Bearer ${access_token}`;
-      
-      return { success: true };
-    } catch (error) {
-      return { 
-        success: false, 
-        error: error.response?.data?.detail || 'Login failed' 
-      };
-    }
-  };
-
-  const register = async (email, password, fullName, facebookMember = false) => {
-    try {
-      const response = await axios.post(`${API}/auth/register`, {
-        email,
-        password,
-        full_name: fullName,
-        facebook_group_member: facebookMember
-      });
-      
-      const { access_token, user: userData } = response.data;
-      
-      setToken(access_token);
-      setUser(userData);
-      localStorage.setItem('token', access_token);
-      axios.defaults.headers.common['Authorization'] = `Bearer ${access_token}`;
-      
-      return { success: true };
-    } catch (error) {
-      return { 
-        success: false, 
-        error: error.response?.data?.detail || 'Registration failed' 
-      };
-    }
-  };
-
-  const logout = () => {
-    setUser(null);
-    setToken(null);
-    localStorage.removeItem('token');
-    delete axios.defaults.headers.common['Authorization'];
-  };
-
-  const value = {
-    user,
-    token,
-    loading,
-    login,
-    register,
-    logout,
-    isAuthenticated: !!token
-  };
-
-  return (
-    <AuthContext.Provider value={value}>
-      {children}
-    </AuthContext.Provider>
-  );
-};
-
-// Protected Route Component
-const ProtectedRoute = ({ children }) => {
-  const { isAuthenticated, loading } = useAuth();
-  
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900">
-        <motion.div
-          animate={{ rotate: 360 }}
-          transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-          className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full"
-        />
-      </div>
-    );
-  }
-  
-  return isAuthenticated ? children : <Navigate to="/" replace />;
-};
-
 // Main App Component
 function App() {
   const [showAuthModal, setShowAuthModal] = useState(false);
@@ -180,6 +55,113 @@ function App() {
 
   const closeAuthModal = () => {
     setShowAuthModal(false);
+  };
+
+  // Auth Provider with access to state
+  const AuthProviderWithState = ({ children }) => {
+    const [user, setUser] = useState(null);
+    const [token, setToken] = useState(localStorage.getItem('token'));
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+      if (token) {
+        axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+        fetchUserData();
+      } else {
+        setLoading(false);
+      }
+    }, [token]);
+
+    // Listen for auth events from components
+    useEffect(() => {
+      const handleOpenAuth = (event) => {
+        const mode = event.detail || 'login';
+        setShowAuthModal(true);
+        setAuthMode(mode);
+      };
+
+      window.addEventListener('openAuth', handleOpenAuth);
+      return () => window.removeEventListener('openAuth', handleOpenAuth);
+    }, []);
+
+    const fetchUserData = async () => {
+      try {
+        const response = await axios.get(`${API}/dashboard/stats`);
+        if (response.data) {
+          setLoading(false);
+        }
+      } catch (error) {
+        console.error('Token verification failed:', error);
+        logout();
+      }
+    };
+
+    const login = async (email, password) => {
+      try {
+        const response = await axios.post(`${API}/auth/login`, { email, password });
+        const { access_token, user: userData } = response.data;
+        
+        setToken(access_token);
+        setUser(userData);
+        localStorage.setItem('token', access_token);
+        axios.defaults.headers.common['Authorization'] = `Bearer ${access_token}`;
+        
+        return { success: true };
+      } catch (error) {
+        return { 
+          success: false, 
+          error: error.response?.data?.detail || 'Login failed' 
+        };
+      }
+    };
+
+    const register = async (email, password, fullName, facebookMember = false) => {
+      try {
+        const response = await axios.post(`${API}/auth/register`, {
+          email,
+          password,
+          full_name: fullName,
+          facebook_group_member: facebookMember
+        });
+        
+        const { access_token, user: userData } = response.data;
+        
+        setToken(access_token);
+        setUser(userData);
+        localStorage.setItem('token', access_token);
+        axios.defaults.headers.common['Authorization'] = `Bearer ${access_token}`;
+        
+        return { success: true };
+      } catch (error) {
+        return { 
+          success: false, 
+          error: error.response?.data?.detail || 'Registration failed' 
+        };
+      }
+    };
+
+    const logout = () => {
+      setUser(null);
+      setToken(null);
+      localStorage.removeItem('token');
+      delete axios.defaults.headers.common['Authorization'];
+    };
+
+    const value = {
+      user,
+      token,
+      loading,
+      login,
+      register,
+      logout,
+      isAuthenticated: !!token
+    };
+
+    return (
+      <AuthContext.Provider value={value}>
+        {children}
+      </AuthContext.Provider>
+    );
   };
 
   return (
