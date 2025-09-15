@@ -2163,14 +2163,17 @@ class ComprehensivePlatformAuditor:
         subscription_passed = sum(1 for test in subscription_tests if test())
         print(f"📊 Subscription Management Tests: {subscription_passed}/{len(subscription_tests)} passed")
         
-        # 5. MRR INTEGRATION VALIDATION - ENSURE NO REGRESSIONS
-        print(f"\n🔄 MRR INTEGRATION VALIDATION AFTER OPTIMIZATION")
+        # 5. MRR Dashboard Backend
+        print(f"\n💰 MRR DASHBOARD BACKEND")
         print("-" * 50)
-        integration_tests = [
-            self.test_mrr_integration_validation
+        mrr_tests = [
+            self.test_mrr_dashboard_performance_metrics,
+            self.test_mrr_usage_billing_system,
+            self.test_mrr_portfolio_management,
+            self.test_mrr_market_alerts
         ]
-        integration_passed = sum(1 for test in integration_tests if test())
-        print(f"📊 Integration Validation Tests: {integration_passed}/{len(integration_tests)} passed")
+        mrr_passed = sum(1 for test in mrr_tests if test())
+        print(f"📊 MRR Dashboard Tests: {mrr_passed}/{len(mrr_tests)} passed")
         
         # 6. PERFORMANCE UNDER LOAD - SYSTEM STRESS TESTING
         print(f"\n⚡ PERFORMANCE UNDER LOAD TESTING")
