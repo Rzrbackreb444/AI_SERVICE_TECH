@@ -706,15 +706,19 @@ const RevenueAnalyzer = () => {
               </div>
             )}
 
-            {/* Upgrade Call-to-Action */}
+            {/* Professional Upgrade Call-to-Action */}
             <div className="glass-card p-8 border border-cyan-400/30">
               <div className="text-center mb-6">
                 <h3 className="text-2xl font-bold text-white mb-2">
                   {previewReport.upgrade_incentives.hook_message}
                 </h3>
                 <p className="text-slate-300">
-                  {previewReport.upgrade_incentives.premium_features_locked} premium features locked • {previewReport.upgrade_incentives.social_proof}
+                  {previewReport.upgrade_incentives.methodology_message}
                 </p>
+                <div className="mt-4 space-y-2">
+                  <div className="text-emerald-400 font-semibold">{previewReport.upgrade_incentives.social_proof}</div>
+                  <div className="text-slate-400 text-sm">{previewReport.upgrade_incentives.privacy_commitment}</div>
+                </div>
               </div>
               
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -723,12 +727,12 @@ const RevenueAnalyzer = () => {
                   className="bg-gradient-to-r from-cyan-500 to-emerald-500 text-white px-8 py-4 rounded-lg font-bold text-lg hover:shadow-lg transition-all flex items-center justify-center"
                 >
                   <EyeIcon className="w-5 h-5 mr-2" />
-                  Unlock Full Analysis
+                  Get Your Location Analysis
                 </button>
                 <div className="text-center">
-                  <div className="bg-orange-500/20 border border-orange-500/30 rounded-lg p-4">
-                    <div className="text-orange-300 font-bold">{previewReport.upgrade_incentives.upgrade_discount}</div>
-                    <div className="text-orange-200 text-sm">{previewReport.upgrade_incentives.conversion_guarantee}</div>
+                  <div className="bg-emerald-500/20 border border-emerald-500/30 rounded-lg p-4">
+                    <div className="text-emerald-300 font-bold">Professional Intelligence</div>
+                    <div className="text-emerald-200 text-sm">Complete confidentiality guaranteed</div>
                   </div>
                 </div>
               </div>
