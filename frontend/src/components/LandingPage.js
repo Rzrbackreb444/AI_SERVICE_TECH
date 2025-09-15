@@ -149,14 +149,14 @@ const LandingPage = ({ onOpenAuth }) => {
                 animate={{ opacity: 1, height: 'auto' }}
                 exit={{ opacity: 0, height: 0 }}
                 transition={{ duration: 0.3 }}
-                className="md:hidden border-t border-white/10 bg-slate-900/50 backdrop-blur-xl"
+                className="lg:hidden border-t border-white/10 bg-slate-900/95 backdrop-blur-xl absolute top-full left-0 right-0 z-40 shadow-2xl"
               >
-                <div className="px-2 pt-2 pb-3 space-y-1">
+                <div className="px-4 pt-4 pb-6 space-y-2">
                   {navigationLinks.map((link) => (
                     <Link
                       key={link.name}
                       to={link.href}
-                      className="block px-4 py-3 text-slate-300 hover:text-white hover:bg-white/5 rounded-xl transition-all duration-300"
+                      className="block px-4 py-3 text-slate-300 hover:text-white hover:bg-white/10 rounded-xl transition-all duration-300 font-medium"
                       onClick={() => setShowNavMenu(false)}
                     >
                       {link.name}
@@ -168,7 +168,7 @@ const LandingPage = ({ onOpenAuth }) => {
                         onOpenAuth('register');
                         setShowNavMenu(false);
                       }}
-                      className="w-full text-left px-4 py-3 text-cyan-400 hover:text-white hover:bg-white/5 rounded-xl transition-all duration-300"
+                      className="w-full text-left px-4 py-3 text-cyan-400 hover:text-white hover:bg-cyan-400/10 rounded-xl transition-all duration-300 font-semibold border border-cyan-400/30"
                     >
                       Get Started
                     </button>
