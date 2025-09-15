@@ -88,7 +88,7 @@ consultant_system = None
 def init_consultant_system():
     """Initialize consultant system after database is available"""
     global consultant_system
-    if db:
+    if db is not None:
         consultant_system = EnhancedConsultantSystem(db, llm_client)
 
 logger = logging.getLogger(__name__)
