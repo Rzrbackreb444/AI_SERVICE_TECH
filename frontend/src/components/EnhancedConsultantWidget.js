@@ -68,13 +68,13 @@ const EnhancedConsultantWidget = () => {
         setMessages([{
           id: 1,
           type: 'bot',
-          message: `Welcome back! I'm your personalized LaundroTech consultant. I've been analyzing your previous interactions and I'm ready to help you take the next step in your laundromat journey. How can I assist you today?`,
+          message: `Welcome back! I'm your personalized LaundroTech consultant. Are you looking to analyze competition for your current laundromat or explore new investment opportunities?`,
           timestamp: new Date(),
           quickActions: [
+            { text: 'Competition Intelligence', action: 'competition_analysis' },
+            { text: 'New Location Analysis', action: 'location_analysis' },
             { text: 'Business Valuation', action: 'valuation' },
-            { text: 'ROI Analysis', action: 'roi' },
-            { text: 'Competition Intel', action: 'competition' },
-            { text: 'Performance Analytics', action: 'analytics' }
+            { text: 'ROI Calculator', action: 'roi' }
           ]
         }]);
       }
