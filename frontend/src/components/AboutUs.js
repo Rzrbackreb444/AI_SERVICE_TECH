@@ -289,8 +289,8 @@ const AboutUs = () => {
                   </div>
                   <div>
                     <div className="text-slate-400 text-sm">Email</div>
-                    <a href="mailto:nick@laundryguys.net" className="text-white hover:text-cyan-400 transition-colors">
-                      nick@laundryguys.net
+                    <a href="mailto:nick@laundrotech.xyz" className="text-white hover:text-cyan-400 transition-colors">
+                      nick@laundrotech.xyz
                     </a>
                   </div>
                 </div>
