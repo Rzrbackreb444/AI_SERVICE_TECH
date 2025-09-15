@@ -21,7 +21,7 @@ import UserProfileSettings from './components/UserProfileSettings';
 import SecuritySettings from './components/SecuritySettings';
 import InteractiveMap from './components/InteractiveMap';
 import HeatmapComponent from './components/HeatmapComponent';
-import ConsultantWidget from './components/ConsultantWidget';
+//
 import EnterpriseLocationAnalyzer from './components/EnterpriseLocationAnalyzer';
 import FacebookGroupMonetization from './components/FacebookGroupMonetization';
 import MRRDashboard from './components/MRRDashboard';
