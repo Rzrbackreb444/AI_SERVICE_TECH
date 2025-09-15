@@ -13,7 +13,6 @@ import Navbar from './Navbar';
 const BlogSystem = () => {
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [searchTerm, setSearchTerm] = useState('');
-  const [featuredPost, setFeaturedPost] = useState(null);
 
   // Real blog posts focused on driving traffic and showcasing expertise
   const blogPosts = [
