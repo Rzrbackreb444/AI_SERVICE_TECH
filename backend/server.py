@@ -1521,6 +1521,7 @@ async def update_user_profile(
     except Exception as e:
         logger.error(f"Update user profile error: {e}")
         raise HTTPException(status_code=500, detail="Failed to update profile")
+@api_router.get("/dashboard/stats")
 async def get_dashboard_stats(current_user: User = Depends(get_current_user)):
     """Get dashboard statistics"""
     total_analyses = await db.analyses.count_documents({"user_id": current_user.id})
