@@ -25,9 +25,11 @@ import EnterpriseLocationAnalyzer from './components/EnterpriseLocationAnalyzer'
 import FacebookGroupMonetization from './components/FacebookGroupMonetization';
 import MRRDashboard from './components/MRRDashboard';
 import EnterprisePortal from './components/EnterprisePortal';
-import AboutUs from './components/AboutUs'; // Updated import
+import AboutUs from './components/AboutUs';
 import RevenueAnalyzer from './components/RevenueAnalyzer';
 import ChatWidget from './components/ChatWidget';
+import MediaKit from './components/MediaKit';
+import APIDocumentation from './components/APIDocumentation';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
