@@ -123,6 +123,7 @@ const ChatWidget = () => {
               exit={{ opacity: 0, scale: 0.8, y: 20 }}
               transition={{ type: "spring", damping: 25, stiffness: 300 }}
               className="mb-4 w-80 h-96 bg-slate-900/95 backdrop-blur-xl border border-slate-700/50 rounded-2xl shadow-2xl overflow-hidden"
+              style={{ zIndex: 999999 }}
             >
               {/* Header */}
               <div className="bg-gradient-to-r from-cyan-500 to-emerald-500 p-4 flex items-center justify-between">
