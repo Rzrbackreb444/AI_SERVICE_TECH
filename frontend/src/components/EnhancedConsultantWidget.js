@@ -492,10 +492,10 @@ What specific question do you have?`;
     
     if (input.includes('prospective') || input.includes('exploring')) {
       return [
+        { text: 'View Current Listings', action: 'listings' },
         { text: 'Analyze Location', action: 'location_analysis' },
         { text: 'Market Research', action: 'research' },
-        { text: 'Investment Calculator', action: 'roi' },
-        { text: 'Success Probability', action: 'probability' }
+        { text: 'Investment Calculator', action: 'roi' }
       ];
     }
     
