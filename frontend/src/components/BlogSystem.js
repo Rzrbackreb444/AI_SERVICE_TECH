@@ -522,7 +522,12 @@ Traditional site selection is becoming obsolete because:
                     <span className="text-red-400 text-xs font-semibold">TRENDING</span>
                   </div>
                   
-                  <h3 className="text-lg font-bold text-white mb-3 line-clamp-2">
+                  <h3 className="text-lg font-bold text-white mb-3 overflow-hidden" style={{
+                    display: '-webkit-box',
+                    WebkitLineClamp: 2,
+                    WebkitBoxOrient: 'vertical',
+                    textOverflow: 'ellipsis'
+                  }}>
                     {post.title}
                   </h3>
                   
