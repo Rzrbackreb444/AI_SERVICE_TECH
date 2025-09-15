@@ -2137,16 +2137,18 @@ class ComprehensivePlatformAuditor:
         analytics_passed = sum(1 for test in analytics_tests if test())
         print(f"📊 Analytics Engine Tests: {analytics_passed}/{len(analytics_tests)} passed")
         
-        # 3. NEW OPTIMIZATION ENDPOINTS - CRITICAL FOR PERFORMANCE
-        print(f"\n🚀 NEW OPTIMIZATION ENDPOINTS - PERFORMANCE & REVENUE")
+        # 3. Enhanced AI Consultant System
+        print(f"\n🤖 ENHANCED AI CONSULTANT SYSTEM")
         print("-" * 50)
-        optimization_tests = [
-            self.test_system_optimization_endpoints,
-            self.test_performance_optimization_endpoints,
-            self.test_revenue_optimization_endpoints
+        consultant_tests = [
+            self.test_consultant_initialize_endpoint,
+            self.test_consultant_chat_endpoint,
+            self.test_consultant_profile_endpoint,
+            self.test_consultant_update_profile_endpoint,
+            self.test_consultant_analytics_endpoint
         ]
-        optimization_passed = sum(1 for test in optimization_tests if test())
-        print(f"📊 Optimization Tests: {optimization_passed}/{len(optimization_tests)} passed")
+        consultant_passed = sum(1 for test in consultant_tests if test())
+        print(f"📊 AI Consultant Tests: {consultant_passed}/{len(consultant_tests)} passed")
         
         # 4. MRR OPTIMIZATION SYSTEMS - THE MONEY MAKERS
         print(f"\n💰 MRR OPTIMIZATION SYSTEMS - $500K+ TARGET")
