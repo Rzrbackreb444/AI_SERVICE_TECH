@@ -3,19 +3,27 @@ Enhanced Consultant API Endpoints - 2025 Enterprise Grade
 Real conversation memory, subscription awareness, dynamic learning
 """
 
-from fastapi import APIRouter, Depends, HTTPException
-from pydantic import BaseModel
+from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
+from pydantic import BaseModel, Field
 from typing import Dict, List, Any, Optional
 from datetime import datetime
 import logging
+import jwt
+import os
 
-from server import get_current_user, User, db
 from enhanced_consultant_system import EnhancedConsultantSystem
+
+# JWT settings
+JWT_SECRET = os.getenv('JWT_SECRET', 'laundrotech-empire-2024')
+JWT_ALGORITHM = 'HS256'
+
+# Security
+security = HTTPBearer()
 
 # Initialize LLM client
 try:
     from emergentintegrations import LlmChat
-    import os
     
     emergent_key = os.getenv('EMERGENT_LLM_KEY')
     if emergent_key:
@@ -29,6 +37,50 @@ try:
 except Exception as e:
     logging.warning(f"LLM client initialization failed: {e}")
     llm_client = None
+
+# Database connection (will be injected)
+db = None
+
+def init_db(database):
+    """Initialize database connection"""
+    global db
+    db = database
+
+class User(BaseModel):
+    id: str
+    email: str
+    full_name: str
+    subscription_tier: str = "free"
+
+async def get_current_user(credentials: HTTPAuthorizationCredentials = Depends(security)) -> User:
+    """Get current user from JWT token"""
+    try:
+        token = credentials.credentials
+        payload = jwt.decode(token, JWT_SECRET, algorithms=[JWT_ALGORITHM])
+        user_id = payload.get('sub')
+        
+        if not user_id:
+            raise HTTPException(status_code=401, detail="Invalid token")
+        
+        # Get user from database
+        user_doc = await db.users.find_one({'id': user_id})
+        if not user_doc:
+            raise HTTPException(status_code=401, detail="User not found")
+        
+        return User(
+            id=user_doc['id'],
+            email=user_doc['email'],
+            full_name=user_doc['full_name'],
+            subscription_tier=user_doc.get('subscription_tier', 'free')
+        )
+        
+    except jwt.ExpiredSignatureError:
+        raise HTTPException(status_code=401, detail="Token expired")
+    except jwt.JWTError:
+        raise HTTPException(status_code=401, detail="Invalid token")
+    except Exception as e:
+        logging.error(f"Auth error: {e}")
+        raise HTTPException(status_code=401, detail="Authentication failed")
 
 router = APIRouter()
 consultant_system = EnhancedConsultantSystem(db, llm_client)
