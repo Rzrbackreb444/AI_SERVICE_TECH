@@ -27,7 +27,7 @@ import MRRDashboard from './components/MRRDashboard';
 import EnterprisePortal from './components/EnterprisePortal';
 import AboutUs from './components/AboutUs';
 import RevenueAnalyzer from './components/RevenueAnalyzer';
-import ChatWidget from './components/ChatWidget';
+import EnhancedConsultantWidget from './components/EnhancedConsultantWidget';
 import MediaKit from './components/MediaKit';
 import APIDocumentation from './components/APIDocumentation';
 import BlogSystem from './components/BlogSystem';
