@@ -543,7 +543,7 @@ const UserManagement = () => {
                     </div>
                   )}
                   
-                  <div className="bg-white/[0.05] rounded-lg p-6">
+                  <div className="bg-white/[0.05] rounded-lg p-6 mb-6">
                     <h3 className="text-lg font-semibold text-white mb-4">Account Information</h3>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
                       <div>
@@ -551,8 +551,34 @@ const UserManagement = () => {
                         <span className="text-white ml-2">{new Date(analyticsData?.account_created).toLocaleDateString()}</span>
                       </div>
                       <div>
-                        <span className="text-slate-400">Account Type:</span>
-                        <span className="text-white ml-2">Professional</span>
+                        <span className="text-slate-400">Days Active:</span>
+                        <span className="text-white ml-2">{analyticsData?.days_active || 0} days</span>
+                      </div>
+                      <div>
+                        <span className="text-slate-400">Total Spent:</span>
+                        <span className="text-white ml-2">${analyticsData?.total_spent || 0}</span>
+                      </div>
+                      <div>
+                        <span className="text-slate-400">Avg Weekly Usage:</span>
+                        <span className="text-white ml-2">{analyticsData?.avg_analyses_per_week || 0} analyses/week</span>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div className="bg-white/[0.05] rounded-lg p-6">
+                    <h3 className="text-lg font-semibold text-white mb-4">Usage Insights</h3>
+                    <div className="space-y-3">
+                      <div className="flex justify-between items-center">
+                        <span className="text-slate-400">Analysis Efficiency:</span>
+                        <span className="text-emerald-400">{analyticsData?.locations_analyzed > 0 ? Math.round((analyticsData.analyses_completed / analyticsData.locations_analyzed) * 100) / 100 : 0} analyses per location</span>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span className="text-slate-400">Report Generation Rate:</span>
+                        <span className="text-blue-400">{analyticsData?.analyses_completed > 0 ? Math.round((analyticsData.reports_generated / analyticsData.analyses_completed) * 100) : 0}%</span>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span className="text-slate-400">Active Subscriptions:</span>
+                        <span className="text-purple-400">{analyticsData?.active_subscriptions || 0}</span>
                       </div>
                     </div>
                   </div>
