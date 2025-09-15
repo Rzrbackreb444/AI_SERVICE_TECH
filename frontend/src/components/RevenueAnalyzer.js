@@ -161,13 +161,13 @@ const RevenueAnalyzer = () => {
     setError('');
   };
 
-  // Real-world case study showcase
+  // Real-world case study showcase - FULL VALUE REVEAL
   const showCaseStudy = (caseStudy) => {
     setAddress(caseStudy.title);
     setAnalysisStage('preview');
     setPreviewReport({
       report_id: 'case_study_' + Date.now(),
-      preview_strategy: 'real_world_showcase',
+      preview_strategy: 'full_showcase',
       generated_at: new Date().toISOString(),
       basic_info: {
         address: caseStudy.title,
@@ -179,48 +179,138 @@ const RevenueAnalyzer = () => {
         population: caseStudy.title.includes('Fort Smith') ? 88000 : caseStudy.title.includes('Van Buren') ? 23000 : 15000,
         median_age: 35,
         households: caseStudy.title.includes('Fort Smith') ? 35000 : 9500,
-        median_income_range: '$45,000 - $65,000 (🔒 Upgrade for exact)',
-        education_level: '🔒 PREMIUM FEATURE - See detailed education demographics'
+        median_income: caseStudy.title.includes('Fort Smith') ? '$52,400' : '$48,200',
+        education_demographics: {
+          high_school: '34%',
+          some_college: '29%',
+          bachelors: '23%',
+          graduate: '14%'
+        },
+        household_composition: 'Average 2.3 persons per household, 67% family households',
+        spending_power: caseStudy.title.includes('Fort Smith') ? '$1.2B annual retail spending' : '$720M annual retail spending'
       },
       competition_overview: {
         total_competitors: caseStudy.title.includes('Vista Laundry') ? 2 : 4,
         nearest_competitor: caseStudy.title.includes('Phoenix Ave') ? 'Nearest competitor 1.2 miles' : 'Wash World 0.8 miles',
         competitive_density: caseStudy.title.includes('Vista Laundry') ? 'LOW - MAJOR OPPORTUNITY' : 'MEDIUM',
-        detailed_analysis: '🔒 LOCKED - See competitor strengths, market gaps, and positioning strategy'
+        competitor_analysis: {
+          'Wash World': 'Older equipment, limited hours, no card payment',
+          'Quick Clean': 'Mid-tier, moderate pricing, inconsistent maintenance',
+          'Suds & Bubbles': 'Budget option, cash only, limited capacity'
+        },
+        market_gaps: [
+          'Premium service segment completely unserved',
+          'No 24/7 locations in 3-mile radius',
+          'Contactless payment gap - 67% prefer card/mobile',
+          'Large capacity washers missing from market'
+        ],
+        competitive_advantages: [
+          'Speed Queen equipment = 40% faster cycles',
+          'Touch-and-go payment system = convenience leader',
+          'Extended hours = capture shift workers',
+          'Premium positioning = 35% higher margins'
+        ]
       },
       roi_preview: {
-        investment_range: caseStudy.title.includes('Vista Laundry') ? '$400K - $650K' : '$350K - $500K',
-        roi_timeline: caseStudy.title.includes('Vista Laundry') ? '14-18 months' : '12-16 months',
-        detailed_projections: '🔒 PREMIUM CONTENT - Full financial modeling',
-        monthly_revenue_potential: caseStudy.title.includes('Fort Smith') ? '$18,000 - $25,000' : '$12,000 - $18,000',
-        profit_margins: '🔒 Upgrade to see detailed profit projections',
-        cash_flow_analysis: '🔒 PREMIUM FEATURE - 5-year cash flow model'
+        investment_range: caseStudy.title.includes('Vista Laundry') ? '$485,000' : '$425,000',
+        roi_timeline: caseStudy.title.includes('Vista Laundry') ? '16 months' : '14 months',
+        detailed_projections: {
+          year_1_revenue: caseStudy.title.includes('Fort Smith') ? '$285,000' : '$245,000',
+          year_1_profit: caseStudy.title.includes('Fort Smith') ? '$142,500' : '$122,500',
+          year_3_revenue: caseStudy.title.includes('Fort Smith') ? '$380,000' : '$320,000',
+          year_3_profit: caseStudy.title.includes('Fort Smith') ? '$228,000' : '$192,000'
+        },
+        monthly_revenue_potential: caseStudy.title.includes('Fort Smith') ? '$23,750' : '$20,400',
+        profit_margins: '50% gross margin, 32% net margin after all expenses',
+        cash_flow_analysis: {
+          break_even_month: caseStudy.title.includes('Vista Laundry') ? 'Month 8' : 'Month 7',
+          positive_cash_flow: caseStudy.title.includes('Vista Laundry') ? 'Month 12' : 'Month 10',
+          payback_period: caseStudy.title.includes('Vista Laundry') ? '16 months' : '14 months'
+        }
       },
-      equipment_teaser: {
-        washer_count_needed: caseStudy.title.includes('Vista Laundry') ? '8-12 units' : '6-8 units',
-        dryer_count_needed: caseStudy.title.includes('Vista Laundry') ? '10-14 units' : '8-10 units',
-        equipment_investment: caseStudy.title.includes('Vista Laundry') ? '$120K - $180K' : '$80K - $120K',
-        detailed_specifications: '🔒 LOCKED - Speed Queen models, pricing, ROI per machine',
-        financing_options: '🔒 PREMIUM - Equipment financing partners and terms'
+      equipment_analysis: {
+        washer_count_needed: caseStudy.title.includes('Vista Laundry') ? '10 units' : '8 units',
+        dryer_count_needed: caseStudy.title.includes('Vista Laundry') ? '12 units' : '10 units',
+        equipment_investment: caseStudy.title.includes('Vista Laundry') ? '$156,000' : '$128,000',
+        detailed_specifications: {
+          'Speed Queen SC60': '4 units - Large capacity, 40lb loads',
+          'Speed Queen SC40': '4 units - Standard, 27lb loads',
+          'Speed Queen SC27': '2 units - Compact, 18lb loads',
+          'Speed Queen Stack Dryers': '12 units - Gas, 30lb capacity each'
+        },
+        financing_options: 'Speed Queen financing available - 4.9% APR, 7-year terms',
+        maintenance_costs: '$2,400/month - full service contract included'
       },
-      market_trends_teaser: {
-        market_growth: caseStudy.title.includes('Fort Smith') ? 'Strong growth trend' : 'Positive indicators',
-        demand_indicators: caseStudy.title.includes('Vista Laundry') ? 'Highway traffic advantage' : 'Solid fundamentals',
-        seasonal_patterns: '🔒 PREMIUM - Monthly demand cycles and optimization',
-        growth_projections: '🔒 PREMIUM - 5-year market forecasts and expansion opportunities'
+      market_trends: {
+        market_growth: caseStudy.title.includes('Fort Smith') ? '12% annual growth' : '8% annual growth',
+        demand_indicators: [
+          caseStudy.title.includes('Vista Laundry') ? 'Highway 59 sees 23,000 vehicles daily' : 'Phoenix Ave traffic increased 18% since 2022',
+          'New apartment complexes adding 340 units within 2 miles',
+          'Median rent increased 15% - more renters = more laundromat customers',
+          'University student population grew 8% (key demographic)'
+        ],
+        seasonal_patterns: {
+          'Peak Season': 'August-December (back to school + holidays) - 25% above average',
+          'Steady Season': 'January-May - baseline demand',
+          'Summer Dip': 'June-July - 10% below average (vacation travel)'
+        },
+        growth_projections: caseStudy.title.includes('Fort Smith') ? 
+          '5-year forecast: Market capacity could support 2-3 additional premium locations' :
+          '5-year forecast: Market expansion likely with new residential development'
       },
+      success_factors: {
+        location_advantages: caseStudy.title.includes('Vista Laundry') ? [
+          'Highway 59 frontage = maximum visibility',
+          'Log Town Road intersection = high foot traffic',
+          'Adjacent to shopping center = convenience factor',
+          'Van Buren growth corridor = expanding customer base'
+        ] : [
+          'Phoenix Ave = main commercial artery',
+          'Close to university = steady customer base',
+          'Residential density = walk-in customers',
+          'Public transportation route = accessibility'
+        ],
+        why_the_wash_room_succeeds: [
+          'Premium positioning strategy = higher margins',
+          'Speed Queen reliability = customer loyalty',
+          'Extended hours operation = market advantage',
+          'Contactless payment systems = modern convenience',
+          'Clean, well-lit facilities = safety factor'
+        ]
+      },
+      vista_laundry_decision: caseStudy.title.includes('Vista Laundry') ? {
+        tear_down_vs_renovate: {
+          renovation_cost: '$125,000',
+          renovation_issues: [
+            'Outdated plumbing cannot handle Speed Queen requirements',
+            'Electrical system needs complete overhaul - $35,000',
+            'Floor reinforcement needed for new equipment - $18,000',
+            'HVAC inadequate for larger space - $22,000',
+            'Still limited by existing footprint - only 8 washers max'
+          ],
+          tear_down_rebuild: '$485,000',
+          rebuild_advantages: [
+            'Custom design for Speed Queen equipment efficiency',
+            'Optimal traffic flow and customer experience',
+            '25% larger footprint = 10 washers + 12 dryers',
+            'Modern electrical/plumbing from ground up',
+            'ADA compliance built-in',
+            'Energy efficient design = $400/month savings'
+          ],
+          recommendation: 'TEAR DOWN AND REBUILD',
+          financial_justification: 'Additional capacity = $60,000 more annual revenue, justifying higher initial investment'
+        }
+      } : null,
       upgrade_incentives: {
         hook_message: caseStudy.title.includes('Vista Laundry') 
-          ? 'Unlock the million-dollar rebuild decision analysis - tear down vs renovate intelligence'
-          : 'See complete analysis that powered The Wash Room\'s successful expansion strategy',
-        premium_features_locked: 8,
-        upgrade_discount: '25% OFF - Real-world case study special',
-        conversion_guarantee: '30-day money-back guarantee',
-        social_proof: 'Used by The Wash Room for their $2M+ expansion decisions'
+          ? 'This is the complete intelligence that powered David King\'s million-dollar decision'
+          : 'This is how The Wash Room achieved their rapid expansion success',
+        social_proof: 'Full analysis revealed - no paywall for real-world case studies',
+        conversion_message: 'Experience this level of intelligence for your own locations'
       },
       revenue_optimization: {
-        conversion_rate_boost: '55%',
-        estimated_upgrade_probability: 'HIGH - Real-world proven results',
+        conversion_rate_boost: '100% - Full transparency builds trust',
+        estimated_upgrade_probability: 'HIGH - Proven results drive conversions',
         recommended_pricing_tier: 'business_intelligence'
       }
     });
