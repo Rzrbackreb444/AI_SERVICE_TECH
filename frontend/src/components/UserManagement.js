@@ -58,30 +58,62 @@ const UserManagement = () => {
     loadUserData();
   }, []);
 
+  const getAuthHeaders = () => {
+    const token = localStorage.getItem('token');
+    return token ? { 'Authorization': `Bearer ${token}` } : {};
+  };
+
   const loadUserData = async () => {
     try {
       setLoading(true);
       
-      // Load user profile, subscription, and analytics
-      // For now, use demo data
+      // Load REAL user data from backend APIs
+      const [profileResponse, analyticsResponse] = await Promise.all([
+        axios.get(`${API}/user/profile/complete`, { headers: getAuthHeaders() }),
+        axios.get(`${API}/user/analytics`, { headers: getAuthHeaders() })
+      ]);
+
+      const profile = profileResponse.data.user_profile;
+      const analytics = analyticsResponse.data;
+      const subscription = profileResponse.data.subscription_info;
+
+      // Set real profile data
       setProfileData({
-        name: user?.name || 'John Broker',
-        email: user?.email || 'john@laundroinvest.com',
-        phone: '+1 (555) 123-4567',
-        company: 'LaundroInvest Partners',
-        role: 'Commercial Broker',
-        bio: 'Specializing in laundromat acquisitions and commercial real estate in Arkansas and surrounding states.',
-        location: 'Little Rock, Arkansas',
+        name: profile.full_name || user?.full_name || '',
+        email: profile.email || user?.email || '',
+        phone: profile.phone || '',
+        company: profile.company || '',
+        role: subscription.subscription_type === 'verified_funder' ? 'Verified Funder' : 
+              subscription.subscription_type === 'vendor_partner' ? 'Vendor Partner' :
+              subscription.subscription_type === 'verified_seller' ? 'Verified Seller' : 'Member',
+        bio: `Member since ${new Date(profile.created_at).toLocaleDateString()}. ${profile.facebook_group_member ? 'Facebook Group Member' : 'Standard Member'}.`,
+        location: profile.location || '',
         timezone: 'America/Chicago'
       });
 
+      // Set real subscription data
+      const tierMap = {
+        'verified_funder': { plan: 'Verified Funder', amount: 299 },
+        'vendor_partner': { plan: 'Vendor Partner', amount: 149 },
+        'verified_seller': { plan: 'Verified Seller', amount: 29 },
+        'free': { plan: 'Free Tier', amount: 0 }
+      };
+      
+      const tierInfo = tierMap[profile.subscription_tier] || tierMap['free'];
+      
       setSubscriptionData({
-        plan: 'Business Intelligence',
-        status: 'active',
+        plan: tierInfo.plan,
+        status: subscription.subscription_status || 'none',
         billing_cycle: 'monthly',
-        amount: 79,
-        next_billing: '2024-10-15',
-        features: [
+        amount: tierInfo.amount,
+        next_billing: subscription.created_at ? 
+          new Date(Date.parse(subscription.created_at) + 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0] : 
+          'N/A',
+        features: profile.subscription_tier === 'free' ? [
+          'Limited location analysis',
+          'Basic reports',
+          'Community access'
+        ] : [
           'Unlimited location analysis',
           'Advanced competitive intelligence',
           'Real-time market monitoring',
@@ -90,16 +122,44 @@ const UserManagement = () => {
         ]
       });
 
+      // Set REAL analytics data
       setAnalyticsData({
-        analyses_completed: 247,
-        locations_analyzed: 89,
-        reports_generated: 34,
-        saved_listings: 12,
-        account_created: '2024-06-15'
+        analyses_completed: analytics.analyses_completed,
+        locations_analyzed: analytics.locations_analyzed,
+        reports_generated: analytics.reports_generated,
+        saved_listings: analytics.saved_listings,
+        account_created: analytics.account_created,
+        days_active: analytics.days_active,
+        total_spent: analytics.total_spent,
+        active_subscriptions: analytics.active_subscriptions,
+        avg_analyses_per_week: analytics.avg_analyses_per_week
       });
 
     } catch (error) {
       console.error('Error loading user data:', error);
+      // Fallback to basic user data if API fails
+      setProfileData({
+        name: user?.full_name || '',
+        email: user?.email || '',
+        phone: '',
+        company: '',
+        role: 'Member',
+        bio: '',
+        location: '',
+        timezone: 'America/Chicago'
+      });
+      
+      setAnalyticsData({
+        analyses_completed: 0,
+        locations_analyzed: 0,
+        reports_generated: 0,
+        saved_listings: 0,
+        account_created: new Date().toISOString(),
+        days_active: 0,
+        total_spent: 0,
+        active_subscriptions: 0,
+        avg_analyses_per_week: 0
+      });
     } finally {
       setLoading(false);
     }
