@@ -93,26 +93,93 @@ async def get_cached_listings() -> List[Dict]:
         demo_listings = listings_scraper.get_demo_listings()
         return [listing.__dict__ for listing in demo_listings]
 
-@router.get("/listings/current")
-async def get_current_listings(limit: int = 10):
-    """Get current laundromat listings"""
+def _extract_revenue_number(revenue_str: str) -> int:
+    """Extract numeric value from revenue string for sorting"""
     try:
-        listings = await get_cached_listings()
+        import re
+        # Remove currency symbols and extract numbers
+        numbers = re.findall(r'\d+', revenue_str.replace(',', ''))
+        return int(numbers[0]) if numbers else 0
+    except:
+        return 0
+
+@router.get("/listings/personalized")
+async def get_personalized_listings(request: Request, radius_miles: int = 100):
+    """Get listings personalized to user's location via IP detection"""
+    try:
+        client_ip = get_client_ip(request)
+        logging.info(f"Detecting location for IP: {client_ip}")
         
-        # Limit results
-        limited_listings = listings[:limit]
+        # Detect user location
+        user_location = None
+        if client_ip and client_ip != '127.0.0.1':
+            user_location = location_detector.detect_location_from_ip(client_ip)
         
-        return {
-            'success': True,
-            'count': len(limited_listings),
-            'listings': limited_listings,
-            'last_updated': listings_cache['last_updated'].isoformat() if listings_cache['last_updated'] else None,
-            'message': f'Found {len(limited_listings)} current laundromat opportunities'
-        }
+        # Get all listings
+        all_listings = await get_cached_listings()
+        
+        if user_location and user_location.state:
+            # Filter listings by proximity to user's state
+            nearby_states = [user_location.state] + location_detector.get_nearby_states(user_location.state)
+            
+            filtered_listings = []
+            for listing in all_listings:
+                listing_location = listing.get('location', '')
+                
+                # Check if listing is in user's state or nearby states
+                for state in nearby_states:
+                    if state.lower() in listing_location.lower():
+                        # Calculate rough distance priority
+                        if user_location.state.lower() in listing_location.lower():
+                            listing['distance_priority'] = 1  # Same state
+                        else:
+                            listing['distance_priority'] = 2  # Nearby state
+                        
+                        filtered_listings.append(listing)
+                        break
+            
+            # Sort by distance priority, then by revenue (higher first)
+            filtered_listings.sort(key=lambda x: (
+                x.get('distance_priority', 3),
+                -_extract_revenue_number(x.get('revenue', '0'))
+            ))
+            
+            location_context = location_detector.get_location_context(user_location)
+            
+            return {
+                'success': True,
+                'count': len(filtered_listings),
+                'listings': filtered_listings[:8],  # Limit to 8 for better UX
+                'user_location': {
+                    'city': user_location.city,
+                    'state': user_location.state,
+                    'confidence': user_location.confidence
+                },
+                'search_context': {
+                    'radius_miles': radius_miles,
+                    'nearby_states': nearby_states,
+                    'market_type': location_context['laundromat_market_type']
+                },
+                'message': f'Found {len(filtered_listings)} laundromat opportunities near {user_location.city}, {user_location.state}'
+            }
+        
+        else:
+            # Fallback to general listings if location detection fails
+            return {
+                'success': True,
+                'count': len(all_listings),
+                'listings': all_listings[:8],
+                'user_location': None,
+                'search_context': {
+                    'radius_miles': 'nationwide',
+                    'message': 'Location detection unavailable - showing national listings'
+                },
+                'message': 'Showing current laundromat opportunities nationwide'
+            }
         
     except Exception as e:
-        logging.error(f"Error getting current listings: {e}")
-        raise HTTPException(status_code=500, detail="Failed to fetch listings")
+        logging.error(f"Error getting personalized listings: {e}")
+        raise HTTPException(status_code=500, detail="Failed to get personalized listings")
 
 @router.get("/listings/by-location")
 async def get_listings_by_location(state: Optional[str] = None, city: Optional[str] = None):
