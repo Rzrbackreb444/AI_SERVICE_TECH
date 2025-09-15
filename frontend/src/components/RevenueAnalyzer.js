@@ -33,14 +33,14 @@ const RevenueAnalyzer = () => {
   const [error, setError] = useState('');
   const [showUpgradeModal, setShowUpgradeModal] = useState(false);
 
-  // Real-world case study data
+  // Real-world case study data with actual photos
   const realWorldCaseStudies = [
     {
       title: "The Wash Room - Phoenix Ave, Fort Smith, AR",
       description: "Multi-million dollar expansion success story",
       status: "THRIVING",
       keyMetrics: ["Rapid expansion proven", "High traffic location", "Premium equipment ROI"],
-      image: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400",
+      image: "https://customer-assets.emergentagent.com/job_site-atlas-ai/artifacts/xnmmxz1x_IMG_4673.png",
       featured: true
     },
     {
@@ -48,14 +48,14 @@ const RevenueAnalyzer = () => {
       description: "Strategic market positioning analysis",
       status: "HIGH DEMAND",
       keyMetrics: ["Market gap identified", "Competitive advantage", "Proven business model"],
-      image: "https://images.unsplash.com/photo-1521791055366-0d553872125f?w=400"
+      image: "https://customer-assets.emergentagent.com/job_site-atlas-ai/artifacts/xnmmxz1x_IMG_4673.png"
     },
     {
       title: "Vista Laundry Rebuild Analysis - Van Buren, AR",
       description: "Tear down vs renovate intelligence - the million dollar decision",
       status: "CRITICAL DECISION",
       keyMetrics: ["Highway 59 traffic advantage", "Log Town Road positioning", "Speed Queen investment analysis"],
-      image: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=400",
+      image: "https://customer-assets.emergentagent.com/job_site-atlas-ai/artifacts/fj8inoji_IMG_4674.jpeg",
       featured: true,
       urgent: true
     }
