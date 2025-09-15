@@ -82,7 +82,7 @@ const AnalyticsDashboard = () => {
     try {
       setLoading(true);
       
-      // Load comprehensive analytics data
+      // Load comprehensive analytics data with proper error handling
       const [
         analyticsResponse,
         revenueResponse,
@@ -101,66 +101,81 @@ const AnalyticsDashboard = () => {
         axios.get(`${API}/analytics/cohort-analysis?timeframe=${activeTimeframe}`, { headers: getAuthHeaders() })
       ]);
 
-      setAnalyticsData(analyticsResponse.data);
-      setRevenueData(revenueResponse.data.dailyRevenue || []);
-      setUserGrowthData(userGrowthResponse.data.dailyGrowth || []);
-      setBadgeDistribution(badgeResponse.data.distribution || []);
-      setConversionFunnel(conversionResponse.data.funnel || []);
-      setGeographicData(geoResponse.data.locations || []);
-      setCohortData(cohortResponse.data.cohorts || []);
+      // Process analytics overview
+      const overview = analyticsResponse.data;
+      setAnalyticsData({
+        totalUsers: overview.totalUsers || 0,
+        totalRevenue: overview.totalRevenue || 0,
+        monthlyRevenue: overview.monthlyRevenue || 0,
+        activeSubscriptions: overview.activeSubscriptions || 0,
+        revenueGrowth: overview.revenueGrowth || 0,
+        userGrowth: overview.userGrowth || 0,
+        conversionRate: overview.conversionRate || 0,
+        customerLifetimeValue: overview.customerLifetimeValue || 0,
+        churnRate: overview.churnRate || 0,
+        totalTransactions: overview.totalTransactions || 0,
+        averageRevenuePer: overview.averageRevenuePer || 0
+      });
+
+      // Process revenue data
+      const revenueData = revenueResponse.data;
+      setRevenueData(revenueData.dailyRevenue || []);
+
+      // Process user growth data
+      const userGrowthData = userGrowthResponse.data;
+      setUserGrowthData(userGrowthData.dailyGrowth || []);
+
+      // Process badge distribution
+      const badgeData = badgeResponse.data;
+      setBadgeDistribution(badgeData.distribution || []);
+
+      // Process conversion funnel
+      const conversionData = conversionResponse.data;
+      setConversionFunnel(conversionData.funnel || []);
+
+      // Process geographic data
+      const geoData = geoResponse.data;
+      setGeographicData(geoData.locations || []);
+
+      // Process cohort analysis
+      const cohortAnalysis = cohortResponse.data;
+      setCohortData(cohortAnalysis.cohorts || []);
+
+      console.log('✅ Analytics data loaded successfully:', {
+        overview: overview,
+        revenue: revenueData,
+        userGrowth: userGrowthData,
+        badges: badgeData,
+        conversion: conversionData,
+        geographic: geoData,
+        cohorts: cohortAnalysis
+      });
 
     } catch (error) {
-      console.error('Failed to load analytics data:', error);
-      try {
-        // Get REAL analytics data from database
-        const response = await axios.get(`${API}/real-analytics/dashboard?timeframe_days=30`, {
-          headers: getAuthHeaders()
-        });
-
-        if (response.data.success) {
-          const realData = response.data.dashboard.raw_data;
-          
-          setAnalyticsData({
-            totalUsers: realData.overview.total_users,
-            totalRevenue: realData.overview.total_revenue,
-            monthlyRevenue: realData.overview.monthly_revenue,
-            activeSubscriptions: realData.overview.active_subscriptions,
-            revenueGrowth: realData.overview.growth_rate,
-            conversionRate: ((realData.overview.active_subscriptions / Math.max(realData.overview.total_users, 1)) * 100).toFixed(1),
-            // Real user growth data
-            userGrowthData: realData.user_growth || [],
-            subscriptionData: realData.subscription_distribution || [],
-            analysisActivity: realData.analysis_activity || []
-          });
-        } else {
-          // Show empty state with real zero values
-          setAnalyticsData({
-            totalUsers: 0,
-            totalRevenue: 0,
-            monthlyRevenue: 0,
-            activeSubscriptions: 0,
-            revenueGrowth: 0,
-            conversionRate: 0,
-            userGrowthData: [],
-            subscriptionData: [],
-            analysisActivity: []
-          });
-        }
-      } catch (error) {
-        console.error('Failed to load analytics:', error);
-        // Show empty state on error
-        setAnalyticsData({
-          totalUsers: 0,
-          totalRevenue: 0,
-          monthlyRevenue: 0,
-          activeSubscriptions: 0,
-          revenueGrowth: 0,
-          conversionRate: 0,
-          userGrowthData: [],
-          subscriptionData: [],
-          analysisActivity: []
-        });
-      }
+      console.error('❌ Failed to load analytics data:', error);
+      
+      // Set default values to show current state (not mock data)
+      setAnalyticsData({
+        totalUsers: 0,
+        totalRevenue: 0,
+        monthlyRevenue: 0,
+        activeSubscriptions: 0,
+        revenueGrowth: 0,
+        userGrowth: 0,
+        conversionRate: 0,
+        customerLifetimeValue: 0,
+        churnRate: 0,
+        totalTransactions: 0,
+        averageRevenuePer: 0
+      });
+      
+      // Set empty arrays for charts
+      setRevenueData([]);
+      setUserGrowthData([]);
+      setBadgeDistribution([]);
+      setConversionFunnel([]);
+      setGeographicData([]);
+      setCohortData([]);
     } finally {
       setLoading(false);
     }
