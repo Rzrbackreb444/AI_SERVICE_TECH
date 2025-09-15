@@ -740,6 +740,7 @@ const LandingPage = ({ onOpenAuth }) => {
             <div>
               <h3 className="text-lg font-semibold text-white mb-4">Resources</h3>
               <ul className="space-y-2 text-slate-400 text-sm">
+                <li><Link to="/blog" className="hover:text-white transition-colors">Intelligence Blog</Link></li>
                 <li><Link to="/media-kit" className="hover:text-white transition-colors">Media Kit</Link></li>
                 <li><Link to="/analyze" className="hover:text-white transition-colors">Case Studies</Link></li>
                 <li><a href="mailto:nick@laundryguys.net" className="hover:text-white transition-colors">White-Label</a></li>
