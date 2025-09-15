@@ -3911,62 +3911,21 @@ class RevenueOptimizationTester:
 
 
 def main():
-    """Main test execution"""
-    print("🎯 LAUNDROTECH TESTING SUITE")
-    print("Choose testing mode:")
-    print("1. Advanced Revenue Optimization Testing")
-    print("2. Comprehensive System Testing")
-    print("3. AI Consultant Testing - THE STICKINESS GAME-CHANGER (NEW)")
-    print("4. Revenue Optimization Endpoints Testing (SPECIFIC)")
+    """Main test execution - Comprehensive Platform Audit"""
+    print("🔍 LAUNDROTECH PLATFORM AUDIT")
+    print("Running comprehensive enterprise-grade quality audit...")
     
-    # Auto-select revenue optimization testing for this review
-    choice = "4"
-    print(f"Auto-selecting: {choice} - Revenue Optimization Endpoints Testing")
-    
-    if choice == "1":
-        tester = AdvancedRevenueTester()
-        try:
-            revenue_ready = tester.run_comprehensive_revenue_testing()
-            return 0 if revenue_ready else 1
-        except KeyboardInterrupt:
-            print(f"\n⏹️  Revenue tests interrupted by user")
-            return 1
-        except Exception as e:
-            print(f"\n💥 Unexpected error in revenue testing: {e}")
-            return 1
-    elif choice == "3":
-        tester = AIConsultantTester()
-        try:
-            consultant_ready = tester.run_comprehensive_consultant_testing()
-            return 0 if consultant_ready else 1
-        except KeyboardInterrupt:
-            print(f"\n⏹️  Consultant tests interrupted by user")
-            return 1
-        except Exception as e:
-            print(f"\n💥 Unexpected error in consultant testing: {e}")
-            return 1
-    elif choice == "4":
-        tester = RevenueOptimizationTester()
-        try:
-            revenue_ready = tester.run_comprehensive_revenue_testing()
-            return 0 if revenue_ready else 1
-        except KeyboardInterrupt:
-            print(f"\n⏹️  Revenue optimization tests interrupted by user")
-            return 1
-        except Exception as e:
-            print(f"\n💥 Unexpected error in revenue optimization testing: {e}")
-            return 1
-    else:
-        tester = ComprehensiveFinalTester()
-        try:
-            production_ready = tester.run_comprehensive_final_testing()
-            return 0 if production_ready else 1
-        except KeyboardInterrupt:
-            print(f"\n⏹️  Tests interrupted by user")
-            return 1
-        except Exception as e:
-            print(f"\n💥 Unexpected error: {e}")
-            return 1
+    # Run comprehensive platform audit
+    auditor = ComprehensivePlatformAuditor()
+    try:
+        enterprise_ready = auditor.run_comprehensive_platform_audit()
+        return 0 if enterprise_ready else 1
+    except KeyboardInterrupt:
+        print(f"\n⏹️  Platform audit interrupted by user")
+        return 1
+    except Exception as e:
+        print(f"\n💥 Unexpected error in platform audit: {e}")
+        return 1
 
 if __name__ == "__main__":
     sys.exit(main())
