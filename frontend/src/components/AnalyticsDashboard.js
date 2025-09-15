@@ -227,25 +227,33 @@ const AnalyticsDashboard = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900">
-      {/* Navigation */}
-      <nav className="glass border-b border-white/10 sticky top-0 z-50 backdrop-blur-xl">
+      {/* Premium Navigation */}
+      <nav className="glass border-b border-white/10 sticky top-0 z-50 backdrop-blur-xl bg-gradient-to-r from-slate-900/80 via-blue-900/60 to-slate-900/80">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center space-x-6">
-              <h1 className="text-xl font-bold text-white">
-                Analytics Dashboard <span className="text-slate-400 text-sm">Enterprise Intelligence</span>
-              </h1>
+              <div className="flex items-center space-x-3">
+                <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-xl flex items-center justify-center">
+                  <ChartBarIcon className="w-6 h-6 text-white" />
+                </div>
+                <div>
+                  <h1 className="text-xl font-bold text-white">
+                    Analytics Dashboard
+                  </h1>
+                  <p className="text-xs text-slate-400">Enterprise Intelligence • Real-time</p>
+                </div>
+              </div>
               
-              {/* Timeframe Selector */}
-              <div className="flex items-center space-x-2">
+              {/* Premium Timeframe Selector */}
+              <div className="flex items-center space-x-1 bg-slate-800/50 p-1 rounded-xl border border-slate-700/50">
                 {timeframes.map((timeframe) => (
                   <button
                     key={timeframe.id}
                     onClick={() => setActiveTimeframe(timeframe.id)}
-                    className={`px-3 py-1 rounded-lg text-sm font-medium transition-colors ${
+                    className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
                       activeTimeframe === timeframe.id
-                        ? 'bg-blue-500 text-white'
-                        : 'bg-slate-700 text-slate-300 hover:bg-slate-600'
+                        ? 'bg-gradient-to-r from-blue-500 to-cyan-500 text-white shadow-lg shadow-blue-500/25'
+                        : 'text-slate-300 hover:text-white hover:bg-slate-700/50'
                     }`}
                   >
                     {timeframe.name}
@@ -254,10 +262,17 @@ const AnalyticsDashboard = () => {
               </div>
             </div>
             
-            <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-3">
+              {/* Live Indicator */}
+              <div className="flex items-center space-x-2 bg-green-500/10 px-3 py-1 rounded-full border border-green-500/20">
+                <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+                <span className="text-green-400 text-xs font-medium">Live Data</span>
+              </div>
+              
+              {/* Export Buttons */}
               <button
                 onClick={() => exportReport('pdf')}
-                className="flex items-center space-x-2 bg-slate-700 text-white px-4 py-2 rounded-lg hover:bg-slate-600 transition-colors"
+                className="flex items-center space-x-2 bg-gradient-to-r from-slate-700 to-slate-600 text-white px-4 py-2 rounded-lg hover:from-slate-600 hover:to-slate-500 transition-all duration-200 shadow-lg shadow-slate-700/25"
               >
                 <DocumentArrowDownIcon className="w-4 h-4" />
                 <span>Export PDF</span>
@@ -265,7 +280,7 @@ const AnalyticsDashboard = () => {
               
               <button
                 onClick={() => exportReport('csv')}
-                className="flex items-center space-x-2 bg-slate-700 text-white px-4 py-2 rounded-lg hover:bg-slate-600 transition-colors"
+                className="flex items-center space-x-2 bg-gradient-to-r from-blue-600 to-cyan-600 text-white px-4 py-2 rounded-lg hover:from-blue-500 hover:to-cyan-500 transition-all duration-200 shadow-lg shadow-blue-500/25"
               >
                 <ArrowTopRightOnSquareIcon className="w-4 h-4" />
                 <span>Export CSV</span>
