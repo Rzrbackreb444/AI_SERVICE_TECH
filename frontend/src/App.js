@@ -226,6 +226,14 @@ function App() {
               path="/api-docs" 
               element={<APIDocumentation />} 
             />
+            <Route 
+              path="/blog" 
+              element={<BlogSystem />} 
+            />
+            <Route 
+              path="/blog/:slug" 
+              element={<BlogSystem />} 
+            />
 
             {/* Case Study Showcase - Public Access */}
             <Route path="/analyze" element={<RevenueAnalyzer />} />
