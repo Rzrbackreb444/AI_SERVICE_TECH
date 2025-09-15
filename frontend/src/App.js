@@ -240,6 +240,9 @@ function App() {
             {/* Case Study Showcase - Public Access */}
             <Route path="/analyze" element={<RevenueAnalyzer />} />
 
+            {/* NEW: Professional Marketplace */}
+            <Route path="/marketplace" element={<MarketplaceDashboard />} />
+
             {/* Protected Routes */}
             <Route path="/dashboard" element={
               <ProtectedRoute>
