@@ -9,7 +9,7 @@ from datetime import datetime
 import time
 
 def test_auth_system():
-    base_url = "https://site-atlas-ai.preview.emergentagent.com/api"
+    base_url = "https://siteatlas.preview.emergentagent.com/api"
     
     # Generate unique test user
     timestamp = datetime.now().strftime('%H%M%S%f')

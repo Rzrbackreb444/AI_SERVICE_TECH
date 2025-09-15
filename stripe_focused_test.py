@@ -8,7 +8,7 @@ import json
 import sys
 
 def test_stripe_issue():
-    base_url = "https://site-atlas-ai.preview.emergentagent.com/api"
+    base_url = "https://siteatlas.preview.emergentagent.com/api"
     
     print("🔥 STRIPE INTEGRATION ISSUE DIAGNOSIS")
     print("=" * 60)

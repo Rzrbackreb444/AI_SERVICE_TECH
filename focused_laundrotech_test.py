@@ -11,7 +11,7 @@ from datetime import datetime
 
 class FocusedLaundroTechTester:
     def __init__(self):
-        self.base_url = "https://site-atlas-ai.preview.emergentagent.com/api"
+        self.base_url = "https://siteatlas.preview.emergentagent.com/api"
         self.token = None
         self.tests_passed = 0
         self.tests_failed = 0
