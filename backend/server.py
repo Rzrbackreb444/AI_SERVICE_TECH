@@ -1654,6 +1654,12 @@ app.include_router(consultant_router, prefix="/api")  # NEW: Personalized AI con
 app.include_router(listings_router, prefix="/api")  # NEW: Listings management endpoints
 app.include_router(business_router, prefix="/api")  # NEW: Complete business infrastructure
 
+@app.on_event("startup")
+async def startup_event():
+    # Initialize marketplace service
+    initialize_marketplace_service(db)
+    logging.info("✅ Marketplace service initialized")
+
 @app.on_event("shutdown")
 async def shutdown_db_client():
     client.close()
