@@ -1650,6 +1650,7 @@ app.include_router(notifications_router, prefix="/api")
 app.include_router(optimization_router, prefix="/api")  # NEW: Optimization endpoints
 app.include_router(advanced_revenue_router, prefix="/api")  # NEW: Advanced revenue strategies
 app.include_router(consultant_router, prefix="/api")  # NEW: Personalized AI consultant - THE STICKINESS GAME-CHANGER
+app.include_router(listings_router, prefix="/api")  # NEW: Listings management endpoints
 app.include_router(business_router, prefix="/api")  # NEW: Complete business infrastructure
 
 @app.on_event("shutdown")
