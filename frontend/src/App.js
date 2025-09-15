@@ -423,7 +423,7 @@ function App() {
           <ChatWidget />
         </div>
       </BrowserRouter>
-    </AuthProvider>
+    </AuthProviderWithState>
   );
 }
 
