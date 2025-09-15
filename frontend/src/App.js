@@ -30,6 +30,7 @@ import RevenueAnalyzer from './components/RevenueAnalyzer';
 import ChatWidget from './components/ChatWidget';
 import MediaKit from './components/MediaKit';
 import APIDocumentation from './components/APIDocumentation';
+import BlogSystem from './components/BlogSystem';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
