@@ -425,12 +425,13 @@ class EnterpriseAnalysisEngine:
         
         # Add advanced financial metrics
         base_case = financial_projections['financial_projections']['scenario_analysis']['base_case']
+        investment_amount = base_investment
         financial_projections['financial_projections']['advanced_metrics'] = {
             'npv_10_year': round(self._calculate_npv(base_case['monthly_profit'] * 12, 10, 0.08), 0),
-            'irr_percentage': round(self._calculate_irr(base_investment, base_case['monthly_profit'] * 12), 1),
+            'irr_percentage': round(self._calculate_irr(investment_amount, base_case['monthly_profit'] * 12), 1),
             'cash_flow_breakeven': base_case['break_even_month'],
-            'debt_service_coverage': round((base_case['monthly_profit'] * 12) / (base_investment * 0.6 * 0.08), 2),
-            'asset_turnover_ratio': round((base_case['monthly_revenue'] * 12) / base_investment, 2)
+            'debt_service_coverage': round((base_case['monthly_profit'] * 12) / (investment_amount * 0.6 * 0.08), 2),
+            'asset_turnover_ratio': round((base_case['monthly_revenue'] * 12) / investment_amount, 2)
         }
         
         return financial_projections
