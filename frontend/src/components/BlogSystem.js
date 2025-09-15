@@ -589,11 +589,21 @@ Traditional site selection is becoming obsolete because:
                   )}
                 </div>
                 
-                <h3 className="text-xl font-bold text-white mb-3 line-clamp-2 group-hover:text-cyan-400 transition-colors">
+                <h3 className="text-xl font-bold text-white mb-3 group-hover:text-cyan-400 transition-colors overflow-hidden" style={{
+                  display: '-webkit-box',
+                  WebkitLineClamp: 2,
+                  WebkitBoxOrient: 'vertical',
+                  textOverflow: 'ellipsis'
+                }}>
                   {post.title}
                 </h3>
                 
-                <p className="text-slate-300 text-sm mb-4 line-clamp-3">
+                <p className="text-slate-300 text-sm mb-4 overflow-hidden" style={{
+                  display: '-webkit-box',
+                  WebkitLineClamp: 3,
+                  WebkitBoxOrient: 'vertical',
+                  textOverflow: 'ellipsis'
+                }}>
                   {post.excerpt}
                 </p>
                 
