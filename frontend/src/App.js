@@ -33,6 +33,7 @@ import APIDocumentation from './components/APIDocumentation';
 import BlogSystem from './components/BlogSystem';
 import MarketplaceDashboard from './components/SimpleMarketplace';
 import ListingCreator from './components/ListingCreator';
+import UserManagement from './components/UserManagement';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
