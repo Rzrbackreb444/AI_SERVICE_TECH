@@ -1656,6 +1656,12 @@ app.include_router(optimization_router, prefix="/api")  # NEW: Optimization endp
 app.include_router(advanced_revenue_router, prefix="/api")  # NEW: Advanced revenue strategies
 app.include_router(consultant_router, prefix="/api")  # NEW: Personalized AI consultant - THE STICKINESS GAME-CHANGER
 app.include_router(enhanced_consultant_router, prefix="/api")  # NEW: Enhanced consultant endpoints
+
+# Add user analytics endpoints
+user_analytics_router = create_user_analytics_router()
+app.include_router(user_analytics_router, prefix="/api")
+logger.info("User analytics endpoints initialized")
+
 app.include_router(listings_router, prefix="/api")  # NEW: Listings management endpoints
 app.include_router(business_router, prefix="/api")  # NEW: Complete business infrastructure
 
