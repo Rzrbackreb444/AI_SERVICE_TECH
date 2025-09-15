@@ -49,13 +49,11 @@ const EnhancedConsultantWidget = () => {
       setMessages([{
         id: 1,
         type: 'bot',
-        message: "Hi! I'm your LaundroTech intelligence guide. I'm here to help you navigate the laundromat industry - whether you're exploring your first investment or optimizing existing operations. What brings you here today?",
+        message: "Hi! I'm your LaundroTech consultant. Are you currently a laundromat owner or exploring investment opportunities?",
         timestamp: new Date(),
         quickActions: [
-          { text: 'Exploring Investment', action: 'exploring' },
-          { text: 'I Own Laundromats', action: 'owner' },
-          { text: 'Location Analysis', action: 'location' },
-          { text: 'Market Research', action: 'research' }
+          { text: 'Current Owner', action: 'current_owner' },
+          { text: 'Exploring Investment', action: 'prospective_owner' }
         ]
       }]);
     }
