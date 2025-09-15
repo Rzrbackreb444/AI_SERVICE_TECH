@@ -2114,7 +2114,10 @@ class ComprehensivePlatformAuditor:
         auth_tests = [
             self.test_api_root_and_health,
             self.test_user_registration,
-            self.test_user_login
+            self.test_user_login,
+            self.test_jwt_authentication_across_endpoints,
+            self.test_user_dashboard_statistics,
+            self.test_user_profile_settings
         ]
         auth_passed = sum(1 for test in auth_tests if test())
         print(f"📊 Authentication Tests: {auth_passed}/{len(auth_tests)} passed")
