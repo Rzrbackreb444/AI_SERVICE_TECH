@@ -736,12 +736,23 @@ const LandingPage = ({ onOpenAuth }) => {
             </div>
             
             <div>
-              <h3 className="text-lg font-semibold text-white mb-4">Company</h3>
+              <h3 className="text-lg font-semibold text-white mb-4">Founder</h3>
+              <div className="flex items-center space-x-4 mb-4">
+                <img 
+                  src="https://customer-assets.emergentagent.com/job_site-atlas-ai/artifacts/q1fcsvvw_IMG_1750.jpeg" 
+                  alt="Nick - Founder" 
+                  className="w-12 h-12 rounded-full border-2 border-cyan-400/30"
+                />
+                <div>
+                  <div className="text-white font-semibold">Nick</div>
+                  <div className="text-slate-400 text-sm">3rd Generation Arkansas Expert</div>
+                </div>
+              </div>
               <ul className="space-y-2 text-slate-400 text-sm">
-                <li><Link to="/about" className="hover:text-white transition-colors">About Us</Link></li>
-                <li><a href="mailto:nick@laundryguys.net" className="hover:text-white transition-colors">Careers</a></li>
-                <li><a href="mailto:nick@laundryguys.net" className="hover:text-white transition-colors">Press</a></li>
-                <li><a href="mailto:nick@laundryguys.net" className="hover:text-white transition-colors">Investors</a></li>
+                <li><Link to="/about" className="hover:text-white transition-colors">Our Story</Link></li>
+                <li><a href="mailto:nick@laundryguys.net" className="hover:text-white transition-colors">Direct Contact</a></li>
+                <li><Link to="/about" className="hover:text-white transition-colors">Industry Experience</a></li>
+                <li><a href="mailto:nick@laundryguys.net" className="hover:text-white transition-colors">Consultation</a></li>
               </ul>
             </div>
             
