@@ -523,6 +523,12 @@ What specific question do you have?`;
         message = 'I\'m exploring laundromat investment opportunities';
         updateUserProfile({ stage: 'prospective_owner' });
         break;
+      case 'listings':
+        message = 'Show me current laundromat listings for sale';
+        break;
+      case 'analyze_listing':
+        message = 'I want to analyze one of these listings';
+        break;
       case 'competition_analysis':
         message = 'I want competition intelligence for my laundromat';
         break;
