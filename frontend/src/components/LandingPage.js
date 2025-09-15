@@ -407,6 +407,159 @@ const LandingPage = ({ onOpenAuth }) => {
         </div>
       </section>
 
+      {/* Real-World Case Studies Preview Section */}
+      <section className="relative py-20 bg-slate-900/60 backdrop-blur-sm">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+            className="text-center mb-12"
+          >
+            <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
+              Real-World <span className="bg-gradient-to-r from-cyan-400 to-emerald-400 bg-clip-text text-transparent">Intelligence Showcase</span>
+            </h2>
+            <p className="text-xl text-slate-300 max-w-4xl mx-auto">
+              See how LaundroTech powers million-dollar decisions with The Wash Room expansion and Vista Laundry rebuild analysis
+            </p>
+          </motion.div>
+
+          <div className="grid md:grid-cols-3 gap-8">
+            {/* The Wash Room Phoenix Ave */}
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              className="glass-card p-8 hover:scale-105 transition-all duration-300 border border-cyan-400/30 relative"
+            >
+              <div className="absolute -top-2 -right-2 bg-gradient-to-r from-cyan-500 to-emerald-500 text-white px-3 py-1 rounded-full text-xs font-bold">
+                FEATURED
+              </div>
+              <div className="h-32 bg-gradient-to-br from-cyan-500/20 to-emerald-500/20 rounded-lg mb-4 overflow-hidden flex items-center justify-center">
+                <h3 className="text-white font-bold text-lg text-center">The Wash Room<br/>Phoenix Ave</h3>
+              </div>
+              <h4 className="text-xl font-bold text-white mb-2">Fort Smith, AR Expansion</h4>
+              <p className="text-slate-300 text-sm mb-4">Multi-million dollar expansion success story with rapid growth proven</p>
+              <div className="space-y-2 mb-4">
+                <div className="flex items-center text-slate-400 text-xs">
+                  <CheckCircleIcon className="w-3 h-3 mr-2 text-green-400" />
+                  Rapid expansion validated
+                </div>
+                <div className="flex items-center text-slate-400 text-xs">
+                  <CheckCircleIcon className="w-3 h-3 mr-2 text-green-400" />
+                  High traffic location analysis
+                </div>
+                <div className="flex items-center text-slate-400 text-xs">
+                  <CheckCircleIcon className="w-3 h-3 mr-2 text-green-400" />
+                  Premium equipment ROI
+                </div>
+              </div>
+              <Link
+                to="/analyze"
+                className="w-full bg-gradient-to-r from-cyan-500 to-emerald-500 text-white px-4 py-2 rounded-lg text-sm font-bold text-center block hover:shadow-lg transition-all"
+              >
+                See Intelligence Preview
+              </Link>
+            </motion.div>
+
+            {/* Vista Laundry Rebuild */}
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.1 }}
+              className="glass-card p-8 hover:scale-105 transition-all duration-300 border border-orange-400/30 relative"
+            >
+              <div className="absolute -top-2 -right-2 bg-gradient-to-r from-red-500 to-orange-500 text-white px-3 py-1 rounded-full text-xs font-bold animate-pulse">
+                CRITICAL
+              </div>
+              <div className="h-32 bg-gradient-to-br from-orange-500/20 to-red-500/20 rounded-lg mb-4 overflow-hidden flex items-center justify-center">
+                <h3 className="text-white font-bold text-lg text-center">Vista Laundry<br/>Rebuild Analysis</h3>
+              </div>
+              <h4 className="text-xl font-bold text-white mb-2">Van Buren, AR Decision</h4>
+              <p className="text-slate-300 text-sm mb-4">Million-dollar tear down vs renovate intelligence analysis</p>
+              <div className="space-y-2 mb-4">
+                <div className="flex items-center text-slate-400 text-xs">
+                  <CheckCircleIcon className="w-3 h-3 mr-2 text-orange-400" />
+                  Highway 59 traffic advantage
+                </div>
+                <div className="flex items-center text-slate-400 text-xs">
+                  <CheckCircleIcon className="w-3 h-3 mr-2 text-orange-400" />
+                  Speed Queen investment analysis
+                </div>
+                <div className="flex items-center text-slate-400 text-xs">
+                  <CheckCircleIcon className="w-3 h-3 mr-2 text-orange-400" />
+                  Multi-million dollar decision
+                </div>
+              </div>
+              <Link
+                to="/analyze"
+                className="w-full bg-gradient-to-r from-orange-500 to-red-500 text-white px-4 py-2 rounded-lg text-sm font-bold text-center block hover:shadow-lg transition-all"
+              >
+                Critical Analysis Preview
+              </Link>
+            </motion.div>
+
+            {/* The Wash Room Kelly Highway */}
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              className="glass-card p-8 hover:scale-105 transition-all duration-300 border border-blue-400/30"
+            >
+              <div className="h-32 bg-gradient-to-br from-blue-500/20 to-purple-500/20 rounded-lg mb-4 overflow-hidden flex items-center justify-center">
+                <h3 className="text-white font-bold text-lg text-center">The Wash Room<br/>Kelly Highway</h3>
+              </div>
+              <h4 className="text-xl font-bold text-white mb-2">Strategic Positioning</h4>
+              <p className="text-slate-300 text-sm mb-4">Market gap identification and competitive advantage analysis</p>
+              <div className="space-y-2 mb-4">
+                <div className="flex items-center text-slate-400 text-xs">
+                  <CheckCircleIcon className="w-3 h-3 mr-2 text-blue-400" />
+                  Market gap identified
+                </div>
+                <div className="flex items-center text-slate-400 text-xs">
+                  <CheckCircleIcon className="w-3 h-3 mr-2 text-blue-400" />
+                  Competitive advantage
+                </div>
+                <div className="flex items-center text-slate-400 text-xs">
+                  <CheckCircleIcon className="w-3 h-3 mr-2 text-blue-400" />
+                  Proven business model
+                </div>
+              </div>
+              <Link
+                to="/analyze"
+                className="w-full bg-gradient-to-r from-blue-500 to-purple-500 text-white px-4 py-2 rounded-lg text-sm font-bold text-center block hover:shadow-lg transition-all"
+              >
+                Strategic Analysis Preview
+              </Link>
+            </motion.div>
+          </div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, delay: 0.4 }}
+            className="text-center mt-12"
+          >
+            <Link
+              to="/analyze"
+              className="inline-flex items-center space-x-3 bg-gradient-to-r from-cyan-500 to-emerald-500 text-white px-8 py-4 rounded-xl font-bold text-lg hover:shadow-xl transition-all duration-300"
+            >
+              <SparklesIcon className="w-6 h-6" />
+              <span>Experience Full Intelligence Platform</span>
+              <ArrowRightIcon className="w-5 h-5" />
+            </Link>
+            <p className="text-slate-400 text-sm mt-4">
+              Join The Wash Room and thousands of professionals using LaundroTech Intelligence
+            </p>
+          </motion.div>
+        </div>
+      </section>
+
       {/* Advanced Features Section */}
       <section id="features" className="relative py-32 bg-slate-900/50 backdrop-blur-sm">
         <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
