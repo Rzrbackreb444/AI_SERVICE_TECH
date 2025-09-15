@@ -476,12 +476,146 @@ const WorkingMarketplaceDashboard = () => {
           </div>
           
           <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-8">
-            {listings.map((listingResponse) => (
-              <ListingCard
-                key={listingResponse.listing.id}
-                listingResponse={listingResponse}
-              />
-            ))}
+            {listings.map((listingResponse) => {
+              const { listing, is_favorited, inquiry_sent } = listingResponse;
+              
+              return (
+                <motion.div
+                  key={listing.id}
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  whileHover={{ y: -4, transition: { duration: 0.2 } }}
+                  className="relative bg-white/[0.02] backdrop-blur-xl border border-white/[0.05] hover:border-white/[0.1] rounded-2xl overflow-hidden cursor-pointer transition-all duration-300 group"
+                >
+                  {/* Featured Badge */}
+                  {listing.featured && (
+                    <div className="absolute top-4 left-4 z-10 bg-gradient-to-r from-yellow-500 to-orange-500 px-3 py-1 rounded-full text-xs font-bold text-white">
+                      <StarIcon className="w-3 h-3 inline mr-1" />
+                      FEATURED
+                    </div>
+                  )}
+                  
+                  {/* Verified Badge */}
+                  {listing.verified && (
+                    <div className="absolute top-4 right-4 z-10 bg-emerald-500/90 p-2 rounded-full">
+                      <SparklesIcon className="w-4 h-4 text-white" />
+                    </div>
+                  )}
+
+                  {/* Image */}
+                  <div className="relative h-48 bg-gradient-to-br from-slate-800 to-slate-900">
+                    {listing.photos && listing.photos.length > 0 ? (
+                      <img
+                        src={listing.photos[0]}
+                        alt={listing.title}
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center">
+                        <PhotoIcon className="w-12 h-12 text-slate-600" />
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Content */}
+                  <div className="p-6">
+                    {/* Header */}
+                    <div className="flex items-start justify-between mb-3">
+                      <div className="flex-1">
+                        <h3 className="text-lg font-bold text-white group-hover:text-cyan-400 transition-colors line-clamp-2">
+                          {listing.title}
+                        </h3>
+                        <div className="flex items-center text-slate-400 text-sm mt-1">
+                          <MapPinIcon className="w-4 h-4 mr-1" />
+                          {listing.address.city}, {listing.address.state}
+                        </div>
+                      </div>
+                      
+                      <button className="p-2 hover:bg-white/[0.05] rounded-lg transition-colors">
+                        {is_favorited ? (
+                          <HeartSolidIcon className="w-5 h-5 text-red-400" />
+                        ) : (
+                          <HeartIcon className="w-5 h-5 text-slate-400 hover:text-red-400" />
+                        )}
+                      </button>
+                    </div>
+
+                    {/* Key Metrics */}
+                    <div className="grid grid-cols-2 gap-4 mb-4">
+                      <div>
+                        <p className="text-2xl font-bold text-emerald-400">
+                          {formatCurrency(listing.financials.asking_price)}
+                        </p>
+                        <p className="text-xs text-slate-400">Asking Price</p>
+                      </div>
+                      <div>
+                        <p className="text-lg font-bold text-white">
+                          {formatCurrency(listing.financials.annual_revenue || 0)}
+                        </p>
+                        <p className="text-xs text-slate-400">Annual Revenue</p>
+                      </div>
+                    </div>
+
+                    {/* Details */}
+                    <div className="grid grid-cols-3 gap-3 mb-4 text-sm">
+                      <div className="text-center">
+                        <p className="font-bold text-white">{listing.equipment.total_machines}</p>
+                        <p className="text-slate-400 text-xs">Machines</p>
+                      </div>
+                      <div className="text-center">
+                        <p className="font-bold text-white">{formatNumber(listing.square_footage)}</p>
+                        <p className="text-slate-400 text-xs">Sq Ft</p>
+                      </div>
+                      <div className="text-center">
+                        <p className="font-bold text-white">{listing.years_established}y</p>
+                        <p className="text-slate-400 text-xs">Established</p>
+                      </div>
+                    </div>
+
+                    {/* Market Analysis */}
+                    {listing.market_analysis && (
+                      <div className="flex items-center justify-between mb-4 p-3 bg-white/[0.02] rounded-lg">
+                        <div className="flex items-center space-x-3">
+                          <div className="text-center">
+                            <p className={`text-lg font-bold ${getMarketScoreColor(listing.market_analysis.market_score)}`}>
+                              {listing.market_analysis.market_score}
+                            </p>
+                            <p className="text-xs text-slate-400">Score</p>
+                          </div>
+                          <div className="text-center">
+                            <p className="text-sm font-bold text-white">{getROI(listing.financials.annual_revenue, listing.financials.asking_price)}%</p>
+                            <p className="text-xs text-slate-400">ROI</p>
+                          </div>
+                        </div>
+                        <div className="text-right">
+                          <p className="text-xs text-slate-400 capitalize">{listing.market_analysis.competition_density} Competition</p>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Engagement Stats */}
+                    <div className="flex items-center justify-between text-xs text-slate-400 mb-4">
+                      <div className="flex items-center space-x-4">
+                        <span className="flex items-center">
+                          <EyeIcon className="w-3 h-3 mr-1" />
+                          {listing.view_count}
+                        </span>
+                        <span className="flex items-center">
+                          <HeartIcon className="w-3 h-3 mr-1" />
+                          {listing.favorite_count}
+                        </span>
+                      </div>
+                      <div className="flex items-center">
+                        <ClockIcon className="w-3 h-3 mr-1" />
+                        {new Date(listing.created_at).toLocaleDateString()}
+                      </div>
+                    </div>
+
+                    <ArrowRightIcon className="w-4 h-4 text-slate-400 group-hover:text-cyan-400 transition-colors ml-auto" />
+                  </div>
+                </motion.div>
+              );
+            })}
           </div>
         </div>
       </div>
