@@ -328,31 +328,31 @@ const LandingPage = ({ onOpenAuth }) => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 1, delay: 1.1 }}
-              className="flex flex-col sm:flex-row gap-6 justify-center mb-16"
+              className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center mb-12 sm:mb-16 px-4"
             >
               <motion.button
                 whileHover={{ scale: 1.05, boxShadow: "0 20px 40px rgba(6,182,212,0.4)" }}
                 whileTap={{ scale: 0.95 }}
-                className="group relative bg-gradient-to-r from-cyan-500 to-emerald-500 text-white font-bold text-xl px-12 py-6 rounded-2xl shadow-2xl transition-all duration-300"
+                className="group relative bg-gradient-to-r from-cyan-500 to-emerald-500 text-white font-bold text-lg sm:text-xl px-8 sm:px-12 py-4 sm:py-6 rounded-2xl shadow-2xl transition-all duration-300"
                 onClick={() => onOpenAuth('register')}
               >
                 <div className="absolute inset-0 bg-gradient-to-r from-cyan-400 to-emerald-400 rounded-2xl blur opacity-0 group-hover:opacity-50 transition-opacity duration-300"></div>
-                <span className="relative flex items-center">
-                  <svg className="w-6 h-6 mr-3" fill="currentColor" viewBox="0 0 24 24">
+                <span className="relative flex items-center justify-center">
+                  <svg className="w-5 h-5 sm:w-6 sm:h-6 mr-2 sm:mr-3" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M12 2C13.1 2 14 2.9 14 4V6H18C19.1 6 20 6.9 20 8V19C20 20.1 19.1 21 18 21H6C4.9 21 4 20.1 4 19V8C4 6.9 4.9 6 6 6H10V4C10 2.9 10.9 2 12 2ZM12 4V6H12V4ZM6 8V19H18V8H6ZM8 10H16V12H8V10ZM8 14H13V16H8V14Z"/>
                   </svg>
-                  Join the Movement
-                  <ArrowRightIcon className="w-6 h-6 ml-3 group-hover:translate-x-1 transition-transform duration-300" />
+                  <span className="whitespace-nowrap">Join the Movement</span>
+                  <ArrowRightIcon className="w-5 h-5 sm:w-6 sm:h-6 ml-2 sm:ml-3 group-hover:translate-x-1 transition-transform duration-300" />
                 </span>
               </motion.button>
               
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="bg-white/10 backdrop-blur-sm border border-white/20 text-white font-semibold text-xl px-12 py-6 rounded-2xl hover:bg-white/20 transition-all duration-300"
+                className="bg-white/10 backdrop-blur-sm border border-white/20 text-white font-semibold text-lg sm:text-xl px-8 sm:px-12 py-4 sm:py-6 rounded-2xl hover:bg-white/20 transition-all duration-300"
                 onClick={() => document.getElementById('features').scrollIntoView({ behavior: 'smooth' })}
               >
-                See the Technology
+                <span className="whitespace-nowrap">See the Technology</span>
               </motion.button>
             </motion.div>
 
@@ -361,7 +361,7 @@ const LandingPage = ({ onOpenAuth }) => {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 1, delay: 1.3 }}
-              className="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-6xl mx-auto"
+              className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-8 max-w-6xl mx-auto px-4"
             >
               {aiCapabilities.map((capability, index) => (
                 <motion.div
