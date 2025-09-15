@@ -31,7 +31,7 @@ import EnhancedConsultantWidget from './components/EnhancedConsultantWidget';
 import MediaKit from './components/MediaKit';
 import APIDocumentation from './components/APIDocumentation';
 import BlogSystem from './components/BlogSystem';
-import MarketplaceDashboard from './components/MarketplaceDashboard';
+import MarketplaceDashboard from './components/WorkingMarketplaceDashboard';
 import ListingCreator from './components/ListingCreator';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
