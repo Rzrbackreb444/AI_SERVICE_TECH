@@ -371,7 +371,7 @@ const ProfessionalMarketplace = () => {
                   <CurrencyDollarIcon className="w-6 h-6 text-white" />
                 </div>
                 <div className="flex items-center text-sm font-medium text-emerald-400">
-                  <TrendingUpIcon className="w-4 h-4 mr-1" />
+                  <ArrowTrendingUpIcon className="w-4 h-4 mr-1" />
                   {Math.abs(marketStats.price_trend_30_days)}%
                 </div>
               </div>
