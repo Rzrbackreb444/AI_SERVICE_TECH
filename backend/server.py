@@ -1660,6 +1660,16 @@ app.include_router(business_router, prefix="/api")  # NEW: Complete business inf
 
 @app.on_event("startup")
 async def startup_event():
+    """Initialize components that require database connection"""
+    try:
+        # Initialize enhanced consultant system with database
+        import enhanced_consultant_endpoints
+        enhanced_consultant_endpoints.init_db(db)
+        enhanced_consultant_endpoints.init_consultant_system()
+        logger.info("Enhanced consultant system initialized")
+    except Exception as e:
+        logger.error(f"Failed to initialize enhanced consultant system: {e}")
+    
     # Initialize marketplace service
     initialize_marketplace_service(db)
     logging.info("✅ Marketplace service initialized")
