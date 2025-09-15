@@ -145,6 +145,147 @@ const EnhancedConsultantWidget = () => {
   const generateIntelligentResponse = async (userInput) => {
     const input = userInput.toLowerCase();
     
+    // Customer Support & Platform Questions
+    if (input.includes('help') || input.includes('support') || input.includes('problem') || input.includes('issue')) {
+      return `**Customer Support - How can I help?**
+
+**Common Issues:**
+• Account & billing questions
+• Technical support & troubleshooting  
+• Feature explanations & tutorials
+• Subscription management
+
+**Quick Solutions:**
+• Reset password → Account Settings
+• Update payment → Billing tab
+• Download reports → Analysis History
+• Cancel subscription → Contact support
+
+What specific issue are you experiencing?`;
+    }
+
+    if (input.includes('how') && (input.includes('work') || input.includes('platform') || input.includes('site'))) {
+      return `**How LaundroTech Works:**
+
+**Step 1:** Enter any address you're interested in
+**Step 2:** Our AI analyzes 156+ data points instantly
+**Step 3:** Get detailed reports with success probability scores
+**Step 4:** Access ongoing market intelligence & updates
+
+**What We Analyze:**
+• Demographics & population density
+• Competition mapping & market gaps
+• Traffic patterns & accessibility
+• Financial projections & ROI estimates
+
+**Free vs Paid:**
+• **Free Location Scout:** Basic analysis for any address
+• **Paid Tiers:** Detailed reports, ongoing monitoring, advanced features
+
+Want to try analyzing a location right now?`;
+    }
+
+    if (input.includes('pricing') || input.includes('cost') || input.includes('price') || input.includes('how much')) {
+      return `**LaundroTech Pricing:**
+
+**🆓 Location Scout (FREE)**
+• Basic location analysis
+• Market score overview
+• Limited monthly analyses
+
+**💼 Market Analyzer ($29/month)**
+• Detailed demographics & competition reports
+• Financial modeling & ROI projections
+• Unlimited analyses
+
+**🚀 Business Intelligence ($79/month)**
+• Everything in Market Analyzer
+• Real-time monitoring & alerts
+• Advanced competitive intelligence
+• Business valuation tools
+
+**🏢 Enterprise Analysis ($199/month)**
+• Multi-location portfolio management
+• Custom reports & white-label options
+• Priority support & consultation
+
+Ready to upgrade for more detailed analysis?`;
+    }
+
+    if (input.includes('features') || input.includes('what can') || input.includes('capabilities') || input.includes('demo')) {
+      return `**LaundroTech Platform Features:**
+
+**🎯 Location Intelligence**
+• 156+ data point analysis
+• Demographics & foot traffic
+• Competition mapping
+• Success probability scoring
+
+**📊 Market Research**
+• Real-time market monitoring
+• Competitive intelligence reports  
+• Trend analysis & alerts
+• Investment opportunity identification
+
+**💰 Financial Tools**
+• ROI calculators & projections
+• Business valuation models
+• Equipment upgrade analysis
+• Revenue optimization strategies
+
+**📱 Advanced Features**
+• Mobile-responsive dashboard
+• PDF report generation
+• API access for developers
+• White-label solutions
+
+Want me to show you any specific feature in action?`;
+    }
+
+    if (input.includes('billing') || input.includes('payment') || input.includes('subscription') || input.includes('cancel')) {
+      return `**Billing & Subscription Help:**
+
+**Payment Issues:**
+• Update payment method → Account Settings → Billing
+• Failed payment → Check card details & retry
+• Billing questions → Contact support directly
+
+**Subscription Management:**
+• Upgrade/downgrade → Account Settings
+• Cancel anytime → No long-term contracts
+• Pause subscription → Available for certain tiers
+
+**Payment Methods:**
+• Credit/debit cards (Stripe)
+• PayPal (additional discounts available)
+• Enterprise invoicing available
+
+**Need immediate help?** 
+Contact support@laundrotech.com or use the chat for urgent billing issues.`;
+    }
+
+    if (input.includes('account') || input.includes('login') || input.includes('password') || input.includes('forgot')) {
+      return `**Account Support:**
+
+**Login Issues:**
+• Forgot password → Use "Reset Password" link
+• Account locked → Try again in 15 minutes
+• Email not recognized → Check spelling or create new account
+
+**Account Management:**
+• Update profile → Account Settings
+• Change email → Contact support
+• Delete account → Account Settings → Delete Account
+
+**Security:**
+• Use strong, unique passwords
+• Enable 2FA if available
+• Contact us immediately for suspicious activity
+
+**Still having trouble?** 
+I can escalate to our technical support team right away.`;
+    }
+
     // Current Owner Path
     if (input.includes('current owner') || input.includes('i own') || input.includes('my laundromat')) {
       updateUserProfile({ stage: 'current_owner' });
@@ -244,6 +385,12 @@ What property are you considering?`;
 • ${userProfile.stage === 'current_owner' ? 'Competition intelligence' : 'Location analysis'}
 • ${userProfile.stage === 'current_owner' ? 'Business valuation' : 'Market research'}
 • ${userProfile.stage === 'current_owner' ? 'ROI optimization' : 'Investment modeling'}
+
+**Platform Support:**
+• Features & capabilities
+• Pricing & billing questions
+• Technical support
+• Account management
 
 What specific question do you have?`;
   };
