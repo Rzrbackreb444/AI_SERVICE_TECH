@@ -241,43 +241,105 @@ const WorkingMarketplaceDashboard = () => {
         {/* Market Statistics */}
         {marketStats && (
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6 mb-8">
-            <MarketStatsCard
-              title="Active Listings"
-              value={formatNumber(marketStats.total_active_listings)}
-              icon={BuildingOffice2Icon}
-              color="from-blue-500 to-cyan-500"
-            />
-            <MarketStatsCard
-              title="Avg Price"
-              value={formatCurrency(marketStats.average_price)}
-              icon={CurrencyDollarIcon}
-              change={marketStats.price_trend_30_days}
-              color="from-emerald-500 to-teal-500"
-            />
-            <MarketStatsCard
-              title="Median Price"
-              value={formatCurrency(marketStats.median_price)}
-              icon={ChartBarIcon}
-              color="from-purple-500 to-pink-500"
-            />
-            <MarketStatsCard
-              title="Avg Revenue"
-              value={formatCurrency(marketStats.average_revenue)}
-              icon={TrendingUpIcon}
-              color="from-orange-500 to-red-500"
-            />
-            <MarketStatsCard
-              title="Days on Market"
-              value={`${marketStats.average_days_on_market} days`}
-              icon={ClockIcon}
-              color="from-yellow-500 to-orange-500"
-            />
-            <MarketStatsCard
-              title="New This Month"
-              value={formatNumber(marketStats.new_listings_this_month)}
-              icon={SparklesIcon}
-              color="from-cyan-500 to-blue-500"
-            />
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="bg-white/[0.02] backdrop-blur-xl border border-white/[0.05] rounded-2xl p-6 hover:border-white/[0.1] transition-all duration-300"
+            >
+              <div className="flex items-center justify-between mb-4">
+                <div className="p-3 rounded-xl bg-gradient-to-r from-blue-500 to-cyan-500 bg-opacity-10">
+                  <BuildingOffice2Icon className="w-6 h-6 text-white" />
+                </div>
+              </div>
+              <div>
+                <h3 className="text-slate-400 text-sm font-medium mb-1">Active Listings</h3>
+                <p className="text-2xl font-bold text-white">{formatNumber(marketStats.total_active_listings)}</p>
+              </div>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="bg-white/[0.02] backdrop-blur-xl border border-white/[0.05] rounded-2xl p-6 hover:border-white/[0.1] transition-all duration-300"
+            >
+              <div className="flex items-center justify-between mb-4">
+                <div className="p-3 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 bg-opacity-10">
+                  <CurrencyDollarIcon className="w-6 h-6 text-white" />
+                </div>
+                <div className="flex items-center text-sm font-medium text-emerald-400">
+                  <TrendingUpIcon className="w-4 h-4 mr-1" />
+                  {Math.abs(marketStats.price_trend_30_days)}%
+                </div>
+              </div>
+              <div>
+                <h3 className="text-slate-400 text-sm font-medium mb-1">Avg Price</h3>
+                <p className="text-2xl font-bold text-white">{formatCurrency(marketStats.average_price)}</p>
+              </div>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="bg-white/[0.02] backdrop-blur-xl border border-white/[0.05] rounded-2xl p-6 hover:border-white/[0.1] transition-all duration-300"
+            >
+              <div className="flex items-center justify-between mb-4">
+                <div className="p-3 rounded-xl bg-gradient-to-r from-purple-500 to-pink-500 bg-opacity-10">
+                  <ChartBarIcon className="w-6 h-6 text-white" />
+                </div>
+              </div>
+              <div>
+                <h3 className="text-slate-400 text-sm font-medium mb-1">Median Price</h3>
+                <p className="text-2xl font-bold text-white">{formatCurrency(marketStats.median_price)}</p>
+              </div>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="bg-white/[0.02] backdrop-blur-xl border border-white/[0.05] rounded-2xl p-6 hover:border-white/[0.1] transition-all duration-300"
+            >
+              <div className="flex items-center justify-between mb-4">
+                <div className="p-3 rounded-xl bg-gradient-to-r from-orange-500 to-red-500 bg-opacity-10">
+                  <TrendingUpIcon className="w-6 h-6 text-white" />
+                </div>
+              </div>
+              <div>
+                <h3 className="text-slate-400 text-sm font-medium mb-1">Avg Revenue</h3>
+                <p className="text-2xl font-bold text-white">{formatCurrency(marketStats.average_revenue)}</p>
+              </div>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="bg-white/[0.02] backdrop-blur-xl border border-white/[0.05] rounded-2xl p-6 hover:border-white/[0.1] transition-all duration-300"
+            >
+              <div className="flex items-center justify-between mb-4">
+                <div className="p-3 rounded-xl bg-gradient-to-r from-yellow-500 to-orange-500 bg-opacity-10">
+                  <ClockIcon className="w-6 h-6 text-white" />
+                </div>
+              </div>
+              <div>
+                <h3 className="text-slate-400 text-sm font-medium mb-1">Days on Market</h3>
+                <p className="text-2xl font-bold text-white">{marketStats.average_days_on_market} days</p>
+              </div>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="bg-white/[0.02] backdrop-blur-xl border border-white/[0.05] rounded-2xl p-6 hover:border-white/[0.1] transition-all duration-300"
+            >
+              <div className="flex items-center justify-between mb-4">
+                <div className="p-3 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-500 bg-opacity-10">
+                  <SparklesIcon className="w-6 h-6 text-white" />
+                </div>
+              </div>
+              <div>
+                <h3 className="text-slate-400 text-sm font-medium mb-1">New This Month</h3>
+                <p className="text-2xl font-bold text-white">{formatNumber(marketStats.new_listings_this_month)}</p>
+              </div>
+            </motion.div>
           </div>
         )}
 
