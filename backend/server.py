@@ -48,6 +48,7 @@ from listings_endpoints import router as listings_router
 from business_endpoints import business_router
 from enterprise_analysis_engine import enterprise_analysis_engine
 from premium_visualization_engine import premium_viz_engine
+from marketplace_service import initialize_marketplace_service
 
 # Load environment variables
 ROOT_DIR = Path(__file__).parent
