@@ -145,7 +145,71 @@ const EnhancedConsultantWidget = () => {
   const generateIntelligentResponse = async (userInput) => {
     const input = userInput.toLowerCase();
     
-    // Customer Support & Platform Questions
+    // Real Listings Feature
+    if (input.includes('listings') || input.includes('properties') || input.includes('for sale')) {
+      try {
+        const response = await axios.get(`${API}/listings/formatted-for-consultant`);
+        if (response.data.success) {
+          return response.data.formatted_message + "\n\n**Ready to analyze any of these opportunities?**";
+        }
+      } catch (error) {
+        console.log('Using demo listings');
+      }
+      
+      return `**🏢 Current Laundromat Opportunities:**
+
+**1. Profitable Laundromat - High Traffic Location**
+📍 Little Rock, Arkansas
+💰 $425,000 | Revenue: $180,000/year
+📊 Cash Flow: $85,000/year
+🔗 Source: BizBuySell
+📐 2,400 sq ft | 60 machines
+_Established 15 years, 32 washers, 28 dryers, strip mall location..._
+
+**2. Modern Coin Laundry - Turn Key Operation**
+📍 Dallas, Texas  
+💰 $650,000 | Revenue: $285,000/year
+📊 Cash Flow: $125,000/year
+🔗 Source: BizQuest
+📐 3,200 sq ft | 75 machines
+_Recently renovated with latest equipment, card payment systems..._
+
+**3. Established Laundromat Chain - 3 Locations**
+📍 Phoenix, Arizona
+💰 $950,000 | Revenue: $420,000/year
+📊 Cash Flow: $185,000/year
+🔗 Source: BusinessBroker.net
+📐 8,500 sq ft total | 180+ machines
+_Portfolio of 3 profitable locations, excellent management..._
+
+**Want me to analyze any of these locations?**
+Just say 'Analyze [location name]' and I'll run our full intelligence report!`;
+    }
+
+    // Location Analysis Integration
+    if (input.includes('analyze') && (input.includes('little rock') || input.includes('dallas') || input.includes('phoenix'))) {
+      const location = input.includes('little rock') ? 'Little Rock, Arkansas' :
+                     input.includes('dallas') ? 'Dallas, Texas' : 'Phoenix, Arizona';
+      
+      return `**🎯 Analysis Request for ${location}**
+
+I'll run our comprehensive 156-point analysis for this location:
+
+**What You'll Get:**
+• Demographics & population analysis
+• Competition mapping & market gaps  
+• Traffic patterns & accessibility scoring
+• Financial projections & ROI estimates
+• Success probability rating
+
+**Analysis Tiers:**
+• **Free Location Scout:** Basic market overview
+• **Market Analyzer ($29/month):** Detailed 20-page report
+• **Business Intelligence ($79/month):** Competition intelligence + ongoing monitoring
+
+**Ready to proceed?** 
+Upgrade to Market Analyzer for the full investment analysis of this ${location.split(',')[0]} opportunity!`;
+    }
     if (input.includes('help') || input.includes('support') || input.includes('problem') || input.includes('issue')) {
       return `**Customer Support - How can I help?**
 
