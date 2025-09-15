@@ -8,8 +8,8 @@ import './App.css';
 import Navbar from './components/Navbar';
 import Dashboard from './components/Dashboard';
 import LocationAnalyzer from './components/LocationAnalyzer';
-import PricingPage from './components/PricingPage';
-import ImprovedAuthModal from './components/ImprovedAuthModal'; // Updated import
+import CompletePricingPage from './components/CompletePricingPage'; // Updated import
+import ImprovedAuthModal from './components/ImprovedAuthModal';
 import LandingPage from './components/LandingPage';
 import ProfilePage from './components/ProfilePage';
 import AnalysisHistory from './components/AnalysisHistory';
@@ -21,14 +21,13 @@ import UserProfileSettings from './components/UserProfileSettings';
 import SecuritySettings from './components/SecuritySettings';
 import InteractiveMap from './components/InteractiveMap';
 import HeatmapComponent from './components/HeatmapComponent';
-//
 import EnterpriseLocationAnalyzer from './components/EnterpriseLocationAnalyzer';
 import FacebookGroupMonetization from './components/FacebookGroupMonetization';
 import MRRDashboard from './components/MRRDashboard';
 import EnterprisePortal from './components/EnterprisePortal';
-import AboutUs from './components/AboutUs';
-import RevenueAnalyzer from './components/RevenueAnalyzer'; // New revenue analyzer
-import ChatWidget from './components/ChatWidget'; // New chat widget
+import AboutUs from './components/AboutUs'; // Updated import
+import RevenueAnalyzer from './components/RevenueAnalyzer';
+import ChatWidget from './components/ChatWidget';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
@@ -52,18 +51,28 @@ const AuthProvider = ({ children }) => {
   useEffect(() => {
     if (token) {
       axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-      // Verify token and get user data
       fetchUserData();
     } else {
       setLoading(false);
     }
   }, [token]);
 
+  // Listen for auth events from components
+  useEffect(() => {
+    const handleOpenAuth = (event) => {
+      const mode = event.detail || 'login';
+      setShowAuthModal(true);
+      setAuthMode(mode);
+    };
+
+    window.addEventListener('openAuth', handleOpenAuth);
+    return () => window.removeEventListener('openAuth', handleOpenAuth);
+  }, []);
+
   const fetchUserData = async () => {
     try {
       const response = await axios.get(`${API}/dashboard/stats`);
       if (response.data) {
-        // User is authenticated
         setLoading(false);
       }
     } catch (error) {
@@ -195,7 +204,7 @@ function App() {
             />
             <Route 
               path="/pricing" 
-              element={<PricingPage onOpenAuth={openAuthModal} />} 
+              element={<CompletePricingPage />} 
             />
             <Route 
               path="/facebook-group" 
@@ -205,6 +214,9 @@ function App() {
               path="/about" 
               element={<AboutUs />} 
             />
+
+            {/* Case Study Showcase - Public Access */}
+            <Route path="/analyze" element={<RevenueAnalyzer />} />
 
             {/* Protected Routes */}
             <Route path="/dashboard" element={
@@ -301,9 +313,6 @@ function App() {
                 </>
               </ProtectedRoute>
             } />
-            
-            {/* Updated analyze route to use new RevenueAnalyzer (public for case studies) */}
-            <Route path="/analyze" element={<RevenueAnalyzer />} />
             
             <Route path="/enterprise-analyzer" element={
               <ProtectedRoute>
