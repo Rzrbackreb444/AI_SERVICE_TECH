@@ -145,165 +145,107 @@ const EnhancedConsultantWidget = () => {
   const generateIntelligentResponse = async (userInput) => {
     const input = userInput.toLowerCase();
     
-    // Analyze user intent and adapt response
-    if (input.includes('own') || input.includes('have') || input.includes('my laundromat')) {
-      updateUserProfile({ stage: 'owner' });
-      return `Perfect! As a laundromat owner, I can help you with advanced analytics and optimization strategies. Here's what I can assist with:
+    // Current Owner Path
+    if (input.includes('current owner') || input.includes('i own') || input.includes('my laundromat')) {
+      updateUserProfile({ stage: 'current_owner' });
+      return `Perfect! As a current owner, I can help you with:
 
-**Business Intelligence:**
-• Real-time valuation tracking
-• Equipment ROI analysis and forecasting
-• Competition monitoring and market positioning
-• Performance analytics and optimization recommendations
+**Competition Intelligence** - Analyze competitors in your area
+**Business Valuation** - What's your laundromat worth today?
+**ROI Analysis** - Equipment upgrades and expansion potential
 
-**Immediate Value:**
-• Current market value assessment
-• Equipment upgrade impact analysis
-• Revenue optimization strategies
-• Operational efficiency insights
-
-What specific aspect of your business would you like to explore first?`;
+What would you like to explore first?`;
     }
 
-    if (input.includes('exploring') || input.includes('looking') || input.includes('thinking about')) {
-      updateUserProfile({ stage: 'prospect' });
-      return `Excellent! Exploring laundromat investments is exciting. I'll guide you through the key factors that determine success:
+    // Prospective Owner Path
+    if (input.includes('prospective') || input.includes('exploring') || input.includes('investment')) {
+      updateUserProfile({ stage: 'prospective_owner' });
+      return `Great! I help investors find profitable laundromat opportunities.
 
-**Critical Success Factors:**
-• Location intelligence (demographics, competition, traffic)
-• Market timing and saturation analysis
-• Financial modeling and ROI projections
-• Due diligence and valuation methods
+**Location Analysis** - Analyze any address for investment potential
+**Market Research** - Demographics, competition, and success probability
+**Financial Modeling** - ROI projections and investment requirements
 
-**Our Process:**
-1. **Location Analysis** - We analyze 156+ data points for any address
-2. **Market Intelligence** - Demographics, competition, and opportunity assessment  
-3. **Financial Modeling** - ROI projections and investment analysis
-4. **Success Probability** - AI-powered success predictions
-
-Would you like to start with a specific location analysis, or learn more about our market intelligence capabilities?`;
+Ready to analyze a specific location?`;
     }
 
-    if (input.includes('valuation') || input.includes('worth') || input.includes('value')) {
-      return `**Laundromat Valuation Methods I Use:**
+    // Competition Intelligence (Current Owners)
+    if (input.includes('competition') && userProfile.stage === 'current_owner') {
+      return `**Competition Intelligence for Your Laundromat:**
 
-**1. Asset-Based Valuation**
+I'll analyze competitors within 1-3 miles of your location:
+• Equipment comparison (age, capacity, pricing)
+• Service gaps and opportunities
+• Market positioning strategies
+• Pricing optimization recommendations
+
+**Upgrade to Business Intelligence ($79/month) for:**
+• Full competitive analysis reports
+• Real-time market monitoring
+• Equipment ROI calculators
+
+What's your laundromat address?`;
+    }
+
+    // Location Analysis (Prospective Owners)
+    if (input.includes('location') && userProfile.stage === 'prospective_owner') {
+      return `**Location Analysis for Investment:**
+
+I analyze 156+ data points for any address:
+• Demographics and population density
+• Competition mapping and saturation
+• Traffic patterns and accessibility
+• Success probability scoring
+
+**Free Location Scout** gives you basic analysis
+**Market Analyzer ($29/month)** provides detailed reports
+
+What address would you like me to analyze?`;
+    }
+
+    // Valuation requests
+    if (input.includes('valuation') || input.includes('worth')) {
+      if (userProfile.stage === 'current_owner') {
+        return `**Business Valuation for Current Owners:**
+
+I use 3 methods to value your laundromat:
+• Asset-based valuation (equipment + real estate)
+• Income-based analysis (cash flow multiples)
+• Market comparison (recent sales data)
+
+**Business Intelligence tier ($79/month) includes:**
+• Quarterly valuation updates
+• Market value tracking
 • Equipment depreciation analysis
-• Real estate value assessment
-• Net tangible asset calculations
 
-**2. Income-Based Valuation (DCF)**
-• Cash flow projections and analysis
-• Risk-adjusted return calculations
-• Present value of future earnings
+What's your current monthly revenue?`;
+      } else {
+        return `**Investment Valuation Analysis:**
 
-**3. Market Multiples Method**
-• Industry EBITDA multiples (typically 3-5x for laundromats)
-• Comparable sales analysis
-• Market position adjustments
+Before you buy, I'll help you determine fair market value:
+• Due diligence checklist
+• Cash flow verification
+• Market value assessment
+• ROI projections
 
-**Typical Valuation Ranges:**
-• Small laundromats (20-30 machines): $150K-$400K
-• Medium operations (40-60 machines): $400K-$800K
-• Large facilities (60+ machines): $800K-$2M+
+**Market Analyzer ($29/month) provides:**
+• Detailed valuation reports
+• Investment analysis tools
+• Risk assessment
 
-**Key Value Drivers:**
-• Location demographics and foot traffic
-• Equipment age and efficiency
-• Lease terms and rent stability
-• Revenue per machine and profit margins
-
-Would you like me to help you assess a specific property or understand the valuation process for your current operation?`;
+What property are you considering?`;
+      }
     }
 
-    if (input.includes('equipment') || input.includes('washer') || input.includes('dryer') || input.includes('roi')) {
-      return `**Equipment ROI Analysis & Recommendations:**
+    // Default response with upgrade path
+    return `I can help you with:
 
-**Top Commercial Brands (2024):**
-• **Speed Queen**: Premium durability, $1,500-$7,000+ per unit
-• **Maytag**: Balanced features/price, advanced controls
-• **Huebsch**: High-volume capacity, $6,500-$13,000 for premium units
+**${userProfile.stage === 'current_owner' ? 'Current Owners' : 'Prospective Investors'}:**
+• ${userProfile.stage === 'current_owner' ? 'Competition intelligence' : 'Location analysis'}
+• ${userProfile.stage === 'current_owner' ? 'Business valuation' : 'Market research'}
+• ${userProfile.stage === 'current_owner' ? 'ROI optimization' : 'Investment modeling'}
 
-**ROI Calculation Formula:**
-ROI = (Annual Net Benefit ÷ Equipment Cost) × 100%
-
-**Typical ROI Scenarios:**
-• **High-efficiency washers**: 200-400% ROI in year 1
-• **Large capacity machines**: 300-500% ROI potential
-• **Card payment systems**: 415% ROI average (reduces coin handling)
-
-**Value-Add Equipment Analysis:**
-Adding 2x 40lb washers + 2x 50lb dryers in optimal locations typically:
-• Increases monthly revenue: $2,400-$4,200
-• Equipment investment: $20,000-$35,000
-• Payback period: 8-15 months
-• Annual ROI: 80-150%
-
-**Location-Specific Factors:**
-• Demographics (income levels, family size)
-• Competition density and equipment age
-• Foot traffic patterns and accessibility
-• Utility costs and operational efficiency
-
-Would you like me to run a specific equipment ROI analysis for your location or help you evaluate upgrade opportunities?`;
-    }
-
-    if (input.includes('competition') || input.includes('market') || input.includes('competitors')) {
-      return `**Competitive Intelligence & Market Analysis:**
-
-**What I Analyze:**
-• Competitor locations within 1-3 mile radius
-• Equipment capacity, age, and pricing
-• Service gaps and differentiation opportunities
-• Market saturation and timing analysis
-
-**Competitive Advantages I Identify:**
-• **Service Gaps**: Extended hours, premium equipment, amenities
-• **Pricing Strategy**: Optimal pricing vs. competition
-• **Location Benefits**: Accessibility, parking, visibility
-• **Technology Edge**: Card systems, app integration, loyalty programs
-
-**Market Positioning Strategies:**
-• **Premium Positioning**: High-end equipment, superior experience
-• **Convenience Focus**: Extended hours, multiple locations
-• **Value Strategy**: Competitive pricing with solid service
-• **Niche Targeting**: Families, students, professionals
-
-**Real Market Intelligence:**
-Using Google Maps, Mapbox, and demographic data, I can identify:
-• Underserved areas with population growth
-• Competitor weaknesses and service gaps
-• Optimal pricing strategies for your market
-• Equipment upgrade opportunities vs. competition
-
-**Sample Competitive Analysis:**
-*"In your 2-mile radius, I found 4 competitors with average machine age of 8+ years, limited payment options, and no extended hours. This presents a premium positioning opportunity with 40-60% revenue premium potential."*
-
-Want me to run a competitive analysis for a specific area you're considering?`;
-    }
-
-    // Default intelligent response
-    return `I understand you're interested in laundromat intelligence. Based on our conversation, I can help you with:
-
-**For Prospects:**
-• Location analysis and market assessment
-• Investment ROI modeling and financial projections
-• Competition intelligence and positioning strategy
-• Success probability analysis
-
-**For Owners:**
-• Business valuation and performance tracking
-• Equipment ROI analysis and upgrade planning
-• Competitive positioning and market intelligence
-• Revenue optimization and growth strategies
-
-**Advanced Analytics:**
-• Real-time performance dashboards
-• Predictive analytics and trend forecasting
-• Custom KPI tracking and reporting
-• Market opportunity identification
-
-What specific area would you like to explore? I can provide detailed analysis and actionable recommendations tailored to your situation.`;
+What specific question do you have?`;
   };
 
   const generateContextualActions = (userInput) => {
