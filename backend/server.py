@@ -44,6 +44,8 @@ from revenue_strategy_optimizer import revenue_strategy
 from advanced_revenue_endpoints import advanced_revenue_router
 from personalized_ai_consultant import ai_consultant
 from consultant_endpoints import consultant_router
+# Import enhanced consultant endpoints
+from enhanced_consultant_endpoints import router as enhanced_consultant_router
 from listings_endpoints import router as listings_router
 from business_endpoints import business_router
 from enterprise_analysis_engine import enterprise_analysis_engine
