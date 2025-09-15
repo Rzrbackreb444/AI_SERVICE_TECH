@@ -3090,6 +3090,17 @@ def main():
         except Exception as e:
             print(f"\n💥 Unexpected error in consultant testing: {e}")
             return 1
+    elif choice == "4":
+        tester = RevenueOptimizationTester()
+        try:
+            revenue_ready = tester.run_comprehensive_revenue_testing()
+            return 0 if revenue_ready else 1
+        except KeyboardInterrupt:
+            print(f"\n⏹️  Revenue optimization tests interrupted by user")
+            return 1
+        except Exception as e:
+            print(f"\n💥 Unexpected error in revenue optimization testing: {e}")
+            return 1
     else:
         tester = ComprehensiveFinalTester()
         try:
