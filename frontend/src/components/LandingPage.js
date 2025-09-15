@@ -425,35 +425,39 @@ const LandingPage = ({ onOpenAuth }) => {
             </p>
           </motion.div>
 
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid md:grid-cols-3 gap-6 lg:gap-8">
             {/* The Wash Room Phoenix Ave */}
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
-              className="glass-card p-8 hover:scale-105 transition-all duration-300 border border-cyan-400/30 relative"
+              className="glass-card p-4 sm:p-6 lg:p-8 hover:scale-105 transition-all duration-300 border border-cyan-400/30 relative"
             >
-              <div className="absolute -top-2 -right-2 bg-gradient-to-r from-cyan-500 to-emerald-500 text-white px-3 py-1 rounded-full text-xs font-bold">
+              <div className="absolute -top-2 -right-2 bg-gradient-to-r from-cyan-500 to-emerald-500 text-white px-2 sm:px-3 py-1 rounded-full text-xs font-bold">
                 FEATURED
               </div>
-              <div className="h-32 bg-gradient-to-br from-cyan-500/20 to-emerald-500/20 rounded-lg mb-4 overflow-hidden flex items-center justify-center">
-                <h3 className="text-white font-bold text-lg text-center">The Wash Room<br/>Phoenix Ave</h3>
+              <div className="h-32 sm:h-40 lg:h-48 rounded-lg mb-4 overflow-hidden">
+                <img 
+                  src="https://customer-assets.emergentagent.com/job_site-atlas-ai/artifacts/xnmmxz1x_IMG_4673.png" 
+                  alt="The Wash Room - Phoenix Ave, Fort Smith, AR"
+                  className="w-full h-full object-cover rounded-lg"
+                />
               </div>
-              <h4 className="text-xl font-bold text-white mb-2">Fort Smith, AR Expansion</h4>
-              <p className="text-slate-300 text-sm mb-4">Multi-million dollar expansion success story with rapid growth proven</p>
+              <h4 className="text-lg sm:text-xl font-bold text-white mb-2">The Wash Room - Phoenix Ave</h4>
+              <p className="text-slate-300 text-sm mb-4">Fort Smith, AR - Multi-million dollar expansion success story</p>
               <div className="space-y-2 mb-4">
                 <div className="flex items-center text-slate-400 text-xs">
-                  <CheckCircleIcon className="w-3 h-3 mr-2 text-green-400" />
-                  Rapid expansion validated
+                  <CheckCircleIcon className="w-3 h-3 mr-2 text-green-400 flex-shrink-0" />
+                  <span>Rapid expansion validated</span>
                 </div>
                 <div className="flex items-center text-slate-400 text-xs">
-                  <CheckCircleIcon className="w-3 h-3 mr-2 text-green-400" />
-                  High traffic location analysis
+                  <CheckCircleIcon className="w-3 h-3 mr-2 text-green-400 flex-shrink-0" />
+                  <span>High traffic location analysis</span>
                 </div>
                 <div className="flex items-center text-slate-400 text-xs">
-                  <CheckCircleIcon className="w-3 h-3 mr-2 text-green-400" />
-                  Premium equipment ROI
+                  <CheckCircleIcon className="w-3 h-3 mr-2 text-green-400 flex-shrink-0" />
+                  <span>Premium equipment ROI</span>
                 </div>
               </div>
               <Link
@@ -470,28 +474,32 @@ const LandingPage = ({ onOpenAuth }) => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: 0.1 }}
-              className="glass-card p-8 hover:scale-105 transition-all duration-300 border border-orange-400/30 relative"
+              className="glass-card p-4 sm:p-6 lg:p-8 hover:scale-105 transition-all duration-300 border border-orange-400/30 relative"
             >
-              <div className="absolute -top-2 -right-2 bg-gradient-to-r from-red-500 to-orange-500 text-white px-3 py-1 rounded-full text-xs font-bold animate-pulse">
+              <div className="absolute -top-2 -right-2 bg-gradient-to-r from-red-500 to-orange-500 text-white px-2 sm:px-3 py-1 rounded-full text-xs font-bold animate-pulse">
                 CRITICAL
               </div>
-              <div className="h-32 bg-gradient-to-br from-orange-500/20 to-red-500/20 rounded-lg mb-4 overflow-hidden flex items-center justify-center">
-                <h3 className="text-white font-bold text-lg text-center">Vista Laundry<br/>Rebuild Analysis</h3>
+              <div className="h-32 sm:h-40 lg:h-48 rounded-lg mb-4 overflow-hidden">
+                <img 
+                  src="https://customer-assets.emergentagent.com/job_site-atlas-ai/artifacts/fj8inoji_IMG_4674.jpeg" 
+                  alt="Vista Laundry - Van Buren, AR"
+                  className="w-full h-full object-cover rounded-lg"
+                />
               </div>
-              <h4 className="text-xl font-bold text-white mb-2">Van Buren, AR Decision</h4>
-              <p className="text-slate-300 text-sm mb-4">Million-dollar tear down vs renovate intelligence analysis</p>
+              <h4 className="text-lg sm:text-xl font-bold text-white mb-2">Vista Laundry Rebuild</h4>
+              <p className="text-slate-300 text-sm mb-4">Van Buren, AR - Million-dollar tear down vs renovate decision</p>
               <div className="space-y-2 mb-4">
                 <div className="flex items-center text-slate-400 text-xs">
-                  <CheckCircleIcon className="w-3 h-3 mr-2 text-orange-400" />
-                  Highway 59 traffic advantage
+                  <CheckCircleIcon className="w-3 h-3 mr-2 text-orange-400 flex-shrink-0" />
+                  <span>Highway 59 traffic advantage</span>
                 </div>
                 <div className="flex items-center text-slate-400 text-xs">
-                  <CheckCircleIcon className="w-3 h-3 mr-2 text-orange-400" />
-                  Speed Queen investment analysis
+                  <CheckCircleIcon className="w-3 h-3 mr-2 text-orange-400 flex-shrink-0" />
+                  <span>Speed Queen investment analysis</span>
                 </div>
                 <div className="flex items-center text-slate-400 text-xs">
-                  <CheckCircleIcon className="w-3 h-3 mr-2 text-orange-400" />
-                  Multi-million dollar decision
+                  <CheckCircleIcon className="w-3 h-3 mr-2 text-orange-400 flex-shrink-0" />
+                  <span>Multi-million dollar decision</span>
                 </div>
               </div>
               <Link
@@ -508,25 +516,29 @@ const LandingPage = ({ onOpenAuth }) => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: 0.2 }}
-              className="glass-card p-8 hover:scale-105 transition-all duration-300 border border-blue-400/30"
+              className="glass-card p-4 sm:p-6 lg:p-8 hover:scale-105 transition-all duration-300 border border-blue-400/30"
             >
-              <div className="h-32 bg-gradient-to-br from-blue-500/20 to-purple-500/20 rounded-lg mb-4 overflow-hidden flex items-center justify-center">
-                <h3 className="text-white font-bold text-lg text-center">The Wash Room<br/>Kelly Highway</h3>
+              <div className="h-32 sm:h-40 lg:h-48 rounded-lg mb-4 overflow-hidden">
+                <img 
+                  src="https://customer-assets.emergentagent.com/job_site-atlas-ai/artifacts/xnmmxz1x_IMG_4673.png" 
+                  alt="The Wash Room - Kelly Highway Location"
+                  className="w-full h-full object-cover rounded-lg opacity-80"
+                />
               </div>
-              <h4 className="text-xl font-bold text-white mb-2">Strategic Positioning</h4>
-              <p className="text-slate-300 text-sm mb-4">Market gap identification and competitive advantage analysis</p>
+              <h4 className="text-lg sm:text-xl font-bold text-white mb-2">The Wash Room - Kelly Highway</h4>
+              <p className="text-slate-300 text-sm mb-4">Strategic positioning and market gap analysis</p>
               <div className="space-y-2 mb-4">
                 <div className="flex items-center text-slate-400 text-xs">
-                  <CheckCircleIcon className="w-3 h-3 mr-2 text-blue-400" />
-                  Market gap identified
+                  <CheckCircleIcon className="w-3 h-3 mr-2 text-blue-400 flex-shrink-0" />
+                  <span>Market gap identified</span>
                 </div>
                 <div className="flex items-center text-slate-400 text-xs">
-                  <CheckCircleIcon className="w-3 h-3 mr-2 text-blue-400" />
-                  Competitive advantage
+                  <CheckCircleIcon className="w-3 h-3 mr-2 text-blue-400 flex-shrink-0" />
+                  <span>Competitive advantage</span>
                 </div>
                 <div className="flex items-center text-slate-400 text-xs">
-                  <CheckCircleIcon className="w-3 h-3 mr-2 text-blue-400" />
-                  Proven business model
+                  <CheckCircleIcon className="w-3 h-3 mr-2 text-blue-400 flex-shrink-0" />
+                  <span>Proven business model</span>
                 </div>
               </div>
               <Link
