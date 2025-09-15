@@ -165,7 +165,7 @@ function App() {
   };
 
   return (
-    <AuthProvider>
+    <AuthProviderWithState>
       <BrowserRouter>
         <div className="App min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900">
           <AnimatePresence>
