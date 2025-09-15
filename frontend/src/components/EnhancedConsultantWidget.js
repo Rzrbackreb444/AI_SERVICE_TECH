@@ -61,25 +61,28 @@ const EnhancedConsultantWidget = () => {
 
   const initializePersonalizedConsultant = async () => {
     try {
-      // This would connect to your consultant API
-      const response = await axios.get(`${API}/consultant/profile`);
-      if (response.data?.consultant_profile) {
-        setConsultantPersona(response.data.consultant_profile);
+      // Use the new enhanced consultant system
+      const response = await axios.get(`${API}/consultant/initialize`, {
+        headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
+      });
+      
+      if (response.data?.success) {
+        setConsultantPersona(response.data);
         setMessages([{
           id: 1,
           type: 'bot',
-          message: `Welcome back! I'm your personalized LaundroTech consultant. Are you looking to analyze competition for your current laundromat or explore new investment opportunities?`,
+          message: response.data.welcome_message,
           timestamp: new Date(),
           quickActions: [
-            { text: 'Competition Intelligence', action: 'competition_analysis' },
-            { text: 'New Location Analysis', action: 'location_analysis' },
-            { text: 'Business Valuation', action: 'valuation' },
-            { text: 'ROI Calculator', action: 'roi' }
+            { text: 'Location Analysis', action: 'location_analysis' },
+            { text: 'Investment Advice', action: 'investment_advice' },
+            { text: 'ROI Calculator', action: 'roi' },
+            { text: 'Market Research', action: 'market_research' }
           ]
         }]);
       }
     } catch (error) {
-      console.log('Consultant not yet initialized, using guide mode');
+      console.log('Enhanced consultant not available, using fallback');
       setMessages([{
         id: 1,
         type: 'bot',
