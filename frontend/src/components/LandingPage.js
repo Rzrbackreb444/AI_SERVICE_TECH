@@ -84,22 +84,22 @@ const LandingPage = ({ onOpenAuth }) => {
     <div className="min-h-screen relative overflow-hidden">
       {/* Navigation Bar */}
       <nav className="glass border-b border-white/10 sticky top-0 z-50 backdrop-blur-xl">
-        <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-20">
+        <div className="max-w-8xl mx-auto px-3 sm:px-4 lg:px-8">
+          <div className="flex justify-between items-center h-16 sm:h-20">
             {/* Logo and Branding */}
             <div className="flex items-center">
-              <Link to="/" className="flex items-center space-x-4 group">
-                <div className="hidden sm:block">
-                  <h1 className="text-3xl font-black bg-gradient-to-r from-cyan-400 via-blue-400 to-emerald-400 bg-clip-text text-transparent leading-tight">
+              <Link to="/" className="flex items-center space-x-2 sm:space-x-4 group">
+                <div className="block">
+                  <h1 className="text-xl sm:text-2xl lg:text-3xl font-black bg-gradient-to-r from-cyan-400 via-blue-400 to-emerald-400 bg-clip-text text-transparent leading-tight">
                     LaundroTech
                   </h1>
-                  <div className="text-sm text-slate-400 font-medium -mt-1">Powered by SiteAtlas</div>
+                  <div className="text-xs sm:text-sm text-slate-400 font-medium -mt-1">Powered by SiteAtlas</div>
                 </div>
               </Link>
             </div>
 
             {/* Desktop Navigation */}
-            <div className="hidden md:flex items-center space-x-8">
+            <div className="hidden lg:flex items-center space-x-6 xl:space-x-8">
               {navigationLinks.map((link) => (
                 <Link
                   key={link.name}
@@ -115,14 +115,14 @@ const LandingPage = ({ onOpenAuth }) => {
               {isAuthenticated ? (
                 <Link
                   to="/dashboard"
-                  className="btn-primary"
+                  className="btn-primary text-sm"
                 >
                   Dashboard
                 </Link>
               ) : (
                 <button
                   onClick={() => onOpenAuth('register')}
-                  className="btn-accent"
+                  className="btn-accent text-sm"
                 >
                   Get Started
                 </button>
@@ -130,7 +130,7 @@ const LandingPage = ({ onOpenAuth }) => {
             </div>
 
             {/* Mobile Menu Button */}
-            <div className="md:hidden">
+            <div className="lg:hidden">
               <button
                 onClick={() => setShowNavMenu(!showNavMenu)}
                 className="text-slate-300 hover:text-white p-2 rounded-xl hover:bg-white/5 transition-all duration-200"
