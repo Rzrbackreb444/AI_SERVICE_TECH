@@ -113,8 +113,8 @@ const ChatWidget = () => {
 
   return (
     <>
-      {/* Fixed positioning to avoid conflicts */}
-      <div className="fixed bottom-6 right-6 z-[9999]">
+      {/* Fixed positioning to avoid conflicts - MAXIMUM z-index */}
+      <div className="fixed bottom-6 right-6" style={{ zIndex: 999999 }}>
         <AnimatePresence>
           {isOpen && (
             <motion.div
