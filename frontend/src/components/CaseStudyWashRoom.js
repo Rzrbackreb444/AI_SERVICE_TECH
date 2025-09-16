@@ -260,7 +260,7 @@ const CaseStudyWashRoom = () => {
               Plan Your Multi-Location Strategy
             </h3>
             <p className="text-slate-300 mb-6">
-              Get the same market intelligence that guided The Wash Room's successful expansion across Fort Smith.
+              Get professional market intelligence analysis for your laundromat expansion strategy.
             </p>
             <Link 
               to="/analyze"
