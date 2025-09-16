@@ -58,7 +58,7 @@ def create_ultimate_marketplace_router():
     router = APIRouter(prefix="/marketplace", tags=["ultimate-marketplace"])
     
     @router.get("/listings")
-    async def get_marketplace_listings(current_user: User = Depends(get_current_user_optional)):
+    async def get_marketplace_listings(request: Request):
         """Get professional marketplace listings from real data"""
         try:
             # First try to get dedicated marketplace listings
