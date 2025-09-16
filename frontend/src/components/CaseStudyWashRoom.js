@@ -32,10 +32,10 @@ const CaseStudyWashRoom = () => {
           className="text-center mb-12"
         >
           <h1 className="text-4xl lg:text-5xl font-black text-white mb-6">
-            The Wash Room Multi-Location Expansion
+            The Wash Room Multi-Location Analysis
           </h1>
           <p className="text-xl text-slate-300 mb-8">
-            Strategic expansion analysis across Phoenix Ave and Kelly Highway locations in Fort Smith, Arkansas
+            Location intelligence analysis of successful expansion across Phoenix Ave and Kelly Highway in Fort Smith, Arkansas
           </p>
           <div className="flex items-center justify-center gap-6 text-slate-400">
             <span className="flex items-center gap-2">
