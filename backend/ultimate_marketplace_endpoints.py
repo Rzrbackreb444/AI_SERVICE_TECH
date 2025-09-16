@@ -61,6 +61,9 @@ def create_ultimate_marketplace_router():
     async def get_marketplace_listings(request: Request):
         """Get professional marketplace listings from real data"""
         try:
+            # Import here to avoid circular import
+            from server import get_current_user_optional
+            current_user = await get_current_user_optional(request)
             # First try to get dedicated marketplace listings
             marketplace_listings = await db.marketplace_listings.find({}).to_list(None)
             
