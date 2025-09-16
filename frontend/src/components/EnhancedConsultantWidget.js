@@ -91,7 +91,7 @@ const EnhancedConsultantWidget = () => {
         addMessage('bot', welcome.message, welcome.buttons);
       }, 1000);
     }
-  }, [location.pathname]);
+  }, [location?.pathname]);
 
   // Show notification for new visitors - immediate enterprise engagement
   useEffect(() => {
