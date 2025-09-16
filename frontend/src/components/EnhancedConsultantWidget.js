@@ -516,9 +516,12 @@ const EnhancedConsultantWidget = () => {
                   transition={{ duration: 0.2 }}
                   className="flex flex-col items-center"
                 >
-                  <SparklesIcon className="w-8 h-8 mb-1" />
-                  <span className="text-xs font-bold tracking-tight">INTELLIGENCE</span>
-                  <span className="text-xs font-medium opacity-80">ASSISTANT</span>
+                  <div className="flex items-center gap-2 mb-1">
+                    <SparklesIcon className="w-6 h-6" />
+                    <CpuChipIcon className="w-6 h-6" />
+                  </div>
+                  <span className="text-xs font-black tracking-wide">LaundroTech</span>
+                  <span className="text-xs font-medium opacity-90">INTELLIGENCE</span>
                 </motion.div>
               )}
             </AnimatePresence>
