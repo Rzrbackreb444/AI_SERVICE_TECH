@@ -350,7 +350,7 @@ const EnhancedConsultantWidget = () => {
             initial={{ opacity: 0, scale: 0.8, x: 20 }}
             animate={{ opacity: 1, scale: 1, x: 0 }}
             exit={{ opacity: 0, scale: 0.8, x: 20 }}
-            className="fixed bottom-32 right-4 bg-gradient-to-r from-emerald-600 to-cyan-600 text-white px-6 py-4 rounded-2xl shadow-2xl max-w-sm cursor-pointer border-2 border-emerald-400/50"
+            className="fixed bottom-28 right-2 bg-gradient-to-r from-emerald-600 to-cyan-600 text-white px-6 py-4 rounded-2xl shadow-2xl max-w-sm cursor-pointer border-2 border-emerald-400/50"
             style={{ zIndex: 9998 }}
             onClick={() => {
               setIsOpen(true);
