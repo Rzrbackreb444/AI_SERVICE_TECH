@@ -371,16 +371,16 @@ const EnhancedConsultantWidget = () => {
         )}
       </AnimatePresence>
 
-      {/* Enterprise Chat Widget */}
-      <div className="fixed bottom-6 right-6" style={{ zIndex: 9999 }}>
+      {/* Professional Square Widget - Covers Watermark */}
+      <div className="fixed bottom-4 right-4" style={{ zIndex: 9999 }}>
         <AnimatePresence>
           {isOpen && (
             <motion.div
-              initial={{ opacity: 0, scale: 0.9, y: 20 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.9, y: 20 }}
-              className="bg-slate-900/98 backdrop-blur-xl border-2 border-slate-600/70 rounded-3xl shadow-2xl w-[420px] h-[600px] mb-4 flex flex-col overflow-hidden"
-              style={{ boxShadow: "0 25px 50px rgba(0, 0, 0, 0.8)" }}
+              initial={{ opacity: 0, scale: 0.9, x: 20, y: 20 }}
+              animate={{ opacity: 1, scale: 1, x: 0, y: 0 }}
+              exit={{ opacity: 0, scale: 0.9, x: 20, y: 20 }}
+              className="bg-slate-900/98 backdrop-blur-xl border-2 border-slate-600/70 rounded-2xl shadow-2xl w-[450px] h-[650px] mb-4 flex flex-col overflow-hidden"
+              style={{ boxShadow: "0 30px 60px rgba(0, 0, 0, 0.8)" }}
             >
               {/* Header */}
               <div className="bg-gradient-to-r from-cyan-600 to-blue-600 p-4 flex items-center justify-between">
