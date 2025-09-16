@@ -15,7 +15,10 @@ import {
   CreditCardIcon,
   ExclamationTriangleIcon,
   ClockIcon,
-  EyeIcon
+  EyeIcon,
+  MapPinIcon,
+  BuildingOffice2Icon,
+  GlobeAltIcon
 } from '@heroicons/react/24/outline';
 import { 
   LineChart, 
