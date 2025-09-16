@@ -230,23 +230,24 @@ const AnalyticsDashboard = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900">
-      {/* Premium Navigation */}
-      <nav className="glass border-b border-white/10 sticky top-0 z-50 backdrop-blur-xl bg-gradient-to-r from-slate-900/80 via-blue-900/60 to-slate-900/80">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            <div className="flex items-center space-x-6">
-              <div className="flex items-center space-x-3">
-                <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-xl flex items-center justify-center">
-                  <ChartBarIcon className="w-6 h-6 text-white" />
+      {/* Enterprise Command Center Header */}
+      <div className="bg-slate-900/80 backdrop-blur-xl border-b border-slate-800 shadow-2xl">
+        <div className="max-w-[1600px] mx-auto px-8 py-8">
+          <div className="flex items-center justify-between">
+            <div>
+              <h1 className="text-4xl font-black text-white mb-3 bg-gradient-to-r from-cyan-400 to-emerald-400 bg-clip-text text-transparent">
+                LaundroTech Intelligence Command Center
+              </h1>
+              <div className="flex items-center space-x-8 text-sm text-slate-400">
+                <div className="flex items-center space-x-2">
+                  <div className="w-2 h-2 bg-emerald-400 rounded-full animate-pulse"></div>
+                  <span>Real-time Market Intelligence</span>
                 </div>
-                <div>
-                  <h1 className="text-xl font-bold text-white">
-                    Analytics Dashboard
-                  </h1>
-                  <p className="text-xs text-slate-400">Enterprise Intelligence • Real-time</p>
-                </div>
+                <span>Last Updated: {new Date().toLocaleString()}</span>
+                <span className="text-emerald-400 font-semibold">System Status: Operational</span>
               </div>
-              
+            </div>
+            <div className="flex items-center space-x-4">
               {/* Premium Timeframe Selector */}
               <div className="flex items-center space-x-1 bg-slate-800/50 p-1 rounded-xl border border-slate-700/50">
                 {timeframes.map((timeframe) => (
@@ -263,35 +264,19 @@ const AnalyticsDashboard = () => {
                   </button>
                 ))}
               </div>
-            </div>
-            
-            <div className="flex items-center space-x-3">
-              {/* Live Indicator */}
-              <div className="flex items-center space-x-2 bg-green-500/10 px-3 py-1 rounded-full border border-green-500/20">
-                <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
-                <span className="text-green-400 text-xs font-medium">Live Data</span>
-              </div>
               
-              {/* Export Buttons */}
+              {/* Enterprise Export Buttons */}
               <button
                 onClick={() => exportReport('pdf')}
-                className="flex items-center space-x-2 bg-gradient-to-r from-slate-700 to-slate-600 text-white px-4 py-2 rounded-lg hover:from-slate-600 hover:to-slate-500 transition-all duration-200 shadow-lg shadow-slate-700/25"
+                className="flex items-center space-x-2 bg-gradient-to-r from-slate-700 to-slate-600 text-white px-6 py-3 rounded-xl hover:from-slate-600 hover:to-slate-500 transition-all duration-200 shadow-lg shadow-slate-700/25 font-semibold"
               >
-                <DocumentArrowDownIcon className="w-4 h-4" />
-                <span>Export PDF</span>
-              </button>
-              
-              <button
-                onClick={() => exportReport('csv')}
-                className="flex items-center space-x-2 bg-gradient-to-r from-blue-600 to-cyan-600 text-white px-4 py-2 rounded-lg hover:from-blue-500 hover:to-cyan-500 transition-all duration-200 shadow-lg shadow-blue-500/25"
-              >
-                <ArrowTopRightOnSquareIcon className="w-4 h-4" />
-                <span>Export CSV</span>
+                <DocumentArrowDownIcon className="w-5 h-5" />
+                <span>Export Intelligence Report</span>
               </button>
             </div>
           </div>
         </div>
-      </nav>
+      </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Premium Key Metrics Overview */}
