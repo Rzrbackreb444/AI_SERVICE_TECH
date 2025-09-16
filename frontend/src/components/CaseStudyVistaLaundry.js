@@ -7,7 +7,8 @@ import {
   CheckCircleIcon,
   ArrowLeftIcon
 } from '@heroicons/react/24/outline';
-import { TrendingUpIcon } from '@heroicons/react/24/solid';
+// TrendingUpIcon doesn't exist - using ArrowTrendingUpIcon instead
+import { ArrowTrendingUpIcon as TrendingUpIcon } from '@heroicons/react/24/outline';
 import { Link } from 'react-router-dom';
 
 const CaseStudyVistaLaundry = () => {
