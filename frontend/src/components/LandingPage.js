@@ -565,7 +565,7 @@ const LandingPage = ({ onOpenAuth }) => {
               <ArrowRightIcon className="w-5 h-5" />
             </Link>
             <p className="text-slate-400 text-sm mt-4">
-              Join The Wash Room and thousands of professionals using API University Intelligence
+              Join The Wash Room and thousands of professionals using LaundroTech Intelligence
             </p>
           </motion.div>
         </div>
