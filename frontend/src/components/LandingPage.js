@@ -242,8 +242,8 @@ const LandingPage = ({ onOpenAuth }) => {
               transition={{ duration: 1, delay: 0.9 }}
               className="text-lg sm:text-xl md:text-2xl text-slate-300 mb-8 sm:mb-12 max-w-4xl mx-auto leading-relaxed px-4"
             >
-              Next-generation algorithms analyze market patterns humans can't detect. Real-time intelligence 
-              across 156+ data points delivers unprecedented location insights.
+              Institutional-grade location analysis delivering million-dollar investment insights. 
+              Trusted by professional investors, brokers, and institutions for critical laundromat acquisition decisions.
             </motion.p>
 
             {/* AI Analysis Demo - Moved here for better positioning */}
