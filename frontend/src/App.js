@@ -224,7 +224,7 @@ function App() {
             {/* Public Routes */}
             <Route 
               path="/" 
-              element={<LandingPage onOpenAuth={openAuthModal} />} 
+              element={<SuperiorLandingPage onOpenAuth={openAuthModal} />} 
             />
             <Route 
               path="/pricing" 
