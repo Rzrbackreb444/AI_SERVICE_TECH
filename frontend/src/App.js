@@ -43,6 +43,7 @@ import AdvancedIntelligenceDashboard from './components/AdvancedIntelligenceDash
 import AIAgentInterface from './components/AIAgentInterface';
 import RealTimeMarketIntelligence from './components/RealTimeMarketIntelligence';
 import CompetitiveIntelligenceHub from './components/CompetitiveIntelligenceHub';
+import PredictiveAnalyticsEngine from './components/PredictiveAnalyticsEngine';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
