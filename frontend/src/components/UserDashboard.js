@@ -18,7 +18,8 @@ import {
   Cog6ToothIcon,
   ChartBarIcon,
   MapPinIcon,
-  BuildingOfficeIcon
+  BuildingOfficeIcon,
+  SparklesIcon
 } from '@heroicons/react/24/outline';
 import axios from 'axios';
 
