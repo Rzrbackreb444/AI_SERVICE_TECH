@@ -3,7 +3,7 @@ Ultimate Marketplace Backend Endpoints
 Professional marketplace with real data integration
 """
 
-from fastapi import APIRouter, HTTPException, Depends
+from fastapi import APIRouter, HTTPException, Depends, Request
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from datetime import datetime, timedelta
 from typing import Dict, Any, List, Optional
