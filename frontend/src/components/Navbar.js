@@ -70,7 +70,6 @@ const Navbar = () => {
                 <h1 className="text-3xl font-black bg-gradient-to-r from-cyan-400 via-blue-400 to-emerald-400 bg-clip-text text-transparent leading-tight">
                   LaundroTech
                 </h1>
-                <div className="text-xs text-slate-400 font-medium -mt-1">Intelligence Platform</div>
               </div>
             </Link>
           </div>
