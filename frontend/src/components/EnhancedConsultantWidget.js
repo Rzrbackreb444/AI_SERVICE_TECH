@@ -379,7 +379,8 @@ const EnhancedConsultantWidget = () => {
               initial={{ opacity: 0, scale: 0.9, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.9, y: 20 }}
-              className="bg-slate-900/95 backdrop-blur-xl border border-slate-700/50 rounded-3xl shadow-2xl w-96 h-[500px] mb-4 flex flex-col overflow-hidden"
+              className="bg-slate-900/98 backdrop-blur-xl border-2 border-slate-600/70 rounded-3xl shadow-2xl w-[420px] h-[600px] mb-4 flex flex-col overflow-hidden"
+              style={{ boxShadow: "0 25px 50px rgba(0, 0, 0, 0.8)" }}
             >
               {/* Header */}
               <div className="bg-gradient-to-r from-cyan-600 to-blue-600 p-4 flex items-center justify-between">
