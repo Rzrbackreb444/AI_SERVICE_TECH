@@ -31,7 +31,6 @@ const EnterpriseLocationAnalyzer = () => {
     'Mapping Competition',
     'Calculating Scores'
   ];
-  ];
 
   const getAuthHeaders = () => {
     const token = localStorage.getItem('token');
