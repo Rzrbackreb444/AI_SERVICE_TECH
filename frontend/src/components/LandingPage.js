@@ -217,7 +217,7 @@ const LandingPage = ({ onOpenAuth }) => {
                   transition={{ duration: 1, delay: 0.5 }}
                   className="space-y-2"
                 >
-                  <p className="text-lg sm:text-xl md:text-2xl lg:text-3xl text-slate-300 font-medium">Professional Location Intelligence</p>
+                  <p className="text-lg sm:text-xl md:text-2xl lg:text-3xl text-slate-300 font-medium">Elite Location Intelligence Platform</p>
                   <p className="text-sm sm:text-base lg:text-lg text-slate-400">Intelligence Marketplace</p>
                 </motion.div>
               </motion.div>
