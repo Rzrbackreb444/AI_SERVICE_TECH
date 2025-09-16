@@ -10,7 +10,7 @@ import Dashboard from './components/Dashboard';
 import LocationAnalyzer from './components/LocationAnalyzer';
 import CompletePricingPage from './components/CompletePricingPage'; // Updated import
 import ImprovedAuthModal from './components/ImprovedAuthModal';
-import LandingPage from './components/LandingPage';
+import SuperiorLandingPage from './components/SuperiorLandingPage';
 import ProfilePage from './components/ProfilePage';
 import AnalysisHistory from './components/AnalysisHistory';
 import UserDashboard from './components/UserDashboard';
