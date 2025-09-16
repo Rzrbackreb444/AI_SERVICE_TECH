@@ -68,11 +68,66 @@ def create_ultimate_marketplace_router():
             marketplace_listings = await db.marketplace_listings.find({}).to_list(None)
             
             if marketplace_listings:
-                # Convert ObjectId to string for JSON serialization
+                # Convert to frontend-friendly format
+                frontend_listings = []
                 for listing in marketplace_listings:
                     if '_id' in listing:
                         del listing['_id']
-                return marketplace_listings
+                    
+                    # Transform to frontend-expected structure
+                    frontend_listing = {
+                        "id": listing["id"],
+                        "listingId": listing["listing_id"],
+                        "title": listing["title"], 
+                        "description": listing["description"],
+                        "location": f"{listing['location']['city']}, {listing['location']['state']}",
+                        "fullLocation": listing["location"],
+                        
+                        # Financial data (flattened)
+                        "askingPrice": listing["financials"]["asking_price"],
+                        "monthlyRevenue": listing["financials"]["monthly_revenue"],
+                        "monthlyProfit": listing["financials"]["monthly_profit"],
+                        "roi": listing["financials"]["roi_percentage"],
+                        "capRate": listing["financials"]["cap_rate"],
+                        
+                        # Equipment data
+                        "equipment": listing["equipment"],
+                        "washerCount": listing["equipment"]["washers"]["count"],
+                        "dryerCount": listing["equipment"]["dryers"]["count"],
+                        "brand": listing["equipment"]["washers"]["brand"],
+                        
+                        # Business data
+                        "squareFeet": listing["business"]["square_feet"],
+                        "establishedYear": listing["business"]["established_year"],
+                        "lease": listing["business"]["lease_terms"],
+                        
+                        # Listing details
+                        "status": listing["listing_details"]["status"],
+                        "broker": listing["listing_details"]["broker"],
+                        "verified": listing["listing_details"]["verified"],
+                        "featured": listing["listing_details"]["featured"],
+                        "views": listing["listing_details"]["views"],
+                        "inquiries": listing["listing_details"]["inquiries"],
+                        
+                        # Media
+                        "photos": listing["media"]["photos"],
+                        "virtualTour": listing["media"]["virtual_tour"],
+                        
+                        # Market data
+                        "marketIntelligence": listing["market_intelligence"],
+                        "competition": listing["market_intelligence"]["local_competition"],
+                        
+                        # Additional computed fields
+                        "type": "laundromat",  # Default type
+                        "paybackPeriod": round(listing["financials"]["asking_price"] / (listing["financials"]["monthly_profit"] * 12), 1) if listing["financials"]["monthly_profit"] > 0 else 0,
+                        "pricePerSqFt": round(listing["financials"]["asking_price"] / listing["business"]["square_feet"], 0) if listing["business"]["square_feet"] > 0 else 0,
+                        
+                        "createdAt": listing["created_at"],
+                        "updatedAt": listing["updated_at"]
+                    }
+                    frontend_listings.append(frontend_listing)
+                
+                return frontend_listings
             
             # If no dedicated listings, create from location analyses
             location_analyses = await db.location_analyses.find({}).to_list(None)
