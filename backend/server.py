@@ -363,6 +363,23 @@ async def get_current_user(credentials: HTTPAuthorizationCredentials = Depends(s
         raise HTTPException(status_code=401, detail="User not found")
     return User(**user)
 
+async def get_current_user_optional(credentials: HTTPAuthorizationCredentials = Depends(security)):
+    """Optional authentication - returns None if not authenticated"""
+    try:
+        if not credentials:
+            return None
+        payload = jwt.decode(credentials.credentials, JWT_SECRET, algorithms=[JWT_ALGORITHM])
+        user_id: str = payload.get("sub")
+        if user_id is None:
+            return None
+        
+        user = await db.users.find_one({"id": user_id})
+        if user is None:
+            return None
+        return User(**user)
+    except:
+        return None
+
 # Payment Services
 class PaymentService:
     def __init__(self):
