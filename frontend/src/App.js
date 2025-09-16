@@ -438,7 +438,7 @@ function App() {
             <Route path="/enterprise-analyzer" element={
               <ProtectedRoute>
                 <>
-                  <BusinessLocationAnalyzer />
+                  <LocationIntelligenceModule />
                 </>
               </ProtectedRoute>
             } />
