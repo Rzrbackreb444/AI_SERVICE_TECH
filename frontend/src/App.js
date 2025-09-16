@@ -344,7 +344,7 @@ function App() {
               <ProtectedRoute>
                 <>
                   <Navbar />
-                  <UserDashboard />
+                  <ProfessionalDashboard />
                 </>
               </ProtectedRoute>
             } />
