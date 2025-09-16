@@ -93,14 +93,14 @@ const EnhancedConsultantWidget = () => {
     }
   }, [location.pathname]);
 
-  // Show notification for new visitors
+  // Show notification for new visitors - immediate enterprise engagement
   useEffect(() => {
     const hasVisited = localStorage.getItem('laundrotech_visited');
     if (!hasVisited && !isOpen) {
       setTimeout(() => {
         setShowNotification(true);
         localStorage.setItem('laundrotech_visited', 'true');
-      }, 3000);
+      }, 1500); // Faster engagement for enterprise clients
     }
   }, []);
 
