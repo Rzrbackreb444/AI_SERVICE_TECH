@@ -8,7 +8,7 @@ import json
 import sys
 
 def test_stripe_issue():
-    base_url = "https://laundrometrics.preview.emergentagent.com/api"
+    base_url = "https://washer-analytics.preview.emergentagent.com/api"
     
     print("🔥 STRIPE INTEGRATION ISSUE DIAGNOSIS")
     print("=" * 60)

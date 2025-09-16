@@ -2,7 +2,7 @@
 import requests
 import json
 
-base_url = 'https://laundrometrics.preview.emergentagent.com/api'
+base_url = 'https://washer-analytics.preview.emergentagent.com/api'
 
 print('🚀 TESTING KEY ENDPOINTS FROM REVIEW REQUEST')
 print('=' * 60)

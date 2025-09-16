@@ -11,7 +11,7 @@ from datetime import datetime
 
 class FocusedLaundroTechTester:
     def __init__(self):
-        self.base_url = "https://laundrometrics.preview.emergentagent.com/api"
+        self.base_url = "https://washer-analytics.preview.emergentagent.com/api"
         self.token = None
         self.tests_passed = 0
         self.tests_failed = 0
