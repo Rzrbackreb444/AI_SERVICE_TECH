@@ -476,8 +476,8 @@ const LandingPage = ({ onOpenAuth }) => {
               className="glass-card p-8 text-center hover:scale-105 transition-all duration-300"
             >
               <CpuChipIcon className="w-16 h-16 text-cyan-400 mx-auto mb-4" />
-              <h3 className="text-xl font-bold text-white mb-4">Intelligence Platform</h3>
-              <p className="text-slate-300 mb-6">Advanced AI-powered location analysis and market intelligence</p>
+              <h3 className="text-xl font-bold text-white mb-4">Location Intelligence</h3>
+              <p className="text-slate-300 mb-6">Professional location analysis and market intelligence for laundromat investments</p>
               <Link to="/pricing" className="btn-primary w-full">
                 View Pricing
               </Link>
