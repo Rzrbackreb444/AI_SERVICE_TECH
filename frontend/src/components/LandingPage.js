@@ -463,7 +463,7 @@ const LandingPage = ({ onOpenAuth }) => {
             <h2 className="text-4xl font-bold text-white mb-4">
               Explore Our <span className="bg-gradient-to-r from-cyan-400 to-emerald-400 bg-clip-text text-transparent">Ecosystem</span>
             </h2>
-            <p className="text-xl text-slate-300">Multiple platforms, one comprehensive solution</p>
+            <p className="text-xl text-slate-300">Professional intelligence for laundromat investment decisions</p>
           </motion.div>
 
           <div className="grid md:grid-cols-3 gap-8">
