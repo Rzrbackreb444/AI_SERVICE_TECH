@@ -35,32 +35,7 @@ const RevenueAnalyzer = () => {
   const [showUpgradeModal, setShowUpgradeModal] = useState(false);
 
   // Real-world case study data with actual photos
-  const realWorldCaseStudies = [
-    {
-      title: "The Wash Room - Phoenix Ave, Fort Smith, AR",
-      description: "Multi-million dollar expansion success story",
-      status: "THRIVING",
-      keyMetrics: ["Rapid expansion proven", "High traffic location", "Premium equipment ROI"],
-      image: "https://customer-assets.emergentagent.com/job_site-atlas-ai/artifacts/xnmmxz1x_IMG_4673.png",
-      featured: true
-    },
-    {
-      title: "The Wash Room - Kelly Highway Location",
-      description: "Strategic market positioning analysis",
-      status: "HIGH DEMAND",
-      keyMetrics: ["Market gap identified", "Competitive advantage", "Proven business model"],
-      image: "https://customer-assets.emergentagent.com/job_site-atlas-ai/artifacts/xnmmxz1x_IMG_4673.png"
-    },
-    {
-      title: "Vista Laundry Sale Analysis - Van Buren, AR",
-      description: "Strategic sale intelligence - David King's successful exit strategy",
-      status: "SUCCESS STORY",
-      keyMetrics: ["Strategic exit timing", "Market positioning advantage", "New owners' rebuild investment analysis"],
-      image: "https://customer-assets.emergentagent.com/job_site-atlas-ai/artifacts/fj8inoji_IMG_4674.jpeg",
-      featured: true,
-      urgent: false
-    }
-  ];
+  // Showcase listings moved to dedicated case study pages
 
   const depthTiers = [
     {
