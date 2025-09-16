@@ -91,9 +91,9 @@ const CaseStudyVistaLaundry = () => {
 
           <p className="text-slate-300 text-lg leading-relaxed">
             David King made a strategic decision to sell Vista Laundry in Van Buren, Arkansas at the optimal market timing. 
-            LaundroTech Intelligence validated his exit strategy, confirming the location's strong fundamentals and market position. 
-            The new owners subsequently used our analysis to guide their complete rebuild, investing in modern Speed Queen equipment 
-            and optimizing the layout for Highway 59 traffic patterns.
+            Our retrospective analysis confirms the location's strong fundamentals and optimal market timing. 
+            The new owners' rebuild decision with modern Speed Queen equipment and Highway 59 traffic optimization 
+            validates the site's inherent investment potential.
           </p>
         </motion.div>
 
