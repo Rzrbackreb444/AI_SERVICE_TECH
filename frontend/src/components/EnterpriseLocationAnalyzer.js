@@ -16,32 +16,21 @@ import axios from 'axios';
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
 
-// Google Maps and Mapbox configuration
-const GOOGLE_MAPS_API_KEY = process.env.REACT_APP_GOOGLE_MAPS_API_KEY;
-const MAPBOX_ACCESS_TOKEN = process.env.REACT_APP_MAPBOX_ACCESS_TOKEN;
-
 const EnterpriseLocationAnalyzer = () => {
   const [address, setAddress] = useState('');
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [analysisResult, setAnalysisResult] = useState(null);
-  const [showStreetView, setShowStreetView] = useState(false);
-  const [showHeatmap, setShowHeatmap] = useState(false);
+  const [error, setError] = useState('');
   const [currentStep, setCurrentStep] = useState(0);
-  
-  // Refs for maps
-  const googleMapRef = useRef(null);
-  const streetViewRef = useRef(null);
-  const mapboxRef = useRef(null);
-  const mapboxMapRef = useRef(null);
   
   // Analysis steps for progress indication
   const analysisSteps = [
-    { name: 'Geocoding Location', description: 'Finding precise coordinates' },
-    { name: 'Census Demographics', description: 'Gathering population data' },
-    { name: 'Real Estate Analysis', description: 'Property values & market data' },
-    { name: 'Competition Intelligence', description: 'Mapping nearby laundromats' },
-    { name: 'Traffic Analysis', description: 'Foot traffic patterns' },
-    { name: 'Scoring Algorithm', description: 'Calculating final score' },
+    'Geocoding Location',
+    'Gathering Demographics',
+    'Analyzing Real Estate',
+    'Mapping Competition',
+    'Calculating Scores'
+  ];
     { name: 'Report Generation', description: 'Creating comprehensive report' }
   ];
 
