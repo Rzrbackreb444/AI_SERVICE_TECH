@@ -879,6 +879,7 @@ metadata:
 
 test_plan:
   current_focus:
+    - "Enterprise Landing - Dark Glass Aesthetic, No Mock Data"
     - "Authentication Security Vulnerability Fix - Dashboard Stats Endpoint"
     - "AI Consultant System Endpoint Fixes"
     - "Enterprise PDF Report Generation Fix"
