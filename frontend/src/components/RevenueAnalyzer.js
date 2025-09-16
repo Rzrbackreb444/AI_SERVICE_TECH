@@ -721,7 +721,7 @@ const RevenueAnalyzer = () => {
               </div>
               
               <div className="grid md:grid-cols-3 lg:grid-cols-5 gap-4">
-                {depthTiers.map((tier) => (
+                {depthTiers.filter(tier => !tier.hide).map((tier) => (
                   <motion.div
                     key={tier.level}
                     initial={{ opacity: 0, y: 20 }}
