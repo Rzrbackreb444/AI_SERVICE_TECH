@@ -37,6 +37,8 @@ import UltimateMarketplace from './components/UltimateMarketplace';
 import ListingCreator from './components/ListingCreator';
 import UserManagement from './components/UserManagement';
 import BlogManager from './components/BlogManager';
+import CaseStudyVistaLaundry from './components/CaseStudyVistaLaundry';
+import CaseStudyWashRoom from './components/CaseStudyWashRoom';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
