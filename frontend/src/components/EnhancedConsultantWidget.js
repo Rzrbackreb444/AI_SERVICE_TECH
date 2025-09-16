@@ -370,8 +370,8 @@ const EnhancedConsultantWidget = () => {
         )}
       </AnimatePresence>
 
-      {/* Chat Widget */}
-      <div className="fixed bottom-6 right-6 z-50">
+      {/* Enterprise Chat Widget */}
+      <div className="fixed bottom-6 right-6" style={{ zIndex: 9999 }}>
         <AnimatePresence>
           {isOpen && (
             <motion.div
