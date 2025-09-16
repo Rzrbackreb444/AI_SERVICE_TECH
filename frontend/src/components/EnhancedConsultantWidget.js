@@ -494,7 +494,7 @@ const EnhancedConsultantWidget = () => {
             backdropFilter: 'blur(20px)'
           }}
         >
-          <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-4">
+          <div className="absolute inset-0 flex items-center justify-center text-center p-2">
             <AnimatePresence mode="wait">
               {isOpen ? (
                 <motion.div
@@ -503,11 +503,10 @@ const EnhancedConsultantWidget = () => {
                   animate={{ scale: 1, opacity: 1 }}
                   exit={{ scale: 0.8, opacity: 0 }}
                   transition={{ duration: 0.2 }}
-                  className="flex flex-col items-center"
+                  className="flex items-center gap-2"
                 >
-                  <XMarkIcon className="w-6 h-6 mb-1" />
-                  <span className="text-xs font-bold">CLOSE</span>
-                  <span className="text-xs font-medium opacity-80">CHAT</span>
+                  <XMarkIcon className="w-5 h-5" />
+                  <span className="text-sm font-bold">CLOSE</span>
                 </motion.div>
               ) : (
                 <motion.div
@@ -516,14 +515,16 @@ const EnhancedConsultantWidget = () => {
                   animate={{ scale: 1, opacity: 1 }}
                   exit={{ scale: 0.8, opacity: 0 }}
                   transition={{ duration: 0.2 }}
-                  className="flex flex-col items-center"
+                  className="flex items-center gap-3"
                 >
-                  <div className="flex items-center gap-2 mb-1">
-                    <SparklesIcon className="w-6 h-6" />
-                    <CpuChipIcon className="w-6 h-6" />
+                  <div className="flex items-center gap-1">
+                    <SparklesIcon className="w-5 h-5" />
+                    <CpuChipIcon className="w-5 h-5" />
                   </div>
-                  <span className="text-xs font-black tracking-wide">LaundroTech</span>
-                  <span className="text-xs font-medium opacity-90">INTELLIGENCE</span>
+                  <div className="text-left">
+                    <div className="text-xs font-black tracking-wide leading-tight">LaundroTech</div>
+                    <div className="text-xs font-medium opacity-90 leading-tight">INTELLIGENCE</div>
+                  </div>
                 </motion.div>
               )}
             </AnimatePresence>
