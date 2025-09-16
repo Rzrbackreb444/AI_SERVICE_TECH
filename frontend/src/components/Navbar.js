@@ -61,11 +61,9 @@ const Navbar = () => {
           <div className="flex items-center">
             <Link to="/dashboard" className="flex items-center space-x-4 group">
               <div className="relative">
-                <img 
-                  src="https://customer-assets.emergentagent.com/job_laundrosight/artifacts/68vqd4wq_Logo%2C%20Transparent.png" 
-                  alt="LaundroTech Logo"
-                  className="h-48 w-48 group-hover:scale-110 transition-transform duration-300"
-                />
+                <div className="h-12 w-12 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-lg">
+                  <BuildingOffice2Icon className="h-7 w-7 text-white" />
+                </div>
                 <div className="absolute inset-0 bg-gradient-to-r from-cyan-400/20 to-emerald-400/20 blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
               </div>
               <div className="hidden sm:block">
