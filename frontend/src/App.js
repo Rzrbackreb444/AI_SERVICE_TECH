@@ -287,7 +287,7 @@ function App() {
             />
             <Route 
               path="/enterprise-analytics" 
-              element={<EnterpriseAnalyticsDashboard />} 
+              element={<RealEnterpriseAnalytics />} 
             />
 
             {/* Case Study Showcase - Public Access */}
