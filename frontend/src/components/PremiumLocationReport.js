@@ -3,8 +3,8 @@ import { motion } from 'framer-motion';
 import {
   MapPinIcon,
   ChartBarIcon,
-  TrendingUpIcon,
-  TrendingDownIcon,
+  ArrowTrendingUpIcon,
+  ArrowTrendingDownIcon,
   StarIcon,
   ExclamationTriangleIcon,
   LightBulbIcon,
