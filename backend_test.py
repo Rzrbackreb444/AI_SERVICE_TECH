@@ -2244,6 +2244,169 @@ class ComprehensivePlatformAuditor:
         # Final results
         self.print_final_results()
 
+    # ========== CRITICAL ENTERPRISE VALIDATION TESTS ==========
+    
+    def test_dashboard_stats_authentication_vulnerability(self):
+        """CRITICAL: Test dashboard stats endpoint authentication vulnerability"""
+        print(f"\n🚨 CRITICAL SECURITY TEST: Dashboard Stats Authentication")
+        
+        # Test without authentication token (should fail with 401)
+        original_token = self.token
+        self.token = None  # Remove token temporarily
+        
+        success, response = self.run_test(
+            "Dashboard Stats - No Authentication (Should Fail)",
+            "GET",
+            "dashboard/stats",
+            401,  # Expecting 401 Unauthorized
+            critical=True
+        )
+        
+        # Restore token
+        self.token = original_token
+        
+        if not success:
+            # If we got 200 instead of 401, it's a security vulnerability
+            print(f"   🚨 CRITICAL SECURITY VULNERABILITY: Dashboard accessible without authentication!")
+            self.critical_failures.append({
+                'name': 'Dashboard Stats Authentication Bypass',
+                'error': 'Endpoint accessible without authentication token',
+                'critical': True,
+                'security_impact': 'HIGH - Unauthorized access to user dashboard data'
+            })
+            return False
+        else:
+            print(f"   ✅ SECURITY VALIDATED: Dashboard properly protected")
+            return True
+    
+    def test_ai_consultant_initialization_fix(self):
+        """CRITICAL: Test AI consultant initialization without analysis ID requirement"""
+        if not self.token:
+            print("   ⚠️  Skipping - No authentication token")
+            return False
+        
+        success, response = self.run_test(
+            "AI Consultant - Initialize Without Analysis ID",
+            "POST",
+            "consultant/initialize",
+            200,
+            data={
+                'user_profile': {
+                    'experience_level': 'beginner',
+                    'business_goals': ['first_location'],
+                    'location': 'Springfield, IL',
+                    'budget_range': '300k-500k'
+                }
+            },
+            critical=True
+        )
+        
+        if success:
+            consultant = response.get('consultant', {})
+            consultant_id = consultant.get('consultant_id')
+            print(f"   ✅ Consultant initialized: {consultant_id}")
+            print(f"   🎯 Specialization: {consultant.get('specialization', 'Unknown')}")
+            print(f"   📋 Action Items: {len(consultant.get('action_items', []))}")
+            
+            # Store for further testing
+            self.consultant_id = consultant_id
+            return True
+        else:
+            print(f"   ❌ CRITICAL: AI Consultant initialization failed")
+            return False
+    
+    def test_marketplace_listings_endpoint(self):
+        """NEW: Test marketplace listings endpoint with 25 professional listings"""
+        success, response = self.run_test(
+            "Ultimate Marketplace - 25 Professional Listings",
+            "GET",
+            "marketplace/listings",
+            200,
+            critical=True
+        )
+        
+        if success:
+            listings = response.get('listings', [])
+            total_value = response.get('total_market_value', 0)
+            
+            print(f"   🏢 Total Listings: {len(listings)}")
+            print(f"   💰 Total Market Value: ${total_value:,}")
+            
+            if len(listings) >= 25:
+                print(f"   ✅ ENTERPRISE REQUIREMENT MET: 25+ listings")
+                
+                # Check for professional data structure
+                if listings:
+                    sample_listing = listings[0]
+                    required_fields = ['askingPrice', 'roi', 'location', 'equipment', 'highlights']
+                    missing_fields = [field for field in required_fields if field not in sample_listing]
+                    
+                    if not missing_fields:
+                        print(f"   ✅ Professional data structure confirmed")
+                        
+                        # Check for real equipment brands
+                        equipment = sample_listing.get('equipment', {})
+                        brands = [equipment.get('washers', {}).get('brand', ''), 
+                                equipment.get('dryers', {}).get('brand', '')]
+                        professional_brands = ['Speed Queen', 'Huebsch', 'Continental', 'Wascomat']
+                        
+                        if any(brand in professional_brands for brand in brands):
+                            print(f"   ✅ Real equipment brands detected: {brands}")
+                        else:
+                            print(f"   ⚠️  Equipment brands may need verification: {brands}")
+                        
+                        return True
+                    else:
+                        print(f"   ❌ Missing required fields: {missing_fields}")
+                        return False
+            else:
+                print(f"   ❌ ENTERPRISE REQUIREMENT NOT MET: Only {len(listings)} listings (need 25+)")
+                return False
+        else:
+            print(f"   ❌ CRITICAL: Marketplace listings endpoint not accessible")
+            return False
+    
+    def test_admin_stats_real_data(self):
+        """Test admin stats endpoint for real data ($5,758 revenue, 72 users)"""
+        if not self.token:
+            print("   ⚠️  Skipping - No authentication token")
+            return False
+        
+        success, response = self.run_test(
+            "Admin Stats - Real Data Validation",
+            "GET",
+            "admin/stats",
+            200,
+            critical=True
+        )
+        
+        if success:
+            total_revenue = response.get('totalRevenue', 0)
+            total_users = response.get('totalUsers', 0)
+            active_subscribers = response.get('activeSubscribers', 0)
+            
+            print(f"   💰 Total Revenue: ${total_revenue}")
+            print(f"   👥 Total Users: {total_users}")
+            print(f"   📊 Active Subscribers: {active_subscribers}")
+            
+            # Check for expected real data values
+            if total_revenue >= 5000:  # Should be around $5,758
+                print(f"   ✅ Real revenue data confirmed (${total_revenue})")
+            else:
+                print(f"   ⚠️  Revenue lower than expected: ${total_revenue} (expected ~$5,758)")
+                self.zero_value_sections.append(f"Admin Stats - Low Revenue: ${total_revenue}")
+            
+            if total_users >= 50:  # Should be around 72
+                print(f"   ✅ Real user data confirmed ({total_users} users)")
+            else:
+                print(f"   ⚠️  User count lower than expected: {total_users} (expected ~72)")
+                self.zero_value_sections.append(f"Admin Stats - Low User Count: {total_users}")
+            
+            return True
+        else:
+            print(f"   ❌ CRITICAL: Admin stats endpoint not accessible")
+            return False
+
     def print_final_results(self):
         """Print comprehensive audit results with enterprise-grade assessment"""
         print(f"\n" + "=" * 80)
