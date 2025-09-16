@@ -790,7 +790,7 @@ const LandingPage = ({ onOpenAuth }) => {
           
           <div className="pt-8 border-t border-slate-700 text-center">
             <p className="text-slate-400 text-sm mb-4">
-              © 2024 API University. All rights reserved. Powered by SiteAtlas.
+              © 2024 LaundroTech. All rights reserved. Powered by SiteAtlas.
             </p>
             <p className="text-slate-500 text-xs max-w-4xl mx-auto">
               <strong>Investment Disclaimer:</strong> All financial projections, ROI estimates, and revenue calculations provided by API University are for 
