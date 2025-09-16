@@ -305,7 +305,7 @@ function App() {
             />
 
             {/* Case Study Showcase - Public Access */}
-            <Route path="/analyze" element={<RevenueAnalyzer />} />
+            <Route path="/analyze" element={<LocationIntelligenceModule />} />
 
             {/* NEW: Professional Marketplace */}
             <Route path="/marketplace" element={
