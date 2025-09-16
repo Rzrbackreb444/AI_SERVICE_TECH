@@ -279,37 +279,28 @@ const AnalyticsDashboard = () => {
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Premium Key Metrics Overview */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        {/* Enterprise KPI Dashboard */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="glass-card p-6 bg-gradient-to-br from-slate-800/80 to-slate-900/60 border border-slate-700/50 hover:border-green-500/30 transition-all duration-300 group"
+            className="bg-gradient-to-br from-slate-900/90 to-slate-800/60 backdrop-blur-xl border border-slate-700/50 rounded-2xl p-6 hover:border-cyan-500/50 transition-all duration-500 shadow-2xl"
           >
-            <div className="flex items-center justify-between">
-              <div className="flex-1">
-                <div className="flex items-center space-x-2 mb-2">
-                  <p className="text-slate-400 text-sm font-medium">Total Revenue</p>
-                  <div className="px-2 py-1 bg-green-500/10 rounded-full">
-                    <span className="text-green-400 text-xs font-semibold">MRR</span>
-                  </div>
-                </div>
-                <p className="text-3xl font-bold text-white mb-1">{formatCurrency(analyticsData.totalRevenue || 0)}</p>
-                <div className="flex items-center text-sm">
-                  {(analyticsData.revenueGrowth || 0) >= 0 ? (
-                    <ArrowTrendingUpIcon className="w-4 h-4 text-green-400 mr-1" />
-                  ) : (
-                    <ArrowTrendingDownIcon className="w-4 h-4 text-red-400 mr-1" />
-                  )}
-                  <span className={(analyticsData.revenueGrowth || 0) >= 0 ? 'text-green-400' : 'text-red-400'}>
-                    {formatPercentage(analyticsData.revenueGrowth || 0)}
-                  </span>
-                  <span className="text-slate-400 ml-1">vs prev period</span>
-                </div>
+            <div className="flex items-center justify-between mb-4">
+              <div className="w-14 h-14 bg-gradient-to-br from-cyan-500/20 to-blue-600/20 rounded-2xl flex items-center justify-center shadow-lg">
+                <CurrencyDollarIcon className="w-7 h-7 text-cyan-400" />
               </div>
-              <div className="w-12 h-12 bg-gradient-to-br from-green-500/20 to-emerald-600/20 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                <CurrencyDollarIcon className="w-6 h-6 text-green-400" />
+              <div className="flex items-center text-emerald-400">
+                <ArrowTrendingUpIcon className="w-5 h-5 mr-1" />
+                <span className="text-lg font-bold">+{formatPercentage(analyticsData.revenueGrowth || 0).replace('+', '')}</span>
               </div>
+            </div>
+            <div className="text-4xl font-black text-white mb-2">
+              {formatCurrency(analyticsData.totalRevenue || 0)}
+            </div>
+            <div className="text-slate-400 text-sm font-medium mb-3">Total Market Revenue</div>
+            <div className="h-2 bg-slate-800 rounded-full overflow-hidden">
+              <div className="h-full bg-gradient-to-r from-cyan-500 to-blue-500 rounded-full transition-all duration-1000" style={{width: '73%'}}></div>
             </div>
           </motion.div>
 
