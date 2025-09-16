@@ -34,7 +34,7 @@ const CaseStudyVistaLaundry = () => {
             Vista Laundry Strategic Exit Analysis
           </h1>
           <p className="text-xl text-slate-300 mb-8">
-            Retrospective analysis of David King's strategic sale decision and subsequent rebuild in Van Buren, Arkansas
+            Retrospective analysis of David K.'s strategic sale decision and subsequent rebuild in Van Buren, Arkansas
           </p>
           <div className="flex items-center justify-center gap-6 text-slate-400">
             <span className="flex items-center gap-2">
@@ -90,7 +90,7 @@ const CaseStudyVistaLaundry = () => {
           </div>
 
           <p className="text-slate-300 text-lg leading-relaxed">
-            David King made a strategic decision to sell Vista Laundry in Van Buren, Arkansas at the optimal market timing. 
+            David K. made a strategic decision to sell Vista Laundry in Van Buren, Arkansas at the optimal market timing. 
             Our retrospective analysis confirms the location's strong fundamentals and optimal market timing. 
             The new owners' rebuild decision with modern Speed Queen equipment and Highway 59 traffic optimization 
             validates the site's inherent investment potential.
@@ -196,7 +196,7 @@ const CaseStudyVistaLaundry = () => {
               <div className="p-6 bg-emerald-500/10 border border-emerald-500/20 rounded-2xl">
                 <h4 className="text-emerald-400 font-semibold mb-2">Exit Strategy Validation</h4>
                 <p className="text-slate-300">
-                  David King's timing was optimal - market conditions, buyer interest, and location fundamentals 
+                  David K.'s timing was optimal - market conditions, buyer interest, and location fundamentals 
                   all aligned for maximum value realization.
                 </p>
               </div>
