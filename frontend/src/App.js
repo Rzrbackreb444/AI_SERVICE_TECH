@@ -27,7 +27,7 @@ import MRRDashboard from './components/MRRDashboard';
 import EnterprisePortal from './components/EnterprisePortal';
 import AboutUs from './components/AboutUs';
 import RevenueAnalyzer from './components/RevenueAnalyzer';
-import OptimalChatWidget from './components/EnhancedConsultantWidget';
+import EnhancedConsultantWidget from './components/EnhancedConsultantWidget';
 import PremiumLocationReport from './components/PremiumLocationReport';
 import RealEnterpriseAnalytics from './components/RealEnterpriseAnalytics';
 import MediaKit from './components/MediaKit';
