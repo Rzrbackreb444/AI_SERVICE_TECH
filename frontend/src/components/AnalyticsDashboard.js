@@ -229,7 +229,7 @@ const AnalyticsDashboard = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900">
+    <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950">
       {/* Enterprise Command Center Header */}
       <div className="bg-slate-900/80 backdrop-blur-xl border-b border-slate-800 shadow-2xl">
         <div className="max-w-[1600px] mx-auto px-8 py-8">
