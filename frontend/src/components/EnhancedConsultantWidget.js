@@ -492,29 +492,39 @@ const EnhancedConsultantWidget = () => {
             background: 'linear-gradient(135deg, #0f172a 0%, #164e63 50%, #1e40af 100%)'
           }}
         >
-          <AnimatePresence mode="wait">
-            {isOpen ? (
-              <motion.div
-                key="close"
-                initial={{ rotate: -90, opacity: 0 }}
-                animate={{ rotate: 0, opacity: 1 }}
-                exit={{ rotate: 90, opacity: 0 }}
-                transition={{ duration: 0.2 }}
-              >
-                <XMarkIcon className="w-6 h-6" />
-              </motion.div>
-            ) : (
-              <motion.div
-                key="chat"
-                initial={{ rotate: 90, opacity: 0 }}
-                animate={{ rotate: 0, opacity: 1 }}
-                exit={{ rotate: -90, opacity: 0 }}
-                transition={{ duration: 0.2 }}
-              >
-                <ChatBubbleLeftRightIcon className="w-6 h-6" />
-              </motion.div>
-            )}
-          </AnimatePresence>
+          <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-4">
+            <AnimatePresence mode="wait">
+              {isOpen ? (
+                <motion.div
+                  key="close"
+                  initial={{ scale: 0.8, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  exit={{ scale: 0.8, opacity: 0 }}
+                  transition={{ duration: 0.2 }}
+                  className="flex flex-col items-center"
+                >
+                  <XMarkIcon className="w-8 h-8 mb-2" />
+                  <span className="text-xs font-bold">CLOSE</span>
+                </motion.div>
+              ) : (
+                <motion.div
+                  key="chat"
+                  initial={{ scale: 0.8, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  exit={{ scale: 0.8, opacity: 0 }}
+                  transition={{ duration: 0.2 }}
+                  className="flex flex-col items-center"
+                >
+                  <SparklesIcon className="w-8 h-8 mb-1" />
+                  <span className="text-xs font-bold tracking-tight">INTELLIGENCE</span>
+                  <span className="text-xs font-medium opacity-80">ASSISTANT</span>
+                </motion.div>
+              )}
+            </AnimatePresence>
+            
+            {/* Subtle gradient overlay */}
+            <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/10 to-blue-500/10 rounded-2xl pointer-events-none"></div>
+          </div>
           
           {/* Notification Badge */}
           {!isOpen && showNotification && (
