@@ -12,7 +12,7 @@ import time
 import uuid
 
 class ComprehensivePlatformAuditor:
-    def __init__(self, base_url="https://smartlaundry.preview.emergentagent.com/api"):
+    def __init__(self, base_url="https://washnanalytics.preview.emergentagent.com/api"):
         self.base_url = base_url
         self.token = None
         self.user_data = None
@@ -2492,7 +2492,7 @@ class ComprehensivePlatformAuditor:
 class AdvancedRevenueTester:
     """Test all new advanced revenue optimization strategies"""
     
-    def __init__(self, base_url="https://smartlaundry.preview.emergentagent.com/api"):
+    def __init__(self, base_url="https://washnanalytics.preview.emergentagent.com/api"):
         self.base_url = base_url
         self.token = None
         self.user_data = None
@@ -2982,7 +2982,7 @@ class AdvancedRevenueTester:
 class AIConsultantTester:
     """Test the Revolutionary Personalized AI Consultant System - THE STICKINESS GAME-CHANGER"""
     
-    def __init__(self, base_url="https://smartlaundry.preview.emergentagent.com/api"):
+    def __init__(self, base_url="https://washnanalytics.preview.emergentagent.com/api"):
         self.base_url = base_url
         self.token = None
         self.user_data = None
@@ -3591,7 +3591,7 @@ class AIConsultantTester:
 class RevenueOptimizationTester:
     """Test the new revenue optimization endpoints specifically requested"""
     
-    def __init__(self, base_url="https://smartlaundry.preview.emergentagent.com/api"):
+    def __init__(self, base_url="https://washnanalytics.preview.emergentagent.com/api"):
         self.base_url = base_url
         self.token = None
         self.user_data = None

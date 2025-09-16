@@ -9,7 +9,7 @@ from datetime import datetime
 import time
 
 def test_auth_system():
-    base_url = "https://smartlaundry.preview.emergentagent.com/api"
+    base_url = "https://washnanalytics.preview.emergentagent.com/api"
     
     # Generate unique test user
     timestamp = datetime.now().strftime('%H%M%S%f')
