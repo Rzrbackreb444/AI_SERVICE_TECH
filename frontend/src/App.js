@@ -73,6 +73,12 @@ function App() {
     setShowAuthModal(false);
   };
 
+  // Check if user is logged in
+  const isUserAuthenticated = () => {
+    const token = localStorage.getItem('token');
+    return !!token;
+  };
+
   // Auth Provider with access to state
   const AuthProviderWithState = ({ children }) => {
     const [user, setUser] = useState(() => {
