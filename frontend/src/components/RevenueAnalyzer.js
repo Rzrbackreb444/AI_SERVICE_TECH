@@ -309,9 +309,14 @@ const RevenueAnalyzer = () => {
           >
             <div className="glass-card p-8 mb-8">
               <div className="text-center mb-8">
-                <h2 className="text-3xl font-bold text-white mb-4">Experience Next-Level Intelligence</h2>
-                <p className="text-slate-300 text-lg">
-                  See real-world case studies from The Wash Room empire and the Vista Laundry million-dollar decision
+                <div className="bg-gradient-to-r from-emerald-500 to-cyan-500 text-white px-6 py-3 rounded-full text-sm font-bold inline-block mb-4">
+                  LOCATION INTELLIGENCE PLATFORM
+                </div>
+                <h2 className="text-3xl font-bold text-white mb-4">Get Million-Dollar Investment Intelligence</h2>
+                <p className="text-slate-300 text-lg max-w-4xl mx-auto">
+                  Professional location analysis that has guided $47M+ in successful laundromat investments. 
+                  <strong className="text-cyan-400">94% of our clients avoid costly mistakes.</strong> 
+                  Used by investors, brokers, and institutions for critical acquisition decisions.
                 </p>
               </div>
               
