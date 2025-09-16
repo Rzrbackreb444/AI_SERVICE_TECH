@@ -496,6 +496,15 @@ function App() {
                 </>
               </ProtectedRoute>
             } />
+            
+            <Route path="/predictive-analytics" element={
+              <ProtectedRoute>
+                <>
+                  <Navbar />
+                  <PredictiveAnalyticsEngine />
+                </>
+              </ProtectedRoute>
+            } />
 
             {/* Legal/Compliance Routes */}
             <Route path="/privacy" element={
