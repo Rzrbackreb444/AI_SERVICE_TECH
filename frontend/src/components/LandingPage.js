@@ -713,7 +713,7 @@ const LandingPage = ({ onOpenAuth }) => {
                 <li><Link to="/privacy" className="hover:text-white transition-colors">Privacy Policy</Link></li>
                 <li><Link to="/terms" className="hover:text-white transition-colors">Terms of Service</Link></li>
                 <li><Link to="/disclaimer" className="hover:text-white transition-colors">Investment Disclaimer</Link></li>
-                <li><a href="mailto:nick@laundrotech.xyz" className="hover:text-white transition-colors">Contact</a></li>
+                <li><a href="mailto:nick@apiuniversity.com" className="hover:text-white transition-colors">Contact</a></li>
               </ul>
             </div>
             
