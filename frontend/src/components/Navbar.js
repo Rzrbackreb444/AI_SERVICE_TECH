@@ -59,7 +59,7 @@ const Navbar = () => {
         <div className="flex justify-between items-center h-20">
           {/* Enhanced LaundroTech Branding - Larger Logo */}
           <div className="flex items-center">
-            <Link to="/dashboard" className="flex items-center space-x-4 group">
+            <Link to="/" className="flex items-center space-x-4 group">
               <div className="relative">
                 <div className="h-12 w-12 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-lg">
                   <BuildingOffice2Icon className="h-7 w-7 text-white" />
