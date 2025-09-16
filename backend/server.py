@@ -1688,6 +1688,8 @@ from blog_management_endpoints import create_blog_router
 from seo_marketplace_endpoints import create_seo_marketplace_router
 ultimate_marketplace_router = create_ultimate_marketplace_router()
 app.include_router(ultimate_marketplace_router, prefix="/api")
+app.include_router(create_blog_router(), prefix="/api")
+app.include_router(create_seo_marketplace_router(), prefix="/api")
 logger.info("Ultimate marketplace endpoints initialized")
 
 app.include_router(listings_router, prefix="/api")  # NEW: Listings management endpoints
