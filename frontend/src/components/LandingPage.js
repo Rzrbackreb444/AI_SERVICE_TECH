@@ -419,7 +419,7 @@ const LandingPage = ({ onOpenAuth }) => {
               Why Choose <span className="bg-gradient-to-r from-cyan-400 to-emerald-400 bg-clip-text text-transparent">LaundroTech</span>
             </h2>
             <p className="text-2xl text-slate-300 max-w-4xl mx-auto">
-              Revolutionary intelligence platform powered by advanced AI that transforms complex market data into actionable business intelligence
+              Professional location intelligence powered by advanced AI that transforms complex market data into actionable investment insights
             </p>
           </motion.div>
 
