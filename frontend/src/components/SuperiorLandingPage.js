@@ -238,10 +238,10 @@ const SuperiorLandingPage = () => {
             className="text-center mb-16"
           >
             <h2 className="text-4xl font-black text-white mb-6">
-              Why We Dominate CoStar, SiteZeus & Everyone Else
+              Built Specifically for Laundromat Investments
             </h2>
             <p className="text-xl text-slate-300 max-w-3xl mx-auto">
-              While they offer generic solutions, we deliver specialized intelligence that actually works for laundromats.
+              Unlike generic commercial real estate platforms, we focus exclusively on laundromat intelligence with 3 generations of industry expertise.
             </p>
           </motion.div>
 
