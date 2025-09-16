@@ -358,7 +358,7 @@ const CompetitiveIntelligenceHub = () => {
                   <CardHeader>
                     <CardTitle className="text-white flex items-center justify-between">
                       <span className="flex items-center gap-2">
-                        <Scope className="h-5 w-5 text-red-400" />
+                        <Focus className="h-5 w-5 text-red-400" />
                         {selectedCompetitor.name}
                       </span>
                       <Badge variant="outline" className={getThreatColor(selectedCompetitor.threatLevel)}>
