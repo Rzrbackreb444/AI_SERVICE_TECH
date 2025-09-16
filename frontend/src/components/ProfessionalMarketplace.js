@@ -1,26 +1,28 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { 
-  BuildingOffice2Icon,
-  CurrencyDollarIcon,
+import {
+  MagnifyingGlassIcon,
+  FunnelIcon,
   MapPinIcon,
+  CurrencyDollarIcon,
+  BuildingOffice2Icon,
   ChartBarIcon,
+  StarIcon,
   EyeIcon,
   HeartIcon,
-  PhotoIcon,
-  ClockIcon,
-  ArrowTrendingUpIcon,
-  StarIcon,
-  ArrowRightIcon,
-  SparklesIcon,
-  PlusIcon,
-  FunnelIcon as FilterIcon,
-  MagnifyingGlassIcon,
-  DocumentTextIcon,
+  ShareIcon,
   PhoneIcon,
-  EnvelopeIcon
+  EnvelopeIcon,
+  DocumentTextIcon,
+  TrendingUpIcon,
+  ClockIcon,
+  CheckCircleIcon,
+  ExclamationTriangleIcon
 } from '@heroicons/react/24/outline';
-import { HeartIcon as HeartSolidIcon } from '@heroicons/react/24/solid';
+import {
+  HeartIcon as HeartSolidIcon,
+  StarIcon as StarSolidIcon
+} from '@heroicons/react/24/solid';
 import ListingCreator from './ListingCreator';
 
 const ProfessionalMarketplace = () => {
