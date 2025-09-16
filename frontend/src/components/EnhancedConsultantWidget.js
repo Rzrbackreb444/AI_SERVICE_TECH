@@ -372,8 +372,8 @@ const EnhancedConsultantWidget = () => {
         )}
       </AnimatePresence>
 
-      {/* PERFECT WATERMARK KILLER - Take that Emergent! */}
-      <div className="fixed bottom-2 right-2" style={{ zIndex: 10000 }}>
+      {/* SURGICAL WATERMARK PRECISION STRIKE */}
+      <div className="fixed bottom-1 right-1" style={{ zIndex: 10000 }}>
         <AnimatePresence>
           {isOpen && (
             <motion.div
