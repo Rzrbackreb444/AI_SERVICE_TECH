@@ -13,7 +13,7 @@ import ImprovedAuthModal from './components/ImprovedAuthModal';
 import SuperiorLandingPage from './components/SuperiorLandingPage';
 import ProfilePage from './components/ProfilePage';
 import AnalysisHistory from './components/AnalysisHistory';
-import ProfessionalDashboard from './components/ProfessionalDashboard';
+import EnterpriseDashboard from './components/EnterpriseDashboard';
 import AdminDashboard from './components/AdminDashboard';
 import SupportCenter from './components/SupportCenter';
 import AnalyticsDashboard from './components/AnalyticsDashboard';
