@@ -477,6 +477,24 @@ function App() {
                 </>
               </ProtectedRoute>
             } />
+            
+            <Route path="/market-intelligence" element={
+              <ProtectedRoute>
+                <>
+                  <Navbar />
+                  <RealTimeMarketIntelligence />
+                </>
+              </ProtectedRoute>
+            } />
+            
+            <Route path="/competitive-intelligence" element={
+              <ProtectedRoute>
+                <>
+                  <Navbar />
+                  <CompetitiveIntelligenceHub />
+                </>
+              </ProtectedRoute>
+            } />
 
             {/* Legal/Compliance Routes */}
             <Route path="/privacy" element={
