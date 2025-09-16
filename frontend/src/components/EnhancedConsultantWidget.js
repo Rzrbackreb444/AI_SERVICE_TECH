@@ -527,8 +527,23 @@ const EnhancedConsultantWidget = () => {
               )}
             </AnimatePresence>
             
-            {/* Subtle gradient overlay */}
-            <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/10 to-blue-500/10 rounded-2xl pointer-events-none"></div>
+            {/* WATERMARK KILLER OVERLAY + PULSE */}
+            <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/20 to-blue-500/20 rounded-2xl pointer-events-none"></div>
+            <div className="absolute inset-0 bg-gradient-to-br from-slate-900/60 to-transparent rounded-2xl pointer-events-none"></div>
+            
+            {/* Subtle pulse animation */}
+            <motion.div 
+              className="absolute inset-0 border-2 border-cyan-400/30 rounded-2xl pointer-events-none"
+              animate={{ 
+                opacity: [0.3, 0.6, 0.3],
+                scale: [1, 1.02, 1] 
+              }}
+              transition={{ 
+                duration: 3,
+                repeat: Infinity,
+                ease: "easeInOut"
+              }}
+            />
           </div>
           
           {/* Notification Badge */}
