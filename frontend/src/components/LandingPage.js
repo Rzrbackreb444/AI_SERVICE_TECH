@@ -763,7 +763,7 @@ const LandingPage = ({ onOpenAuth }) => {
               </div>
               <ul className="space-y-2 text-slate-400 text-sm">
                 <li><Link to="/about" className="hover:text-white transition-colors">Our Story</Link></li>
-                <li><a href="mailto:nick@laundrotech.xyz" className="hover:text-white transition-colors">Direct Contact</a></li>
+                <li><a href="mailto:nick@apiuniversity.com" className="hover:text-white transition-colors">Direct Contact</a></li>
                 <li><Link to="/about" className="hover:text-white transition-colors">Industry Experience</Link></li>
                 <li><a href="mailto:nick@laundrotech.xyz" className="hover:text-white transition-colors">Consultation</a></li>
               </ul>
