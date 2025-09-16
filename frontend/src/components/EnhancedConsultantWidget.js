@@ -519,4 +519,4 @@ const EnhancedConsultantWidget = () => {
   );
 };
 
-export default OptimalChatWidget;
+export default EnhancedConsultantWidget;
