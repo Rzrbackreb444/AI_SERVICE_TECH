@@ -249,6 +249,40 @@ function App() {
               path="/blog/:slug" 
               element={<BlogSystem />} 
             />
+            <Route 
+              path="/premium-report" 
+              element={<PremiumLocationReport 
+                analysisData={{
+                  overall_grade: "A+",
+                  grade_score: 92,
+                  revenue_potential: {
+                    annual_revenue: 485000,
+                    monthly_profit: 28400
+                  },
+                  demographics: {
+                    population: 87650,
+                    median_income: 67500
+                  },
+                  competitors: [
+                    { name: "Sparkle Clean Laundry", distance: 1.2 },
+                    { name: "Quick Wash Center", distance: 2.8 },
+                    { name: "Suds & Bubbles", distance: 3.4 }
+                  ],
+                  risk_factors: [
+                    "High concentration of competitors within 2-mile radius",
+                    "Seasonal population fluctuation due to college proximity",
+                    "Limited parking availability during peak hours"
+                  ],
+                  opportunities: [
+                    "Underserved evening hours market (8PM-12AM)",
+                    "Potential for wash-and-fold premium services",
+                    "Growing apartment complex development planned nearby",
+                    "Partnership opportunities with local gyms and hotels"
+                  ]
+                }}
+                address="123 Main Street, Springfield, IL 62701"
+              />} 
+            />
 
             {/* Case Study Showcase - Public Access */}
             <Route path="/analyze" element={<RevenueAnalyzer />} />
