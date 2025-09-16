@@ -551,12 +551,10 @@ const LandingPage = ({ onOpenAuth }) => {
             </div>
             
             <div>
-              <h3 className="text-lg font-semibold text-white mb-4">Platform</h3>
+              <h3 className="text-lg font-semibold text-white mb-4">Services</h3>
               <ul className="space-y-2 text-slate-400 text-sm">
-                <li><Link to="/pricing" className="hover:text-white transition-colors">Pricing</Link></li>
-                <li><Link to="/api-docs" className="hover:text-white transition-colors">API Documentation</Link></li>
-                <li><a href="mailto:nick@laundryguys.net" className="hover:text-white transition-colors">Support</a></li>
-                <li><a href="mailto:nick@laundryguys.net" className="hover:text-white transition-colors">Partnership</a></li>
+                <li><Link to="/analyze" className="hover:text-white transition-colors">Location Analysis</Link></li>
+                <li><a href="mailto:nick@laundryguys.net" className="hover:text-white transition-colors">Contact</a></li>
               </ul>
               <div className="mt-4">
                 <a 
