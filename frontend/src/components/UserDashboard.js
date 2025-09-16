@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { 
   UserCircleIcon,
@@ -7,7 +6,6 @@ import {
   ShieldCheckIcon,
   BoltIcon,
   TrophyIcon,
-  SparklesIcon,
   PresentationChartBarIcon,
   PhoneIcon,
   CalendarIcon,
@@ -17,7 +15,10 @@ import {
   CheckCircleIcon,
   XCircleIcon,
   ArrowPathIcon,
-  Cog6ToothIcon
+  Cog6ToothIcon,
+  ChartBarIcon,
+  MapPinIcon,
+  BuildingOfficeIcon
 } from '@heroicons/react/24/outline';
 import axios from 'axios';
 
