@@ -39,7 +39,7 @@ const LaundroTechLanding = ({ onOpenAuth }) => {
       gradient: "from-green-500 to-emerald-500"
     },
     {
-      icon: TrendingUpIcon,
+      icon: ArrowTrendingUpIcon,
       title: "Predictive Analytics",
       description: "Machine learning algorithms predict market trends and identify high-opportunity locations before competitors.",
       gradient: "from-orange-500 to-red-500"
