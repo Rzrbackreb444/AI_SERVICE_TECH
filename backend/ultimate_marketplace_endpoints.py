@@ -68,6 +68,10 @@ def create_ultimate_marketplace_router():
             marketplace_listings = await db.marketplace_listings.find({}).to_list(None)
             
             if marketplace_listings:
+                # Convert ObjectId to string for JSON serialization
+                for listing in marketplace_listings:
+                    if '_id' in listing:
+                        del listing['_id']
                 return marketplace_listings
             
             # If no dedicated listings, create from location analyses
