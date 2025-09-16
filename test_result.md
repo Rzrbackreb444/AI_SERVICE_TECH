@@ -694,20 +694,17 @@ frontend:
         agent: "main"
         comment: "Separate badge management UI for viewing active subscriptions and payment history not yet implemented. Current implementation focuses on purchase flow."
 
-  - task: "Landing Page Professional Branding and Messaging"
+  - task: "Enterprise Landing - Dark Glass Aesthetic, No Mock Data"
     implemented: true
     working: true
-    file: "/app/frontend/src/components/LandingPage.js"
+    file: "/app/frontend/src/components/LaundroTechLanding.js"
     stuck_count: 0
     priority: "high"
-    needs_retesting: false
+    needs_retesting: true
     status_history:
       - working: "NA"
         agent: "main"
-        comment: "Implemented professional LaundroTech branding with SiteAtlas powered platform messaging"
-      - working: true
-        agent: "testing"
-        comment: "✅ PROFESSIONAL BRANDING VERIFIED: LaundroTech branding with 'Million-Dollar Intelligence' messaging confirmed, SiteAtlas powered platform positioning, Advanced Intelligence Platform branding - ALL VALIDATED. Professional hero messaging, competitive intelligence previews, AI success prediction demos working perfectly."
+        comment: "Rebuilt landing with tech-forward dark glass aesthetic, subtle motion, zero mock metrics. Fixed icon import issues. Added locked live preview and strict auth CTAs."
 
   - task: "User Registration and Login Flows"
     implemented: true
