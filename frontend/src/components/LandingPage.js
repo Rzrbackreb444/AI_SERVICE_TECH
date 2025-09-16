@@ -200,7 +200,7 @@ const LandingPage = ({ onOpenAuth }) => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, ease: "easeOut" }}
           >
-            {/* Premium LaundroTech Branding */}
+            {/* Premium API University Branding */}
             <div className="mb-8 sm:mb-12">
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
