@@ -732,14 +732,14 @@ const RevenueAnalyzer = () => {
                     } ${tier.popular ? 'border border-emerald-400/50' : ''}`}
                     onClick={() => setSelectedDepth(tier.level)}
                   >
-                    {tier.popular && (
-                      <div className="absolute -top-2 -right-2 bg-gradient-to-r from-emerald-500 to-cyan-500 text-white px-3 py-1 rounded-full text-xs font-bold">
-                        POPULAR
-                      </div>
-                    )}
-                    {tier.subscription && (
-                      <div className="absolute -top-2 -left-2 bg-gradient-to-r from-orange-500 to-red-500 text-white px-3 py-1 rounded-full text-xs font-bold">
-                        MONTHLY
+                    {tier.badge && (
+                      <div className={`absolute -top-2 -right-2 px-3 py-1 rounded-full text-xs font-bold ${
+                        tier.badge === 'MOST POPULAR' ? 'bg-gradient-to-r from-emerald-500 to-cyan-500 text-white' :
+                        tier.badge === 'EXECUTIVE' ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white' :
+                        tier.badge === 'ENTERPRISE' ? 'bg-gradient-to-r from-amber-500 to-orange-500 text-white' :
+                        'bg-gradient-to-r from-slate-500 to-slate-600 text-white'
+                      }`}>
+                        {tier.badge}
                       </div>
                     )}
                     
