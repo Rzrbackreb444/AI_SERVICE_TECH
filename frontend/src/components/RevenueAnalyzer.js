@@ -317,8 +317,8 @@ const RevenueAnalyzer = () => {
               
               {/* Success Stories - Links to Case Studies */}
               <div className="text-center mb-8">
-                <h3 className="text-2xl font-bold text-white mb-4">Success Stories</h3>
-                <p className="text-slate-300 mb-6">See how our intelligence has guided successful investments and strategic decisions</p>
+                <h3 className="text-2xl font-bold text-white mb-4">Analysis Examples</h3>
+                <p className="text-slate-300 mb-6">See our professional location intelligence analysis in action</p>
                 
                 <div className="grid md:grid-cols-2 gap-6">
                   <Link 
