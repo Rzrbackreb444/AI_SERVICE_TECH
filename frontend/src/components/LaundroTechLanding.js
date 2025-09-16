@@ -10,7 +10,7 @@ import {
   PhoneIcon,
   EnvelopeIcon,
   StarIcon,
-  TrendingUpIcon,
+  ArrowTrendingUpIcon,
   ShieldCheckIcon,
   BoltIcon,
   GlobeAmericasIcon
