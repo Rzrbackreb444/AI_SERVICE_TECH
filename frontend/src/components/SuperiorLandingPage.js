@@ -245,40 +245,30 @@ const SuperiorLandingPage = () => {
             </p>
           </motion.div>
 
-          {/* Comparison Table */}
-          <div className="bg-slate-800/60 backdrop-blur-xl border border-slate-700/50 rounded-3xl overflow-hidden">
-            <div className="grid grid-cols-4 gap-0">
-              {/* Header */}
-              <div className="bg-gradient-to-r from-cyan-600 to-blue-600 p-4 text-white font-bold text-center">
-                Feature
-              </div>
-              <div className="bg-gradient-to-r from-emerald-600 to-cyan-600 p-4 text-white font-bold text-center">
-                LaundroTech (Us)
-              </div>
-              <div className="bg-slate-700 p-4 text-slate-300 font-semibold text-center">
-                CoStar
-              </div>
-              <div className="bg-slate-700 p-4 text-slate-300 font-semibold text-center">
-                SiteZeus
-              </div>
-
-              {/* Comparison Rows */}
-              {competitorComparison.map((row, index) => (
-                <React.Fragment key={index}>
-                  <div className="p-4 bg-slate-800/40 border-t border-slate-700/30 font-semibold text-white">
-                    {row.feature}
-                  </div>
-                  <div className="p-4 bg-emerald-900/20 border-t border-slate-700/30 text-emerald-300 font-semibold">
-                    {row.us}
-                  </div>
-                  <div className="p-4 bg-slate-800/20 border-t border-slate-700/30 text-slate-400">
-                    {row.costar}
-                  </div>
-                  <div className="p-4 bg-slate-800/20 border-t border-slate-700/30 text-slate-400">
-                    {row.sitezeus}
-                  </div>
-                </React.Fragment>
-              ))}
+          {/* Our Unique Advantages */}
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="bg-slate-800/60 backdrop-blur-xl border border-slate-700/50 rounded-3xl p-6 text-center">
+              <div className="text-3xl font-black text-emerald-400 mb-3">67K+</div>
+              <div className="text-white font-semibold mb-2">Community Members</div>
+              <div className="text-slate-400 text-sm">Largest laundromat investor network</div>
+            </div>
+            
+            <div className="bg-slate-800/60 backdrop-blur-xl border border-slate-700/50 rounded-3xl p-6 text-center">
+              <div className="text-3xl font-black text-cyan-400 mb-3">100%</div>
+              <div className="text-white font-semibold mb-2">Laundromat Focused</div>
+              <div className="text-slate-400 text-sm">Specialized algorithms & data models</div>
+            </div>
+            
+            <div className="bg-slate-800/60 backdrop-blur-xl border border-slate-700/50 rounded-3xl p-6 text-center">
+              <div className="text-3xl font-black text-amber-400 mb-3">3</div>
+              <div className="text-white font-semibold mb-2">Generations</div>
+              <div className="text-slate-400 text-sm">Family industry expertise</div>
+            </div>
+            
+            <div className="bg-slate-800/60 backdrop-blur-xl border border-slate-700/50 rounded-3xl p-6 text-center">
+              <div className="text-3xl font-black text-purple-400 mb-3">$0</div>
+              <div className="text-white font-semibold mb-2">Free Preview</div>
+              <div className="text-slate-400 text-sm">No barriers to entry</div>
             </div>
           </div>
         </div>
