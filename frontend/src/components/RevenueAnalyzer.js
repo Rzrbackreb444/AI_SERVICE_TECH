@@ -328,17 +328,17 @@ const RevenueAnalyzer = () => {
                     <div className="h-32 bg-slate-800 rounded-lg mb-4 overflow-hidden">
                       <img 
                         src="https://customer-assets.emergentagent.com/job_site-atlas-ai/artifacts/fj8inoji_IMG_4674.jpeg"
-                        alt="Vista Laundry Case Study"
+                        alt="Vista Laundry Analysis Example"
                         className="w-full h-full object-cover opacity-60 group-hover:opacity-80 transition-opacity"
                       />
                     </div>
-                    <h4 className="text-lg font-bold text-white mb-2">Vista Laundry Strategic Exit</h4>
-                    <p className="text-slate-300 text-sm mb-3">David King's successful sale strategy in Van Buren, AR</p>
-                    <div className="bg-emerald-500/20 text-emerald-400 px-3 py-1 rounded-full text-xs font-bold inline-block mb-3">
-                      SUCCESS STORY
+                    <h4 className="text-lg font-bold text-white mb-2">Vista Laundry Analysis</h4>
+                    <p className="text-slate-300 text-sm mb-3">Strategic exit analysis example - Van Buren, AR</p>
+                    <div className="bg-amber-500/20 text-amber-400 px-3 py-1 rounded-full text-xs font-bold inline-block mb-3">
+                      ANALYSIS EXAMPLE
                     </div>
                     <div className="text-cyan-400 font-semibold text-sm group-hover:text-cyan-300 transition-colors">
-                      Read Case Study →
+                      View Analysis →
                     </div>
                   </Link>
                   
@@ -349,17 +349,17 @@ const RevenueAnalyzer = () => {
                     <div className="h-32 bg-slate-800 rounded-lg mb-4 overflow-hidden">
                       <img 
                         src="https://customer-assets.emergentagent.com/job_site-atlas-ai/artifacts/xnmmxz1x_IMG_4673.png"
-                        alt="The Wash Room Case Study"
+                        alt="The Wash Room Analysis Example"
                         className="w-full h-full object-cover opacity-60 group-hover:opacity-80 transition-opacity"
                       />
                     </div>
-                    <h4 className="text-lg font-bold text-white mb-2">The Wash Room Multi-Location</h4>
-                    <p className="text-slate-300 text-sm mb-3">Strategic expansion across Fort Smith, AR</p>
-                    <div className="bg-cyan-500/20 text-cyan-400 px-3 py-1 rounded-full text-xs font-bold inline-block mb-3">
-                      EXPANSION SUCCESS
+                    <h4 className="text-lg font-bold text-white mb-2">The Wash Room Analysis</h4>
+                    <p className="text-slate-300 text-sm mb-3">Multi-location expansion analysis - Fort Smith, AR</p>
+                    <div className="bg-purple-500/20 text-purple-400 px-3 py-1 rounded-full text-xs font-bold inline-block mb-3">
+                      ANALYSIS EXAMPLE
                     </div>
                     <div className="text-cyan-400 font-semibold text-sm group-hover:text-cyan-300 transition-colors">
-                      Read Case Study →
+                      View Analysis →
                     </div>
                   </Link>
                 </div>
