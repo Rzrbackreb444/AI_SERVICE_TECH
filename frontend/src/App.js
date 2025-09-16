@@ -36,6 +36,7 @@ import BlogSystem from './components/BlogSystem';
 import UltimateMarketplace from './components/UltimateMarketplace';
 import ListingCreator from './components/ListingCreator';
 import UserManagement from './components/UserManagement';
+import BlogManager from './components/BlogManager';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
