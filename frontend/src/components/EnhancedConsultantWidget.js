@@ -350,7 +350,8 @@ const EnhancedConsultantWidget = () => {
             initial={{ opacity: 0, scale: 0.8, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.8, y: 20 }}
-            className="fixed bottom-24 right-6 z-40 bg-gradient-to-r from-cyan-600 to-blue-600 text-white px-4 py-3 rounded-2xl shadow-2xl max-w-xs cursor-pointer border border-cyan-400/30"
+            className="fixed bottom-24 right-6 bg-gradient-to-r from-cyan-600 to-blue-600 text-white px-6 py-4 rounded-2xl shadow-2xl max-w-sm cursor-pointer border-2 border-cyan-400/50"
+            style={{ zIndex: 9998 }}
             onClick={() => {
               setIsOpen(true);
               setShowNotification(false);
