@@ -457,6 +457,24 @@ function App() {
                 </>
               </ProtectedRoute>
             } />
+            
+            <Route path="/intelligence" element={
+              <ProtectedRoute>
+                <>
+                  <Navbar />
+                  <AdvancedIntelligenceDashboard />
+                </>
+              </ProtectedRoute>
+            } />
+            
+            <Route path="/ai-agent" element={
+              <ProtectedRoute>
+                <>
+                  <Navbar />
+                  <AIAgentInterface />
+                </>
+              </ProtectedRoute>
+            } />
 
             {/* Legal/Compliance Routes */}
             <Route path="/privacy" element={
