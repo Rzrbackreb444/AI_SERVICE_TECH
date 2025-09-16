@@ -480,12 +480,17 @@ const EnhancedConsultantWidget = () => {
           )}
         </AnimatePresence>
 
-        {/* Premium Enterprise Toggle Button */}
+        {/* Professional Square Toggle - Covers Watermark */}
         <motion.button
           onClick={() => setIsOpen(!isOpen)}
-          whileHover={{ scale: 1.1, boxShadow: "0 20px 40px rgba(6, 182, 212, 0.4)" }}
+          whileHover={{ scale: 1.05, boxShadow: "0 20px 40px rgba(6, 182, 212, 0.5)" }}
           whileTap={{ scale: 0.95 }}
-          className="bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white p-5 rounded-full shadow-2xl border-2 border-cyan-400/50 relative backdrop-blur-sm"
+          className="bg-gradient-to-br from-slate-900 via-cyan-900 to-blue-900 hover:from-slate-800 hover:via-cyan-800 hover:to-blue-800 text-white rounded-2xl shadow-2xl border-2 border-cyan-400/60 relative backdrop-blur-sm overflow-hidden"
+          style={{ 
+            width: '120px', 
+            height: '120px',
+            background: 'linear-gradient(135deg, #0f172a 0%, #164e63 50%, #1e40af 100%)'
+          }}
         >
           <AnimatePresence mode="wait">
             {isOpen ? (
