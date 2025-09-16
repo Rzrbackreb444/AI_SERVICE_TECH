@@ -11,7 +11,8 @@ import {
   ChartBarIcon,
   CheckCircleIcon,
   ClockIcon,
-  ArrowRightIcon
+  ArrowRightIcon,
+  CpuChipIcon
 } from '@heroicons/react/24/outline';
 import { useAuth } from '../App';
 import { useLocation, useNavigate } from 'react-router-dom';
