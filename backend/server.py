@@ -1684,6 +1684,8 @@ logger.info("User analytics endpoints initialized")
 
 # Add ultimate marketplace endpoints
 from ultimate_marketplace_endpoints import create_ultimate_marketplace_router
+from blog_management_endpoints import create_blog_router
+from seo_marketplace_endpoints import create_seo_marketplace_router
 ultimate_marketplace_router = create_ultimate_marketplace_router()
 app.include_router(ultimate_marketplace_router, prefix="/api")
 logger.info("Ultimate marketplace endpoints initialized")
