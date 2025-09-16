@@ -297,7 +297,7 @@ const UltimateMarketplace = () => {
                   placeholder="Search locations, brokers, ROI, market conditions..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-full pl-12 pr-4 py-4 bg-slate-800/50 border border-slate-700/50 rounded-2xl text-white placeholder-slate-400 focus:outline-none focus:border-cyan-500/50 focus:bg-slate-800/70 transition-all"
+                  className="w-full pl-12 pr-4 py-4 bg-slate-800/70 border-2 border-slate-600/70 rounded-2xl text-white placeholder-slate-300 focus:outline-none focus:border-cyan-400/80 focus:bg-slate-800/90 transition-all shadow-xl"
                 />
               </div>
 
