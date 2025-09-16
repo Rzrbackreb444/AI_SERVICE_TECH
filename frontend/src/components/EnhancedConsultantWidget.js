@@ -1,18 +1,20 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
-  ChatBubbleLeftRightIcon,
+  ChatBubbleLeftRightIcon, 
   XMarkIcon,
   PaperAirplaneIcon,
+  BoltIcon,
   SparklesIcon,
-  UserIcon,
   CurrencyDollarIcon,
   MapPinIcon,
   ChartBarIcon,
-  BoltIcon,
-  ShieldCheckIcon
+  CheckCircleIcon,
+  ClockIcon,
+  ArrowRightIcon
 } from '@heroicons/react/24/outline';
 import { useAuth } from '../App';
+import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
