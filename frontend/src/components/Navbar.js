@@ -11,7 +11,8 @@ import {
   ArrowRightOnRectangleIcon,
   CpuChipIcon,
   BellIcon,
-  BuildingOffice2Icon
+  BuildingOffice2Icon,
+  DocumentTextIcon
 } from '@heroicons/react/24/outline';
 import { useAuth } from '../App';
 
