@@ -304,8 +304,12 @@ function App() {
               element={<RealEnterpriseAnalytics />} 
             />
 
-            {/* Case Study Showcase - Public Access */}
-            <Route path="/analyze" element={<LocationIntelligenceModule />} />
+            {/* Analysis Tools - Gated Behind Auth */}
+            <Route path="/analyze" element={
+              <ProtectedRoute>
+                <LocationIntelligenceModule />
+              </ProtectedRoute>
+            } />
 
             {/* NEW: Professional Marketplace */}
             <Route path="/marketplace" element={
