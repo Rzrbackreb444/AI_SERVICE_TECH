@@ -504,8 +504,9 @@ const EnhancedConsultantWidget = () => {
                   transition={{ duration: 0.2 }}
                   className="flex flex-col items-center"
                 >
-                  <XMarkIcon className="w-8 h-8 mb-2" />
+                  <XMarkIcon className="w-6 h-6 mb-1" />
                   <span className="text-xs font-bold">CLOSE</span>
+                  <span className="text-xs font-medium opacity-80">CHAT</span>
                 </motion.div>
               ) : (
                 <motion.div
