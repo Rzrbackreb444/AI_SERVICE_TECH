@@ -27,7 +27,7 @@ const SuperiorLandingPage = () => {
 
   // Real-time social proof rotation
   const socialProofData = [
-    { text: "David K. just avoided a $180K mistake in Van Buren, AR", time: "2 min ago" },
+    { text: "David K.. just avoided a $180K mistake in Van Buren, AR", time: "2 min ago" },
     { text: "Phoenix investor validated $2.3M acquisition", time: "8 min ago" },
     { text: "Dallas broker closed 3 deals using our intelligence", time: "12 min ago" },
     { text: "Fort Smith expansion approved with 34.2% ROI projection", time: "18 min ago" },
