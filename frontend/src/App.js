@@ -28,6 +28,7 @@ import EnterprisePortal from './components/EnterprisePortal';
 import AboutUs from './components/AboutUs';
 import RevenueAnalyzer from './components/RevenueAnalyzer';
 import EnhancedConsultantWidget from './components/EnhancedConsultantWidget';
+import PremiumLocationReport from './components/PremiumLocationReport';
 import MediaKit from './components/MediaKit';
 import APIDocumentation from './components/APIDocumentation';
 import BlogSystem from './components/BlogSystem';
