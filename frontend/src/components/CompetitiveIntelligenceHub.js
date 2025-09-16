@@ -11,7 +11,7 @@ import {
   Target, Eye, Users, TrendingUp, TrendingDown, MapPin, 
   DollarSign, Star, Clock, Phone, Globe, Mail, Shield,
   AlertTriangle, CheckCircle, Zap, Brain, Search, Filter,
-  BarChart3, PieChart, Activity, Radar, Crosshair, Scope
+  BarChart3, PieChart, Activity, Radar, Crosshair, Focus
 } from 'lucide-react';
 
 const CompetitiveIntelligenceHub = () => {
