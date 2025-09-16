@@ -52,26 +52,41 @@ const UserDashboard = () => {
         setUser(JSON.parse(userData));
       }
 
-      // Load subscriptions
-      const subsResponse = await axios.get(`${API}/user/subscriptions`, {
-        headers: getAuthHeaders()
-      });
-      setSubscriptions(subsResponse.data.subscriptions || []);
+      // Load recent analyses from backend
+      try {
+        const analysesResponse = await axios.get(`${API}/user/analyses`, {
+          headers: getAuthHeaders()
+        });
+        setAnalyses(analysesResponse.data || []);
+      } catch (error) {
+        console.log('No analyses found');
+        setAnalyses([]);
+      }
 
-      // Load payment history
-      const transResponse = await axios.get(`${API}/user/transactions`, {
-        headers: getAuthHeaders()
-      });
-      setTransactions(transResponse.data.transactions || []);
+      // Load subscriptions (if any)
+      try {
+        const subscriptionsResponse = await axios.get(`${API}/user/subscriptions`, {
+          headers: getAuthHeaders()
+        });
+        setSubscriptions(subscriptionsResponse.data || []);
+      } catch (error) {
+        console.log('No subscriptions found');
+        setSubscriptions([]);
+      }
 
-      // Load analysis history
-      const analysesResponse = await axios.get(`${API}/user/analyses`, {
-        headers: getAuthHeaders()
-      });
-      setAnalyses(analysesResponse.data.analyses || []);
+      // Load transactions (if any)
+      try {
+        const transactionsResponse = await axios.get(`${API}/user/transactions`, {
+          headers: getAuthHeaders()
+        });
+        setTransactions(transactionsResponse.data || []);
+      } catch (error) {
+        console.log('No transactions found');
+        setTransactions([]);
+      }
 
     } catch (error) {
-      console.error('Failed to load dashboard data:', error);
+      console.error('Error loading dashboard:', error);
     } finally {
       setLoading(false);
     }
