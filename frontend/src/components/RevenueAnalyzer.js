@@ -314,7 +314,55 @@ const RevenueAnalyzer = () => {
                 </p>
               </div>
               
-              {/* Case study showcase section moved to dedicated pages */}
+              {/* Success Stories - Links to Case Studies */}
+              <div className="text-center mb-8">
+                <h3 className="text-2xl font-bold text-white mb-4">Success Stories</h3>
+                <p className="text-slate-300 mb-6">See how our intelligence has guided successful investments and strategic decisions</p>
+                
+                <div className="grid md:grid-cols-2 gap-6">
+                  <Link 
+                    to="/case-study/vista-laundry"
+                    className="group bg-gradient-to-br from-slate-800/80 to-slate-900/60 backdrop-blur-xl border border-slate-700/50 rounded-3xl p-6 hover:border-cyan-500/50 transition-all duration-300 transform hover:scale-105"
+                  >
+                    <div className="h-32 bg-slate-800 rounded-lg mb-4 overflow-hidden">
+                      <img 
+                        src="https://customer-assets.emergentagent.com/job_site-atlas-ai/artifacts/fj8inoji_IMG_4674.jpeg"
+                        alt="Vista Laundry Case Study"
+                        className="w-full h-full object-cover opacity-60 group-hover:opacity-80 transition-opacity"
+                      />
+                    </div>
+                    <h4 className="text-lg font-bold text-white mb-2">Vista Laundry Strategic Exit</h4>
+                    <p className="text-slate-300 text-sm mb-3">David King's successful sale strategy in Van Buren, AR</p>
+                    <div className="bg-emerald-500/20 text-emerald-400 px-3 py-1 rounded-full text-xs font-bold inline-block mb-3">
+                      SUCCESS STORY
+                    </div>
+                    <div className="text-cyan-400 font-semibold text-sm group-hover:text-cyan-300 transition-colors">
+                      Read Case Study →
+                    </div>
+                  </Link>
+                  
+                  <Link 
+                    to="/case-study/wash-room"
+                    className="group bg-gradient-to-br from-slate-800/80 to-slate-900/60 backdrop-blur-xl border border-slate-700/50 rounded-3xl p-6 hover:border-cyan-500/50 transition-all duration-300 transform hover:scale-105"
+                  >
+                    <div className="h-32 bg-slate-800 rounded-lg mb-4 overflow-hidden">
+                      <img 
+                        src="https://customer-assets.emergentagent.com/job_site-atlas-ai/artifacts/xnmmxz1x_IMG_4673.png"
+                        alt="The Wash Room Case Study"
+                        className="w-full h-full object-cover opacity-60 group-hover:opacity-80 transition-opacity"
+                      />
+                    </div>
+                    <h4 className="text-lg font-bold text-white mb-2">The Wash Room Multi-Location</h4>
+                    <p className="text-slate-300 text-sm mb-3">Strategic expansion across Fort Smith, AR</p>
+                    <div className="bg-cyan-500/20 text-cyan-400 px-3 py-1 rounded-full text-xs font-bold inline-block mb-3">
+                      EXPANSION SUCCESS
+                    </div>
+                    <div className="text-cyan-400 font-semibold text-sm group-hover:text-cyan-300 transition-colors">
+                      Read Case Study →
+                    </div>
+                  </Link>
+                </div>
+              </div>
               
               <div className="border-t border-white/10 pt-8">
                 <div className="text-center mb-6">
