@@ -10,6 +10,8 @@ import {
 } from '@heroicons/react/24/outline';
 
 const EnterpriseAnalyticsDashboard = () => {
+  console.log("EnterpriseAnalyticsDashboard component loading...");
+  
   const revenueChartRef = useRef(null);
   const competitorChartRef = useRef(null);
   const trafficChartRef = useRef(null);
