@@ -221,7 +221,7 @@ const LandingPage = ({ onOpenAuth }) => {
                   className="space-y-2"
                 >
                   <p className="text-lg sm:text-xl md:text-2xl lg:text-3xl text-slate-300 font-medium">Powered by SiteAtlas</p>
-                  <p className="text-sm sm:text-base lg:text-lg text-slate-400">Advanced Intelligence Platform</p>
+                  <p className="text-sm sm:text-base lg:text-lg text-slate-400">Intelligence Marketplace</p>
                 </motion.div>
               </motion.div>
             </div>
