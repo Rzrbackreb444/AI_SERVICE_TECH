@@ -420,7 +420,7 @@ const LandingPage = ({ onOpenAuth }) => {
               Real-World <span className="bg-gradient-to-r from-cyan-400 to-emerald-400 bg-clip-text text-transparent">Intelligence Showcase</span>
             </h2>
             <p className="text-xl text-slate-300 max-w-4xl mx-auto">
-              See how API University powers million-dollar decisions with The Wash Room expansion and Vista Laundry rebuild analysis
+              See how LaundroTech powers million-dollar decisions with The Wash Room expansion and Vista Laundry rebuild analysis
             </p>
           </motion.div>
 
