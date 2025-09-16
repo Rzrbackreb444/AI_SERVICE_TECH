@@ -18,7 +18,7 @@ const BlogSystem = () => {
   const blogPosts = [
     {
       id: 1,
-      title: "The Vista Laundry Sale: How AI Intelligence Validated David King's Strategic Exit",
+      title: "The Vista Laundry Sale: How AI Intelligence Validated David K.'s Strategic Exit",
       slug: "vista-laundry-strategic-sale-analysis",
       excerpt: "Inside look at how LaundroTech Intelligence validated David King's decision to sell Vista Laundry, and how new owners used our analysis for their Highway 59 rebuild strategy.",
       author: "Nick",
