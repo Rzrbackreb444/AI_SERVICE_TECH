@@ -235,7 +235,7 @@ function App() {
             {/* Public Routes */}
             <Route 
               path="/" 
-              element={<EnterpriseDashboard />} 
+              element={<LocationIntelligenceModule />} 
             />
             <Route 
               path="/pricing" 
