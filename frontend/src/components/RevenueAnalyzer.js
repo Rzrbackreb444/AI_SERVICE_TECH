@@ -52,13 +52,13 @@ const RevenueAnalyzer = () => {
       image: "https://customer-assets.emergentagent.com/job_site-atlas-ai/artifacts/xnmmxz1x_IMG_4673.png"
     },
     {
-      title: "Vista Laundry Rebuild Analysis - Van Buren, AR",
-      description: "Tear down vs renovate intelligence - the million dollar decision",
-      status: "CRITICAL DECISION",
-      keyMetrics: ["Highway 59 traffic advantage", "Log Town Road positioning", "Speed Queen investment analysis"],
+      title: "Vista Laundry Sale Analysis - Van Buren, AR",
+      description: "Strategic sale intelligence - David King's successful exit strategy",
+      status: "SUCCESS STORY",
+      keyMetrics: ["Strategic exit timing", "Market positioning advantage", "New owners' rebuild investment analysis"],
       image: "https://customer-assets.emergentagent.com/job_site-atlas-ai/artifacts/fj8inoji_IMG_4674.jpeg",
       featured: true,
-      urgent: true
+      urgent: false
     }
   ];
 
