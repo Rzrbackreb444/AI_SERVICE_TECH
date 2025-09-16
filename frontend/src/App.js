@@ -33,7 +33,7 @@ import RealEnterpriseAnalytics from './components/RealEnterpriseAnalytics';
 import MediaKit from './components/MediaKit';
 import APIDocumentation from './components/APIDocumentation';
 import BlogSystem from './components/BlogSystem';
-import MarketplaceDashboard from './components/ProfessionalMarketplace';
+import UltimateMarketplace from './components/UltimateMarketplace';
 import ListingCreator from './components/ListingCreator';
 import UserManagement from './components/UserManagement';
 
