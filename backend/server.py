@@ -1662,6 +1662,12 @@ user_analytics_router = create_user_analytics_router()
 app.include_router(user_analytics_router, prefix="/api")
 logger.info("User analytics endpoints initialized")
 
+# Add ultimate marketplace endpoints
+from ultimate_marketplace_endpoints import create_ultimate_marketplace_router
+ultimate_marketplace_router = create_ultimate_marketplace_router()
+app.include_router(ultimate_marketplace_router, prefix="/api")
+logger.info("Ultimate marketplace endpoints initialized")
+
 app.include_router(listings_router, prefix="/api")  # NEW: Listings management endpoints
 app.include_router(business_router, prefix="/api")  # NEW: Complete business infrastructure
 
