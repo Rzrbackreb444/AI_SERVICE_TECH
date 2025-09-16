@@ -34,7 +34,7 @@ const CaseStudyVistaLaundry = () => {
             Vista Laundry Strategic Exit Analysis
           </h1>
           <p className="text-xl text-slate-300 mb-8">
-            How LaundroTech Intelligence validated David King's strategic sale decision in Van Buren, Arkansas
+            Retrospective analysis of David King's strategic sale decision and subsequent rebuild in Van Buren, Arkansas
           </p>
           <div className="flex items-center justify-center gap-6 text-slate-400">
             <span className="flex items-center gap-2">
