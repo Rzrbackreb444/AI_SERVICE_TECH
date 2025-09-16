@@ -91,8 +91,8 @@ const CaseStudyWashRoom = () => {
           </div>
 
           <p className="text-slate-300 text-lg leading-relaxed">
-            The Wash Room's aggressive expansion strategy across Fort Smith demonstrates masterful market positioning. 
-            LaundroTech Intelligence validated both the Phoenix Ave flagship location and the strategic Kelly Highway expansion, 
+            The Wash Room's successful expansion strategy across Fort Smith demonstrates masterful market positioning. 
+            Our retrospective analysis examines both the Phoenix Ave flagship location and the strategic Kelly Highway expansion, 
             identifying market gaps and competitive advantages that enabled rapid multi-location growth in the Arkansas market.
           </p>
         </motion.div>
