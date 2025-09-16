@@ -481,15 +481,15 @@ const EnhancedConsultantWidget = () => {
           )}
         </AnimatePresence>
 
-        {/* PERFECT WATERMARK DESTROYER */}
+        {/* PERFECT WATERMARK ANNIHILATOR - SMALLER, LONGER, PRECISE */}
         <motion.button
           onClick={() => setIsOpen(!isOpen)}
-          whileHover={{ scale: 1.03, boxShadow: "0 25px 50px rgba(6, 182, 212, 0.4)" }}
-          whileTap={{ scale: 0.97 }}
-          className="bg-gradient-to-br from-slate-900 via-cyan-900 to-blue-900 hover:from-slate-800 hover:via-cyan-800 hover:to-blue-800 text-white rounded-2xl shadow-2xl border-2 border-cyan-400/70 relative backdrop-blur-xl overflow-hidden"
+          whileHover={{ scale: 1.02, boxShadow: "0 20px 40px rgba(6, 182, 212, 0.3)" }}
+          whileTap={{ scale: 0.98 }}
+          className="bg-gradient-to-br from-slate-900 via-cyan-900 to-blue-900 hover:from-slate-800 hover:via-cyan-800 hover:to-blue-800 text-white rounded-xl shadow-2xl border-2 border-cyan-400/60 relative backdrop-blur-xl overflow-hidden"
           style={{ 
-            width: '140px', 
-            height: '100px',
+            width: '160px', 
+            height: '70px',
             background: 'linear-gradient(135deg, #0f172a 0%, #164e63 50%, #1e40af 100%)',
             backdropFilter: 'blur(20px)'
           }}
