@@ -30,6 +30,7 @@ const Navbar = () => {
     { name: 'AI Agent', href: '/ai-agent', icon: CpuChipIcon },
     { name: 'Market Intelligence', href: '/market-intelligence', icon: ChartBarIcon },
     { name: 'Competitive Intel', href: '/competitive-intelligence', icon: CpuChipIcon },
+    { name: 'Predictive Analytics', href: '/predictive-analytics', icon: ChartBarIcon },
     // Hidden for strategic focus:
     // { name: '🏢 Marketplace', href: '/marketplace', icon: BuildingOffice2Icon },
     // { name: '📝 Blog Manager', href: '/blog-manager', icon: DocumentTextIcon },
