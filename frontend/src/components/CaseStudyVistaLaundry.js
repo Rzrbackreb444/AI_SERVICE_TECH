@@ -232,7 +232,7 @@ const CaseStudyVistaLaundry = () => {
               Ready for Your Strategic Analysis?
             </h3>
             <p className="text-slate-300 mb-6">
-              Get the same level of intelligence that guided David's successful exit and the new owners' strategic rebuild.
+              Get professional location intelligence analysis for your laundromat investment decisions.
             </p>
             <Link 
               to="/analyze"
