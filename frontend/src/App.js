@@ -302,7 +302,12 @@ function App() {
             } />
             
             {/* NEW: User Management System */}
-            <Route path="/account" element={<UserManagement />} />
+            <Route path="/account" element={
+              <>
+                <Navbar />
+                <UserManagement />
+              </>
+            } />
 
             {/* Protected Routes */}
             <Route path="/dashboard" element={
