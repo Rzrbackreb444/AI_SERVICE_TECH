@@ -416,11 +416,11 @@ backend:
 
   - task: "Ultimate Marketplace System - Professional Listings with Real Data"
     implemented: true
-    working: true
+    working: false
     file: "/app/backend/ultimate_marketplace_endpoints.py"
-    stuck_count: 0
+    stuck_count: 1
     priority: "high"
-    needs_retesting: false
+    needs_retesting: true
     status_history:
       - working: "NA"
         agent: "main"
@@ -428,6 +428,9 @@ backend:
       - working: true
         agent: "main"
         comment: "✅ MARKETPLACE SYSTEM FULLY OPERATIONAL: Successfully resolved visibility issue - marketplace now displays 25 professional listings worth $13.5M total market value. Key fixes: 1) API endpoint routing corrected from /marketplace/listings to /api/marketplace/listings, 2) Created comprehensive marketplace data population with real equipment brands (Speed Queen, Huebsch, Continental), realistic ROI calculations (24-29%), and professional business details, 3) Implemented frontend-friendly data transformation with proper field mapping (askingPrice, roi, location, broker details), 4) Fixed ObjectId serialization and added missing 'highlights' field for investment features. Platform now shows enterprise-grade marketplace with verified opportunities, professional styling, and real market data ready for broker partnerships."
+      - working: false
+        agent: "testing"
+        comment: "❌ MARKETPLACE LISTINGS ENDPOINT NOT ACCESSIBLE: Enterprise validation shows GET /api/marketplace/listings returns 404 Not Found. The ultimate marketplace system endpoint is not accessible, preventing users from viewing the 25 professional listings worth $13.5M total market value. IMPACT: Key enterprise feature non-functional, blocking broker partnerships and marketplace revenue. INVESTIGATION NEEDED: Verify endpoint routing in ultimate_marketplace_endpoints.py, ensure proper API router registration, check if endpoint exists at correct path."
 
   - task: "User Dashboard System (/api/user/subscriptions, /api/user/transactions, /api/user/subscriptions/{id}/cancel)"
     implemented: true
