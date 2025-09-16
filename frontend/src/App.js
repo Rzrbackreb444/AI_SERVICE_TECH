@@ -294,7 +294,7 @@ function App() {
             <Route path="/analyze" element={<RevenueAnalyzer />} />
 
             {/* NEW: Professional Marketplace */}
-            <Route path="/marketplace" element={<MarketplaceDashboard />} />
+            <Route path="/marketplace" element={<UltimateMarketplace />} />
             
             {/* NEW: User Management System */}
             <Route path="/account" element={<UserManagement />} />
