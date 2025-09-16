@@ -309,6 +309,14 @@ function App() {
                 <UserManagement />
               </>
             } />
+            
+            {/* Blog Management System */}
+            <Route path="/blog-manager" element={
+              <>
+                <Navbar />
+                <BlogManager />
+              </>
+            } />
 
             {/* Protected Routes */}
             <Route path="/dashboard" element={
