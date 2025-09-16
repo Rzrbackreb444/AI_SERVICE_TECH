@@ -397,7 +397,7 @@ def create_notifications_router(db, get_current_user):
                         <h2>Hi {name},</h2>
                         <p>This is a test email to verify that your notification settings are working correctly.</p>
                         <p>If you're receiving this email, your email notifications are properly configured!</p>
-                        <p>You can manage your notification preferences in your <a href="https://washer-analytics.preview.emergentagent.com/profile" style="color: #3B82F6;">profile settings</a>.</p>
+                        <p>You can manage your notification preferences in your <a href="https://smartlaundry.preview.emergentagent.com/profile" style="color: #3B82F6;">profile settings</a>.</p>
                     </div>
                 </div>
             </body>
