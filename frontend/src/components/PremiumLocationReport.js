@@ -125,7 +125,7 @@ const PremiumLocationReport = ({ analysisData, address }) => {
           >
             <div className="flex items-center justify-between mb-4">
               <div className="w-12 h-12 bg-gradient-to-br from-blue-500/20 to-cyan-600/20 rounded-xl flex items-center justify-center">
-                <TrendingUpIcon className="w-6 h-6 text-blue-400" />
+                <ArrowTrendingUpIcon className="w-6 h-6 text-blue-400" />
               </div>
               <div className="text-right">
                 <div className="text-xs text-slate-500">MONTHLY</div>
