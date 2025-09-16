@@ -210,7 +210,7 @@ const LandingPage = ({ onOpenAuth }) => {
               >
                 <h1 className="text-6xl sm:text-7xl md:text-8xl lg:text-9xl xl:text-[10rem] font-black mb-4 tracking-tight leading-none">
                   <span className="bg-gradient-to-r from-cyan-400 via-blue-400 to-emerald-400 bg-clip-text text-transparent block">
-                    API University
+                    LaundroTech
                   </span>
                 </h1>
                 
