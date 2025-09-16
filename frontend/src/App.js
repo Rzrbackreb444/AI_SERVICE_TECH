@@ -235,7 +235,7 @@ function App() {
             {/* Public Routes */}
             <Route 
               path="/" 
-              element={<SuperiorLandingPage />} 
+              element={<LaundroTechLanding onOpenAuth={openAuthModal} />} 
             />
             <Route 
               path="/pricing" 
