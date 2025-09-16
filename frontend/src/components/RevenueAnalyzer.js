@@ -42,47 +42,47 @@ const RevenueAnalyzer = () => {
       level: 1,
       name: "Location Scout",
       price: 0,
-      description: "Basic reconnaissance - Grade and competition overview",
-      features: ["Location grade", "Basic demographics", "Competition count"],
-      color: "from-slate-500 to-slate-600",
-      popular: false
+      description: "Basic reconnaissance - Location grade and competitive landscape",
+      features: ["Location Grade (A-F)", "Competition Density", "Demographics Overview", "Traffic Score", "Quick Assessment"],
+      color: "from-slate-600 to-slate-700",
+      badge: "FREE PREVIEW",
+      buttonText: "Get Free Preview",
+      deliverable: "5-minute digital preview"
     },
     {
       level: 2,
-      name: "Market Analyzer",
-      price: 29,
-      description: "Market analysis and demographic deep-dive",
-      features: ["Demographics analysis", "Traffic patterns", "Market positioning", "Income distribution"],
-      color: "from-blue-500 to-blue-600",
-      popular: false
+      name: "Market Intelligence",
+      price: 897,
+      description: "Professional investment analysis with revenue projections",
+      features: ["Complete Location Analysis", "Revenue & Profit Projections", "Market Saturation Analysis", "Competition Intelligence", "Risk Factor Assessment", "15-page Professional Report"],
+      color: "from-cyan-500 to-emerald-500",
+      badge: "MOST POPULAR",
+      buttonText: "Get Market Intelligence",
+      popular: true,
+      deliverable: "Professional PDF + Data Dashboard"
     },
     {
       level: 3,
-      name: "Business Intelligence",
-      price: 79,
-      description: "Complete business intelligence with ROI projections",
-      features: ["ROI projections", "Equipment recommendations", "Competition analysis", "Financial modeling"],
-      color: "from-cyan-500 to-emerald-500",
-      popular: true
+      name: "Investment Grade",
+      price: 2497,
+      description: "Complete due diligence package for serious investors",
+      features: ["Everything in Market Intelligence", "5-Year Financial Projections", "Equipment Optimization Plan", "Financing Strategy Analysis", "Exit Strategy Valuation", "30-page Executive Report", "1-hour Strategy Call"],
+      color: "from-purple-500 to-pink-500",
+      badge: "EXECUTIVE",
+      buttonText: "Get Investment Package",
+      deliverable: "Executive package + consultation"
     },
     {
       level: 4,
-      name: "Enterprise Analysis",
-      price: 199,
-      description: "Full enterprise analysis with AI recommendations",
-      features: ["Everything in Business Intelligence", "Advanced AI insights", "Custom recommendations", "Success probability"],
-      color: "from-purple-500 to-pink-500",
-      popular: false
-    },
-    {
-      level: 5,
-      name: "Real-time Monitoring",
-      price: 299,
-      description: "Real-time market monitoring and alerts (per month)",
-      features: ["Everything included", "Live market updates", "Competitor alerts", "Trend analysis"],
-      color: "from-orange-500 to-red-500",
-      popular: false,
-      subscription: true
+      name: "Portfolio Strategy",
+      price: 4997,
+      description: "Multi-location expansion and portfolio optimization",
+      features: ["Multi-location Analysis", "Portfolio Optimization", "Market Entry Strategy", "Expansion Timeline", "Territory Analysis", "Brand Positioning", "Quarterly Strategy Reviews"],
+      color: "from-amber-500 to-orange-500",
+      badge: "ENTERPRISE",
+      buttonText: "Get Portfolio Strategy",
+      deliverable: "Complete expansion roadmap + ongoing support",
+      hide: true  // Initially hidden for strategic positioning
     }
   ];
 
