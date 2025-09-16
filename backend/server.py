@@ -363,12 +363,15 @@ async def get_current_user(credentials: HTTPAuthorizationCredentials = Depends(s
         raise HTTPException(status_code=401, detail="User not found")
     return User(**user)
 
-async def get_current_user_optional(credentials: HTTPAuthorizationCredentials = Depends(security)):
+async def get_current_user_optional(request: Request):
     """Optional authentication - returns None if not authenticated"""
     try:
-        if not credentials:
+        authorization = request.headers.get("Authorization")
+        if not authorization or not authorization.startswith("Bearer "):
             return None
-        payload = jwt.decode(credentials.credentials, JWT_SECRET, algorithms=[JWT_ALGORITHM])
+        
+        token = authorization.split(" ")[1]
+        payload = jwt.decode(token, JWT_SECRET, algorithms=[JWT_ALGORITHM])
         user_id: str = payload.get("sub")
         if user_id is None:
             return None
