@@ -41,6 +41,8 @@ import CaseStudyVistaLaundry from './components/CaseStudyVistaLaundry';
 import CaseStudyWashRoom from './components/CaseStudyWashRoom';
 import AdvancedIntelligenceDashboard from './components/AdvancedIntelligenceDashboard';
 import AIAgentInterface from './components/AIAgentInterface';
+import RealTimeMarketIntelligence from './components/RealTimeMarketIntelligence';
+import CompetitiveIntelligenceHub from './components/CompetitiveIntelligenceHub';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
