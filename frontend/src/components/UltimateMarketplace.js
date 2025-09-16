@@ -61,7 +61,7 @@ const UltimateMarketplace = () => {
   const [compareMode, setCompareMode] = useState(false);
   const [selectedForCompare, setSelectedForCompare] = useState(new Set());
 
-  const API = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8001';
+  const API = `${process.env.REACT_APP_BACKEND_URL || 'http://localhost:8001'}/api`;
 
   const getAuthHeaders = () => {
     const token = localStorage.getItem('token');
