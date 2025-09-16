@@ -314,65 +314,7 @@ const RevenueAnalyzer = () => {
                 </p>
               </div>
               
-              <div className="grid md:grid-cols-3 gap-6 mb-8">
-                {realWorldCaseStudies.map((caseStudy, index) => (
-                  <motion.div
-                    key={index}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: index * 0.1 }}
-                    className={`relative glass-card p-6 cursor-pointer hover:scale-105 transition-all duration-300 ${
-                      caseStudy.featured ? 'border-2 border-cyan-400/50' : ''
-                    }`}
-                    onClick={() => showCaseStudy(caseStudy)}
-                  >
-                    {caseStudy.urgent && (
-                      <div className="absolute -top-2 -right-2 bg-gradient-to-r from-red-500 to-orange-500 text-white px-3 py-1 rounded-full text-xs font-bold animate-pulse">
-                        CRITICAL
-                      </div>
-                    )}
-                    {caseStudy.featured && (
-                      <div className="absolute -top-2 -left-2 bg-gradient-to-r from-cyan-500 to-emerald-500 text-white px-3 py-1 rounded-full text-xs font-bold">
-                        FEATURED
-                      </div>
-                    )}
-                    
-                    <div className="h-32 bg-slate-800 rounded-lg mb-4 overflow-hidden">
-                      <img 
-                        src={caseStudy.image} 
-                        alt={caseStudy.title}
-                        className="w-full h-full object-cover opacity-60 hover:opacity-80 transition-opacity"
-                      />
-                    </div>
-                    
-                    <h3 className="text-lg font-bold text-white mb-2">{caseStudy.title}</h3>
-                    <p className="text-slate-300 text-sm mb-3">{caseStudy.description}</p>
-                    
-                    <div className={`inline-block px-3 py-1 rounded-full text-xs font-bold mb-3 ${
-                      caseStudy.status === 'THRIVING' ? 'bg-green-500 text-white' :
-                      caseStudy.status === 'HIGH DEMAND' ? 'bg-blue-500 text-white' :
-                      'bg-orange-500 text-white'
-                    }`}>
-                      {caseStudy.status}
-                    </div>
-                    
-                    <div className="space-y-1">
-                      {caseStudy.keyMetrics.map((metric, i) => (
-                        <div key={i} className="flex items-center text-slate-400 text-xs">
-                          <CheckCircleIcon className="w-3 h-3 mr-2 text-cyan-400" />
-                          {metric}
-                        </div>
-                      ))}
-                    </div>
-                    
-                    <div className="mt-4 text-center">
-                      <div className="bg-gradient-to-r from-cyan-500 to-emerald-500 text-white px-4 py-2 rounded-lg text-sm font-bold">
-                        See Intelligence Preview
-                      </div>
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
+              {/* Case study showcase section moved to dedicated pages */}
               
               <div className="border-t border-white/10 pt-8">
                 <div className="text-center mb-6">
