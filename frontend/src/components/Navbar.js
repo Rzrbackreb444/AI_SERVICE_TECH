@@ -27,7 +27,7 @@ const Navbar = () => {
     { name: 'AI Dashboard', href: '/dashboard', icon: CpuChipIcon },
     { name: 'Location Intelligence', href: '/analyze', icon: MapPinIcon },
     { name: '🏢 Marketplace', href: '/marketplace', icon: BuildingOffice2Icon },
-    { name: '📝 Blog Manager', href: '/blog-manager', icon: ClockIcon },
+    { name: '📝 Blog Manager', href: '/blog-manager', icon: DocumentTextIcon },
     { name: 'Account Settings', href: '/account', icon: UserCircleIcon },
     { name: 'Analysis Archive', href: '/history', icon: ClockIcon },
     { name: '💰 MRR Dashboard', href: '/mrr', icon: ChartBarIcon },
