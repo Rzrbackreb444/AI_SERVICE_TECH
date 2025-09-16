@@ -36,7 +36,7 @@ const EnhancedConsultantWidget = () => {
 
   // Smart welcome messages based on current page
   const getContextualWelcome = () => {
-    const path = location.pathname;
+    const path = location?.pathname || '/';
     
     if (path === '/analyze') {
       return {
