@@ -20,7 +20,7 @@ const BlogSystem = () => {
       id: 1,
       title: "The Vista Laundry Sale: How AI Intelligence Validated David K.'s Strategic Exit",
       slug: "vista-laundry-strategic-sale-analysis",
-      excerpt: "Inside look at how LaundroTech Intelligence validated David King's decision to sell Vista Laundry, and how new owners used our analysis for their Highway 59 rebuild strategy.",
+      excerpt: "Inside look at how LaundroTech Intelligence validated David K.'s decision to sell Vista Laundry, and how new owners used our analysis for their Highway 59 rebuild strategy.",
       author: "Nick",
       authorTitle: "Founder & CEO, LaundroTech",
       authorImage: "https://customer-assets.emergentagent.com/job_site-atlas-ai/artifacts/q1fcstvvw_IMG_1750.jpeg",
