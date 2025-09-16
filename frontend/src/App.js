@@ -319,6 +319,20 @@ function App() {
                 <BlogManager />
               </>
             } />
+            
+            {/* Case Study Pages */}
+            <Route path="/case-study/vista-laundry" element={
+              <>
+                <Navbar />
+                <CaseStudyVistaLaundry />
+              </>
+            } />
+            <Route path="/case-study/wash-room" element={
+              <>
+                <Navbar />
+                <CaseStudyWashRoom />
+              </>
+            } />
 
             {/* Protected Routes */}
             <Route path="/dashboard" element={
