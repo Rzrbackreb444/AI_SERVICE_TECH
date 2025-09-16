@@ -122,6 +122,16 @@ def create_ultimate_marketplace_router():
                         "paybackPeriod": round(listing["financials"]["asking_price"] / (listing["financials"]["monthly_profit"] * 12), 1) if listing["financials"]["monthly_profit"] > 0 else 0,
                         "pricePerSqFt": round(listing["financials"]["asking_price"] / listing["business"]["square_feet"], 0) if listing["business"]["square_feet"] > 0 else 0,
                         
+                        # Investment highlights
+                        "highlights": [
+                            f"{listing['financials']['roi_percentage']:.1f}% ROI",
+                            f"{listing['equipment']['washers']['count']}+{listing['equipment']['dryers']['count']} Machines",
+                            f"{listing['equipment']['washers']['brand']} Equipment",
+                            f"{listing['location']['city']}, {listing['location']['state']} Location",
+                            f"${listing['financials']['monthly_profit']:,.0f}/mo Profit",
+                            "Established Business" if listing["business"]["established_year"] < 2020 else "Modern Operation"
+                        ],
+                        
                         "createdAt": listing["created_at"],
                         "updatedAt": listing["updated_at"]
                     }
