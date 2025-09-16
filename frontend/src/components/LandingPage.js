@@ -793,7 +793,7 @@ const LandingPage = ({ onOpenAuth }) => {
               © 2024 API University. All rights reserved. Powered by SiteAtlas.
             </p>
             <p className="text-slate-500 text-xs max-w-4xl mx-auto">
-              <strong>Investment Disclaimer:</strong> All financial projections, ROI estimates, and revenue calculations provided by LaundroTech are for 
+              <strong>Investment Disclaimer:</strong> All financial projections, ROI estimates, and revenue calculations provided by API University are for 
               informational purposes only and should not be considered as investment advice. Past performance does not guarantee future results. 
               Laundromat investments carry inherent risks, and you should conduct your own due diligence and consult with qualified financial advisors 
               before making any investment decisions. LaundroTech does not guarantee any specific financial outcomes.
