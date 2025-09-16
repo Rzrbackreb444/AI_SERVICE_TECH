@@ -70,11 +70,11 @@ const EnterpriseDashboard = () => {
       <div className="bg-white border-b border-gray-200 px-6 py-4">
         <div className="flex justify-between items-center">
           <div>
-            <h1 className="text-xl font-semibold text-gray-900">LaundroTech Intelligence</h1>
-            <p className="text-sm text-gray-500">Welcome back, {user?.full_name || 'User'}</p>
+            <h1 className="text-xl font-semibold text-gray-900">LaundroTech Business Intelligence Platform</h1>
+            <p className="text-sm text-gray-500">Enterprise Dashboard - Welcome back, {user?.full_name || 'User'}</p>
           </div>
           <div className="text-sm text-gray-500">
-            Last updated: {new Date().toLocaleDateString('en-US', { 
+            Status: LIVE ENTERPRISE SYSTEM | Last updated: {new Date().toLocaleDateString('en-US', { 
               month: 'short', 
               day: 'numeric',
               hour: '2-digit',
