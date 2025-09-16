@@ -554,7 +554,7 @@ function App() {
           </Routes>
           
           {/* Enhanced Consultant Widget - Intelligent guide to consultant transformation */}
-          <OptimalChatWidget />
+          <EnhancedConsultantWidget />
         </div>
       </BrowserRouter>
     </AuthProviderWithState>
