@@ -18,9 +18,9 @@ const BlogSystem = () => {
   const blogPosts = [
     {
       id: 1,
-      title: "The Vista Laundry Decision: How AI Predicted a Million-Dollar Rebuild Choice",
-      slug: "vista-laundry-million-dollar-ai-analysis",
-      excerpt: "Inside look at how LaundroTech Intelligence analyzed David King's critical decision to tear down Vista Laundry and rebuild from scratch on Highway 59 in Van Buren, Arkansas.",
+      title: "The Vista Laundry Sale: How AI Intelligence Validated David King's Strategic Exit",
+      slug: "vista-laundry-strategic-sale-analysis",
+      excerpt: "Inside look at how LaundroTech Intelligence validated David King's decision to sell Vista Laundry, and how new owners used our analysis for their Highway 59 rebuild strategy.",
       author: "Nick",
       authorTitle: "Founder & CEO, LaundroTech",
       authorImage: "https://customer-assets.emergentagent.com/job_site-atlas-ai/artifacts/q1fcstvvw_IMG_1750.jpeg",
