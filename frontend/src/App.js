@@ -284,6 +284,10 @@ function App() {
                 address="123 Main Street, Springfield, IL 62701"
               />} 
             />
+            <Route 
+              path="/enterprise-analytics" 
+              element={<EnterpriseAnalyticsDashboard />} 
+            />
 
             {/* Case Study Showcase - Public Access */}
             <Route path="/analyze" element={<RevenueAnalyzer />} />
