@@ -31,13 +31,42 @@ const EnterpriseLocationAnalyzer = () => {
     'Mapping Competition',
     'Calculating Scores'
   ];
-    { name: 'Report Generation', description: 'Creating comprehensive report' }
   ];
 
-  useEffect(() => {
-    // Initialize Mapbox
-    if (MAPBOX_ACCESS_TOKEN && MAPBOX_ACCESS_TOKEN !== 'YOUR_MAPBOX_TOKEN') {
-      mapboxgl.accessToken = MAPBOX_ACCESS_TOKEN;
+  const getAuthHeaders = () => {
+    const token = localStorage.getItem('token');
+    return token ? { 'Authorization': `Bearer ${token}` } : {};
+  };
+
+  const analyzeLocation = async () => {
+    if (!address.trim()) return;
+
+    setIsAnalyzing(true);
+    setError('');
+    setAnalysisResult(null);
+    setCurrentStep(0);
+
+    try {
+      // Simulate progress steps
+      for (let i = 0; i < analysisSteps.length; i++) {
+        setCurrentStep(i);
+        await new Promise(resolve => setTimeout(resolve, 800));
+      }
+
+      const response = await axios.post(`${API}/analyze`, {
+        address: address.trim()
+      }, {
+        headers: getAuthHeaders()
+      });
+
+      setAnalysisResult(response.data);
+    } catch (err) {
+      setError(err.response?.data?.detail || 'Analysis failed. Please try again.');
+    } finally {
+      setIsAnalyzing(false);
+      setCurrentStep(0);
+    }
+  };
     }
   }, []);
 
