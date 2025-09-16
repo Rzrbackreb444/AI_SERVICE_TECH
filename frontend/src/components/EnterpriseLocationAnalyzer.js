@@ -1,5 +1,4 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
 import { 
   MagnifyingGlassIcon,
   MapPinIcon,
@@ -10,13 +9,8 @@ import {
   CheckCircleIcon,
   DocumentArrowDownIcon,
   EyeIcon,
-  GlobeAmericasIcon,
-  FireIcon,
-  BoltIcon,
-  ShieldCheckIcon
+  ClockIcon
 } from '@heroicons/react/24/outline';
-import { Loader } from '@googlemaps/js-api-loader';
-import mapboxgl from 'mapbox-gl';
 import axios from 'axios';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
