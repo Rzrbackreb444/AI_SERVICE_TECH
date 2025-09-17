@@ -3,9 +3,9 @@ CONSULTANT ENDPOINTS - PERSONALIZED AI CONSULTANT API
 Revolutionary post-analysis AI consultant system
 """
 
-from fastapi import APIRouter, HTTPException, Depends, BackgroundTasks
+from fastapi import APIRouter, HTTPException, Depends
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
-from typing import Dict, List, Any, Optional
+from typing import Dict, Any
 from datetime import datetime, timezone
 import logging
 import jwt
