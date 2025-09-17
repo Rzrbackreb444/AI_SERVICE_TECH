@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
-  ChatBubbleLeftRightIcon,
   XMarkIcon,
   PaperAirplaneIcon,
   SparklesIcon,
@@ -20,12 +19,16 @@ const EnhancedConsultantWidget = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
+  // UI state
   const [isOpen, setIsOpen] = useState(false);
+  const [isTyping, setIsTyping] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+  const [panelHeight, setPanelHeight] = useState(null);
+
+  // Chat state
   const [messages, setMessages] = useState([]);
   const [inputValue, setInputValue] = useState('');
-  const [isTyping, setIsTyping] = useState(false);
   const [initializedConsultant, setInitializedConsultant] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
 
   const messagesEndRef = useRef(null);
 
@@ -35,11 +38,12 @@ const EnhancedConsultantWidget = () => {
     try {
       const payload = {
         ...state,
-        messages: (state.messages || []).map(m => ({ ...m, timestamp: m.timestamp ? new Date(m.timestamp).toISOString() : new Date().toISOString() }))
+        messages: (state.messages || []).map(m => ({
+          ...m,
+          timestamp: m.timestamp ? new Date(m.timestamp).toISOString() : new Date().toISOString()
+        }))
       };
       localStorage.setItem(chatKey, JSON.stringify(payload));
-  const [panelHeight, setPanelHeight] = useState(null);
-
     } catch (e) { /* ignore */ }
   };
   const loadState = () => {
@@ -49,14 +53,17 @@ const EnhancedConsultantWidget = () => {
       const parsed = JSON.parse(raw);
       return {
         ...parsed,
-        messages: (parsed.messages || []).map(m => ({ ...m, timestamp: m.timestamp ? new Date(m.timestamp) : new Date() }))
+        messages: (parsed.messages || []).map(m => ({
+          ...m,
+          timestamp: m.timestamp ? new Date(m.timestamp) : new Date()
+        }))
       };
     } catch {
       return null;
     }
   };
 
-  // Responsive detection
+  // Responsive detection (mobile)
   useEffect(() => {
     const check = () => setIsMobile(window.innerWidth < 640);
     check();
@@ -64,17 +71,6 @@ const EnhancedConsultantWidget = () => {
     return () => window.removeEventListener('resize', check);
   }, []);
 
-  // Load persisted state on mount or when user changes
-  useEffect(() => {
-    const s = loadState();
-    if (s) {
-      setMessages(s.messages || []);
-      setIsOpen(!!s.isOpen);
-    } else {
-      // First-time welcome
-      setTimeout(() => {
-        const welcome = getContextualWelcome(location?.pathname);
-        addMessage('bot', welcome.message, welcome.buttons);
   // Adjust height on mobile to avoid virtual keyboard overlap
   useEffect(() => {
     if (!isMobile) return;
@@ -87,7 +83,18 @@ const EnhancedConsultantWidget = () => {
     return () => window.removeEventListener('resize', setVH);
   }, [isMobile]);
 
-      }, 600);
+  // Load persisted state on mount or when user changes
+  useEffect(() => {
+    const s = loadState();
+    if (s) {
+      setMessages(s.messages || []);
+      setIsOpen(!!s.isOpen);
+    } else {
+      // First-time welcome
+      setTimeout(() => {
+        const welcome = getContextualWelcome(location?.pathname);
+        addMessage('bot', welcome.message, welcome.buttons);
+      }, 500);
     }
   }, [user?.id]);
 
@@ -129,8 +136,8 @@ const EnhancedConsultantWidget = () => {
         try {
           await axios.post(`${API}/consultant/initialize`, {});
           setInitializedConsultant(true);
-        } catch {
-          // ignore and keep fallback-only mode
+        } catch (e) {
+          // Keep fallback-only mode
         }
       }
     };
@@ -141,7 +148,7 @@ const EnhancedConsultantWidget = () => {
   const getContextualWelcome = (path = '/') => {
     if (path === '/analyze') {
       return {
-        message: "👋 Ready to analyze a location? I can help you choose the right analysis tier and get started!",
+        message: '👋 Ready to analyze a location? I can help you choose the right analysis tier and get started!',
         buttons: [
           { text: '🚀 Start Free Analysis', action: 'navigate_analyze', primary: true },
           { text: '💡 Which tier is right for me?', action: 'tier_help' },
@@ -192,7 +199,7 @@ const EnhancedConsultantWidget = () => {
     setMessages(prev => [...prev, message]);
     if (typing) {
       setTimeout(() => {
-        setMessages(prev => prev.map(m => m.id === message.id ? { ...m, typing: false } : m));
+        setMessages(prev => prev.map(m => (m.id === message.id ? { ...m, typing: false } : m)));
       }, 1200);
     }
   };
@@ -220,7 +227,7 @@ const EnhancedConsultantWidget = () => {
         break;
       case 'show_examples':
         navigate('/case-study/vista-laundry');
-        addMessage('bot', '📈 Check out these detailed analysis examples! You\'ll see exactly what we deliver.', null, true);
+        addMessage('bot', "📈 Check out these detailed analysis examples! You'll see exactly what we deliver.", null, true);
         break;
       case 'show_pricing':
         addMessage('bot', '💰 Pricing:\n\n🆓 Preview\n💡 Market Intelligence – $897\n💎 Investment Grade – $2,497\n\nSuccess rate: 94% | Avg ROI improvement: 23%', [
@@ -266,19 +273,22 @@ const EnhancedConsultantWidget = () => {
       if (isAuthenticated) {
         // Ensure consultant initialized lazily
         if (!initializedConsultant) {
-          try { await axios.post(`${API}/consultant/initialize`, {}); setInitializedConsultant(true); } catch (err) { /* ignore init error */ }
+          try {
+            await axios.post(`${API}/consultant/initialize`, {});
+            setInitializedConsultant(true);
+          } catch (err) { /* ignore init error */ }
         }
         // Ask consultant
         const resp = await axios.post(`${API}/consultant/ask`, { question: userMessage, consultation_tier: 'basic_questions' });
         const payload = resp.data?.consultant_response || resp.data;
-        const text = typeof payload === 'string' ? payload : (payload?.consultant_response || 'Here\'s what I recommend based on your question and analysis context.');
+        const text = typeof payload === 'string' ? payload : (payload?.consultant_response || "Here's what I recommend based on your question and analysis context.");
         addMessage('bot', text);
       } else {
         // Fallback: route through local guidance
         await processTextInput(userMessage);
       }
     } catch (e) {
-      addMessage('bot', 'I\'m here to help. Try again in a moment or start a guided analysis.');
+      addMessage('bot', "I'm here to help. Try again in a moment or start a guided analysis.");
     } finally {
       setIsTyping(false);
     }
@@ -305,7 +315,10 @@ const EnhancedConsultantWidget = () => {
   return (
     <>
       {/* Chat Launcher */}
-      <div className="fixed" style={{ right: 'max(0.5rem, env(safe-area-inset-right))', bottom: 'max(0.5rem, env(safe-area-inset-bottom))', zIndex: 10000 }}>
+      <div
+        className="fixed"
+        style={{ right: 'max(0.5rem, env(safe-area-inset-right))', bottom: 'max(0.5rem, env(safe-area-inset-bottom))', zIndex: 10000 }}
+      >
         <motion.button
           onClick={toggleOpen}
           aria-label={isOpen ? 'Close chat' : 'Open chat'}
