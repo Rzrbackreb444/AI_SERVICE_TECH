@@ -306,6 +306,16 @@ const EnhancedConsultantWidget = () => {
         navigate('/pricing');
         addMessage('bot', 'Opening pricing. You can continue chatting here.');
         break;
+      case 'contact_support':
+        if (!isAuthenticated) {
+          addMessage('bot', 'Please sign in so I can include your account details in the support request.', [
+            { text: '🔐 Sign in', action: 'go_login', primary: true }
+          ]);
+          break;
+        }
+        addMessage('bot', 'Sure — briefly describe the issue and hit Send. I\'ll forward it to support.');
+        setMode('awaiting_support_message');
+        break;
       case 'open_analyzer':
         navigate('/analyze');
         setIsOpen(false);
