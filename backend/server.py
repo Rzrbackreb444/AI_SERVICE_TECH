@@ -1702,6 +1702,30 @@ app.include_router(advanced_revenue_router, prefix="/api")  # NEW: Advanced reve
 app.include_router(consultant_router, prefix="/api")  # NEW: Personalized AI consultant - THE STICKINESS GAME-CHANGER
 app.include_router(enhanced_consultant_router, prefix="/api")  # NEW: Enhanced consultant endpoints
 
+
+# Support endpoint for chat relay
+@api_router.post("/support/contact")
+async def support_contact(payload: Dict[str, Any], current_user: User = Depends(get_current_user)):
+    """Relay chat support message to support inbox (nick@laundrotech.xyz)"""
+    try:
+        subject = payload.get('subject', 'Chat Support Message')
+        message = payload.get('message', '')
+        context = payload.get('context', {})
+        context.update({
+            'user_id': current_user.id,
+            'email': current_user.email,
+            'full_name': current_user.full_name
+        })
+        ok = await email_service.send_support_message(current_user.email, subject, message, context)
+        if not ok:
+            raise HTTPException(status_code=500, detail="Failed to send support message")
+        return { 'success': True }
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Support contact error: {e}")
+        raise HTTPException(status_code=500, detail="Support message failed")
+
 # Add user analytics endpoints
 user_analytics_router = create_user_analytics_router()
 app.include_router(user_analytics_router, prefix="/api")
