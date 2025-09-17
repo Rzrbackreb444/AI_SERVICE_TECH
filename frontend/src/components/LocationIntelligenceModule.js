@@ -9,6 +9,7 @@ const LocationIntelligenceModule = () => {
   const [analysis, setAnalysis] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const inputRef = React.useRef(null);
 
   const getAuthHeaders = () => {
     const token = localStorage.getItem('token');
