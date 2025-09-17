@@ -378,6 +378,24 @@ const EnhancedConsultantWidget = () => {
       setIsTyping(false);
       return;
     }
+    // Support capture
+    if (mode === 'awaiting_support_message') {
+      setIsTyping(true);
+      try {
+        await axios.post(`${API}/support/contact`, {
+          subject: 'Chat Support Request',
+          message: userMessage,
+          context: { path: location?.pathname }
+        });
+        addMessage('bot', '✅ Sent! Nick will get your message at nick@laundrotech.xyz. You\'ll hear back soon.');
+      } catch (e) {
+        addMessage('bot', 'I couldn\'t send that right now. Please try again later or email nick@laundrotech.xyz directly.');
+      } finally {
+        setMode('idle');
+        setIsTyping(false);
+      }
+      return;
+    }
 
     // Otherwise, normal Q&A
     setIsTyping(true);
