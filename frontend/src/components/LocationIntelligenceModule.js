@@ -11,6 +11,17 @@ const LocationIntelligenceModule = () => {
   const [error, setError] = useState('');
   const inputRef = React.useRef(null);
 
+  useEffect(() => {
+    const focusHandler = () => {
+      try {
+        inputRef.current?.focus();
+        inputRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      } catch {}
+    };
+    window.addEventListener('lt:focusAnalyzeInput', focusHandler);
+    return () => window.removeEventListener('lt:focusAnalyzeInput', focusHandler);
+  }, []);
+
   const getAuthHeaders = () => {
     const token = localStorage.getItem('token');
     return token ? { 'Authorization': `Bearer ${token}` } : {};
@@ -264,66 +275,6 @@ const LocationIntelligenceModule = () => {
               <div className="px-6 py-4 border-b border-gray-200">
                 <h3 className="text-lg font-medium text-gray-900">Strategic Recommendations</h3>
               </div>
-              <div className="p-6">
-                <div className="grid grid-cols-2 gap-6">
-                  <div>
-                    <div className="text-sm font-medium text-gray-900 mb-3">Equipment Configuration</div>
-                    <ul className="text-sm text-gray-600 space-y-1">
-                      <li>• 12 × 20lb Top-Load Washers</li>
-                      <li>• 8 × 30lb Front-Load Washers</li>
-                      <li>• 4 × 40lb Commercial Washers</li>
-                      <li>• 20 × Standard Dryers</li>
-                      <li>• 4 × Large Capacity Dryers</li>
-                    </ul>
-                  </div>
-                  
-                  <div>
-                    <div className="text-sm font-medium text-gray-900 mb-3">Pricing Strategy</div>
-                    <ul className="text-sm text-gray-600 space-y-1">
-                      <li>• Wash: $3.50 - $6.00 (by size)</li>
-                      <li>• Dry: $0.25 per 6 minutes</li>
-                      <li>• Premium pricing viable (+15%)</li>
-                      <li>• Loyalty program recommended</li>
-                      <li>• Peak hour pricing opportunity</li>
-                    </ul>
-                  </div>
-                </div>
-                
-                <div className="mt-6 pt-6 border-t border-gray-200">
-                  <div className="text-sm font-medium text-gray-900 mb-2">Investment Summary</div>
-                  <div className="grid grid-cols-4 gap-4 text-sm">
-                    <div>
-                      <div className="text-gray-500">Initial Investment</div>
-                      <div className="font-medium text-gray-900">$275,000</div>
-                    </div>
-                    <div>
-                      <div className="text-gray-500">Monthly Revenue</div>
-                      <div className="font-medium text-gray-900">$13,000</div>
-                    </div>
-                    <div>
-                      <div className="text-gray-500">Monthly Expenses</div>
-                      <div className="font-medium text-gray-900">$8,200</div>
-                    </div>
-                    <div>
-                      <div className="text-gray-500">Net Monthly</div>
-                      <div className="font-medium text-green-600">$4,800</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Action Buttons */}
-            <div className="flex gap-4">
-              <button className="bg-blue-600 text-white px-6 py-2 rounded text-sm font-medium hover:bg-blue-700">
-                Generate Full Report
-              </button>
-              <button className="bg-gray-100 text-gray-700 px-6 py-2 rounded text-sm font-medium hover:bg-gray-200">
-                Save Analysis
-              </button>
-              <button className="bg-gray-100 text-gray-700 px-6 py-2 rounded text-sm font-medium hover:bg-gray-200">
-                Export Data
-              </button>
             </div>
           </div>
         )}
