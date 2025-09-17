@@ -30,6 +30,7 @@ const LocationIntelligenceModule = () => {
   const analyzeLocation = async (e) => {
     e.preventDefault();
     if (!address.trim()) return;
+    try { localStorage.removeItem('lt_preview_mode'); } catch {}
 
     setLoading(true);
     setError('');
