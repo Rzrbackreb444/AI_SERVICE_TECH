@@ -1409,21 +1409,24 @@ class DeepBackendTester:
         return all_passed
     
     def run_deep_backend_tests(self):
-        """Run the specific deep backend tests requested"""
-        print(f"\n🚀 STARTING DEEP BACKEND TESTING SUITE")
+        """Run the specific deep backend tests requested in the review"""
+        print(f"\n🚀 STARTING DEEP BACKEND TESTING SUITE - REVIEW REQUEST FOCUS")
+        print(f"📋 REVIEW REQUEST: Re-run backend deep tests for updated areas:")
+        print(f"   1) /api/dashboard/stats unauthenticated => expect 401")
+        print(f"   2) Consultant system remains working: init without analysis_id, profile update, ask flow")
+        print(f"   3) Create analysis then GET /api/reports/generate-pdf/{{analysis_id}} => expect 200 OK PDF")
         print(f"=" * 80)
         
-        # Test sequence for the review request
+        # Test sequence focused on the review request
         test_sequence = [
             ("User Registration", self.test_user_registration),
             ("User Login", self.test_user_login),
-            ("Dashboard Stats Auth Required (401 Test)", self.test_dashboard_stats_auth_required),
-            ("Consultant Init Without Analysis ID", self.test_consultant_init_without_analysis_id),
-            ("Consultant Profile Update", self.test_consultant_profile_update),
-            ("Consultant Ask Flow", self.test_consultant_ask_flow),
-            ("Create Analysis for PDF", self.test_create_analysis_for_pdf),
-            ("PDF Generation", self.test_pdf_generation),
-            ("Marketplace Listings Regression", self.test_marketplace_listings_regression),
+            ("🚨 CRITICAL: Dashboard Stats Auth Required (401 Test)", self.test_dashboard_stats_auth_required),
+            ("🤖 Consultant Init Without Analysis ID", self.test_consultant_init_without_analysis_id),
+            ("🤖 Consultant Profile Update", self.test_consultant_profile_update),
+            ("🤖 Consultant Ask Flow", self.test_consultant_ask_flow),
+            ("📊 Create Analysis for PDF", self.test_create_analysis_for_pdf),
+            ("📄 PDF Generation (200 OK Expected)", self.test_pdf_generation),
         ]
         
         results = {}
