@@ -75,6 +75,18 @@ const EnhancedConsultantWidget = () => {
       setTimeout(() => {
         const welcome = getContextualWelcome(location?.pathname);
         addMessage('bot', welcome.message, welcome.buttons);
+  // Adjust height on mobile to avoid virtual keyboard overlap
+  useEffect(() => {
+    if (!isMobile) return;
+    const setVH = () => {
+      const h = Math.round(window.innerHeight * 0.8);
+      setPanelHeight(h);
+    };
+    setVH();
+    window.addEventListener('resize', setVH);
+    return () => window.removeEventListener('resize', setVH);
+  }, [isMobile]);
+
       }, 600);
     }
   }, [user?.id]);
