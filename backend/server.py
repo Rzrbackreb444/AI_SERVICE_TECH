@@ -918,8 +918,6 @@ async def register(user_data: UserCreate, background_tasks: BackgroundTasks):
         _asyncio.create_task(_init_consultant_profile())
     except Exception as e:
         logger.warning(f"Consultant init async scheduling failed: {e}")
-
-    )
     
     access_token = create_access_token(data={"sub": user.id})
     return {"access_token": access_token, "token_type": "bearer", "user": user}
