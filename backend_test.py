@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-COMPREHENSIVE PLATFORM AUDIT - LaundroTech Intelligence Platform Backend Validation
-Enterprise-grade quality audit focusing on analytics, AI consultant, subscriptions, MRR dashboard, and enterprise intelligence
+DEEP BACKEND TESTING - LaundroTech Intelligence Platform Security & Consultant System
+Focused testing on consultant system, dashboard security, and PDF generation
 """
 
 import requests
@@ -11,7 +11,7 @@ from datetime import datetime
 import time
 import uuid
 
-class ComprehensivePlatformAuditor:
+class DeepBackendTester:
     def __init__(self, base_url="https://washnanalytics.preview.emergentagent.com/api"):
         self.base_url = base_url
         self.token = None
