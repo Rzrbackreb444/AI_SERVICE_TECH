@@ -341,7 +341,7 @@ const EnhancedConsultantWidget = () => {
               right: 'max(0.5rem, env(safe-area-inset-right))',
               bottom: 'max(0.5rem, env(safe-area-inset-bottom))',
               width: isMobile ? '95vw' : '450px',
-              height: isMobile ? '80vh' : '650px',
+              height: isMobile ? (panelHeight ? `${panelHeight}px` : '80vh') : '650px',
               maxWidth: 520
             }}
             role="dialog"
