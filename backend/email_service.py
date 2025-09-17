@@ -17,6 +17,7 @@ class EmailService:
     def __init__(self):
         self.api_key = os.environ.get('SENDGRID_API_KEY')
         self.sender_email = os.environ.get('SENDER_EMAIL', 'nick@laundrotech.xyz')
+        self.support_email = os.environ.get('SUPPORT_EMAIL', 'nick@laundrotech.xyz')
         self.sg = SendGridAPIClient(api_key=self.api_key) if self.api_key else None
     
     async def send_welcome_email(self, user_email: str, user_name: str, facebook_member: bool = False):
