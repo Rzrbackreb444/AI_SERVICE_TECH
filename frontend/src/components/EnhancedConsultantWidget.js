@@ -38,6 +38,8 @@ const EnhancedConsultantWidget = () => {
         messages: (state.messages || []).map(m => ({ ...m, timestamp: m.timestamp ? new Date(m.timestamp).toISOString() : new Date().toISOString() }))
       };
       localStorage.setItem(chatKey, JSON.stringify(payload));
+  const [panelHeight, setPanelHeight] = useState(null);
+
     } catch (e) { /* ignore */ }
   };
   const loadState = () => {
