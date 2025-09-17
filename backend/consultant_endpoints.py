@@ -84,7 +84,7 @@ def create_consultant_router() -> APIRouter:
             # If no analysis found but mock_analysis provided (testing), use mock data
             if not analysis and mock_analysis:
                 analysis = mock_analysis
-                logger.info(f"Using mock analysis data for initialization without analysis_id")
+                logger.info("Using mock analysis data for initialization without analysis_id")
             
             if not analysis:
                 # Initialize a light-weight consultant profile without full analysis
