@@ -894,6 +894,29 @@ async def register(user_data: UserCreate, background_tasks: BackgroundTasks):
         user.email,
         user.full_name,
         user.facebook_group_member
+    # Initialize a lightweight consultant profile in background
+    try:
+        import asyncio as _asyncio
+        async def _init_consultant_profile():
+            default_analysis = {
+                "address": "",
+                "score": 60,
+                "grade": "B-",
+                "roi_estimate": {},
+                "demographics": {},
+                "competitors": []
+            }
+            setup = await ai_consultant.initialize_personal_consultant(user.id, default_analysis)
+            if setup and setup.get('consultant_initialized'):
+                await db.consultant_profiles.replace_one(
+                    {'user_id': user.id},
+                    setup['consultant_profile'],
+                    upsert=True
+                )
+        _asyncio.create_task(_init_consultant_profile())
+    except Exception as e:
+        logger.warning(f"Consultant init async scheduling failed: {e}")
+
     )
     
     access_token = create_access_token(data={"sub": user.id})
