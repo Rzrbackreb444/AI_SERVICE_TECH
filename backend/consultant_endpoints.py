@@ -67,22 +67,35 @@ def create_consultant_router() -> APIRouter:
             analysis_id = initialization_request.get('analysis_id')
             mock_analysis = initialization_request.get('mock_analysis')
             
-            if not analysis_id:
-                raise HTTPException(status_code=400, detail="Analysis ID is required")
+            # Support initializing without analysis_id: fall back to most recent user's analysis
+            analysis = None
+            if analysis_id:
+                analysis = await db.analyses.find_one({
+                    "analysis_id": analysis_id,
+                    "user_id": current_user.id
+                })
+            else:
+                # Pick the latest analysis for this user if available
+                analysis = await db.analyses.find({
+                    "user_id": current_user.id
+                }).sort("created_at", -1).limit(1).to_list(length=1)
+                analysis = analysis[0] if analysis else None
             
-            # Get user's analysis data
-            analysis = await db.analyses.find_one({
-                "analysis_id": analysis_id,
-                "user_id": current_user.id
-            })
-            
-            # If no analysis found but mock_analysis provided (for testing), use mock data
+            # If no analysis found but mock_analysis provided (testing), use mock data
             if not analysis and mock_analysis:
                 analysis = mock_analysis
-                print(f"Using mock analysis data for testing: {analysis_id}")
+                logger.info(f"Using mock analysis data for initialization without analysis_id")
             
             if not analysis:
-                raise HTTPException(status_code=404, detail="Analysis not found")
+                # Initialize a light-weight consultant profile without full analysis
+                analysis = {
+                    "address": "",
+                    "score": 60,
+                    "grade": "B-",
+                    "roi_estimate": {},
+                    "demographics": {},
+                    "competitors": []
+                }
             
             # Initialize personalized consultant
             consultant_setup = await ai_consultant.initialize_personal_consultant(
