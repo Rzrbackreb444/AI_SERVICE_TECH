@@ -900,19 +900,13 @@ metadata:
 
 test_plan:
   current_focus:
-    - "Authentication Security Vulnerability Fix - Dashboard Stats Endpoint"
-    - "AI Consultant System Endpoint Fixes"
-    - "Enterprise PDF Report Generation Fix"
     - "Real Data Integration - Analytics and MRR Dashboards"
     - "Google Maps and Census API Integration Fix"
   stuck_tasks: 
-    - "Authentication bypass vulnerability on /dashboard/stats endpoint"
-    - "AI Consultant initialization failing with Analysis ID requirement"
-    - "PDF report generation returning 500 errors"
     - "Zero-value data across 26 analytics sections"
     - "Google Maps and Census API integrations not working"
   test_all: true
-  test_priority: "critical_security_and_data_integration"
+  test_priority: "data_integration_and_api_fixes"
 
 agent_communication:
   - agent: "main"
