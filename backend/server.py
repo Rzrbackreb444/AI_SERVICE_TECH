@@ -894,6 +894,8 @@ async def register(user_data: UserCreate, background_tasks: BackgroundTasks):
         user.email,
         user.full_name,
         user.facebook_group_member
+    )
+    
     # Initialize a lightweight consultant profile in background
     try:
         import asyncio as _asyncio
