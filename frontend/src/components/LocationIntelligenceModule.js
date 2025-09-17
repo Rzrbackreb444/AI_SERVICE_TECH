@@ -69,6 +69,9 @@ const LocationIntelligenceModule = () => {
                   type="text"
                   value={address}
                   onChange={(e) => setAddress(e.target.value)}
+                  onFocus={() => {
+                    try { window.dispatchEvent(new CustomEvent('lt:inputFocus')); } catch {}
+                  }}
                   placeholder="Enter address"
                   className="flex-1 px-3 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:border-blue-500"
                   disabled={loading}
