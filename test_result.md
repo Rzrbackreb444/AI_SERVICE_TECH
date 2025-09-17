@@ -553,7 +553,7 @@ backend:
     implemented: false
     working: false
     file: "/app/backend/premium_report_generator.py"
-    stuck_count: 1
+    stuck_count: 2
     priority: "high"
     needs_retesting: true
     status_history:
@@ -563,6 +563,9 @@ backend:
       - working: false
         agent: "testing"
         comment: "❌ PDF REPORT GENERATION STILL FAILING: Enterprise validation confirms GET /api/reports/generate-pdf/{analysis_id} endpoint returns 500 error 'PDF generation failed'. Enterprise feature remains non-functional. IMPACT: Users cannot generate premium PDF reports for their analyses, blocking key revenue feature. INVESTIGATION NEEDED: Check premium_report_generator.py implementation, verify PDF library dependencies (reportlab, weasyprint), ensure proper error handling and analysis data retrieval."
+      - working: false
+        agent: "testing"
+        comment: "❌ DEEP BACKEND TESTING CONFIRMS PDF GENERATION FAILURE: GET /api/reports/generate-pdf/{analysis_id} endpoint consistently returns 500 error 'PDF generation failed'. Created valid analysis (ID: 087ee4b8-3cc3-43c4-ada5-80e7749e1483) but PDF generation fails. IMPACT: Critical enterprise feature non-functional, blocking premium report revenue stream. ROOT CAUSE INVESTIGATION NEEDED: Check premium_report_generator.py implementation, verify PDF library dependencies (reportlab, weasyprint), ensure proper analysis data retrieval and error handling."
 
   - task: "Real Data Integration - Analytics and MRR Dashboards"
     implemented: true
