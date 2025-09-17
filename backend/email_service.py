@@ -124,6 +124,37 @@ class EmailService:
         except Exception as e:
             logger.error(f"Failed to send welcome email to {user_email}: {str(e)}")
             return False
+    async def send_support_message(self, from_email: str, subject: str, message_body: str, user_context: Optional[dict] = None):
+        """Forward a support message from chat to support inbox (nick@laundrotech.xyz)"""
+        if not self.sg:
+            logger.warning("SendGrid not configured, skipping email")
+            return False
+        try:
+            context_html = ""
+            if user_context:
+                ctx_lines = [f"<li><strong>{k}:</strong> {v}</li>" for k, v in user_context.items()]
+                context_html = f"<ul>{''.join(ctx_lines)}</ul>"
+            html_content = f"""
+            <html><body>
+            <h3>New Support Message from {from_email}</h3>
+            <p>{message_body}</p>
+            <h4>Context</h4>
+            {context_html}
+            <p style='color:#64748B;font-size:12px;'>Sent via LaundroTech chat</p>
+            </body></html>
+            """
+            msg = Mail(
+                from_email=From(self.sender_email, "LaundroTech Support Relay"),
+                to_emails=To(self.support_email),
+                subject=Subject(subject or "Chat Support Message"),
+                html_content=HtmlContent(html_content)
+            )
+            resp = self.sg.send(msg)
+            return resp.status_code in (200, 202)
+        except Exception as e:
+            logger.error(f"Support email relay failed: {e}")
+            return False
+
     
     async def send_analysis_complete_email(self, user_email: str, user_name: str, analysis_data: dict):
         """Send email when analysis is complete"""
