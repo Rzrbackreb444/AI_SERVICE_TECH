@@ -112,6 +112,18 @@ def create_consultant_router() -> APIRouter:
                 )
             
             logger.info(f"Consultant initialized for user {current_user.id}, analysis {analysis_id}")
+            
+            return {
+                'consultant_setup': consultant_setup,
+                'stickiness_activated': True,
+                'subscription_driver': 'Personalized consultant creates ongoing value',
+                'revenue_impact': 'Transforms one-time purchase into recurring relationship',
+                'status': 'success'
+            }
+        except Exception as e:
+            logger.error(f"Consultant initialization error: {e}")
+            raise HTTPException(status_code=500, detail=str(e))
+    
     @router.put("/update-profile")
     async def update_consultant_profile(
         update_request: Dict[str, Any],
