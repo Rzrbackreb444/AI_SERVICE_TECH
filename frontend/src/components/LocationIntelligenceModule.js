@@ -14,6 +14,14 @@ const LocationIntelligenceModule = () => {
   useEffect(() => {
     const focusHandler = () => {
       try {
+  // If redirected from chat preview, auto-run preview when user pastes and presses Enter
+  useEffect(() => {
+    const isPreview = localStorage.getItem('lt_preview_mode') === 'true';
+    if (isPreview && inputRef.current) {
+      inputRef.current.placeholder = 'Paste address to run free preview...';
+    }
+  }, []);
+
         inputRef.current?.focus();
         inputRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
       } catch {}
