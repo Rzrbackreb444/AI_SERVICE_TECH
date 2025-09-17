@@ -112,6 +112,33 @@ def create_consultant_router() -> APIRouter:
                 )
             
             logger.info(f"Consultant initialized for user {current_user.id}, analysis {analysis_id}")
+    @router.put("/update-profile")
+    async def update_consultant_profile(
+        update_request: Dict[str, Any],
+        current_user: User = Depends(get_current_user)
+    ):
+        """Update user's consultant profile fields (tier, persona, notes)"""
+        try:
+            allowed_fields = [
+                'consultation_tier', 'primary_consultant', 'notes', 'preferences'
+            ]
+            update_data = {k: v for k, v in update_request.items() if k in allowed_fields}
+            if not update_data:
+                raise HTTPException(status_code=400, detail="No valid fields to update")
+            update_data['last_interaction'] = datetime.now(timezone.utc).isoformat()
+            result = await db.consultant_profiles.update_one(
+                {'user_id': current_user.id},
+                {'$set': update_data}
+            )
+            if result.matched_count == 0:
+                raise HTTPException(status_code=404, detail="Consultant profile not found")
+            return {"success": True, "updated": list(update_data.keys())}
+        except HTTPException:
+            raise
+        except Exception as e:
+            logger.error(f"Consultant profile update error: {e}")
+            raise HTTPException(status_code=500, detail="Failed to update consultant profile")
+
             
             return {
                 'consultant_setup': consultant_setup,
