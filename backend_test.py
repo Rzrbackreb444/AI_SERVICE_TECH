@@ -1400,64 +1400,84 @@ class DeepBackendTester:
         
         return all_passed
     
-    def test_performance_under_load(self):
-        """Test system performance under simulated load"""
-        print(f"\n⚡ TESTING PERFORMANCE UNDER LOAD CONDITIONS")
+    def run_deep_backend_tests(self):
+        """Run the specific deep backend tests requested"""
+        print(f"\n🚀 STARTING DEEP BACKEND TESTING SUITE")
+        print(f"=" * 80)
         
-        # Test multiple concurrent requests to analyze endpoint
-        if not self.token:
-            print("   ⚠️  Skipping - No authentication token")
-            return False
+        # Test sequence for the review request
+        test_sequence = [
+            ("User Registration", self.test_user_registration),
+            ("User Login", self.test_user_login),
+            ("Dashboard Stats Auth Required (401 Test)", self.test_dashboard_stats_auth_required),
+            ("Consultant Init Without Analysis ID", self.test_consultant_init_without_analysis_id),
+            ("Consultant Profile Update", self.test_consultant_profile_update),
+            ("Consultant Ask Flow", self.test_consultant_ask_flow),
+            ("Create Analysis for PDF", self.test_create_analysis_for_pdf),
+            ("PDF Generation", self.test_pdf_generation),
+            ("Marketplace Listings Regression", self.test_marketplace_listings_regression),
+        ]
         
-        import threading
-        import time
+        results = {}
         
-        results = []
-        
-        def make_request():
+        for test_name, test_func in test_sequence:
+            print(f"\n" + "="*60)
+            print(f"🧪 RUNNING: {test_name}")
+            print(f"="*60)
+            
             try:
-                success, response = self.run_test(
-                    "Load Test - Analyze Endpoint",
-                    "POST",
-                    "analyze",
-                    200,
-                    data={
-                        'address': f'123 Load Test St, Chicago, IL',
-                        'analysis_type': 'scout',
-                        'additional_data': {}
-                    }
-                )
-                results.append(success)
+                success = test_func()
+                results[test_name] = success
+                
+                if success:
+                    print(f"✅ {test_name}: PASSED")
+                else:
+                    print(f"❌ {test_name}: FAILED")
+                    
             except Exception as e:
-                results.append(False)
+                print(f"💥 {test_name}: ERROR - {str(e)}")
+                results[test_name] = False
+                self.failed_tests.append({
+                    'name': test_name,
+                    'error': str(e),
+                    'critical': True
+                })
         
-        # Create 5 concurrent requests
-        threads = []
-        start_time = time.time()
+        return results
+    
+    def print_final_summary(self, results):
+        """Print final test summary"""
+        print(f"\n" + "="*80)
+        print(f"📊 DEEP BACKEND TESTING SUMMARY")
+        print(f"="*80)
         
-        for i in range(5):
-            thread = threading.Thread(target=make_request)
-            threads.append(thread)
-            thread.start()
+        passed_tests = sum(1 for success in results.values() if success)
+        total_tests = len(results)
+        success_rate = (passed_tests / total_tests * 100) if total_tests > 0 else 0
         
-        # Wait for all threads to complete
-        for thread in threads:
-            thread.join()
+        print(f"📈 Overall Success Rate: {success_rate:.1f}% ({passed_tests}/{total_tests})")
+        print(f"🎯 Tests Run: {self.tests_run}")
+        print(f"✅ Tests Passed: {self.tests_passed}")
+        print(f"❌ Tests Failed: {len(self.failed_tests)}")
+        print(f"🚨 Critical Failures: {len(self.critical_failures)}")
         
-        end_time = time.time()
-        total_time = end_time - start_time
+        if results:
+            print(f"\n📋 DETAILED RESULTS:")
+            for test_name, success in results.items():
+                status = "✅ PASSED" if success else "❌ FAILED"
+                print(f"   {status}: {test_name}")
         
-        successful_requests = sum(results)
-        success_rate = (successful_requests / len(results)) * 100 if results else 0
+        if self.critical_failures:
+            print(f"\n🚨 CRITICAL FAILURES REQUIRING IMMEDIATE ATTENTION:")
+            for failure in self.critical_failures:
+                print(f"   ❌ {failure['name']}: {failure['error']}")
         
-        print(f"   📊 Concurrent Requests: {len(results)}")
-        print(f"   ✅ Successful: {successful_requests}")
-        print(f"   📈 Success Rate: {success_rate:.1f}%")
-        print(f"   ⏱️  Total Time: {total_time:.2f}s")
-        print(f"   ⚡ Avg Response Time: {total_time/len(results):.2f}s per request")
+        if self.failed_tests:
+            print(f"\n❌ ALL FAILED TESTS:")
+            for failure in self.failed_tests:
+                print(f"   • {failure['name']}: {failure.get('error', 'Unknown error')}")
         
-        # Test passes if at least 80% of requests succeed and total time is reasonable
-        return success_rate >= 80 and total_time < 30
+        print(f"\n" + "="*80)
 
     # ========== PRODUCTION READINESS CHECKS ==========
     
