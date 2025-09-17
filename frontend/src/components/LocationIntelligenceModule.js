@@ -65,6 +65,7 @@ const LocationIntelligenceModule = () => {
             <form onSubmit={analyzeLocation}>
               <div className="flex gap-4">
                 <input
+                  ref={inputRef}
                   type="text"
                   value={address}
                   onChange={(e) => setAddress(e.target.value)}
@@ -80,6 +81,7 @@ const LocationIntelligenceModule = () => {
                   {loading ? 'Analyzing...' : 'Analyze'}
                 </button>
               </div>
+              <div className="mt-1 text-xs text-gray-500">Tip: If the chat is covering the input, press Esc to hide chat or it will auto-minimize when you focus this field.</div>
             </form>
           </div>
         </div>
