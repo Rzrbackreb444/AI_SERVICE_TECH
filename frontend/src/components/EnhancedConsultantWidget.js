@@ -275,6 +275,7 @@ const EnhancedConsultantWidget = () => {
     switch (action) {
       case 'start_free_preview':
         setMode('awaiting_address_preview');
+        try { localStorage.setItem('lt_preview_mode', 'true'); } catch {}
         addMessage('bot', 'Paste the address you want me to preview. I\'ll move out of the way.');
         // Navigate to analyzer and focus input
         navigate('/analyze');
