@@ -337,23 +337,13 @@ const EnhancedConsultantWidget = () => {
   const getActionText = (action) => {
     const map = {
       start_free_preview: 'Start a free preview',
-      case 'contact_support':
-        if (!isAuthenticated) {
-          addMessage('bot', 'Please sign in so I can include your account details in the support request.', [
-            { text: '🔐 Sign in', action: 'go_login', primary: true }
-          ]);
-          break;
-        }
-        addMessage('bot', 'Sure — briefly describe the issue and hit Send. I\'ll forward it to support.');
-        setMode('awaiting_support_message');
-        break;
-
       choose_market_intelligence: 'Choose Market Intelligence',
       choose_investment_grade: 'Choose Investment Grade',
       show_pricing: 'Show me pricing',
       open_analyzer: 'Open Analyzer',
       generate_pdf: 'Generate PDF',
-      go_login: 'Sign me in'
+      go_login: 'Sign me in',
+      contact_support: 'Contact support'
     };
     return map[action] || action;
   };
