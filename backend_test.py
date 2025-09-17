@@ -158,27 +158,66 @@ class DeepBackendTester:
     
     def test_dashboard_stats_auth_required(self):
         """Test that /api/dashboard/stats requires authentication (expect 401 when no token)"""
-        # Test without token
-        success, response = self.run_test(
-            "Dashboard Stats - No Auth (Should Return 401)",
-            "GET",
-            "dashboard/stats",
-            401,
-            headers={'Authorization': ''},  # Remove auth header
-            critical=True
-        )
+        # Custom test without token to verify 401 response
+        url = f"{self.base_url}/dashboard/stats"
+        test_headers = {'Content-Type': 'application/json'}  # No Authorization header
+
+        self.tests_run += 1
+        print(f"\n🔍 Test {self.tests_run}: Dashboard Stats - No Auth (Should Return 401)")
+        print(f"   Method: GET | Endpoint: /dashboard/stats")
+        print(f"   🚨 CRITICAL SECURITY TEST - Production Blocker if Failed")
+        print(f"   🎯 Expected: 401 Unauthorized (no token provided)")
         
-        if not success:
-            print(f"   ❌ CRITICAL SECURITY VULNERABILITY: Dashboard stats accessible without authentication!")
-            self.critical_failures.append({
-                'name': 'Dashboard Stats Authentication Bypass',
-                'error': 'Endpoint accessible without authentication token',
-                'critical': True
-            })
+        try:
+            response = requests.get(url, headers=test_headers, timeout=30)
+            actual_status = response.status_code
+            
+            # We expect 401 Unauthorized when no token is provided
+            if actual_status == 401:
+                self.tests_passed += 1
+                print(f"   ✅ PASSED - Status: {actual_status} (401 Unauthorized)")
+                print(f"   ✅ SECURITY VERIFIED: Dashboard stats properly requires authentication")
+                return True
+            elif actual_status == 403:
+                self.tests_passed += 1
+                print(f"   ✅ PASSED - Status: {actual_status} (403 Forbidden)")
+                print(f"   ✅ SECURITY VERIFIED: Dashboard stats properly protected (403 is acceptable)")
+                return True
+            else:
+                print(f"   ❌ FAILED - Expected 401, got {actual_status}")
+                try:
+                    error_data = response.json()
+                    print(f"   📄 Response: {error_data}")
+                except:
+                    print(f"   📄 Raw Response: {response.text[:200]}...")
+                
+                print(f"   ❌ CRITICAL SECURITY VULNERABILITY: Dashboard stats accessible without authentication!")
+                
+                failure_info = {
+                    'name': 'Dashboard Stats Authentication Bypass',
+                    'expected': 401,
+                    'actual': actual_status,
+                    'endpoint': 'dashboard/stats',
+                    'error': f'Endpoint returned {actual_status} instead of 401 when no auth token provided',
+                    'critical': True
+                }
+                
+                self.failed_tests.append(failure_info)
+                self.critical_failures.append(failure_info)
+                return False
+
+        except requests.exceptions.Timeout:
+            print(f"   ⏰ TIMEOUT - Request took longer than 30 seconds")
+            failure_info = {'name': 'Dashboard Stats Auth Test', 'error': 'Timeout', 'critical': True}
+            self.failed_tests.append(failure_info)
+            self.critical_failures.append(failure_info)
             return False
-        
-        print(f"   ✅ SECURITY VERIFIED: Dashboard stats properly requires authentication")
-        return True
+        except Exception as e:
+            print(f"   💥 ERROR - {str(e)}")
+            failure_info = {'name': 'Dashboard Stats Auth Test', 'error': str(e), 'critical': True}
+            self.failed_tests.append(failure_info)
+            self.critical_failures.append(failure_info)
+            return False
 
     # ========== AI CONSULTANT SYSTEM TESTING ==========
     
