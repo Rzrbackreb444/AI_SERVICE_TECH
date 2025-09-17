@@ -135,7 +135,11 @@ class PersonalizedAIConsultant:
             # Get user's consultant profile (allow operation even if LLM is unavailable; we'll fall back later)
             consultant_profile = await self.get_consultant_profile(user_id)
             if not consultant_profile:
-                raise Exception("Consultant profile not found")
+                # Auto-initialize a lightweight profile if missing
+                consultant_setup = await self.initialize_personal_consultant(user_id, {
+                    'address': '', 'score': 60, 'grade': 'B-', 'roi_estimate': {}, 'demographics': {}, 'competitors': []
+                })
+                consultant_profile = consultant_setup.get('consultant_profile')
             
             # Check tier limits
             tier_config = self.consultation_tiers.get(consultation_tier, {})
