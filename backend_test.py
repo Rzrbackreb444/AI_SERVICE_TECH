@@ -154,6 +154,218 @@ class DeepBackendTester:
         
         return success
 
+    # ========== SECURITY TESTING ==========
+    
+    def test_dashboard_stats_auth_required(self):
+        """Test that /api/dashboard/stats requires authentication (expect 401 when no token)"""
+        # Test without token
+        success, response = self.run_test(
+            "Dashboard Stats - No Auth (Should Return 401)",
+            "GET",
+            "dashboard/stats",
+            401,
+            headers={'Authorization': ''},  # Remove auth header
+            critical=True
+        )
+        
+        if not success:
+            print(f"   ❌ CRITICAL SECURITY VULNERABILITY: Dashboard stats accessible without authentication!")
+            self.critical_failures.append({
+                'name': 'Dashboard Stats Authentication Bypass',
+                'error': 'Endpoint accessible without authentication token',
+                'critical': True
+            })
+            return False
+        
+        print(f"   ✅ SECURITY VERIFIED: Dashboard stats properly requires authentication")
+        return True
+
+    # ========== AI CONSULTANT SYSTEM TESTING ==========
+    
+    def test_consultant_init_without_analysis_id(self):
+        """Test consultant initialization without analysis_id"""
+        if not self.token:
+            print("   ⚠️  Skipping - No authentication token")
+            return False
+        
+        success, response = self.run_test(
+            "Consultant Initialize - Without Analysis ID",
+            "POST",
+            "consultant/initialize",
+            200,
+            data={},  # Empty body
+            critical=True
+        )
+        
+        if success:
+            consultant_setup = response.get('consultant_setup', {})
+            consultant_initialized = consultant_setup.get('consultant_initialized', False)
+            consultant_profile = consultant_setup.get('consultant_profile', {})
+            
+            print(f"   🤖 Consultant Initialized: {consultant_initialized}")
+            print(f"   👤 Profile Created: {'✅' if consultant_profile else '❌'}")
+            print(f"   🎯 Specialization: {consultant_profile.get('specialization', 'None')}")
+            print(f"   📋 Action Items: {len(consultant_profile.get('action_items', []))}")
+            
+            if consultant_initialized and consultant_profile:
+                print(f"   ✅ SUCCESS: Consultant initialization works without analysis_id")
+                return True
+            else:
+                print(f"   ❌ FAILED: Consultant not properly initialized")
+                return False
+        
+        return False
+    
+    def test_consultant_profile_update(self):
+        """Test consultant profile update with consultation tier"""
+        if not self.token:
+            print("   ⚠️  Skipping - No authentication token")
+            return False
+        
+        success, response = self.run_test(
+            "Consultant Profile Update - Strategic Advisory Tier",
+            "PUT",
+            "consultant/update-profile",
+            200,
+            data={'consultation_tier': 'strategic_advisory'},
+            critical=True
+        )
+        
+        if success:
+            updated_fields = response.get('updated', [])
+            print(f"   📝 Updated Fields: {updated_fields}")
+            
+            if 'consultation_tier' in updated_fields:
+                print(f"   ✅ SUCCESS: Consultation tier updated to strategic_advisory")
+                return True
+            else:
+                print(f"   ❌ FAILED: Consultation tier not updated")
+                return False
+        
+        return False
+    
+    def test_consultant_ask_flow(self):
+        """Test consultant ask flow with structured response"""
+        if not self.token:
+            print("   ⚠️  Skipping - No authentication token")
+            return False
+        
+        success, response = self.run_test(
+            "Consultant Ask Flow - ROI Optimization Question",
+            "POST",
+            "consultant/ask",
+            200,
+            data={'question': 'How to optimize ROI?'},
+            critical=True
+        )
+        
+        if success:
+            consultant_response = response.get('consultant_response', {})
+            engagement_driver = response.get('engagement_driver', '')
+            stickiness_factor = response.get('stickiness_factor', '')
+            
+            print(f"   💬 Response Received: {'✅' if consultant_response else '❌'}")
+            print(f"   🎯 Engagement Driver: {engagement_driver}")
+            print(f"   🔗 Stickiness Factor: {stickiness_factor}")
+            
+            # Check if interaction was logged (we can't directly verify this, but the response structure indicates it)
+            if consultant_response and engagement_driver and stickiness_factor:
+                print(f"   ✅ SUCCESS: Structured response with engagement tracking")
+                return True
+            else:
+                print(f"   ❌ FAILED: Missing structured response elements")
+                return False
+        
+        return False
+
+    # ========== PDF GENERATION TESTING ==========
+    
+    def test_create_analysis_for_pdf(self):
+        """Create an analysis for PDF generation testing"""
+        if not self.token:
+            print("   ⚠️  Skipping - No authentication token")
+            return False
+        
+        success, response = self.run_test(
+            "Create Analysis for PDF Testing",
+            "POST",
+            "analyze",
+            200,
+            data={
+                'address': '123 Test Street, Chicago, IL',
+                'analysis_type': 'scout',  # Lowest tier
+                'additional_data': {}
+            },
+            critical=True
+        )
+        
+        if success:
+            analysis_id = response.get('analysis_id')
+            if analysis_id:
+                self.analysis_id = analysis_id
+                print(f"   📊 Analysis Created: {analysis_id}")
+                print(f"   ✅ SUCCESS: Analysis ready for PDF generation")
+                return True
+            else:
+                print(f"   ❌ FAILED: No analysis_id returned")
+                return False
+        
+        return False
+    
+    def test_pdf_generation(self):
+        """Test PDF generation for analysis"""
+        if not self.token or not self.analysis_id:
+            print("   ⚠️  Skipping - No authentication token or analysis ID")
+            return False
+        
+        success, response = self.run_test(
+            "PDF Generation - Analysis Report",
+            "GET",
+            f"reports/generate-pdf/{self.analysis_id}",
+            200,
+            critical=True
+        )
+        
+        if success:
+            # For PDF response, we expect binary content, not JSON
+            print(f"   📄 PDF Generated: ✅")
+            print(f"   ✅ SUCCESS: PDF generation working")
+            return True
+        else:
+            print(f"   ❌ FAILED: PDF generation failed")
+            return False
+
+    # ========== MARKETPLACE TESTING ==========
+    
+    def test_marketplace_listings_regression(self):
+        """Test marketplace listings endpoint regression"""
+        success, response = self.run_test(
+            "Marketplace Listings Regression Test",
+            "GET",
+            "marketplace/listings",
+            200,
+            critical=True
+        )
+        
+        if success:
+            listings = response.get('listings', [])
+            total_value = response.get('total_market_value', 0)
+            
+            print(f"   🏢 Listings Found: {len(listings)}")
+            print(f"   💰 Total Market Value: ${total_value:,}")
+            
+            if listings:
+                print(f"   ✅ SUCCESS: Marketplace listings available")
+                # Show first listing details
+                first_listing = listings[0]
+                print(f"      - {first_listing.get('title', 'Unknown')}: ${first_listing.get('askingPrice', 0):,}")
+                return True
+            else:
+                print(f"   ⚠️  WARNING: No listings found (may be expected)")
+                return True  # Not necessarily a failure if no listings exist
+        
+        return False
+
     # ========== FACEBOOK GROUP OFFERS & PRICING ==========
     
     def test_facebook_group_offers_pricing(self):
