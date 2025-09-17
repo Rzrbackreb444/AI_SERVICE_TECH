@@ -132,10 +132,7 @@ class PersonalizedAIConsultant:
     async def handle_consultant_question(self, user_id: str, question: str, consultation_tier: str) -> Dict[str, Any]:
         """Handle user question with personalized consultant"""
         try:
-            if not self.llm_client:
-                raise Exception("LLM client not available")
-            
-            # Get user's consultant profile
+            # Get user's consultant profile (allow operation even if LLM is unavailable; we'll fall back later)
             consultant_profile = await self.get_consultant_profile(user_id)
             if not consultant_profile:
                 raise Exception("Consultant profile not found")
