@@ -915,13 +915,15 @@ metadata:
 
 test_plan:
   current_focus:
+    - "EnhancedConsultantWidget - Desktop/Mobile Optimization & Auth Integration"
     - "Real Data Integration - Analytics and MRR Dashboards"
     - "Google Maps and Census API Integration Fix"
   stuck_tasks: 
+    - "EnhancedConsultantWidget message persistence and auth integration issues"
     - "Zero-value data across 26 analytics sections"
     - "Google Maps and Census API integrations not working"
   test_all: true
-  test_priority: "data_integration_and_api_fixes"
+  test_priority: "consultant_widget_fixes_and_data_integration"
 
 agent_communication:
   - agent: "main"
