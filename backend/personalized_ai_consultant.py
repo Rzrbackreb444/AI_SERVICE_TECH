@@ -547,9 +547,14 @@ class PersonalizedAIConsultant:
     
     async def get_consultant_profile(self, user_id: str) -> Optional[Dict]:
         """Get user's consultant profile from database"""
-        # In production, this would query the database
-        # For now, return None (would be stored after initialization)
-        return None
+        try:
+            profile = await db.consultant_profiles.find_one({'user_id': user_id})
+            if profile and '_id' in profile:
+                del profile['_id']
+            return profile
+        except Exception as e:
+            logger.error(f"Get consultant profile error: {e}")
+            return None
     
     def check_usage_limits(self, consultant_profile: Dict, tier_config: Dict) -> bool:
         """Check if user has exceeded usage limits"""
