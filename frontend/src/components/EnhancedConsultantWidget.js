@@ -276,13 +276,8 @@ const EnhancedConsultantWidget = () => {
       case 'start_free_preview':
         setMode('awaiting_address_preview');
         try { localStorage.setItem('lt_preview_mode', 'true'); } catch {}
-        addMessage('bot', 'Paste the address you want me to preview. I\'ll move out of the way.');
-        // Navigate to analyzer and focus input
-        navigate('/analyze');
-        setIsOpen(false);
-        setTimeout(() => {
-          try { window.dispatchEvent(new CustomEvent('lt:focusAnalyzeInput')); } catch {}
-        }, 50);
+        addMessage('bot', 'Paste the address you want me to preview here and I\'ll run a limited preview instantly (some details blurred).');
+        // Keep chat open for inline address capture
         break;
       case 'choose_market_intelligence':
         setSelectedTier('intelligence');
