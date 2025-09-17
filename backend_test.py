@@ -4305,20 +4305,32 @@ class RevenueOptimizationTester:
 
 
 def main():
-    """Main test execution - Comprehensive Platform Audit"""
-    print("🔍 LAUNDROTECH PLATFORM AUDIT")
-    print("Running comprehensive enterprise-grade quality audit...")
+    """Main test execution - Deep Backend Testing"""
+    print("🔍 DEEP BACKEND TESTING - LaundroTech Intelligence Platform")
+    print("Running focused tests on consultant system, dashboard security, and PDF generation...")
     
-    # Run comprehensive platform audit
-    auditor = ComprehensivePlatformAuditor()
+    # Run deep backend tests
+    tester = DeepBackendTester()
     try:
-        enterprise_ready = auditor.run_comprehensive_platform_audit()
-        return 0 if enterprise_ready else 1
+        results = tester.run_deep_backend_tests()
+        tester.print_final_summary(results)
+        
+        # Exit with appropriate code
+        if tester.critical_failures:
+            print(f"\n🚨 CRITICAL FAILURES DETECTED - IMMEDIATE ATTENTION REQUIRED")
+            return 1
+        elif tester.failed_tests:
+            print(f"\n⚠️  SOME TESTS FAILED - REVIEW REQUIRED")
+            return 1
+        else:
+            print(f"\n✅ ALL DEEP BACKEND TESTS PASSED")
+            return 0
+            
     except KeyboardInterrupt:
-        print(f"\n⏹️  Platform audit interrupted by user")
+        print(f"\n⏹️  Deep backend testing interrupted by user")
         return 1
     except Exception as e:
-        print(f"\n💥 Unexpected error in platform audit: {e}")
+        print(f"\n💥 Unexpected error in deep backend testing: {e}")
         return 1
 
 if __name__ == "__main__":
