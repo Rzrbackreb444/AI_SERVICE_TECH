@@ -29,6 +29,8 @@ const EnhancedConsultantWidget = () => {
   const [messages, setMessages] = useState([]);
   const [inputValue, setInputValue] = useState('');
   const [initializedConsultant, setInitializedConsultant] = useState(false);
+  const [mode, setMode] = useState('idle'); // idle | awaiting_address_preview | awaiting_address_tier
+  const [selectedTier, setSelectedTier] = useState(null); // 'intelligence' | 'optimization'
 
   const messagesEndRef = useRef(null);
 
@@ -148,11 +150,11 @@ const EnhancedConsultantWidget = () => {
   const getContextualWelcome = (path = '/') => {
     if (path === '/analyze') {
       return {
-        message: '👋 Ready to analyze a location? I can help you choose the right analysis tier and get started!',
+        message: '👋 Ready to analyze a location? Paste an address and choose your depth. I can run a free preview or full analysis based on your tier.' ,
         buttons: [
-          { text: '🚀 Start Free Analysis', action: 'navigate_analyze', primary: true },
-          { text: '💡 Which tier is right for me?', action: 'tier_help' },
-          { text: '❓ How does this work?', action: 'how_it_works' }
+          { text: '🆓 Start Free Preview', action: 'start_free_preview', primary: true },
+          { text: '💡 Market Intelligence', action: 'choose_market_intelligence' },
+          { text: '💎 Investment Grade', action: 'choose_investment_grade' }
         ]
       };
     }
@@ -161,28 +163,28 @@ const EnhancedConsultantWidget = () => {
         message: '🏢 Browsing the marketplace? Let me help you find the perfect laundromat investment opportunity!',
         buttons: [
           { text: '🔍 Help me find listings', action: 'find_listings' },
-          { text: '📊 Get location analysis first', action: 'suggest_analysis' },
+          { text: '📊 Get location analysis first', action: 'start_free_preview' },
           { text: '💰 What should I look for?', action: 'investment_tips' }
         ]
       };
     }
     if (path?.includes('case-study')) {
       return {
-        message: '📈 Impressed by our analysis examples? Let me show you how to get this level of intelligence for your investment!',
+        message: '📈 Impressed by our analysis examples? I can run a preview on your address or schedule a full analysis right now.' ,
         buttons: [
-          { text: '🚀 Get My Analysis', action: 'start_analysis', primary: true },
-          { text: '💵 See pricing options', action: 'show_pricing' },
-          { text: '❓ How accurate are these?', action: 'accuracy_question' }
+          { text: '🚀 Run Free Preview', action: 'start_free_preview', primary: true },
+          { text: '💡 Market Intelligence', action: 'choose_market_intelligence' },
+          { text: '💎 Investment Grade', action: 'choose_investment_grade' }
         ]
       };
     }
     return {
-      message: "👋 Welcome to LaundroTech! I'm here to help you make smarter laundromat investment decisions. What brings you here today?",
+      message: "👋 Welcome to LaundroTech! I can run a free preview on your address or help you choose the right analysis depth.",
       buttons: [
-        { text: '🎯 I want to analyze a location', action: 'start_analysis', primary: true },
-        { text: "🏢 I'm browsing investments", action: 'browse_marketplace' },
-        { text: '❓ What exactly do you do?', action: 'explain_service' },
-        { text: '💰 What does this cost?', action: 'show_pricing' }
+        { text: '🆓 Start Free Preview', action: 'start_free_preview', primary: true },
+        { text: '💡 Market Intelligence', action: 'choose_market_intelligence' },
+        { text: '💎 Investment Grade', action: 'choose_investment_grade' },
+        { text: '❓ What exactly do you do?', action: 'explain_service' }
       ]
     };
   };
@@ -204,42 +206,115 @@ const EnhancedConsultantWidget = () => {
     }
   };
 
+  // Backend calls
+  const runPreview = async (address) => {
+    try {
+      if (!isAuthenticated) {
+        addMessage('bot', 'Please sign in to run a live preview. Your free preview includes a real-time grade, score, and nearby competitor snapshot.', [
+          { text: '🔐 Sign in', action: 'go_login', primary: true },
+          { text: '📖 How it works', action: 'how_it_works' }
+        ]);
+        return;
+      }
+      const resp = await axios.post(`${API}/revenue/analysis/preview`, { address });
+      const report = resp.data?.preview_report || {};
+      const grade = report.grade || report?.summary?.grade || '—';
+      const score = report.score || report?.summary?.score || '—';
+      addMessage('bot', `✅ Preview ready for ${address}\n\nGrade: ${grade}\nScore: ${score}\n\nUpgrade for full demographics, competition analysis, and ROI model.`, [
+        { text: '💡 Upgrade to Market Intelligence', action: 'choose_market_intelligence', primary: true },
+        { text: '💎 Investment Grade', action: 'choose_investment_grade' }
+      ]);
+    } catch (e) {
+      const status = e?.response?.status;
+      if (status === 401) {
+        addMessage('bot', 'You need to sign in to run a preview.', [
+          { text: '🔐 Sign in', action: 'go_login', primary: true }
+        ]);
+      } else {
+        addMessage('bot', 'Preview temporarily unavailable. Try a full analysis or try again later.');
+      }
+    } finally {
+      setMode('idle');
+      setSelectedTier(null);
+    }
+  };
+
+  const runFullAnalysis = async (address, analysisType) => {
+    try {
+      if (!isAuthenticated) {
+        addMessage('bot', 'Sign in to run a full analysis. Based on your tier, I can unlock deeper intelligence and a PDF report.', [
+          { text: '🔐 Sign in', action: 'go_login', primary: true },
+          { text: '🆓 Or run a free preview', action: 'start_free_preview' }
+        ]);
+        return;
+      }
+      const resp = await axios.post(`${API}/analyze`, { address, analysis_type: analysisType });
+      const a = resp.data;
+      addMessage('bot', `📊 Analysis complete for ${a.address}\nGrade: ${a.grade}  |  Score: ${a.score}`, [
+        { text: '📄 Generate PDF Report', action: 'generate_pdf' },
+        { text: '📍 Open in Analyzer', action: 'open_analyzer', primary: true }
+      ]);
+    } catch (e) {
+      const status = e?.response?.status;
+      if (status === 403) {
+        addMessage('bot', 'This depth requires an upgrade. Would you like to see pricing options?', [
+          { text: '💳 See pricing', action: 'show_pricing', primary: true },
+          { text: '🆓 Run free preview', action: 'start_free_preview' }
+        ]);
+      } else if (status === 401) {
+        addMessage('bot', 'You need to sign in to run a full analysis.', [
+          { text: '🔐 Sign in', action: 'go_login', primary: true }
+        ]);
+      } else {
+        addMessage('bot', 'Analysis temporarily unavailable. Please try again later.');
+      }
+    } finally {
+      setMode('idle');
+      setSelectedTier(null);
+    }
+  };
+
   // Quick action router (frontend flow)
   const processAction = async (action) => {
     switch (action) {
-      case 'navigate_analyze':
-        navigate('/analyze');
-        addMessage('bot', "🚀 Perfect! I'm taking you to our analysis page. Start with any address to see what we can do!", null, true);
+      case 'start_free_preview':
+      case 'start_analysis':
+        setMode('awaiting_address_preview');
+        addMessage('bot', 'Paste the address you want me to preview.');
         break;
-      case 'tier_help':
-        addMessage('bot', "Great question! Here's how to choose:\n\n🆓 Free Preview – basic grade\n💡 Market Intelligence – full analysis\n💎 Investment Grade – executive package\n\nWhat's your investment budget range?", [
-          { text: 'Under $500K', action: 'suggest_market_intel' },
-          { text: '$500K - $1M', action: 'suggest_investment_grade' },
-          { text: 'Over $1M', action: 'suggest_portfolio' },
-          { text: 'Just browsing', action: 'suggest_free' }
-        ]);
+      case 'choose_market_intelligence':
+        setSelectedTier('intelligence');
+        setMode('awaiting_address_tier');
+        addMessage('bot', 'Great — Market Intelligence selected. Paste the address to begin.');
+        break;
+      case 'choose_investment_grade':
+        setSelectedTier('optimization');
+        setMode('awaiting_address_tier');
+        addMessage('bot', 'Excellent — Investment Grade selected. Paste the address to begin.');
         break;
       case 'how_it_works':
-        addMessage('bot', '🔬 We analyze 50+ data points: demographics, competition, traffic, real estate. Free preview: instant. Full analysis: 24-48h.', [
-          { text: '🎯 Analyze my location', action: 'navigate_analyze', primary: true },
-          { text: '📈 Show me examples', action: 'show_examples' }
-        ]);
-        break;
-      case 'show_examples':
-        navigate('/case-study/vista-laundry');
-        addMessage('bot', "📈 Check out these detailed analysis examples! You'll see exactly what we deliver.", null, true);
+        addMessage('bot', '🔬 We analyze 50+ data points: demographics, competition, traffic, and real estate. Free preview is instant; full analysis delivers an executive report.');
         break;
       case 'show_pricing':
-        addMessage('bot', '💰 Pricing:\n\n🆓 Preview\n💡 Market Intelligence – $897\n💎 Investment Grade – $2,497\n\nSuccess rate: 94% | Avg ROI improvement: 23%', [
-          { text: '🆓 Start with free preview', action: 'navigate_analyze' },
-          { text: '💡 Get Market Intelligence', action: 'navigate_analyze', primary: true },
-          { text: '💎 Need Investment Grade', action: 'navigate_analyze' }
-        ]);
+        navigate('/pricing');
+        addMessage('bot', 'Opening pricing. You can continue chatting here.');
+        break;
+      case 'open_analyzer':
+        navigate('/analyze');
+        break;
+      case 'generate_pdf':
+        navigate('/dashboard');
+        addMessage('bot', 'From your analysis, open the report and tap Generate PDF.');
+        break;
+      case 'go_login':
+        navigate('/');
+        addMessage('bot', 'Use the Sign in button at the top to authenticate.');
         break;
       default:
         addMessage('bot', "I'd be happy to help! What specific question do you have about laundromat location analysis?", [
-          { text: '🎯 Start analysis', action: 'navigate_analyze', primary: true },
-          { text: '💰 See pricing', action: 'show_pricing' }
+          { text: '🆓 Start Free Preview', action: 'start_free_preview', primary: true },
+          { text: '💡 Market Intelligence', action: 'choose_market_intelligence' },
+          { text: '💎 Investment Grade', action: 'choose_investment_grade' }
         ]);
     }
   };
@@ -247,16 +322,18 @@ const EnhancedConsultantWidget = () => {
   const handleQuickAction = async (action) => {
     addMessage('user', getActionText(action));
     setIsTyping(true);
-    setTimeout(async () => { setIsTyping(false); await processAction(action); }, 600);
+    setTimeout(async () => { setIsTyping(false); await processAction(action); }, 400);
   };
 
   const getActionText = (action) => {
     const map = {
-      navigate_analyze: 'Take me to the analyzer',
-      tier_help: 'Which analysis tier should I choose?',
-      how_it_works: 'How does this work?',
-      show_examples: 'Show me examples',
-      show_pricing: 'Show me pricing'
+      start_free_preview: 'Start a free preview',
+      choose_market_intelligence: 'Choose Market Intelligence',
+      choose_investment_grade: 'Choose Investment Grade',
+      show_pricing: 'Show me pricing',
+      open_analyzer: 'Open Analyzer',
+      generate_pdf: 'Generate PDF',
+      go_login: 'Sign me in'
     };
     return map[action] || action;
   };
@@ -267,42 +344,40 @@ const EnhancedConsultantWidget = () => {
     const userMessage = inputValue.trim();
     setInputValue('');
     addMessage('user', userMessage);
-    setIsTyping(true);
 
+    // Address capture flows first
+    if (mode === 'awaiting_address_preview') {
+      setIsTyping(true);
+      await runPreview(userMessage);
+      setIsTyping(false);
+      return;
+    }
+    if (mode === 'awaiting_address_tier' && selectedTier) {
+      setIsTyping(true);
+      await runFullAnalysis(userMessage, selectedTier);
+      setIsTyping(false);
+      return;
+    }
+
+    // Otherwise, normal Q&A
+    setIsTyping(true);
     try {
       if (isAuthenticated) {
-        // Ensure consultant initialized lazily
         if (!initializedConsultant) {
-          try {
-            await axios.post(`${API}/consultant/initialize`, {});
-            setInitializedConsultant(true);
-          } catch (err) { /* ignore init error */ }
+          try { await axios.post(`${API}/consultant/initialize`, {}); setInitializedConsultant(true); } catch (err) { /* ignore */ }
         }
-        // Ask consultant
         const resp = await axios.post(`${API}/consultant/ask`, { question: userMessage, consultation_tier: 'basic_questions' });
         const payload = resp.data?.consultant_response || resp.data;
         const text = typeof payload === 'string' ? payload : (payload?.consultant_response || "Here's what I recommend based on your question and analysis context.");
         addMessage('bot', text);
       } else {
-        // Fallback: route through local guidance
-        await processTextInput(userMessage);
+        await processAction('how_it_works');
       }
     } catch (e) {
       addMessage('bot', "I'm here to help. Try again in a moment or start a guided analysis.");
     } finally {
       setIsTyping(false);
     }
-  };
-
-  const processTextInput = async (text) => {
-    const q = text.toLowerCase();
-    if (q.includes('price') || q.includes('cost')) return processAction('show_pricing');
-    if (q.includes('how') && q.includes('work')) return processAction('how_it_works');
-    if (q.includes('example')) return processAction('show_examples');
-    return addMessage('bot', 'Great question! Want me to start an analysis or show pricing?', [
-      { text: '🎯 Start analysis', action: 'navigate_analyze', primary: true },
-      { text: '💰 See pricing', action: 'show_pricing' }
-    ]);
   };
 
   const scrollToBottom = () => { messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' }); };
@@ -433,7 +508,7 @@ const EnhancedConsultantWidget = () => {
                   value={inputValue}
                   onChange={(e) => setInputValue(e.target.value)}
                   onKeyDown={onKeyDownInput}
-                  placeholder="Ask me anything about location analysis..."
+                  placeholder="Paste address or ask a question..."
                   className="flex-1 bg-slate-800/50 border border-slate-700/50 rounded-xl px-3 py-2 text-white placeholder-slate-400 focus:outline-none focus:border-cyan-500/50 text-sm"
                   aria-label="Message input"
                 />
