@@ -892,6 +892,21 @@ frontend:
         agent: "testing"
         comment: "✅ PERFORMANCE OPTIMIZED: Page load time 1.16 seconds (excellent), no console errors, professional glass-card styling, gradient backgrounds, modern UI/UX. Glass card effects, gradient backgrounds, professional typography, interactive elements, modern grid/flex layouts - enterprise-grade presentation confirmed."
 
+  - task: "EnhancedConsultantWidget - Desktop/Mobile Optimization & Auth Integration"
+    implemented: true
+    working: false
+    file: "/app/frontend/src/components/EnhancedConsultantWidget.js"
+    stuck_count: 1
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Implemented EnhancedConsultantWidget with responsive design, message persistence, and auth-synced backend integration"
+      - working: false
+        agent: "testing"
+        comment: "❌ MIXED RESULTS - 60% SUCCESS RATE: Desktop widget size verification PASSED (450x650px exact), Mobile container size verification PASSED (~95vw x ~80vh with panelHeight calc), Sticky input and scroll behavior working correctly. CRITICAL FAILURES: 1) Message persistence FAILED - messages not persisting across route navigation, 2) Auth-synced backend response testing BLOCKED by React runtime error 'Objects are not valid as a React child' causing red error screen, 3) Registration endpoint returning 422 validation errors preventing auth testing. Core widget functionality working but persistence and auth integration broken."
+
 metadata:
   created_by: "main_agent"
   version: "1.0"
