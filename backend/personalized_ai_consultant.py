@@ -11,6 +11,13 @@ from motor.motor_asyncio import AsyncIOMotorClient
 import logging
 import uuid
 import os
+
+# Database connection
+MONGO_URL = os.environ.get('MONGO_URL', 'mongodb://localhost:27017')
+DB_NAME = os.environ.get('DB_NAME', 'sitetitan_db')
+client = AsyncIOMotorClient(MONGO_URL)
+db = client[DB_NAME]
+
 try:
     from emergentintegrations import get_universal_llm_client
 except ImportError:
