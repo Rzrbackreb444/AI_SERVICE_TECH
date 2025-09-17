@@ -149,19 +149,6 @@ def create_consultant_router() -> APIRouter:
         except Exception as e:
             logger.error(f"Consultant profile update error: {e}")
             raise HTTPException(status_code=500, detail="Failed to update consultant profile")
-
-            
-            return {
-                'consultant_setup': consultant_setup,
-                'stickiness_activated': True,
-                'subscription_driver': 'Personalized consultant creates ongoing value',
-                'revenue_impact': 'Transforms one-time purchase into recurring relationship',
-                'status': 'success'
-            }
-            
-        except Exception as e:
-            logger.error(f"Consultant initialization error: {e}")
-            raise HTTPException(status_code=500, detail=str(e))
     
     @router.post("/ask")
     async def ask_consultant_question(
