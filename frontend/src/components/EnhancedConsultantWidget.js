@@ -252,7 +252,7 @@ const EnhancedConsultantWidget = () => {
       if (isAuthenticated) {
         // Ensure consultant initialized lazily
         if (!initializedConsultant) {
-          try { await axios.post(`${API}/consultant/initialize`, {}); setInitializedConsultant(true); } catch {}
+          try { await axios.post(`${API}/consultant/initialize`, {}); setInitializedConsultant(true); } catch (err) { /* ignore init error */ }
         }
         // Ask consultant
         const resp = await axios.post(`${API}/consultant/ask`, { question: userMessage, consultation_tier: 'basic_questions' });
