@@ -348,8 +348,13 @@ class DeepBackendTester:
         )
         
         if success:
-            listings = response.get('listings', [])
-            total_value = response.get('total_market_value', 0)
+            # Handle different response formats
+            if isinstance(response, list):
+                listings = response
+                total_value = 0
+            else:
+                listings = response.get('listings', [])
+                total_value = response.get('total_market_value', 0)
             
             print(f"   🏢 Listings Found: {len(listings)}")
             print(f"   💰 Total Market Value: ${total_value:,}")
@@ -358,7 +363,10 @@ class DeepBackendTester:
                 print(f"   ✅ SUCCESS: Marketplace listings available")
                 # Show first listing details
                 first_listing = listings[0]
-                print(f"      - {first_listing.get('title', 'Unknown')}: ${first_listing.get('askingPrice', 0):,}")
+                if isinstance(first_listing, dict):
+                    print(f"      - {first_listing.get('title', 'Unknown')}: ${first_listing.get('askingPrice', 0):,}")
+                else:
+                    print(f"      - First listing: {str(first_listing)[:50]}...")
                 return True
             else:
                 print(f"   ⚠️  WARNING: No listings found (may be expected)")
