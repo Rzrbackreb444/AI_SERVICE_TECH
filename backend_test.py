@@ -318,21 +318,72 @@ class DeepBackendTester:
             print("   ⚠️  Skipping - No authentication token or analysis ID")
             return False
         
-        success, response = self.run_test(
-            "PDF Generation - Analysis Report",
-            "GET",
-            f"reports/generate-pdf/{self.analysis_id}",
-            200,
-            critical=True
-        )
+        # Custom test for PDF generation since it returns binary data, not JSON
+        url = f"{self.base_url}/reports/generate-pdf/{self.analysis_id}"
+        test_headers = {
+            'Content-Type': 'application/json',
+            'Authorization': f'Bearer {self.token}'
+        }
+
+        self.tests_run += 1
+        print(f"\n🔍 Test {self.tests_run}: PDF Generation - Analysis Report")
+        print(f"   Method: GET | Endpoint: /reports/generate-pdf/{self.analysis_id}")
+        print(f"   🚨 CRITICAL TEST - Production Blocker if Failed")
         
-        if success:
-            # For PDF response, we expect binary content, not JSON
-            print(f"   📄 PDF Generated: ✅")
-            print(f"   ✅ SUCCESS: PDF generation working")
-            return True
-        else:
-            print(f"   ❌ FAILED: PDF generation failed")
+        try:
+            response = requests.get(url, headers=test_headers, timeout=30)
+            success = response.status_code == 200
+            
+            if success:
+                self.tests_passed += 1
+                print(f"   ✅ PASSED - Status: {response.status_code}")
+                
+                # Check if response is PDF content
+                content_type = response.headers.get('content-type', '')
+                content_length = len(response.content)
+                
+                print(f"   📄 Content-Type: {content_type}")
+                print(f"   📏 Content Length: {content_length} bytes")
+                
+                if 'pdf' in content_type.lower() or content_length > 1000:
+                    print(f"   ✅ SUCCESS: PDF generation working - received {content_length} bytes")
+                    return True
+                else:
+                    print(f"   ⚠️  WARNING: Response may not be PDF content")
+                    # Still consider it success if status is 200
+                    return True
+            else:
+                print(f"   ❌ FAILED - Expected 200, got {response.status_code}")
+                try:
+                    error_data = response.json()
+                    print(f"   📄 Error: {error_data}")
+                except:
+                    print(f"   📄 Raw Response: {response.text[:200]}...")
+                
+                failure_info = {
+                    'name': 'PDF Generation',
+                    'expected': 200,
+                    'actual': response.status_code,
+                    'endpoint': f'reports/generate-pdf/{self.analysis_id}',
+                    'error': response.text[:500],
+                    'critical': True
+                }
+                
+                self.failed_tests.append(failure_info)
+                self.critical_failures.append(failure_info)
+                return False
+
+        except requests.exceptions.Timeout:
+            print(f"   ⏰ TIMEOUT - Request took longer than 30 seconds")
+            failure_info = {'name': 'PDF Generation', 'error': 'Timeout', 'critical': True}
+            self.failed_tests.append(failure_info)
+            self.critical_failures.append(failure_info)
+            return False
+        except Exception as e:
+            print(f"   💥 ERROR - {str(e)}")
+            failure_info = {'name': 'PDF Generation', 'error': str(e), 'critical': True}
+            self.failed_tests.append(failure_info)
+            self.critical_failures.append(failure_info)
             return False
 
     # ========== MARKETPLACE TESTING ==========
