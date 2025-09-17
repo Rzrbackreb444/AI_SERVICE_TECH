@@ -262,10 +262,20 @@ class PremiumReportGenerator:
         lat = coordinates.get('lat', 0)
         lng = coordinates.get('lng', 0)
         
+        # Created at handling (datetime or string)
+        created_at_val = analysis_result.get('created_at', datetime.now(timezone.utc))
+        if isinstance(created_at_val, datetime):
+            created_at_str = created_at_val.strftime('%Y-%m-%d')
+        else:
+            try:
+                created_at_str = str(created_at_val)[:10]
+            except Exception:
+                created_at_str = datetime.now(timezone.utc).strftime('%Y-%m-%d')
+
         location_data = [
             ['Address', address],
             ['Coordinates', f"{lat:.6f}, {lng:.6f}"],
-            ['Analysis Date', analysis_result.get('created_at', datetime.now().isoformat())[:10]]
+            ['Analysis Date', created_at_str]
         ]
         
         location_table = Table(location_data, colWidths=[1.5*inch, 4*inch])
