@@ -97,7 +97,7 @@ app = FastAPI(
 api_router = APIRouter(prefix="/api")
 
 # Security
-security = HTTPBearer()
+security = HTTPBearer(auto_error=False)
 JWT_SECRET = os.environ['JWT_SECRET']
 JWT_ALGORITHM = "HS256"
 
