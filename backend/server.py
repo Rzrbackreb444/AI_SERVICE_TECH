@@ -350,6 +350,8 @@ def get_password_hash(password: str) -> str:
     return hashlib.sha256(password.encode()).hexdigest()
 
 async def get_current_user(credentials: HTTPAuthorizationCredentials = Depends(security)):
+    if not credentials or not credentials.credentials:
+        raise HTTPException(status_code=401, detail="Missing authentication token")
     try:
         payload = jwt.decode(credentials.credentials, JWT_SECRET, algorithms=[JWT_ALGORITHM])
         user_id: str = payload.get("sub")
