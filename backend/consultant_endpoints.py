@@ -11,7 +11,6 @@ import logging
 import jwt
 import os
 from personalized_ai_consultant import ai_consultant
-import json
 
 # Import User model and auth functions
 from pydantic import BaseModel, EmailStr
