@@ -208,7 +208,7 @@ def create_consultant_router() -> APIRouter:
                 'stickiness_factor': 'Users return for ongoing consultation',
                 'status': 'success'
             }
-            
+        
         except Exception as e:
             logger.error(f"Consultant question error: {e}")
             raise HTTPException(status_code=500, detail=str(e))
