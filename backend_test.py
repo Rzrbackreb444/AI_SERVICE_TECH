@@ -20,22 +20,21 @@ class DeepBackendTester:
         self.tests_passed = 0
         self.failed_tests = []
         self.critical_failures = []
-        self.mock_data_detected = []
-        self.zero_value_sections = []
+        self.analysis_id = None
         
         # Test user data with realistic information
         timestamp = datetime.now().strftime('%H%M%S')
         self.test_user = {
-            'email': f'enterprise.auditor_{timestamp}@laundrotech.com',
-            'password': 'EnterpriseAudit2024!',
-            'full_name': f'Enterprise Auditor {timestamp}',
+            'email': f'deep.tester_{timestamp}@laundrotech.com',
+            'password': 'DeepTest2024!',
+            'full_name': f'Deep Backend Tester {timestamp}',
             'facebook_group_member': True
         }
         
-        print(f"🔍 COMPREHENSIVE PLATFORM AUDIT - LaundroTech Intelligence Platform")
+        print(f"🔍 DEEP BACKEND TESTING - LaundroTech Intelligence Platform")
         print(f"📍 Backend URL: {self.base_url}")
         print(f"👤 Test User: {self.test_user['email']}")
-        print(f"🎯 Target: Enterprise-Grade Quality & Real Data Integration")
+        print(f"🎯 Target: Consultant System & Dashboard Security")
         print("=" * 80)
 
     def run_test(self, name, method, endpoint, expected_status, data=None, headers=None, critical=False):
