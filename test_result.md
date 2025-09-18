@@ -962,6 +962,10 @@ metadata:
   run_ui: true
 
 test_plan:
+  - agent: "main"
+    message: "Re-run UI tests for chat support action and preview behavior. Test scenarios: 1) Desktop chat support flow with POST /api/support/contact, 2) Desktop free preview with chat staying open, 3) Mobile free preview for keyboard/visibility."
+  - agent: "testing"
+    message: "Starting comprehensive UI testing for chat support and preview functionality across desktop and mobile platforms."
   current_focus:
     - "Chat Support Action - Contact Support Flow"
     - "Free Preview Behavior - Chat Stays Open"
