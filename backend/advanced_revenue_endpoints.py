@@ -58,6 +58,50 @@ def create_advanced_revenue_router() -> APIRouter:
     router = APIRouter(prefix="/revenue", tags=["advanced_revenue"])
     
     @router.post("/analysis/preview")
+    @router.post("/analysis/preview-guest")
+    async def generate_analysis_preview_guest(
+        preview_request: Dict[str, Any]
+    ):
+        """Guest-lite preview with strictly limited details (no auth)"""
+        try:
+            address = preview_request.get('address')
+            if not address:
+                raise HTTPException(status_code=400, detail="Address is required")
+
+            # Reuse same generator but aggressively strip details
+            mock_analysis = {
+                'address': address,
+                'grade': 'B',
+                'score': 72,
+                'created_at': datetime.now(timezone.utc).isoformat(),
+                'demographics': {
+                    'population': '•••••',
+                    'median_income': '•••••'
+                },
+                'competitors': [
+                    {'name': 'Nearby Competitor', 'distance': '•.• mi'}
+                ],
+                'roi_estimate': {
+                    'monthly_revenue': '•••••',
+                    'initial_investment': '•••••',
+                    'payback_period': '•.•'
+                }
+            }
+
+            preview_report = await revenue_strategy.generate_preview_report(
+                mock_analysis, 'blur_critical_data'
+            )
+            preview_report['blurred'] = True
+
+            return {
+                'preview_report': preview_report,
+                'blurred': True,
+                'status': 'success'
+            }
+        except Exception as e:
+            logger.error(f"Guest preview error: {e}")
+            raise HTTPException(status_code=500, detail=str(e))
+
     async def generate_analysis_preview(
         preview_request: Dict[str, Any],
         current_user: User = Depends(get_current_user)
