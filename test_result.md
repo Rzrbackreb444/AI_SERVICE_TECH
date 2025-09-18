@@ -919,6 +919,42 @@ frontend:
         agent: "testing"
         comment: "✅ COMPREHENSIVE CHAT FLOW TESTING PASSED: All 4 scenarios tested successfully. SCENARIO 1 (Desktop): Chat opens, 'Start Free Preview' button found with correct gradient styling (bg-gradient-to-r from-emerald-600 to-cyan-600), successfully navigates to /analyze, chat closes, address input visible and functional, analysis can be triggered without chat blocking. SCENARIO 2 (Mobile 375x740): Chat opens on mobile, navigation to /analyze works, panel closes, input visible above keyboard area. SCENARIO 3 (Support Relay): While authenticated, chat accepts 'contact support' message, no 'Contact Support' quick action present (skipped as requested). SCENARIO 4 (Button Styling): Primary buttons have gradient styling, secondary buttons have neutral styling. CRITICAL DISCOVERY: /analyze route requires authentication - chat flow only works when user is logged in. Minor: 422 error on analysis API call (expected for test data), 403 errors on consultant profile (non-blocking). Chat widget functionality fully operational with proper minimize behavior and navigation flow."
 
+  - task: "Chat Support Action - Contact Support Flow"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/src/components/EnhancedConsultantWidget.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Chat widget has contact support functionality with POST /api/support/contact integration and success confirmation"
+
+  - task: "Free Preview Behavior - Chat Stays Open"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/src/components/EnhancedConsultantWidget.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Free preview flow keeps chat open for inline address capture and runs preview after pasting address"
+
+  - task: "Mobile Free Preview - Keyboard and Visibility"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/src/components/EnhancedConsultantWidget.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Mobile responsive chat with proper keyboard handling and visibility for free preview functionality"
+
 metadata:
   created_by: "main_agent"
   version: "1.0"
