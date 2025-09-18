@@ -205,14 +205,13 @@ const EnhancedConsultantWidget = () => {
   // Backend calls
   const runPreview = async (address) => {
     try {
+      let resp;
       if (!isAuthenticated) {
-        addMessage('bot', 'Please sign in to run a live preview. Your free preview includes a real-time grade, score, and nearby competitor snapshot.', [
-          { text: '🔐 Sign in', action: 'go_login', primary: true },
-          { text: '📖 How it works', action: 'how_it_works' }
-        ]);
-        return;
+        // Guest-lite: run limited preview with blurred details
+        resp = await axios.post(`${API}/revenue/analysis/preview-guest`, { address });
+      } else {
+        resp = await axios.post(`${API}/revenue/analysis/preview`, { address });
       }
-      const resp = await axios.post(`${API}/revenue/analysis/preview`, { address });
       const report = resp.data?.preview_report || {};
       const grade = report.grade || report?.summary?.grade || '—';
       const score = report.score || report?.summary?.score || '—';
