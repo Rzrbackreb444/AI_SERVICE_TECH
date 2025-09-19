@@ -27,7 +27,7 @@ const Navbar = () => {
     { name: 'AI Dashboard', href: '/dashboard', icon: CpuChipIcon },
     { name: 'Location Intelligence', href: '/analyze', icon: MapPinIcon },
     { name: 'Advanced Intelligence', href: '/intelligence', icon: ChartBarIcon },
-    { name: 'AI Agent', href: '/ai-agent', icon: CpuChipIcon },
+    // { name: 'AI Agent', href: '/ai-agent', icon: CpuChipIcon },
     { name: 'Market Intelligence', href: '/market-intelligence', icon: ChartBarIcon },
     { name: 'Competitive Intel', href: '/competitive-intelligence', icon: CpuChipIcon },
     { name: 'Predictive Analytics', href: '/predictive-analytics', icon: ChartBarIcon },
